@@ -21,13 +21,13 @@ export default function LoginPage() {
     e.preventDefault();
     
     // Check if subscription ID is valid
-    if (subscriptionId && subscriptionId !== "5001") {
+    if (subscriptionId && subscriptionId !== "0000") {
       setError(true);
       setErrorMessage("رقم الاشتراك غير صحيح");
       return;
     }
     
-    // Login will succeed if username is "محمد السهلي" and password is "123456"
+    // Login credentials check
     const isSuccess = login(username, password);
     
     if (isSuccess) {

@@ -20,93 +20,114 @@ import {
 } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
-// Temporary food database
-const foodDatabase = [
-  { 
-    name: "أرز أبيض", 
-    calories: 130, 
-    protein: 2.7, 
-    carbs: 28, 
-    category: "نشويات" 
+// Food database with calories, protein and carbs
+const foodCategories = {
+  "المطبخ المصري": {
+    "كشري": {calories: 350, protein: 8, carbs: 60},
+    "فول مدمس": {calories: 132, protein: 7, carbs: 19},
+    "طعمية": {calories: 290, protein: 13, carbs: 25},
+    "ملوخية": {calories: 95, protein: 6, carbs: 10},
+    "بامية": {calories: 85, protein: 5, carbs: 9},
+    "مسقعة": {calories: 140, protein: 9, carbs: 12},
+    "محشي كرنب": {calories: 165, protein: 7, carbs: 15},
+    "رز بالخلطة": {calories: 180, protein: 5, carbs: 35},
+    "كبدة اسكندراني": {calories: 180, protein: 25, carbs: 5},
+    "حمام محشي": {calories: 300, protein: 28, carbs: 20},
+    "رقاق باللحمة": {calories: 385, protein: 22, carbs: 30},
+    "سلطة بلدي": {calories: 50, protein: 2, carbs: 8},
+    "بابا غنوج": {calories: 70, protein: 3, carbs: 6},
+    "طحينة": {calories: 90, protein: 3, carbs: 5},
+    "مخلل": {calories: 15, protein: 0, carbs: 3},
+    "كوارع": {calories: 400, protein: 35, carbs: 10},
+    "ممبار": {calories: 350, protein: 30, carbs: 8},
+    "حواوشي": {calories: 280, protein: 18, carbs: 25},
+    "فتة": {calories: 450, protein: 15, carbs: 40},
+    "كبدة": {calories: 220, protein: 30, carbs: 5}
   },
-  { 
-    name: "دجاج (صدر)", 
-    calories: 165, 
-    protein: 31, 
-    carbs: 0, 
-    category: "بروتين" 
+  "المطبخ السعودي والخليجي": {
+    "كبسة لحم": {calories: 320, protein: 25, carbs: 30},
+    "مندي دجاج": {calories: 280, protein: 30, carbs: 25},
+    "مطبق": {calories: 310, protein: 12, carbs: 35},
+    "جريش": {calories: 220, protein: 8, carbs: 30},
+    "مرقوق": {calories: 245, protein: 15, carbs: 25},
+    "مضغوط": {calories: 290, protein: 22, carbs: 20},
+    "معصوب": {calories: 270, protein: 6, carbs: 45},
+    "شاكرية": {calories: 190, protein: 5, carbs: 35},
+    "مجبوس": {calories: 315, protein: 20, carbs: 30},
+    "صالونة": {calories: 225, protein: 18, carbs: 15},
+    "تبولة": {calories: 100, protein: 3, carbs: 15},
+    "حمص بالطحينة": {calories: 150, protein: 5, carbs: 12},
+    "لبنة بالنعناع": {calories: 120, protein: 5, carbs: 8},
+    "سليق": {calories: 300, protein: 10, carbs: 40},
+    "مفطح": {calories: 500, protein: 40, carbs: 30},
+    "قرصان": {calories: 350, protein: 25, carbs: 25},
+    "مراصيع": {calories: 280, protein: 18, carbs: 20},
+    "فتة تمر": {calories: 200, protein: 3, carbs: 45}
   },
-  { 
-    name: "تفاح", 
-    calories: 52, 
-    protein: 0.3, 
-    carbs: 14, 
-    category: "فواكه" 
+  "المطبخ الشامي": {
+    "فتوش": {calories: 120, protein: 3, carbs: 15},
+    "تبولة": {calories: 100, protein: 3, carbs: 18},
+    "كبة مقلية": {calories: 260, protein: 12, carbs: 20},
+    "كبة بالصينية": {calories: 300, protein: 14, carbs: 25},
+    "شيش طاووق": {calories: 220, protein: 30, carbs: 5}, 
+    "كباب حلبي": {calories: 290, protein: 28, carbs: 6},
+    "محشي كوسا": {calories: 190, protein: 7, carbs: 18},
+    "مقلوبة": {calories: 280, protein: 10, carbs: 35},
+    "يالنجي": {calories: 160, protein: 4, carbs: 22},
+    "شاورما دجاج": {calories: 320, protein: 27, carbs: 15},
+    "شاورما لحم": {calories: 350, protein: 30, carbs: 12},
+    "ورق عنب": {calories: 140, protein: 3, carbs: 20},
+    "بابا غنوج": {calories: 80, protein: 3, carbs: 10},
+    "حمص باللحمة": {calories: 250, protein: 15, carbs: 18},
+    "منسف": {calories: 420, protein: 30, carbs: 35}
   },
-  { 
-    name: "بيض مسلوق", 
-    calories: 78, 
-    protein: 6.3, 
-    carbs: 0.6, 
-    category: "بروتين" 
-  },
-  { 
-    name: "موز", 
-    calories: 89, 
-    protein: 1.1, 
-    carbs: 23, 
-    category: "فواكه" 
-  },
-  { 
-    name: "خبز أسمر", 
-    calories: 67, 
-    protein: 3.5, 
-    carbs: 12.5, 
-    category: "نشويات" 
-  },
-  { 
-    name: "لبن زبادي", 
-    calories: 59, 
-    protein: 3.5, 
-    carbs: 4.7, 
-    category: "ألبان" 
-  },
-  { 
-    name: "سلمون", 
-    calories: 208, 
-    protein: 20, 
-    carbs: 0, 
-    category: "بروتين" 
-  },
-  { 
-    name: "حليب", 
-    calories: 42, 
-    protein: 3.4, 
-    carbs: 5, 
-    category: "ألبان" 
-  },
-  { 
-    name: "فول", 
-    calories: 110, 
-    protein: 7.6, 
-    carbs: 16, 
-    category: "بقوليات" 
-  },
-  { 
-    name: "مكرونة", 
-    calories: 131, 
-    protein: 5, 
-    carbs: 25, 
-    category: "نشويات" 
-  },
-  { 
-    name: "لوز", 
-    calories: 165, 
-    protein: 6, 
-    carbs: 6, 
-    category: "مكسرات" 
+  "أطعمة أساسية": {
+    "أرز أبيض": {calories: 130, protein: 2.7, carbs: 28},
+    "دجاج (صدر)": {calories: 165, protein: 31, carbs: 0},
+    "تفاح": {calories: 52, protein: 0.3, carbs: 14},
+    "بيض مسلوق": {calories: 78, protein: 6.3, carbs: 0.6},
+    "موز": {calories: 89, protein: 1.1, carbs: 23},
+    "خبز أسمر": {calories: 67, protein: 3.5, carbs: 12.5},
+    "لبن زبادي": {calories: 59, protein: 3.5, carbs: 4.7},
+    "سلمون": {calories: 208, protein: 20, carbs: 0},
+    "حليب": {calories: 42, protein: 3.4, carbs: 5},
+    "فول": {calories: 110, protein: 7.6, carbs: 16},
+    "مكرونة": {calories: 131, protein: 5, carbs: 25},
+    "لوز": {calories: 165, protein: 6, carbs: 6}
   }
-];
+};
+
+// Convert the nested structure to a flat list for the existing UI
+// Define type for our food items
+interface FoodItem {
+  name: string;
+  calories: number;
+  protein: number;
+  carbs: number;
+  category: string;
+}
+
+const foodDatabase: FoodItem[] = [];
+// Type assertion for foodCategories
+const typedFoodCategories = foodCategories as {
+  [category: string]: {
+    [name: string]: { calories: number; protein: number; carbs: number }
+  }
+};
+
+// Populate the food database
+for (const category in typedFoodCategories) {
+  for (const name in typedFoodCategories[category]) {
+    const food = typedFoodCategories[category][name];
+    foodDatabase.push({
+      name: name,
+      calories: food.calories,
+      protein: food.protein,
+      carbs: food.carbs,
+      category: category
+    });
+  }
+}
 
 // Food weight equivalents
 const unitToGramEquivalents: Record<string, number> = {

@@ -3,8 +3,9 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { getMealSummary } from "../../data/mealPlans";
 import { getWorkoutSummary } from "../../data/workoutPlans";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, Dumbbell, Utensils, CheckCircle2, ArrowRight } from "lucide-react";
+import { Calendar, Dumbbell, Utensils, CheckCircle2, ArrowRight, Lock } from "lucide-react";
 import { TabsContent, Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface DailyPlanProps {
   date: Date;
@@ -13,10 +14,21 @@ interface DailyPlanProps {
   dayIndex: number;
 }
 
-export default function DailyPlan({ formattedDate, workoutType, dayIndex }: DailyPlanProps) {
+export default function DailyPlan({ date, formattedDate, workoutType, dayIndex }: DailyPlanProps) {
   const mealSummary = getMealSummary();
   const workoutSummary = getWorkoutSummary(dayIndex);
   const [hoveredItem, setHoveredItem] = useState<number | null>(null);
+  
+  // Check if it's a future day
+  const isFutureDay = () => {
+    const today = new Date();
+    const compareDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    const compareToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    return compareDate > compareToday;
+  };
+  
+  // Determine if we should lock the checkmarks from being functional
+  const isLocked = isFutureDay();
   
   return (
     <Card className="mb-8 border-2 border-primary/20 overflow-hidden">
@@ -73,6 +85,17 @@ export default function DailyPlan({ formattedDate, workoutType, dayIndex }: Dail
                       <div className="ml-3 mt-1">
                         {hoveredItem === index ? (
                           <ArrowRight className="h-5 w-5 text-primary" />
+                        ) : isLocked ? (
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <Lock className="h-5 w-5 text-amber-500" />
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <p>لا يمكن وضع علامة إتمام على يوم مستقبلي</p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
                         ) : (
                           <CheckCircle2 className="h-5 w-5 text-primary/70" />
                         )}
@@ -113,6 +136,17 @@ export default function DailyPlan({ formattedDate, workoutType, dayIndex }: Dail
                       <div className="ml-3 mt-1">
                         {hoveredItem === index ? (
                           <ArrowRight className="h-5 w-5 text-secondary" />
+                        ) : isLocked ? (
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <Lock className="h-5 w-5 text-amber-500" />
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <p>لا يمكن وضع علامة إتمام على يوم مستقبلي</p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
                         ) : (
                           <CheckCircle2 className="h-5 w-5 text-secondary/70" />
                         )}

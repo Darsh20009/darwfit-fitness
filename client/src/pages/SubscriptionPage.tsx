@@ -65,7 +65,7 @@ export default function SubscriptionPage() {
       const encodedMessage = encodeURIComponent(whatsappMessage);
       
       // Open WhatsApp with the prepared message
-      window.open(`https://wa.me/+966500000000?text=${encodedMessage}`, '_blank');
+      window.open(`https://api.whatsapp.com/send/?phone=201155201921&text=${encodedMessage}&type=phone_number&app_absent=0`, '_blank');
       
       // Show success modal
       const event = new CustomEvent('subscription-success');
