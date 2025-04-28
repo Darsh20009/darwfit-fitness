@@ -87,20 +87,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
         `,
       };
       
-      // In a real environment, we'd send the email
-      // For this demo, we'll just simulate success
-      if (process.env.NODE_ENV === 'production') {
-        try {
-          await transporter.sendMail(mailOptions);
-        } catch (emailError) {
-          console.error("Error sending email:", emailError);
-          // Continue even if email fails
-        }
-      } else {
-        console.log("Email would be sent in production:", mailOptions);
+      // Try to send an email (in any environment)
+      try {
+        await transporter.sendMail(mailOptions);
+        console.log("✅ Email sent successfully to Ma3k.2025@gmail.com");
+      } catch (emailError) {
+        console.error("❌ Error sending email:", emailError);
+        // Continue even if email fails
       }
       
-      res.status(200).json({ success: true, message: "تم إرسال الاستبيان بنجاح" });
+      // Log submission info to console for verification
+      console.log("📝 New subscription from:", subscriptionData.name);
+      console.log("📧 Email to:", "Ma3k.2025@gmail.com");
+      
+      res.status(200).json({ success: true, message: "تم إرسال الاستبيان بنجاح وتخزينه. سيتم التواصل معك قريباً" });
     } catch (error) {
       console.error("Subscription error:", error);
       res.status(500).json({ success: false, message: "حدث خطأ أثناء معالجة الاستبيان" });
