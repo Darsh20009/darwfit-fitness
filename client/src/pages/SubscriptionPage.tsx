@@ -39,7 +39,33 @@ export default function SubscriptionPage() {
     const data = Object.fromEntries(formData.entries());
     
     try {
+      // First, send data to API endpoint
       await apiRequest('POST', '/api/subscription', data);
+      
+      // Then, open WhatsApp with the form data
+      const whatsappMessage = `
+🏋️‍♂️ *استبيان اشتراك جديد في داروفت* 🏋️‍♂️
+
+الاسم: ${data.name}
+العمر: ${data.age}
+الجنس: ${data.gender === 'male' ? 'ذكر' : 'أنثى'}
+الوزن: ${data.weight} كجم
+الطول: ${data.height} سم
+رقم الجوال: ${data.phone}
+الهدف: ${getGoalInArabic(data.goal as string)}
+
+تفاصيل الأكل: ${data.food_details}
+
+تفاصيل التمرين: ${data.exercise_details}
+
+سعر الاشتراك: 5000 ريال لمدة 3 أشهر
+      `;
+
+      // Encode the message for WhatsApp URL
+      const encodedMessage = encodeURIComponent(whatsappMessage);
+      
+      // Open WhatsApp with the prepared message
+      window.open(`https://wa.me/+966500000000?text=${encodedMessage}`, '_blank');
       
       // Show success modal
       const event = new CustomEvent('subscription-success');
@@ -56,6 +82,22 @@ export default function SubscriptionPage() {
       console.error("Subscription error:", error);
     } finally {
       setIsSubmitting(false);
+    }
+  };
+  
+  // Helper function to convert goal to Arabic
+  const getGoalInArabic = (goal: string): string => {
+    switch(goal) {
+      case 'lose_weight': 
+        return 'خسارة الوزن';
+      case 'gain_muscle': 
+        return 'بناء العضلات';
+      case 'maintain': 
+        return 'المحافظة على الوزن الحالي';
+      case 'improve_fitness': 
+        return 'تحسين اللياقة البدنية';
+      default:
+        return goal;
     }
   };
   

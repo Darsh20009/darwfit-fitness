@@ -13,11 +13,21 @@ export default function LoginPage() {
   const { login } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [subscriptionId, setSubscriptionId] = useState("");
   const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("اسم المستخدم أو كلمة المرور غير صحيحة");
   
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     
+    // Check if subscription ID is valid
+    if (subscriptionId && subscriptionId !== "5001") {
+      setError(true);
+      setErrorMessage("رقم الاشتراك غير صحيح");
+      return;
+    }
+    
+    // Login will succeed if username is "محمد السهلي" and password is "123456"
     const isSuccess = login(username, password);
     
     if (isSuccess) {
@@ -25,6 +35,7 @@ export default function LoginPage() {
       setError(false);
     } else {
       setError(true);
+      setErrorMessage("اسم المستخدم أو كلمة المرور غير صحيحة");
     }
   };
   
@@ -61,10 +72,23 @@ export default function LoginPage() {
               />
             </div>
             
+            <div className="space-y-2">
+              <Label htmlFor="subscriptionId">رقم الاشتراك</Label>
+              <Input 
+                id="subscriptionId" 
+                placeholder="مثال: 5001" 
+                value={subscriptionId}
+                onChange={(e) => setSubscriptionId(e.target.value)}
+              />
+              <p className="text-xs text-neutral-500 dark:text-neutral-400 mr-1">
+                * يتم استلام رقم الاشتراك بعد إتمام عملية الدفع
+              </p>
+            </div>
+            
             {error && (
               <div className="bg-red-50 dark:bg-red-900/20 text-red-500 p-3 rounded-md flex items-center text-sm">
                 <AlertTriangle className="h-4 w-4 mr-2" />
-                اسم المستخدم أو كلمة المرور غير صحيحة
+                {errorMessage}
               </div>
             )}
             
