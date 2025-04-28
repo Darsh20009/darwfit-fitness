@@ -157,7 +157,9 @@ export default function CaloriesPage() {
   const [selectedGoal, setSelectedGoal] = useState<string>("2000");
   
   // Get unique categories
-  const categories = [...new Set(foodDatabase.map(food => food.category))];
+  const categoriesSet = new Set();
+  foodDatabase.forEach(food => categoriesSet.add(food.category));
+  const categories = Array.from(categoriesSet) as string[];
   
   // Get filtered foods by category
   const getFoodsByCategory = (category: string) => {

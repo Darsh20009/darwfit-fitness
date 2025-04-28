@@ -119,9 +119,9 @@ export default function SubscriptionPage() {
             {/* 1 Month Plan */}
             <Card className="border-2 hover:border-primary transition-colors duration-300 hover:shadow-md">
               <CardHeader className="p-4 pb-2">
-                <CardTitle className="text-lg text-center">شهر واحد</CardTitle>
+                <CardTitle className="text-lg text-center">شهر واحد (30 يوم)</CardTitle>
                 <div className="mt-2 text-center">
-                  <span className="text-2xl font-bold text-primary">50</span>
+                  <span className="text-2xl font-bold text-primary">2000</span>
                   <span className="text-sm text-neutral-600 dark:text-neutral-400"> ريال</span>
                 </div>
               </CardHeader>
@@ -145,9 +145,9 @@ export default function SubscriptionPage() {
                 الأكثر شعبية
               </div>
               <CardHeader className="p-4 pb-2">
-                <CardTitle className="text-lg text-center">3 شهور</CardTitle>
+                <CardTitle className="text-lg text-center">3 شهور (90 يوم)</CardTitle>
                 <div className="mt-2 text-center">
-                  <span className="text-2xl font-bold text-primary">100</span>
+                  <span className="text-2xl font-bold text-primary">5000</span>
                   <span className="text-sm text-neutral-600 dark:text-neutral-400"> ريال</span>
                 </div>
               </CardHeader>
@@ -169,12 +169,12 @@ export default function SubscriptionPage() {
               </CardContent>
             </Card>
             
-            {/* 5 Month Plan */}
+            {/* 6 Month Plan */}
             <Card className="border-2 hover:border-primary transition-colors duration-300 hover:shadow-md">
               <CardHeader className="p-4 pb-2">
-                <CardTitle className="text-lg text-center">5 شهور</CardTitle>
+                <CardTitle className="text-lg text-center">6 شهور (180 يوم)</CardTitle>
                 <div className="mt-2 text-center">
-                  <span className="text-2xl font-bold text-primary">200</span>
+                  <span className="text-2xl font-bold text-primary">8000</span>
                   <span className="text-sm text-neutral-600 dark:text-neutral-400"> ريال</span>
                 </div>
               </CardHeader>
@@ -199,9 +199,9 @@ export default function SubscriptionPage() {
             {/* 12 Month Plan */}
             <Card className="border-2 hover:border-primary transition-colors duration-300 hover:shadow-md">
               <CardHeader className="p-4 pb-2">
-                <CardTitle className="text-lg text-center">سنة كاملة</CardTitle>
+                <CardTitle className="text-lg text-center">سنة كاملة (365 يوم)</CardTitle>
                 <div className="mt-2 text-center">
-                  <span className="text-2xl font-bold text-primary">500</span>
+                  <span className="text-2xl font-bold text-primary">14000</span>
                   <span className="text-sm text-neutral-600 dark:text-neutral-400"> ريال</span>
                 </div>
               </CardHeader>
