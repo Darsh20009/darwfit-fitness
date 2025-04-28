@@ -19,9 +19,11 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, CheckCircle, Info } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
 
 export default function SubscriptionPage() {
   const [, navigate] = useLocation();
@@ -59,6 +61,61 @@ export default function SubscriptionPage() {
   
   return (
     <div className="container mx-auto px-4 py-8 min-h-[calc(100vh-70px)]">
+      {/* Subscription Info Card */}
+      <Card className="max-w-3xl mx-auto mb-6 border-2 border-primary">
+        <CardHeader className="bg-primary/5">
+          <div className="flex justify-between items-center">
+            <CardTitle className="text-xl md:text-2xl text-primary flex items-center">
+              <Info className="h-5 w-5 ml-2" />
+              معلومات الاشتراك
+            </CardTitle>
+            <Badge className="bg-primary text-white px-4 py-1 text-sm">
+              5000 ريال سعودي
+            </Badge>
+          </div>
+        </CardHeader>
+        
+        <CardContent className="pt-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="flex flex-col space-y-2">
+              <div className="flex items-center text-primary">
+                <CheckCircle className="h-4 w-4 ml-2" />
+                <span className="font-medium">مدة الاشتراك: 3 أشهر</span>
+              </div>
+              <div className="flex items-center text-primary">
+                <CheckCircle className="h-4 w-4 ml-2" />
+                <span className="font-medium">برنامج غذائي مخصص</span>
+              </div>
+              <div className="flex items-center text-primary">
+                <CheckCircle className="h-4 w-4 ml-2" />
+                <span className="font-medium">برنامج تدريبي متكامل</span>
+              </div>
+            </div>
+            <div className="flex flex-col space-y-2">
+              <div className="flex items-center text-primary">
+                <CheckCircle className="h-4 w-4 ml-2" />
+                <span className="font-medium">متابعة مستمرة من المدرب</span>
+              </div>
+              <div className="flex items-center text-primary">
+                <CheckCircle className="h-4 w-4 ml-2" />
+                <span className="font-medium">تعديلات أسبوعية على البرنامج</span>
+              </div>
+              <div className="flex items-center text-primary">
+                <CheckCircle className="h-4 w-4 ml-2" />
+                <span className="font-medium">دعم فني على مدار الساعة</span>
+              </div>
+            </div>
+          </div>
+          
+          <div className="mt-4 p-3 bg-secondary/10 text-secondary rounded-md">
+            <p className="text-sm">
+              * سيتم التواصل معك خلال 24 ساعة بعد تقديم الاستبيان لإكمال عملية الدفع وتفعيل الاشتراك
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+      
+      {/* Subscription Form Card */}
       <Card className="max-w-3xl mx-auto">
         <CardHeader>
           <CardTitle className="text-2xl md:text-3xl text-center">استبيان الاشتراك الجديد</CardTitle>
