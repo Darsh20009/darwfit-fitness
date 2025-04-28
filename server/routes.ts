@@ -61,7 +61,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       const mailOptions = {
         from: process.env.EMAIL_USER || "app-email@gmail.com",
-        to: "Ma3k.2025@gmail.com",
+        to: "darwfit@outlook.com",
         subject: `استبيان اشتراك جديد من ${subscriptionData.name}`,
         html: `
           <div dir="rtl" style="font-family: Arial, sans-serif; padding: 20px; line-height: 1.6;">

@@ -11,7 +11,7 @@ export default function Navbar() {
 
   // Function to handle WhatsApp contact
   const contactCoach = () => {
-    window.open("https://wa.me/+966500000000?text=مرحبا،%20أنا%20مشترك%20في%20Darwfit%20ورقم%20اشتراكي%20" + subscriptionId, "_blank");
+    window.open("https://api.whatsapp.com/send/?phone=201155201921&text=مرحبا،%20أنا%20مشترك%20في%20Darwfit%20ورقم%20اشتراكي%20" + subscriptionId, "_blank");
   };
 
   return (
