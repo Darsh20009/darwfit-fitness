@@ -67,42 +67,151 @@ export default function SubscriptionPage() {
           <div className="flex justify-between items-center">
             <CardTitle className="text-xl md:text-2xl text-primary flex items-center">
               <Info className="h-5 w-5 ml-2" />
-              معلومات الاشتراك
+              باقات الاشتراك
             </CardTitle>
-            <Badge className="bg-primary text-white px-4 py-1 text-sm">
-              5000 ريال سعودي
-            </Badge>
           </div>
         </CardHeader>
         
         <CardContent className="pt-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="flex flex-col space-y-2">
-              <div className="flex items-center text-primary">
-                <CheckCircle className="h-4 w-4 ml-2" />
-                <span className="font-medium">مدة الاشتراك: 3 أشهر</span>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            {/* 1 Month Plan */}
+            <Card className="border-2 hover:border-primary transition-colors duration-300 hover:shadow-md">
+              <CardHeader className="p-4 pb-2">
+                <CardTitle className="text-lg text-center">شهر واحد</CardTitle>
+                <div className="mt-2 text-center">
+                  <span className="text-2xl font-bold text-primary">50</span>
+                  <span className="text-sm text-neutral-600 dark:text-neutral-400"> ريال</span>
+                </div>
+              </CardHeader>
+              <CardContent className="p-4 pt-0">
+                <ul className="mt-4 space-y-2 text-sm">
+                  <li className="flex items-center">
+                    <CheckCircle className="h-4 w-4 ml-2 text-green-500" />
+                    <span>خطة غذائية مخصصة</span>
+                  </li>
+                  <li className="flex items-center">
+                    <CheckCircle className="h-4 w-4 ml-2 text-green-500" />
+                    <span>برنامج تدريبي</span>
+                  </li>
+                </ul>
+              </CardContent>
+            </Card>
+            
+            {/* 3 Month Plan */}
+            <Card className="border-2 border-primary bg-primary/5 hover:shadow-md">
+              <div className="bg-primary text-white text-center py-1 text-xs font-bold">
+                الأكثر شعبية
               </div>
-              <div className="flex items-center text-primary">
-                <CheckCircle className="h-4 w-4 ml-2" />
-                <span className="font-medium">برنامج غذائي مخصص</span>
+              <CardHeader className="p-4 pb-2">
+                <CardTitle className="text-lg text-center">3 شهور</CardTitle>
+                <div className="mt-2 text-center">
+                  <span className="text-2xl font-bold text-primary">100</span>
+                  <span className="text-sm text-neutral-600 dark:text-neutral-400"> ريال</span>
+                </div>
+              </CardHeader>
+              <CardContent className="p-4 pt-0">
+                <ul className="mt-4 space-y-2 text-sm">
+                  <li className="flex items-center">
+                    <CheckCircle className="h-4 w-4 ml-2 text-green-500" />
+                    <span>خطة غذائية مخصصة</span>
+                  </li>
+                  <li className="flex items-center">
+                    <CheckCircle className="h-4 w-4 ml-2 text-green-500" />
+                    <span>برنامج تدريبي متكامل</span>
+                  </li>
+                  <li className="flex items-center">
+                    <CheckCircle className="h-4 w-4 ml-2 text-green-500" />
+                    <span>متابعة أسبوعية</span>
+                  </li>
+                </ul>
+              </CardContent>
+            </Card>
+            
+            {/* 5 Month Plan */}
+            <Card className="border-2 hover:border-primary transition-colors duration-300 hover:shadow-md">
+              <CardHeader className="p-4 pb-2">
+                <CardTitle className="text-lg text-center">5 شهور</CardTitle>
+                <div className="mt-2 text-center">
+                  <span className="text-2xl font-bold text-primary">200</span>
+                  <span className="text-sm text-neutral-600 dark:text-neutral-400"> ريال</span>
+                </div>
+              </CardHeader>
+              <CardContent className="p-4 pt-0">
+                <ul className="mt-4 space-y-2 text-sm">
+                  <li className="flex items-center">
+                    <CheckCircle className="h-4 w-4 ml-2 text-green-500" />
+                    <span>جميع مزايا الباقة السابقة</span>
+                  </li>
+                  <li className="flex items-center">
+                    <CheckCircle className="h-4 w-4 ml-2 text-green-500" />
+                    <span>متابعة شهرية مع المدرب</span>
+                  </li>
+                  <li className="flex items-center">
+                    <CheckCircle className="h-4 w-4 ml-2 text-green-500" />
+                    <span>خصم 20% على التجديد</span>
+                  </li>
+                </ul>
+              </CardContent>
+            </Card>
+            
+            {/* 12 Month Plan */}
+            <Card className="border-2 hover:border-primary transition-colors duration-300 hover:shadow-md">
+              <CardHeader className="p-4 pb-2">
+                <CardTitle className="text-lg text-center">سنة كاملة</CardTitle>
+                <div className="mt-2 text-center">
+                  <span className="text-2xl font-bold text-primary">500</span>
+                  <span className="text-sm text-neutral-600 dark:text-neutral-400"> ريال</span>
+                </div>
+              </CardHeader>
+              <CardContent className="p-4 pt-0">
+                <ul className="mt-4 space-y-2 text-sm">
+                  <li className="flex items-center">
+                    <CheckCircle className="h-4 w-4 ml-2 text-green-500" />
+                    <span>جميع المزايا السابقة</span>
+                  </li>
+                  <li className="flex items-center">
+                    <CheckCircle className="h-4 w-4 ml-2 text-green-500" />
+                    <span>تواصل مباشر مع المدرب</span>
+                  </li>
+                  <li className="flex items-center">
+                    <CheckCircle className="h-4 w-4 ml-2 text-green-500" />
+                    <span>خصم 30% على التجديد</span>
+                  </li>
+                </ul>
+              </CardContent>
+            </Card>
+          </div>
+          
+          <div className="bg-primary/5 p-4 rounded-lg">
+            <h4 className="font-bold text-primary mb-2">مميزات الاشتراك</h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="flex flex-col space-y-2">
+                <div className="flex items-center text-primary">
+                  <CheckCircle className="h-4 w-4 ml-2" />
+                  <span className="font-medium">برنامج غذائي مخصص</span>
+                </div>
+                <div className="flex items-center text-primary">
+                  <CheckCircle className="h-4 w-4 ml-2" />
+                  <span className="font-medium">برنامج تدريبي متكامل</span>
+                </div>
+                <div className="flex items-center text-primary">
+                  <CheckCircle className="h-4 w-4 ml-2" />
+                  <span className="font-medium">حاسبة سعرات حرارية</span>
+                </div>
               </div>
-              <div className="flex items-center text-primary">
-                <CheckCircle className="h-4 w-4 ml-2" />
-                <span className="font-medium">برنامج تدريبي متكامل</span>
-              </div>
-            </div>
-            <div className="flex flex-col space-y-2">
-              <div className="flex items-center text-primary">
-                <CheckCircle className="h-4 w-4 ml-2" />
-                <span className="font-medium">متابعة مستمرة من المدرب</span>
-              </div>
-              <div className="flex items-center text-primary">
-                <CheckCircle className="h-4 w-4 ml-2" />
-                <span className="font-medium">تعديلات أسبوعية على البرنامج</span>
-              </div>
-              <div className="flex items-center text-primary">
-                <CheckCircle className="h-4 w-4 ml-2" />
-                <span className="font-medium">دعم فني على مدار الساعة</span>
+              <div className="flex flex-col space-y-2">
+                <div className="flex items-center text-primary">
+                  <CheckCircle className="h-4 w-4 ml-2" />
+                  <span className="font-medium">متابعة مستمرة من المدرب</span>
+                </div>
+                <div className="flex items-center text-primary">
+                  <CheckCircle className="h-4 w-4 ml-2" />
+                  <span className="font-medium">تعديلات أسبوعية على البرنامج</span>
+                </div>
+                <div className="flex items-center text-primary">
+                  <CheckCircle className="h-4 w-4 ml-2" />
+                  <span className="font-medium">دعم فني على مدار الساعة</span>
+                </div>
               </div>
             </div>
           </div>

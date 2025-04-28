@@ -82,7 +82,7 @@ export default function DashboardPage() {
             <CardContent className="p-4 flex items-center justify-between">
               <div>
                 <h3 className="text-xs text-neutral-500 dark:text-neutral-400">متبقي من الاشتراك</h3>
-                <p className="text-xl font-bold text-amber-500">60 يوم</p>
+                <p className="text-xl font-bold text-amber-500">90 يوم</p>
               </div>
               <div className="bg-amber-50 dark:bg-amber-900/20 p-2 rounded-full">
                 <Clock className="h-6 w-6 text-amber-500" />

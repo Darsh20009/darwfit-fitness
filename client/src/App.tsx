@@ -8,6 +8,7 @@ import HomePage from "./pages/HomePage";
 import SubscriptionPage from "./pages/SubscriptionPage";
 import LoginPage from "./pages/LoginPage";
 import DashboardPage from "./pages/DashboardPage";
+import CaloriesPage from "./pages/CaloriesPage";
 import NotFound from "@/pages/not-found";
 import SuccessModal from "./components/SuccessModal";
 import ChatBot from "./components/ChatBot";
@@ -23,6 +24,7 @@ function ProtectedRoutes() {
       <Route path="/" component={HomePage} />
       <Route path="/subscription" component={SubscriptionPage} />
       <Route path="/login" component={LoginPage} />
+      <Route path="/calories" component={CaloriesPage} />
       <Route path="/dashboard">
         {isLoggedIn ? <DashboardPage /> : <LoginPage />}
       </Route>

@@ -26,6 +26,22 @@ export default function Navbar() {
             <span className="text-primary">fit</span>
           </h1>
           
+          <nav className="hidden md:flex items-center mr-6 space-x-6 space-x-reverse">
+            <button 
+              onClick={() => navigate("/calories")}
+              className="text-sm font-medium text-neutral-700 hover:text-primary dark:text-neutral-300 dark:hover:text-primary transition-colors"
+            >
+              حاسبة السعرات
+            </button>
+            
+            <button 
+              onClick={() => navigate("/subscription")}
+              className="text-sm font-medium text-neutral-700 hover:text-primary dark:text-neutral-300 dark:hover:text-primary transition-colors"
+            >
+              الاشتراكات
+            </button>
+          </nav>
+          
           {isLoggedIn && subscriptionId && (
             <div className="hidden md:flex items-center mr-4 space-x-2 space-x-reverse">
               <Badge variant="outline" className="bg-primary/10 text-primary border-primary px-2 py-1">
