@@ -64,10 +64,9 @@ export default function WeeklyCalendar({ selectedDate, onSelectDate }: WeeklyCal
             return (
               <div 
                 key={index}
-                onClick={() => onSelectDate(day.date)}
                 className={cn(
                   "day-card text-center p-3 border rounded-lg transition-colors relative",
-                  "cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-700",
+                  "cursor-default",
                   "border-neutral-200 dark:border-neutral-700",
                   isSelectedDay(day.date) && "active-day border-primary dark:border-primary shadow-sm",
                   dayIsToday && "border-secondary dark:border-secondary bg-secondary/5",
