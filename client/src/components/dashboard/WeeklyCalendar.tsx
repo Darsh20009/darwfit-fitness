@@ -105,20 +105,20 @@ export default function WeeklyCalendar({ selectedDate, onSelectDate }: WeeklyCal
                   </>
                 )}
                 
-                {future && (
+                {!dayIsToday && (
                   <>
-                    <div className="absolute inset-0 bg-black/5 backdrop-blur-[1px] flex items-center justify-center rounded-lg">
-                      <Lock className="h-6 w-6 text-amber-500" />
+                    <div className="absolute inset-0 bg-black/5 backdrop-blur-[2px] flex items-center justify-center rounded-lg">
+                      <Lock className={`h-6 w-6 ${future ? 'text-amber-500' : 'text-gray-500'}`} />
                     </div>
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <span className="absolute top-1 left-1 bg-amber-500 text-white h-5 w-5 flex items-center justify-center rounded-full">
-                            <Calendar className="h-3 w-3" />
+                          <span className={`absolute top-1 left-1 ${future ? 'bg-amber-500' : 'bg-green-500'} text-white h-5 w-5 flex items-center justify-center rounded-full`}>
+                            {future ? <Calendar className="h-3 w-3" /> : <Check className="h-3 w-3" />}
                           </span>
                         </TooltipTrigger>
                         <TooltipContent>
-                          <p>يمكنك الاطلاع على برنامج هذا اليوم</p>
+                          <p>{future ? 'يمكنك الاطلاع على برنامج هذا اليوم' : 'تم إكمال هذا اليوم'}</p>
                         </TooltipContent>
                       </Tooltip>
                     </TooltipProvider>
