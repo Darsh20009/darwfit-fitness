@@ -11,23 +11,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/subscription", async (req, res) => {
     try {
       const subscriptionData: SubscriptionData = req.body;
-      
+
       // Save to local file
       try {
         const submissionsPath = path.join(process.cwd(), "submissions.txt");
-        
+
         // Check if file exists, if not create it
         try {
           await fs.access(submissionsPath);
         } catch {
           await fs.writeFile(submissionsPath, "");
         }
-        
+
         // Get timestamp
         const timestamp = new Date().toLocaleString("ar-SA", {
           timeZone: "Asia/Riyadh",
         });
-        
+
         // Format data for file storage
         const dataToWrite = `
 === استبيان جديد (${timestamp}) ===
@@ -42,14 +42,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
 تفاصيل التمرين: ${subscriptionData.exercise_details}
 ----------------------------------
 `;
-        
+
         // Append data to file
         await fs.appendFile(submissionsPath, dataToWrite);
       } catch (fileError) {
         console.error("Error saving to file:", fileError);
-        // Continue with email even if file save fails
+        // Continue with email and WhatsApp even if file save fails
       }
-      
+
       // Send email
       const transporter = nodemailer.createTransport({
         service: "gmail",
@@ -58,7 +58,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           pass: process.env.EMAIL_PASS || "app-password",        // Would be set via env vars
         },
       });
-      
+
       const mailOptions = {
         from: process.env.EMAIL_USER || "app-email@gmail.com",
         to: "darwfit@outlook.com",
@@ -86,20 +86,49 @@ export async function registerRoutes(app: Express): Promise<Server> {
           </div>
         `,
       };
-      
+
       // Try to send an email (in any environment)
       try {
         await transporter.sendMail(mailOptions);
-        console.log("✅ Email sent successfully to Ma3k.2025@gmail.com");
+        console.log("✅ Email sent successfully to darwfit@outlook.com");
       } catch (emailError) {
         console.error("❌ Error sending email:", emailError);
         // Continue even if email fails
       }
-      
+
+      // Send WhatsApp message using official API
+      const whatsappMessage = `🏋️‍♂️ *استبيان اشتراك جديد في داروفت* 🏋️‍♂️\n\nالاسم: ${subscriptionData.name}\nالعمر: ${subscriptionData.age}\nالجنس: ${subscriptionData.gender === 'male' ? 'ذكر' : 'أنثى'}\nالوزن: ${subscriptionData.weight} كجم\nالطول: ${subscriptionData.height} سم\nرقم الجوال: ${subscriptionData.phone}\nالهدف: ${getGoalInArabic(subscriptionData.goal)}\n\nتفاصيل الأكل: ${subscriptionData.food_details}\n\nتفاصيل التمرين: ${subscriptionData.exercise_details}\n\nسعر الاشتراك: 5000 ريال لمدة 3 أشهر`;
+
+      try {
+        const response = await fetch(`https://graph.facebook.com/v17.0/${process.env.WHATSAPP_PHONE_NUMBER_ID}/messages`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${process.env.WHATSAPP_ACCESS_TOKEN}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            messaging_product: "whatsapp",
+            to: subscriptionData.phone, // Use the phone number from the subscription data
+            type: "text",
+            text: { body: whatsappMessage }
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error('WhatsApp API request failed');
+        }
+
+        console.log("✅ WhatsApp message sent successfully");
+      } catch (whatsappError) {
+        console.error("❌ Error sending WhatsApp message:", whatsappError);
+        // Continue even if WhatsApp message fails
+      }
+
       // Log submission info to console for verification
       console.log("📝 New subscription from:", subscriptionData.name);
-      console.log("📧 Email to:", "Ma3k.2025@gmail.com");
-      
+      console.log("📧 Email to:", "darwfit@outlook.com");
+      console.log("📱 WhatsApp to:", subscriptionData.phone);
+
       res.status(200).json({ success: true, message: "تم إرسال الاستبيان بنجاح وتخزينه. سيتم التواصل معك قريباً" });
     } catch (error) {
       console.error("Subscription error:", error);
@@ -110,7 +139,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Authentication endpoint
   app.post("/api/login", (req, res) => {
     const { username, password } = req.body;
-    
+
     if (username === "محمد السهلي" && password === "123456") {
       res.status(200).json({ success: true });
     } else {
@@ -129,6 +158,6 @@ function getGoalInArabic(goal: string): string {
     maintain: "المحافظة على الوزن الحالي",
     improve_fitness: "تحسين اللياقة البدنية"
   };
-  
+
   return goalMap[goal] || goal;
 }
