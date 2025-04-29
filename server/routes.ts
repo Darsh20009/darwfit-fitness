@@ -38,8 +38,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
 الطول: ${subscriptionData.height}
 الهدف: ${subscriptionData.goal}
 رقم الجوال: ${subscriptionData.phone}
-تفاصيل الأكل: ${subscriptionData.food_details}
-تفاصيل التمرين: ${subscriptionData.exercise_details}
+تفاصيل الأكل اليومية:
+فطور: ${subscriptionData.breakfast_details || '-'}
+غداء: ${subscriptionData.lunch_details || '-'}
+عشاء: ${subscriptionData.dinner_details || '-'}
+تفاصيل التمرين:
+نوع التمارين: ${Array.isArray(subscriptionData.exercise_type) ? subscriptionData.exercise_type.join(', ') : '-'}
+عدد مرات التمرين: ${subscriptionData.exercise_times || '-'}
+مدة التمرين: ${subscriptionData.exercise_duration || '-'}
 ----------------------------------
 `;
 
@@ -97,7 +103,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       // Send WhatsApp message using official API
-      const whatsappMessage = `🏋️‍♂️ *استبيان اشتراك جديد في داروفت* 🏋️‍♂️\n\nالاسم: ${subscriptionData.name}\nالعمر: ${subscriptionData.age}\nالجنس: ${subscriptionData.gender === 'male' ? 'ذكر' : 'أنثى'}\nالوزن: ${subscriptionData.weight} كجم\nالطول: ${subscriptionData.height} سم\nرقم الجوال: ${subscriptionData.phone}\nالهدف: ${getGoalInArabic(subscriptionData.goal)}\n\nتفاصيل الأكل: ${subscriptionData.food_details}\n\nتفاصيل التمرين: ${subscriptionData.exercise_details}\n\nسعر الاشتراك: 5000 ريال لمدة 3 أشهر`;
+      const whatsappMessage = `🏋️‍♂️ *استبيان اشتراك جديد في داروفت* 🏋️‍♂️
+
+الاسم: ${subscriptionData.name}
+العمر: ${subscriptionData.age}
+الجنس: ${subscriptionData.gender === 'male' ? 'ذكر' : 'أنثى'}
+الوزن: ${subscriptionData.weight} كجم
+الطول: ${subscriptionData.height} سم
+رقم الجوال: ${subscriptionData.phone}
+الهدف: ${getGoalInArabic(subscriptionData.goal)}
+
+*تفاصيل الأكل اليومية:*
+فطور: ${subscriptionData.breakfast_details || '-'}
+غداء: ${subscriptionData.lunch_details || '-'}
+عشاء: ${subscriptionData.dinner_details || '-'}
+
+*تفاصيل التمرين:*
+نوع التمارين: ${Array.isArray(subscriptionData.exercise_type) ? subscriptionData.exercise_type.join(', ') : '-'}
+عدد مرات التمرين: ${subscriptionData.exercise_times || '-'}
+مدة التمرين: ${subscriptionData.exercise_duration || '-'}
+
+سعر الاشتراك: 5000 ريال لمدة 3 أشهر`;
 
       try {
         const response = await fetch(`https://graph.facebook.com/v17.0/${process.env.WHATSAPP_PHONE_NUMBER_ID}/messages`, {
