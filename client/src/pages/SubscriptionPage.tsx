@@ -585,7 +585,329 @@ export default function SubscriptionPage() {
             </div>
 
             <Separator />
-          
+            
+            {/* القسم الثالث: العادات الرياضية */}
+            <div>
+              <h3 className="text-xl font-semibold text-primary mb-4">ثالثاً: العادات الرياضية</h3>
+              
+              <div className="space-y-6">
+                <div className="space-y-2">
+                  <Label>هل تمارس رياضة حالياً؟</Label>
+                  <div className="flex space-x-4 space-x-reverse pt-2">
+                    <div className="flex items-center space-x-2 space-x-reverse">
+                      <input 
+                        type="radio" 
+                        id="exercise_yes" 
+                        name="exercise_now" 
+                        value="yes"
+                        className="ml-2"
+                        required
+                      />
+                      <Label htmlFor="exercise_yes" className="font-normal">نعم</Label>
+                    </div>
+                    <div className="flex items-center space-x-2 space-x-reverse">
+                      <input 
+                        type="radio" 
+                        id="exercise_no" 
+                        name="exercise_now" 
+                        value="no"
+                        className="ml-2"
+                      />
+                      <Label htmlFor="exercise_no" className="font-normal">لا</Label>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="exercise_type">إذا نعم، ما نوع الرياضة؟</Label>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2">
+                      <div className="flex items-center space-x-2 space-x-reverse">
+                        <input 
+                          type="checkbox" 
+                          id="exercise_resistance" 
+                          name="exercise_type" 
+                          value="resistance"
+                          className="ml-2"
+                        />
+                        <Label htmlFor="exercise_resistance" className="font-normal">تمارين مقاومة</Label>
+                      </div>
+                      <div className="flex items-center space-x-2 space-x-reverse">
+                        <input 
+                          type="checkbox" 
+                          id="exercise_cardio" 
+                          name="exercise_type" 
+                          value="cardio"
+                          className="ml-2"
+                        />
+                        <Label htmlFor="exercise_cardio" className="font-normal">كارديو</Label>
+                      </div>
+                      <div className="flex items-center space-x-2 space-x-reverse">
+                        <input 
+                          type="checkbox" 
+                          id="exercise_yoga" 
+                          name="exercise_type" 
+                          value="yoga"
+                          className="ml-2"
+                        />
+                        <Label htmlFor="exercise_yoga" className="font-normal">يوغا</Label>
+                      </div>
+                      <div className="flex items-center space-x-2 space-x-reverse">
+                        <input 
+                          type="checkbox" 
+                          id="exercise_walking" 
+                          name="exercise_type" 
+                          value="walking"
+                          className="ml-2"
+                        />
+                        <Label htmlFor="exercise_walking" className="font-normal">مشي</Label>
+                      </div>
+                      <div className="flex items-center space-x-2 space-x-reverse">
+                        <input 
+                          type="checkbox" 
+                          id="exercise_other" 
+                          name="exercise_type" 
+                          value="other"
+                          className="ml-2"
+                        />
+                        <Label htmlFor="exercise_other" className="font-normal">أخرى</Label>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="other_exercise">أنواع رياضة أخرى (إذا وجدت)</Label>
+                    <Input id="other_exercise" name="other_exercise" />
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="exercise_times">كم مرة تتمرن أسبوعياً؟</Label>
+                    <Select name="exercise_times">
+                      <SelectTrigger id="exercise_times">
+                        <SelectValue placeholder="اختر عدد المرات" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="0">لا أتمرن</SelectItem>
+                        <SelectItem value="1-2">1-2 مرات</SelectItem>
+                        <SelectItem value="3-4">3-4 مرات</SelectItem>
+                        <SelectItem value="5-6">5-6 مرات</SelectItem>
+                        <SelectItem value="daily">يومياً</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="exercise_duration">مدة التمرين (بالمتوسط):</Label>
+                    <div className="flex space-x-4 space-x-reverse pt-2">
+                      <div className="flex items-center space-x-2 space-x-reverse">
+                        <input 
+                          type="radio" 
+                          id="exercise_duration_less30" 
+                          name="exercise_duration" 
+                          value="less30"
+                          className="ml-2"
+                        />
+                        <Label htmlFor="exercise_duration_less30" className="font-normal">أقل من 30 دقيقة</Label>
+                      </div>
+                      <div className="flex items-center space-x-2 space-x-reverse">
+                        <input 
+                          type="radio" 
+                          id="exercise_duration_30to60" 
+                          name="exercise_duration" 
+                          value="30to60"
+                          className="ml-2"
+                        />
+                        <Label htmlFor="exercise_duration_30to60" className="font-normal">30-60 دقيقة</Label>
+                      </div>
+                      <div className="flex items-center space-x-2 space-x-reverse">
+                        <input 
+                          type="radio" 
+                          id="exercise_duration_more60" 
+                          name="exercise_duration" 
+                          value="more60"
+                          className="ml-2"
+                        />
+                        <Label htmlFor="exercise_duration_more60" className="font-normal">أكثر من ساعة</Label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="injuries">هل لديك أي إصابات رياضية؟</Label>
+                  <Textarea 
+                    id="injuries" 
+                    name="injuries" 
+                    placeholder="اذكر أي إصابات سابقة أو حالية وتاريخها" 
+                    rows={2} 
+                  />
+                </div>
+              </div>
+            </div>
+            
+            <Separator />
+            
+            {/* القسم الرابع: تفاصيل إضافية */}
+            <div>
+              <h3 className="text-xl font-semibold text-primary mb-4">رابعاً: تفاصيل إضافية</h3>
+              
+              <div className="space-y-6">
+                <div className="space-y-2">
+                  <Label>هل تعاني من أمراض مزمنة؟</Label>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-2">
+                    <div className="flex items-center space-x-2 space-x-reverse">
+                      <input 
+                        type="checkbox" 
+                        id="disease_diabetes" 
+                        name="chronic_diseases" 
+                        value="diabetes"
+                        className="ml-2"
+                      />
+                      <Label htmlFor="disease_diabetes" className="font-normal">سكري</Label>
+                    </div>
+                    <div className="flex items-center space-x-2 space-x-reverse">
+                      <input 
+                        type="checkbox" 
+                        id="disease_pressure" 
+                        name="chronic_diseases" 
+                        value="pressure"
+                        className="ml-2"
+                      />
+                      <Label htmlFor="disease_pressure" className="font-normal">ضغط</Label>
+                    </div>
+                    <div className="flex items-center space-x-2 space-x-reverse">
+                      <input 
+                        type="checkbox" 
+                        id="disease_heart" 
+                        name="chronic_diseases" 
+                        value="heart"
+                        className="ml-2"
+                      />
+                      <Label htmlFor="disease_heart" className="font-normal">قلب</Label>
+                    </div>
+                    <div className="flex items-center space-x-2 space-x-reverse">
+                      <input 
+                        type="checkbox" 
+                        id="disease_other" 
+                        name="chronic_diseases" 
+                        value="other"
+                        className="ml-2"
+                      />
+                      <Label htmlFor="disease_other" className="font-normal">أخرى</Label>
+                    </div>
+                    <div className="flex items-center space-x-2 space-x-reverse">
+                      <input 
+                        type="checkbox" 
+                        id="disease_none" 
+                        name="chronic_diseases" 
+                        value="none"
+                        className="ml-2"
+                      />
+                      <Label htmlFor="disease_none" className="font-normal">لا يوجد</Label>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="other_diseases">تفاصيل أمراض أخرى (إذا وجدت)</Label>
+                  <Input id="other_diseases" name="other_diseases" />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="food_allergies">هل لديك حساسية تجاه أطعمة معينة؟</Label>
+                  <Textarea 
+                    id="food_allergies" 
+                    name="food_allergies" 
+                    placeholder="اذكر الأطعمة التي لديك حساسية منها" 
+                    rows={2} 
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="diet_preference">هل تفضل نظام غذائي معين؟</Label>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-2">
+                    <div className="flex items-center space-x-2 space-x-reverse">
+                      <input 
+                        type="radio" 
+                        id="diet_keto" 
+                        name="diet_preference" 
+                        value="keto"
+                        className="ml-2"
+                      />
+                      <Label htmlFor="diet_keto" className="font-normal">كيتو</Label>
+                    </div>
+                    <div className="flex items-center space-x-2 space-x-reverse">
+                      <input 
+                        type="radio" 
+                        id="diet_vegetarian" 
+                        name="diet_preference" 
+                        value="vegetarian"
+                        className="ml-2"
+                      />
+                      <Label htmlFor="diet_vegetarian" className="font-normal">نباتي</Label>
+                    </div>
+                    <div className="flex items-center space-x-2 space-x-reverse">
+                      <input 
+                        type="radio" 
+                        id="diet_balanced" 
+                        name="diet_preference" 
+                        value="balanced"
+                        className="ml-2"
+                      />
+                      <Label htmlFor="diet_balanced" className="font-normal">متوازن</Label>
+                    </div>
+                    <div className="flex items-center space-x-2 space-x-reverse">
+                      <input 
+                        type="radio" 
+                        id="diet_highprotein" 
+                        name="diet_preference" 
+                        value="highprotein"
+                        className="ml-2"
+                      />
+                      <Label htmlFor="diet_highprotein" className="font-normal">عالي البروتين</Label>
+                    </div>
+                    <div className="flex items-center space-x-2 space-x-reverse">
+                      <input 
+                        type="radio" 
+                        id="diet_other" 
+                        name="diet_preference" 
+                        value="other"
+                        className="ml-2"
+                      />
+                      <Label htmlFor="diet_other" className="font-normal">أخرى</Label>
+                    </div>
+                    <div className="flex items-center space-x-2 space-x-reverse">
+                      <input 
+                        type="radio" 
+                        id="diet_none" 
+                        name="diet_preference" 
+                        value="none"
+                        className="ml-2"
+                      />
+                      <Label htmlFor="diet_none" className="font-normal">لا يوجد تفضيل</Label>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="other_diet">تفاصيل نظام غذائي آخر (إذا وجد)</Label>
+                  <Input id="other_diet" name="other_diet" />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="additional_notes">ملاحظات إضافية</Label>
+                  <Textarea 
+                    id="additional_notes" 
+                    name="additional_notes" 
+                    placeholder="أي معلومات إضافية ترغب في مشاركتها معنا" 
+                    rows={3} 
+                  />
+                </div>
+              </div>
+            </div>
+            
+            <Separator />
+            
             <CardFooter className="flex justify-between px-0 pt-4">
               <Button 
                 type="button" 
