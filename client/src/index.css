@@ -2,6 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
+/* تحسينات للأجهزة المحمولة */
+@media (max-width: 768px) {
+  .container {
+    padding: 0.5rem;
+  }
+  
+  .card {
+    margin: 0.5rem 0;
+  }
+  
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .text-2xl {
+    font-size: 1.5rem;
+  }
+}
+
 :root {
       --background: 0 0% 100%;
 --foreground: 20 14.3% 4.1%;

@@ -34,6 +34,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const login = (username: string, password: string) => {
+  // حفظ بيانات تسجيل الدخول في localStorage
+  localStorage.setItem('auth', JSON.stringify({ username, isLoggedIn: true }));
     // Fixed credentials check
     if (username === "محمد السهلي" && password === "123456") {
       // Hard-coded subscription details for demo purposes

@@ -21,7 +21,9 @@ function ProtectedRoutes() {
 
   return (
     <Switch>
-      <Route path="/" component={HomePage} />
+      <Route path="/">
+  {isLoggedIn ? <DashboardPage /> : <HomePage />}
+</Route>
       <Route path="/subscription" component={SubscriptionPage} />
       <Route path="/login" component={LoginPage} />
       <Route path="/calories" component={CaloriesPage} />
