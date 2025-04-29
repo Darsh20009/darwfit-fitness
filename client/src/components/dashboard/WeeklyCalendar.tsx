@@ -84,18 +84,23 @@ export default function WeeklyCalendar({ selectedDate, onSelectDate }: WeeklyCal
                 )}
                 
                 {past && (
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <span className="absolute top-1 left-1 bg-green-500 text-white h-5 w-5 flex items-center justify-center rounded-full">
-                          <Check className="h-3 w-3" />
-                        </span>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>تم إكمال هذا اليوم</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
+                  <>
+                    <div className="absolute inset-0 bg-black/5 backdrop-blur-[1px] flex items-center justify-center rounded-lg">
+                      <Lock className="h-6 w-6 text-gray-500" />
+                    </div>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <span className="absolute top-1 left-1 bg-green-500 text-white h-5 w-5 flex items-center justify-center rounded-full">
+                            <Check className="h-3 w-3" />
+                          </span>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>تم إكمال هذا اليوم</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </>
                 )}
                 
                 {future && (
