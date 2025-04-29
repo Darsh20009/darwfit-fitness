@@ -105,28 +105,45 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Send WhatsApp message using official API
       const whatsappMessage = `🏋️‍♂️ *استبيان اشتراك جديد في داروفت* 🏋️‍♂️
 
-الاسم: ${subscriptionData.name || '-'}
-العمر: ${subscriptionData.age || '-'}
-الجنس: ${subscriptionData.gender === 'male' ? 'ذكر' : 'أنثى'}
-الوزن: ${subscriptionData.weight || '-'} كجم
-الطول: ${subscriptionData.height || '-'} سم
-رقم الجوال: ${subscriptionData.phone || '-'}
-الهدف: ${subscriptionData.main_goal ? getGoalInArabic(subscriptionData.main_goal) : '-'}
+👤 *المعلومات الشخصية:*
+━━━━━━━━━━━━━━━
+• الاسم: ${subscriptionData.name || '-'}
+• العمر: ${subscriptionData.age || '-'}
+• الجنس: ${subscriptionData.gender === 'male' ? 'ذكر' : 'أنثى'}
+• الوزن: ${subscriptionData.weight || '-'} كجم
+• الطول: ${subscriptionData.height || '-'} سم
+• رقم الجوال: ${subscriptionData.phone || '-'}
+• الهدف: ${subscriptionData.main_goal ? getGoalInArabic(subscriptionData.main_goal) : '-'}
 
-*تفاصيل الأكل اليومية:*
-وجبة الإفطار: ${subscriptionData.breakfast_details || '-'}
-وجبة الغداء: ${subscriptionData.lunch_details || '-'}
-وجبة العشاء: ${subscriptionData.dinner_details || '-'}
-عدد الوجبات: ${subscriptionData.meals_count || '-'}
-عدد السناكات: ${subscriptionData.snacks_count || '-'}
+🍽️ *النظام الغذائي:*
+━━━━━━━━━━━━━━━
+• وجبة الإفطار: ${subscriptionData.breakfast_details || '-'}
+• وجبة الغداء: ${subscriptionData.lunch_details || '-'}
+• وجبة العشاء: ${subscriptionData.dinner_details || '-'}
+• عدد الوجبات اليومية: ${subscriptionData.meals_count || '-'}
+• عدد السناكات: ${subscriptionData.snacks_count || '-'}
+• توقيت الإفطار: ${subscriptionData.breakfast_time ? getBreakfastTimeInArabic(subscriptionData.breakfast_time) : '-'}
+• وجبة قبل النوم: ${subscriptionData.pre_sleep_meal === 'yes' ? 'نعم' : 'لا'}
+• عدد أكواب الماء: ${subscriptionData.water_count || '-'}
 
-*تفاصيل التمرين:*
-التمرين الحالي: ${subscriptionData.exercise_now === 'yes' ? 'نعم' : 'لا'}
-نوع التمارين: ${Array.isArray(subscriptionData.exercise_type) ? subscriptionData.exercise_type.map(getExerciseInArabic).join('، ') : '-'}
-عدد مرات التمرين: ${subscriptionData.exercise_times || '-'}
-مدة التمرين: ${getExerciseDurationInArabic(subscriptionData.exercise_duration)}
+💪 *النشاط البدني:*
+━━━━━━━━━━━━━━━
+• ممارسة الرياضة حالياً: ${subscriptionData.exercise_now === 'yes' ? 'نعم' : 'لا'}
+• نوع التمارين: ${Array.isArray(subscriptionData.exercise_type) ? subscriptionData.exercise_type.map(getExerciseInArabic).join('، ') : '-'}
+• عدد مرات التمرين: ${subscriptionData.exercise_times || '-'}
+• مدة التمرين: ${getExerciseDurationInArabic(subscriptionData.exercise_duration)}
+• الإصابات: ${subscriptionData.injuries || 'لا يوجد'}
 
-سعر الاشتراك: 100 ريال لمدة 3 شهور`;
+🏥 *معلومات صحية:*
+━━━━━━━━━━━━━━━
+• الأمراض المزمنة: ${Array.isArray(subscriptionData.chronic_diseases) ? formatChronicDiseases(subscriptionData.chronic_diseases) : 'لا يوجد'}
+• حساسية الطعام: ${subscriptionData.food_allergies || 'لا يوجد'}
+• النظام الغذائي المفضل: ${subscriptionData.diet_preference ? getDietPreferenceInArabic(subscriptionData.diet_preference) : 'لا يوجد تفضيل'}
+
+💰 *تفاصيل الاشتراك:*
+━━━━━━━━━━━━━━━
+• سعر الاشتراك: 100 ريال
+• مدة الاشتراك: 3 شهور`;
 
       try {
         const response = await fetch(`https://graph.facebook.com/v17.0/${process.env.WHATSAPP_PHONE_NUMBER_ID}/messages`, {
@@ -211,4 +228,42 @@ function getExerciseDurationInArabic(duration: string): string {
   };
 
   return durationMap[duration] || duration || '-';
+}
+
+function getBreakfastTimeInArabic(time: string): string {
+  const timeMap: Record<string, string> = {
+    early: "قبل الساعة 7 صباحاً",
+    normal: "7-9 صباحاً",
+    late: "9-11 صباحاً",
+    very_late: "بعد 11 صباحاً",
+    skip: "لا أتناول وجبة الإفطار"
+  };
+
+  return timeMap[time] || time;
+}
+
+function getDietPreferenceInArabic(preference: string): string {
+  const prefMap: Record<string, string> = {
+    keto: "كيتو",
+    vegetarian: "نباتي",
+    balanced: "متوازن",
+    highprotein: "عالي البروتين",
+    other: "آخر",
+    none: "لا يوجد تفضيل"
+  };
+
+  return prefMap[preference] || preference;
+}
+
+function formatChronicDiseases(diseases: string[]): string {
+  if (diseases.includes('none')) return 'لا يوجد';
+  
+  const diseaseMap: Record<string, string> = {
+    diabetes: "سكري",
+    pressure: "ضغط",
+    heart: "قلب",
+    other: "أخرى"
+  };
+
+  return diseases.map(d => diseaseMap[d] || d).join('، ') || 'لا يوجد';
 }
