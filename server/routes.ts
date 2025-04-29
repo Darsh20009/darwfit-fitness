@@ -105,23 +105,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Send WhatsApp message using official API
       const whatsappMessage = `🏋️‍♂️ *استبيان اشتراك جديد في داروفت* 🏋️‍♂️
 
-الاسم: ${subscriptionData.name}
-العمر: ${subscriptionData.age}
+الاسم: ${subscriptionData.name || '-'}
+العمر: ${subscriptionData.age || '-'}
 الجنس: ${subscriptionData.gender === 'male' ? 'ذكر' : 'أنثى'}
-الوزن: ${subscriptionData.weight} كجم
-الطول: ${subscriptionData.height} سم
-رقم الجوال: ${subscriptionData.phone}
-الهدف: ${getGoalInArabic(subscriptionData.goal)}
+الوزن: ${subscriptionData.weight || '-'} كجم
+الطول: ${subscriptionData.height || '-'} سم
+رقم الجوال: ${subscriptionData.phone || '-'}
+الهدف: ${subscriptionData.main_goal ? getGoalInArabic(subscriptionData.main_goal) : '-'}
 
 *تفاصيل الأكل اليومية:*
-فطور: ${subscriptionData.breakfast_details || '-'}
-غداء: ${subscriptionData.lunch_details || '-'}
-عشاء: ${subscriptionData.dinner_details || '-'}
+وجبة الإفطار: ${subscriptionData.breakfast_details || '-'}
+وجبة الغداء: ${subscriptionData.lunch_details || '-'}
+وجبة العشاء: ${subscriptionData.dinner_details || '-'}
+عدد الوجبات: ${subscriptionData.meals_count || '-'}
+عدد السناكات: ${subscriptionData.snacks_count || '-'}
 
 *تفاصيل التمرين:*
-نوع التمارين: ${Array.isArray(subscriptionData.exercise_type) ? subscriptionData.exercise_type.join(', ') : '-'}
+التمرين الحالي: ${subscriptionData.exercise_now === 'yes' ? 'نعم' : 'لا'}
+نوع التمارين: ${Array.isArray(subscriptionData.exercise_type) ? subscriptionData.exercise_type.map(getExerciseInArabic).join('، ') : '-'}
 عدد مرات التمرين: ${subscriptionData.exercise_times || '-'}
-مدة التمرين: ${subscriptionData.exercise_duration || '-'}
+مدة التمرين: ${getExerciseDurationInArabic(subscriptionData.exercise_duration)}
 
 سعر الاشتراك: 100 ريال لمدة 3 شهور`;
 
@@ -179,11 +182,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
 function getGoalInArabic(goal: string): string {
   const goalMap: Record<string, string> = {
-    lose_weight: "خسارة الوزن",
-    gain_muscle: "بناء العضلات",
-    maintain: "المحافظة على الوزن الحالي",
-    improve_fitness: "تحسين اللياقة البدنية"
+    lose_weight: "نزول وزن",
+    gain_weight: "زيادة وزن",
+    build_muscle: "بناء عضل",
+    fitness: "لياقة وصحة عامة"
   };
 
   return goalMap[goal] || goal;
+}
+
+function getExerciseInArabic(type: string): string {
+  const exerciseMap: Record<string, string> = {
+    resistance: "تمارين مقاومة",
+    cardio: "كارديو",
+    yoga: "يوغا",
+    walking: "مشي",
+    other: "أخرى"
+  };
+
+  return exerciseMap[type] || type;
+}
+
+function getExerciseDurationInArabic(duration: string): string {
+  const durationMap: Record<string, string> = {
+    less30: "أقل من 30 دقيقة",
+    "30to60": "30-60 دقيقة",
+    more60: "أكثر من ساعة"
+  };
+
+  return durationMap[duration] || duration || '-';
 }
