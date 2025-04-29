@@ -58,7 +58,7 @@ export default function SubscriptionPage() {
 
 تفاصيل التمرين: ${data.exercise_details}
 
-سعر الاشتراك: 5000 ريال لمدة 3 أشهر
+سعر الاشتراك: 100 ريال لمدة 3 شهور
       `;
 
       // Encode the message for WhatsApp URL

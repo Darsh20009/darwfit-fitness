@@ -123,7 +123,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 عدد مرات التمرين: ${subscriptionData.exercise_times || '-'}
 مدة التمرين: ${subscriptionData.exercise_duration || '-'}
 
-سعر الاشتراك: 5000 ريال لمدة 3 أشهر`;
+سعر الاشتراك: 100 ريال لمدة 3 شهور`;
 
       try {
         const response = await fetch(`https://graph.facebook.com/v17.0/${process.env.WHATSAPP_PHONE_NUMBER_ID}/messages`, {
