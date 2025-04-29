@@ -35,7 +35,7 @@ const workoutPlan: WorkoutPlan = {
   // الاثنين - يوم الظهر
   "1": {
     title: "تمارين الظهر والباي",
-    description: "تمارين تركز على تقوية عضلات الظهر والباي",
+    description: "تمارين تركز على تقوية عضلات الظهر والبايسبس",
     exercises: {
       "تمارين الظهر": [
         { name: "Lat Pull Down", sets: 4, reps: "10 تكرار" },
