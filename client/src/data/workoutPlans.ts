@@ -21,7 +21,7 @@ const workoutPlan: WorkoutPlan = {
   // الأحد - يوم الأرجل
   "0": {
     title: "تمارين الأرجل",
-    description: "تمارين تركز على عضلات الأرجل",
+    description: "تمارين تركز على تقوية عضلات الأرجل",
     exercises: {
       "تمارين الرجلين": [
         { name: "Leg Extension", sets: 4, reps: "12 تكرار مع تركيز وثبات" },
@@ -34,8 +34,8 @@ const workoutPlan: WorkoutPlan = {
   },
   // الاثنين - يوم الظهر
   "1": {
-    title: "تمارين الظهر والبايسبس",
-    description: "تمارين تركز على عضلات الظهر والبايسبس",
+    title: "تمارين الظهر والباي",
+    description: "تمارين تركز على تقوية عضلات الظهر والباي",
     exercises: {
       "تمارين الظهر": [
         { name: "Lat Pull Down", sets: 4, reps: "10 تكرار" },
