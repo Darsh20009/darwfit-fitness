@@ -1,4 +1,3 @@
-
 interface Exercise {
   name: string;
   sets: number;
@@ -32,39 +31,37 @@ const workoutPlan: WorkoutPlan = {
       ]
     }
   },
-  // Tuesday - Back Day
+  // Tuesday - Chest & Triceps
   "2": {
-    title: "تمارين الظهر",
-    description: "تمارين تركز على عضلات الظهر والبايسبس",
-    exercises: {
-      "تمارين الظهر": [
-        { name: "Lat Pull Down", sets: 4, reps: "10 تكرار" },
-        { name: "Low Row", sets: 4, reps: "12 تكرار" },
-        { name: "Dip/Chin Assist", sets: 3, reps: "أقصى عدد ممكن" },
-        { name: "D.Y. Row", sets: 4, reps: "12 تكرار" },
-        { name: "Pull Front Lats", sets: 4, reps: "10 تكرار" }
-      ],
-      "تمارين الباي": [
-        { name: "Biceps Curl", sets: 3, reps: "15 تكرار" },
-        { name: "Qatania", sets: 3, reps: "15 تكرار" }
-      ]
-    }
-  },
-  // Wednesday - Chest & Abs
-  "3": {
-    title: "تمارين الصدر والبطن",
-    description: "تمارين تركز على عضلات الصدر والبطن",
+    title: "تمارين الصدر والترايسبس",
+    description: "تمارين تركز على عضلات الصدر والترايسبس",
     exercises: {
       "تمارين الصدر": [
         { name: "Seated Cable Bench Press", sets: 4, reps: "12 تكرار" },
         { name: "Pec Fly", sets: 4, reps: "12 تكرار" },
         { name: "Sleeping Horizontal Hand Weights", sets: 3, reps: "10 تكرار" },
-        { name: "Cable Cross", sets: 3, reps: "12 تكرار" },
-        { name: "Triceps Inside Weights", sets: 3, reps: "12 تكرار" }
+        { name: "Cable Cross", sets: 3, reps: "12 تكرار" }
       ],
-      "تمارين البطن": [
-        { name: "Crunches", sets: 3, reps: "20 تكرار" },
-        { name: "Leg Raises", sets: 3, reps: "20 تكرار" }
+      "تمارين الترايسبس": [
+        { name: "Triceps Inside Weights", sets: 3, reps: "12 تكرار" },
+        { name: "Stand Out Tri Zigzag Bar", sets: 3, reps: "12 تكرار" }
+      ]
+    }
+  },
+  // Wednesday - Back & Biceps
+  "3": {
+    title: "تمارين الظهر والبايسبس",
+    description: "تمارين تركز على عضلات الظهر والبايسبس",
+    exercises: {
+      "تمارين الظهر": [
+        { name: "Lat Pull Down", sets: 4, reps: "10 تكرار" },
+        { name: "Low Row", sets: 4, reps: "12 تكرار" },
+        { name: "D.Y. Row", sets: 4, reps: "12 تكرار" },
+        { name: "Pull Front Lats", sets: 4, reps: "10 تكرار" }
+      ],
+      "تمارين البايسبس": [
+        { name: "Biceps Curl", sets: 3, reps: "15 تكرار" },
+        { name: "Qatania", sets: 3, reps: "15 تكرار" }
       ]
     }
   },
@@ -94,35 +91,20 @@ const workoutPlan: WorkoutPlan = {
         { name: "Triceps Extension", sets: 4, reps: "12 تكرار" },
         { name: "Stand Tri Out/In", sets: 4, reps: "12 تكرار" },
         { name: "Short Bie Seat Cable", sets: 3, reps: "12 تكرار" },
-        { name: "Stand Out Tri Zigzag Bar", sets: 3, reps: "12 تكرار" },
         { name: "Rest Weights Curl", sets: 3, reps: "15 تكرار" }
       ]
     }
   },
-  // Saturday - Light Traps
+  // Saturday & Sunday - Rest
   "6": {
-    title: "تمارين ترابيس خفيفة",
-    description: "تمارين خفيفة للترابيس مع راحة نسبية",
-    exercises: {
-      "تمارين الترابيس": [
-        { name: "Stand Bar Inside Rest", sets: 2, reps: "20 تكرار" },
-        { name: "Zigzag Bar Inside Rest", sets: 2, reps: "20 تكرار" },
-        { name: "Traps Free Weights", sets: 2, reps: "20 تكرار" },
-        { name: "Stand Bar Outside Rest", sets: 2, reps: "20 تكرار" },
-        { name: "Deadlift بدون وزن ثقيل", sets: 3, reps: "10 تكرار" }
-      ]
-    }
+    title: "راحة",
+    description: "يوم راحة كامل",
+    exercises: {}
   },
-  // Sunday - Rest
   "0": {
     title: "راحة",
-    description: "يوم راحة كامل مع إمكانية القيام بتمارين إطالة خفيفة",
-    exercises: {
-      "راحة واسترخاء": [
-        { name: "مشي خفيف (اختياري)", sets: 1, reps: "15-20 دقيقة" },
-        { name: "تمارين إطالة (اختياري)", sets: 1, reps: "15-20 دقيقة" }
-      ]
-    }
+    description: "يوم راحة كامل",
+    exercises: {}
   }
 };
 
@@ -145,7 +127,7 @@ export function getWorkoutInstructions() {
 export function getWorkoutSummary(dayIndex: number): { name: string; description: string }[] {
   const workout = getWorkoutByDayIndex(dayIndex);
   const summary: { name: string; description: string }[] = [];
-  
+
   Object.values(workout.exercises).forEach(exerciseGroup => {
     exerciseGroup.forEach(exercise => {
       summary.push({
@@ -154,6 +136,6 @@ export function getWorkoutSummary(dayIndex: number): { name: string; description
       });
     });
   });
-  
+
   return summary;
 }
