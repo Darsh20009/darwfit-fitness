@@ -1,6 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { getWeekDays } from "../../lib/dates";
 import { useEffect, useState } from "react";
+import { getWorkoutByDayIndex } from "../../data/workoutPlans";
 import { cn } from "@/lib/utils";
 import { Lock, Calendar, Check } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -64,10 +65,10 @@ export default function WeeklyCalendar({ selectedDate, onSelectDate }: WeeklyCal
             return (
               <div 
                 key={index}
-                onClick={() => dayIsToday ? onSelectDate(day.date) : null}
+                onClick={() => onSelectDate(day.date)}
                 className={cn(
                   "day-card text-center p-3 border rounded-lg transition-colors relative",
-                  dayIsToday ? "cursor-pointer" : "cursor-not-allowed",
+                  "cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-800/50",
                   "border-neutral-200 dark:border-neutral-700",
                   isSelectedDay(day.date) && dayIsToday && "active-day border-primary dark:border-primary shadow-sm",
                   dayIsToday && "border-secondary dark:border-secondary bg-secondary/5",
