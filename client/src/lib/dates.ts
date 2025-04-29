@@ -20,13 +20,13 @@ const DAYS_OF_WEEK_AR = [
 ];
 
 const WORKOUT_BY_DAY = [
-  "تمارين الظهر والباي", // الأحد - index 0
-  "تمارين الأرجل", // الاثنين - index 1
-  "تمارين الأكتاف والتراي", // الثلاثاء - index 2
-  "تمارين الجسم كامل (Full Body)", // الأربعاء - index 3
-  "كارديو فقط", // الخميس - index 4
-  "راحة", // الجمعة - index 5
-  "تمارين الصدر والتراي" // السبت - index 6
+  "تمارين  الأرجل", // الأحد - index 0
+  "تمارين الظهر و الباي", // الاثنين - index 1
+  "تمارين الصدر والبطن", // الثلاثاء - index 2
+  "تمارين الأكتاف", // الأربعاء - index 3
+  "تمارين البايسبس والترايسبس", // الخميس - index 4
+  "تمارين الترابيس الخفيفة", // الجمعة - index 5
+  "راحة" // السبت - index 6
 ];
 
 export function getTomorrow(): Date {
@@ -54,7 +54,7 @@ export function getWorkoutTypeByDate(date: Date): string {
 
 export function getWeekDays(startDate: Date = new Date()): DayData[] {
   const days: DayData[] = [];
-  
+
   for (let i = 0; i < 7; i++) {
     const date = addDays(startDate, i - getDay(startDate));
     days.push({
@@ -65,6 +65,6 @@ export function getWeekDays(startDate: Date = new Date()): DayData[] {
       workoutType: getWorkoutTypeByDate(date)
     });
   }
-  
+
   return days;
 }
