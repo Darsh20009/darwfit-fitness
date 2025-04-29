@@ -76,7 +76,9 @@ export default function WeeklyCalendar({ selectedDate, onSelectDate }: WeeklyCal
               >
                 <div className="font-bold">{day.dayOfWeek}</div>
                 <div className="text-sm text-neutral-500 dark:text-neutral-400">{day.formattedDate}</div>
-                <div className="mt-2 text-xs text-primary">{day.workoutType}</div>
+                <div className="mt-2 text-xs text-primary">
+                  {getWorkoutByDayIndex(day.date.getDay()).title}
+                </div>
                 
                 {dayIsToday && (
                   <Badge className="absolute top-1 left-1 text-xs bg-secondary text-white">
