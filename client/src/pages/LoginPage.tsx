@@ -20,23 +20,7 @@ export default function LoginPage() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     
-    // Check login with the correct credentials combo
-    if (username === "محمد السهلي") {
-      if (password !== "123456" || subscriptionId !== "5001") {
-        setError(true);
-        setErrorMessage("اسم المستخدم أو كلمة المرور أو رقم الاشتراك غير صحيح");
-        return;
-      }
-    } else {
-      // For other users, check credentials
-      if (password !== "123456") {
-        setError(true);
-        setErrorMessage("اسم المستخدم أو كلمة المرور غير صحيحة");
-        return;
-      }
-    }
-    
-    // Login credentials check
+    // التحقق من بيانات تسجيل الدخول
     const isSuccess = login(username, password);
     
     if (isSuccess) {

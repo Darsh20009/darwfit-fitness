@@ -1,10 +1,10 @@
-interface Exercise {
+export interface Exercise {
   name: string;
   sets: number;
   reps: string;
 }
 
-interface WorkoutDay {
+export interface WorkoutDay {
   title: string;
   description: string;
   exercises: {
@@ -12,7 +12,7 @@ interface WorkoutDay {
   };
 }
 
-interface WorkoutPlan {
+export interface WorkoutPlan {
   [key: string]: WorkoutDay;
 }
 
