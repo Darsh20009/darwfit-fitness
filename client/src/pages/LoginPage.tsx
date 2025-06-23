@@ -27,6 +27,12 @@ export default function LoginPage() {
         setErrorMessage("اسم المستخدم أو كلمة المرور أو رقم الاشتراك غير صحيح");
         return;
       }
+    } else if (username === "يوسف درويش") {
+      if (password !== "182009" || subscriptionId !== "2009") {
+        setError(true);
+        setErrorMessage("اسم المستخدم أو كلمة المرور أو رقم الاشتراك غير صحيح");
+        return;
+      }
     } else {
       // For other users, check credentials
       if (password !== "123456") {

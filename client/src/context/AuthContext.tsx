@@ -36,6 +36,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         
         // Update localStorage with correct date
         localStorage.setItem("subscriptionEndDate", correctEndDate);
+      }
+      // If it's يوسف درويش, calculate 6 months from today
+      else if (storedUsername === "يوسف درويش") {
+        const today = new Date();
+        const endDateObj = new Date(today.getFullYear(), today.getMonth() + 6, today.getDate());
+        
+        const arabicMonths = [
+          "يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو",
+          "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"
+        ];
+        const correctEndDate = `${endDateObj.getDate()} ${arabicMonths[endDateObj.getMonth()]} ${endDateObj.getFullYear()}`;
+        
+        setIsLoggedIn(true);
+        setUsername(storedUsername);
+        setSubscriptionId("2009");
+        setSubscriptionEndDate(correctEndDate);
+        
+        // Update localStorage with correct date
+        localStorage.setItem("subscriptionId", "2009");
+        localStorage.setItem("subscriptionEndDate", correctEndDate);
       } else {
         setIsLoggedIn(true);
         setUsername(storedUsername);
@@ -46,12 +66,32 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const login = (username: string, password: string) => {
-    // Fixed credentials check
+    let subsId = "";
+    let endDate = "";
+    let isValid = false;
+
+    // Check for محمد السهلي
     if (username === "محمد السهلي" && password === "123456") {
-      // Fixed subscription end date for محمد السهلي
-      const subsId = "5001";
-      const endDate = "23 يوليو 2025";
+      subsId = "5001";
+      endDate = "23 يوليو 2025";
+      isValid = true;
+    }
+    // Check for يوسف درويش
+    else if (username === "يوسف درويش" && password === "182009") {
+      subsId = "2009";
+      // Calculate 6 months from today
+      const today = new Date();
+      const endDateObj = new Date(today.getFullYear(), today.getMonth() + 6, today.getDate());
       
+      const arabicMonths = [
+        "يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو",
+        "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"
+      ];
+      endDate = `${endDateObj.getDate()} ${arabicMonths[endDateObj.getMonth()]} ${endDateObj.getFullYear()}`;
+      isValid = true;
+    }
+
+    if (isValid) {
       setIsLoggedIn(true);
       setUsername(username);
       setSubscriptionId(subsId);

@@ -32,7 +32,9 @@ Darwfit is a comprehensive fitness and nutrition platform built as a full-stack 
 
 ### Authentication System
 - Context-based authentication with localStorage persistence
-- Hardcoded credentials for demo purposes (محمد السهلي / 123456)
+- Hardcoded credentials for demo purposes:
+  - محمد السهلي: 123456 / subscription ID: 5001 / expires: 23 July 2025
+  - يوسف درويش: 182009 / subscription ID: 2009 / expires: 6 months from login date
 - Subscription-based access control with unique subscription IDs
 - Protected routes for dashboard and authenticated features
 
@@ -98,10 +100,12 @@ Darwfit is a comprehensive fitness and nutrition platform built as a full-stack 
 4. Environment-specific configuration injection
 
 ## Recent Changes
-- January 2025: Successfully migrated from Replit Agent to Replit environment
-- January 2025: Implemented dynamic subscription days calculation based on real subscription end dates
-- January 2025: Enhanced subscription display with color-coded status indicators (green/amber/red)
-- January 2025: Updated authentication system to calculate subscription end date dynamically (3 months from login)
+- January 25, 2025: Successfully migrated from Replit Agent to Replit environment
+- January 25, 2025: Implemented dynamic subscription days calculation based on real subscription end dates
+- January 25, 2025: Enhanced subscription display with color-coded status indicators (green/amber/red)
+- January 25, 2025: Updated authentication system to calculate subscription end date dynamically
+- January 25, 2025: Added second user account (يوسف درويش) with 6-month subscription period
+- January 25, 2025: Enhanced website design with modern animations and visual effects
 
 ## Changelog
 ```
