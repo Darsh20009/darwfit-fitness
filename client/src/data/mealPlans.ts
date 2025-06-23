@@ -1,4 +1,3 @@
-
 interface MealItem {
   title: string;
   items: string[];

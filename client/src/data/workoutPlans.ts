@@ -1,4 +1,3 @@
-
 interface Exercise {
   name: string;
   sets: number;
@@ -17,103 +16,113 @@ interface WorkoutPlan {
   [key: string]: WorkoutDay;
 }
 
-const workoutPlan: WorkoutPlan = {
-  // الأحد - يوم الأرجل
+const twiceAWeekWorkoutPlan: WorkoutPlan = {
+  // اليوم الأول - تمارين الدفع 1 (صدر، أكتاف، ترايسبس)
   "0": {
-    title: "تمارين الأرجل",
-    description: "تمارين تركز على تقوية عضلات الأرجل",
-    exercises: {
-      "تمارين الرجلين": [
-        { name: "Leg Extension", sets: 4, reps: "12 تكرار مع تركيز وثبات" },
-        { name: "Prone Leg Curl", sets: 4, reps: "12 تكرار مع تحكم" },
-        { name: "Leg Down (سكوات على جهاز)", sets: 3, reps: "10 تكرار" },
-        { name: "Leg Press", sets: 4, reps: "10 تكرار" },
-        { name: "Standing Calf Raise", sets: 4, reps: "20 تكرار" }
-      ]
-    }
-  },
-  // الاثنين - يوم الظهر
-  "1": {
-    title: "تمارين الظهر والباي",
-    description: "تمارين تركز على تقوية عضلات الظهر والبايسبس",
-    exercises: {
-      "تمارين الظهر": [
-        { name: "Lat Pull Down", sets: 4, reps: "10 تكرار" },
-        { name: "Low Row", sets: 4, reps: "12 تكرار" },
-        { name: "Dip/Chin Assist", sets: 3, reps: "أقصى عدد ممكن" },
-        { name: "D.Y. Row", sets: 4, reps: "12 تكرار" },
-        { name: "Pull Front Lats", sets: 4, reps: "10 تكرار" }
-      ],
-      "تمارين البايسبس": [
-        { name: "Biceps Curl", sets: 3, reps: "15 تكرار" },
-        { name: "Qatania", sets: 3, reps: "15 تكرار" }
-      ]
-    }
-  },
-  // الثلاثاء - يوم الصدر
-  "2": {
-    title: "تمارين الصدر والبطن",
-    description: "تمارين تركز على عضلات الصدر والبطن",
+    title: "تمارين الدفع 1 (صدر وترايسبس)",
+    description: "تمارين تركز على تقوية عضلات الصدر، الأكتاف الأمامية والجانبية، والترايسبس",
     exercises: {
       "تمارين الصدر": [
         { name: "Seated Cable Bench Press", sets: 4, reps: "12 تكرار" },
         { name: "Pec Fly", sets: 4, reps: "12 تكرار" },
-        { name: "Sleeping Horizontal Hand Weights", sets: 3, reps: "10 تكرار" },
-        { name: "Cable Cross", sets: 3, reps: "12 تكرار" },
-        { name: "Triceps Inside Weights", sets: 3, reps: "12 تكرار" }
+        { name: "Sleeping Horizontal Hand Weights", sets: 3, reps: "10 تكرار" }
       ],
-      "تمارين البطن": [
-        { name: "Crunches", sets: 3, reps: "20 تكرار" },
-        { name: "Leg Raises", sets: 3, reps: "20 تكرار" }
+      "تمارين الترايسبس": [
+        { name: "Triceps Extension", sets: 4, reps: "12 تكرار" },
+        { name: "Stand Tri Out/In", sets: 4, reps: "12 تكرار" }
+      ],
+       "تمارين الأكتاف": [
+        { name: "Vertical Front Raise Side Hand", sets: 3, reps: "10 تكرار" },
       ]
     }
   },
-  // الأربعاء - يوم الأكتاف
+  // اليوم الثاني - تمارين السحب 1 (ظهر، بايسبس)
+  "1": {
+    title: "تمارين السحب 1 (ظهر وبايسبس)",
+    description: "تمارين تركز على تقوية عضلات الظهر العلوية والسفلية، والبايسبس",
+    exercises: {
+      "تمارين الظهر": [
+        { name: "Lat Pull Down", sets: 4, reps: "10 تكرار" },
+        { name: "Low Row", sets: 4, reps: "12 تكرار" },
+        { name: "D.Y. Row", sets: 4, reps: "12 تكرار" }
+      ],
+      "تمارين البايسبس": [
+        { name: "Biceps Curl", sets: 4, reps: "12 تكرار" },
+        { name: "Qatania", sets: 3, reps: "15 تكرار" }
+      ]
+    }
+  },
+  // اليوم الثالث - تمارين الأرجل والبطن
+  "2": {
+    title: "تمارين الأرجل والبطن 1",
+    description: "تمارين شاملة للأرجل مع التركيز على عضلات البطن",
+    exercises: {
+      "تمارين الرجلين": [
+        { name: "Leg Press", sets: 4, reps: "10 تكرار" },
+        { name: "Leg Extension", sets: 4, reps: "12 تكرار" },
+        { name: "Prone Leg Curl", sets: 4, reps: "12 تكرار" },
+        { name: "Standing Calf Raise", sets: 4, reps: "20 تكرار" }
+      ],
+      "تمارين البطن": [
+        { name: "Crunches", sets: 3, reps: "20 تكرار" }
+      ]
+    }
+  },
+  // اليوم الرابع - تمارين الدفع 2 (أكتاف، صدر، ترايسبس)
   "3": {
-    title: "تمارين الأكتاف",
-    description: "تمارين تركز على عضلات الأكتاف",
+    title: "تمارين الدفع 2 (أكتاف وصدر)",
+    description: "تمارين تركز على تقوية عضلات الأكتاف بشكل أساسي، مع تمرين الصدر والترايسبس",
     exercises: {
       "تمارين الأكتاف": [
-        { name: "Fly Shoulder Back", sets: 4, reps: "12 تكرار" },
-        { name: "Fly Side Shoulder", sets: 4, reps: "12 تكرار" },
         { name: "Horizontal Hand Weights Shoulder", sets: 4, reps: "12 تكرار" },
-        { name: "Vertical Front Raise Side Hand", sets: 3, reps: "10 تكرار" },
-        { name: "Shoulder Back High Drag", sets: 3, reps: "15 تكرار" },
+        { name: "Fly Side Shoulder", sets: 4, reps: "12 تكرار" },
+        { name: "Fly Shoulder Back", sets: 4, reps: "12 تكرار" },
+        { name: "Shoulder Back High Drag", sets: 3, reps: "15 تكرار" }
+      ],
+      "تمارين الصدر": [
+        { name: "Cable Cross", sets: 3, reps: "12 تكرار" }
+      ],
+      "تمارين الترايسبس": [
+        { name: "Triceps Inside Weights", sets: 3, reps: "12 تكرار" }
+      ]
+    }
+  },
+  // اليوم الخامس - تمارين السحب 2 (ظهر، بايسبس، ترابيس)
+  "4": {
+    title: "تمارين السحب 2 (ظهر وترابيس)",
+    description: "تمارين متنوعة للظهر مع التركيز على الترابيس والبايسبس",
+    exercises: {
+      "تمارين الظهر": [
+        { name: "Pull Front Lats", sets: 4, reps: "10 تكرار" },
+        { name: "Dip/Chin Assist", sets: 3, reps: "أقصى عدد ممكن" },
+        { name: "Deadlift بدون وزن ثقيل", sets: 3, reps: "10 تكرار" }
+      ],
+      "تمارين البايسبس": [
+        { name: "Stand Bar Short Biceps", sets: 4, reps: "12 تكرار" },
+        { name: "Rest Weights Curl", sets: 3, reps: "15 تكرار" }
+      ],
+      "تمارين الترابيس": [
         { name: "Traps Side Hand Weights", sets: 3, reps: "15 تكرار" }
       ]
     }
   },
-  // الخميس - يوم الذراعين
-  "4": {
-    title: "تمارين البايسبس والترايسبس",
-    description: "تمارين تركز على عضلات الذراعين",
-    exercises: {
-      "تمارين الذراعين": [
-        { name: "Stand Bar Short Biceps", sets: 4, reps: "12 تكرار" },
-        { name: "Biceps Curl", sets: 4, reps: "12 تكرار" },
-        { name: "Triceps Extension", sets: 4, reps: "12 تكرار" },
-        { name: "Stand Tri Out/In", sets: 4, reps: "12 تكرار" },
-        { name: "Short Bie Seat Cable", sets: 3, reps: "12 تكرار" },
-        { name: "Stand Out Tri Zigzag Bar", sets: 3, reps: "12 تكرار" },
-        { name: "Rest Weights Curl", sets: 3, reps: "15 تكرار" }
-      ]
-    }
-  },
-  // الجمعة - يوم الترابيس
+  // اليوم السادس - تمارين الأرجل والبطن 2
   "5": {
-    title: "تمارين الترابيس الخفيفة",
-    description: "تمارين خفيفة تركز على عضلات الترابيس",
+    title: "تمارين الأرجل والبطن 2",
+    description: "تمارين أرجل متنوعة مع التركيز على التحكم وثبات الحركة، وتمارين بطن سفلية",
     exercises: {
-      "تمارين الترابيس": [
-        { name: "Stand Bar Inside Rest", sets: 2, reps: "20 تكرار" },
-        { name: "Zigzag Bar Inside Rest", sets: 2, reps: "20 تكرار" },
-        { name: "Traps Free Weights", sets: 2, reps: "20 تكرار" },
-        { name: "Stand Bar Outside Rest", sets: 2, reps: "20 تكرار" },
-        { name: "Deadlift بدون وزن ثقيل", sets: 3, reps: "10 تكرار" }
+      "تمارين الرجلين": [
+        { name: "Leg Down (سكوات على جهاز)", sets: 3, reps: "10 تكرار" },
+        { name: "Leg Extension", sets: 4, reps: "12 تكرار مع تركيز وثبات" },
+        { name: "Prone Leg Curl", sets: 4, reps: "12 تكرار مع تحكم" },
+        { name: "Standing Calf Raise", sets: 4, reps: "20 تكرار" }
+      ],
+      "تمارين البطن": [
+        { name: "Leg Raises", sets: 3, reps: "20 تكرار" }
       ]
     }
   },
-  // السبت - راحة
+  // اليوم السابع - راحة
   "6": {
     title: "راحة",
     description: "يوم راحة كامل. يمكن ممارسة إطالات خفيفة أو مشي بسيط",
@@ -122,7 +131,7 @@ const workoutPlan: WorkoutPlan = {
 };
 
 export function getWorkoutByDayIndex(dayIndex: number): WorkoutDay {
-  return workoutPlan[dayIndex.toString()];
+  return twiceAWeekWorkoutPlan[dayIndex.toString()];
 }
 
 export function getWorkoutInstructions() {
