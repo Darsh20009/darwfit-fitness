@@ -11,7 +11,7 @@ import DashboardPage from "./pages/DashboardPage";
 import CaloriesPage from "./pages/CaloriesPage";
 import NotFound from "@/pages/not-found";
 import SuccessModal from "./components/SuccessModal";
-import ChatBot from "./components/ChatBot";
+
 import { useAuth } from "./hooks/useAuth";
 import { AuthProvider } from "./context/AuthContext";
 import { ThemeProvider } from "./context/ThemeContext";
@@ -42,7 +42,7 @@ function AppContent() {
       <Toaster />
       <ProtectedRoutes />
       <SuccessModal />
-      <ChatBot />
+
     </div>
   );
 }
