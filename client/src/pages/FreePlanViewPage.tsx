@@ -16,20 +16,20 @@ import {
   TrendingUp,
   Award
 } from "lucide-react";
-import { useNavigate } from "wouter";
+import { useLocation } from "wouter";
 
 export default function FreePlanViewPage() {
   const [freePlan, setFreePlan] = useState<any>(null);
   const [currentDay, setCurrentDay] = useState(1);
   const [completedDays, setCompletedDays] = useState<number[]>([]);
-  const navigate = useNavigate();
+  const [, setLocation] = useLocation();
 
   useEffect(() => {
     const savedPlan = localStorage.getItem('freePlan');
     if (savedPlan) {
       setFreePlan(JSON.parse(savedPlan));
     } else {
-      navigate('/free-plan');
+      setLocation('/free-plan');
     }
 
     const savedProgress = localStorage.getItem('freePlanProgress');
@@ -71,7 +71,7 @@ export default function FreePlanViewPage() {
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-900 dark:to-blue-900 flex items-center justify-center">
         <div className="text-center">
           <h2 className="text-2xl font-bold text-gray-700 dark:text-gray-300 mb-4">لم يتم العثور على خطة</h2>
-          <Button onClick={() => navigate('/free-plan')} className="bg-blue-600 hover:bg-blue-700">
+          <Button onClick={() => setLocation('/free-plan')} className="bg-blue-600 hover:bg-blue-700">
             إنشاء خطة جديدة
           </Button>
         </div>

@@ -12,13 +12,13 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Sparkles, Gift, Clock, Target } from "lucide-react";
 import { freePlanSchema, type FreePlanData } from "@shared/schema";
 import { selectTemplate, calculateCalories, customizePlan } from "@/data/freePlanTemplates";
-import { useNavigate } from "wouter";
+import { useLocation } from "wouter";
 
 export default function FreePlanPage() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedPlan, setGeneratedPlan] = useState<any>(null);
   const [showResults, setShowResults] = useState(false);
-  const navigate = useNavigate();
+  const [, setLocation] = useLocation();
 
   const form = useForm<FreePlanData>({
     resolver: zodResolver(freePlanSchema),
@@ -254,7 +254,7 @@ export default function FreePlanPage() {
             {/* Action Buttons */}
             <div className="flex flex-col md:flex-row gap-4 justify-center items-center">
               <Button 
-                onClick={() => navigate("/free-plan-view")}
+                onClick={() => setLocation("/free-plan-view")}
                 className="bg-gradient-to-r from-green-600 via-blue-600 to-purple-600 hover:from-green-700 hover:via-blue-700 hover:to-purple-700 text-white font-bold py-4 px-8 rounded-2xl transition-all duration-300 transform hover:scale-105 hover:shadow-2xl text-lg"
               >
                 📋 عرض الخطة الكاملة
@@ -262,7 +262,7 @@ export default function FreePlanPage() {
               
               <Button 
                 variant="outline"
-                onClick={() => navigate("/subscription")}
+                onClick={() => setLocation("/subscription")}
                 className="border-2 border-purple-500 text-purple-600 hover:bg-purple-500 hover:text-white py-4 px-8 rounded-2xl transition-all duration-300 text-lg"
               >
                 ⭐ ترقية للخطة المدفوعة

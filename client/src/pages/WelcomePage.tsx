@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { useNavigate } from "wouter";
+import { useLocation } from "wouter";
 import { 
   Dumbbell, 
   Heart, 
@@ -17,7 +17,7 @@ import {
 
 export default function WelcomePage() {
   const [currentFeature, setCurrentFeature] = useState(0);
-  const navigate = useNavigate();
+  const [, setLocation] = useLocation();
 
   const features = [
     {
@@ -123,7 +123,7 @@ export default function WelcomePage() {
           {/* Action Buttons */}
           <div className="flex flex-col md:flex-row gap-6 justify-center items-center">
             <Button 
-              onClick={() => navigate("/free-plan")}
+              onClick={() => setLocation("/free-plan")}
               className="bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 hover:from-green-600 hover:via-emerald-600 hover:to-teal-600 text-white font-bold py-4 px-10 rounded-2xl transition-all duration-300 text-xl transform hover:scale-110 hover:shadow-2xl shadow-green-500/50"
             >
               <Play className="h-6 w-6 ml-2" />
@@ -131,7 +131,7 @@ export default function WelcomePage() {
             </Button>
             
             <Button 
-              onClick={() => navigate("/subscription")}
+              onClick={() => setLocation("/subscription")}
               className="bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500 hover:from-yellow-600 hover:via-orange-600 hover:to-red-600 text-white font-bold py-4 px-10 rounded-2xl transition-all duration-300 text-xl transform hover:scale-110 hover:shadow-2xl shadow-orange-500/50"
             >
               <Crown className="h-6 w-6 ml-2" />
@@ -140,7 +140,7 @@ export default function WelcomePage() {
             
             <Button 
               variant="outline"
-              onClick={() => navigate("/login")}
+              onClick={() => setLocation("/login")}
               className="border-2 border-white/50 text-white hover:bg-white/10 backdrop-blur-sm py-4 px-10 rounded-2xl transition-all duration-300 text-xl transform hover:scale-110"
             >
               <ChevronRight className="h-6 w-6 ml-2" />

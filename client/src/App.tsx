@@ -5,10 +5,14 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Navbar from "./components/Navbar";
 import HomePage from "./pages/HomePage";
+import WelcomePage from "./pages/WelcomePage";
 import SubscriptionPage from "./pages/SubscriptionPage";
 import LoginPage from "./pages/LoginPage";
 import DashboardPage from "./pages/DashboardPage";
 import CaloriesPage from "./pages/CaloriesPage";
+import CaloriesCalculatorPage from "./pages/CaloriesCalculatorPage";
+import FreePlanPage from "./pages/FreePlanPage";
+import FreePlanViewPage from "./pages/FreePlanViewPage";
 import NotFound from "@/pages/not-found";
 import SuccessModal from "./components/SuccessModal";
 
@@ -21,12 +25,15 @@ function ProtectedRoutes() {
 
   return (
     <Switch>
-      <Route path="/">
-  {isLoggedIn ? <DashboardPage /> : <LoginPage />}
-</Route>
+      <Route path="/" component={WelcomePage} />
+      <Route path="/welcome" component={WelcomePage} />
+      <Route path="/home" component={HomePage} />
       <Route path="/subscription" component={SubscriptionPage} />
       <Route path="/login" component={LoginPage} />
       <Route path="/calories" component={CaloriesPage} />
+      <Route path="/calories-calculator" component={CaloriesCalculatorPage} />
+      <Route path="/free-plan" component={FreePlanPage} />
+      <Route path="/free-plan-view" component={FreePlanViewPage} />
       <Route path="/dashboard">
         {isLoggedIn ? <DashboardPage /> : <LoginPage />}
       </Route>

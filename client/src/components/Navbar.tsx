@@ -8,7 +8,7 @@ import { useState } from "react";
 
 export default function Navbar() {
   const { isLoggedIn, username, subscriptionId, logout } = useAuth();
-  const [, navigate] = useLocation();
+  const [, setLocation] = useLocation();
   const { theme, toggleTheme } = useTheme();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -26,7 +26,11 @@ export default function Navbar() {
   
 
   const handleNavigation = (path: string) => {
-    navigate(path);
+    if (path === "/") {
+      setLocation(isLoggedIn ? "/dashboard" : "/");
+    } else {
+      setLocation(path);
+    }
     setIsMobileMenuOpen(false);
   };
 
@@ -46,14 +50,14 @@ export default function Navbar() {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-4 space-x-reverse">
             <button 
-              onClick={() => navigate("/calories")}
+              onClick={() => setLocation("/calories")}
               className="text-sm font-medium text-neutral-700 hover:text-primary dark:text-neutral-300 dark:hover:text-primary transition-colors btn-touch"
             >
               حاسبة السعرات
             </button>
 
             <button 
-              onClick={() => navigate("/subscription")}
+              onClick={() => setLocation("/subscription")}
               className="text-sm font-medium text-neutral-700 hover:text-primary dark:text-neutral-300 dark:hover:text-primary transition-colors btn-touch"
             >
               الاشتراكات
@@ -109,7 +113,7 @@ export default function Navbar() {
               </div>
             ) : (
               <Button 
-                onClick={() => navigate("/login")}
+                onClick={() => setLocation("/login")}
                 size="sm"
                 className="btn-touch"
               >
@@ -145,14 +149,14 @@ export default function Navbar() {
           <div className="md:hidden absolute top-full left-0 right-0 bg-white dark:bg-neutral-800 shadow-lg z-50 border-t border-neutral-200 dark:border-neutral-700">
             <div className="p-4 space-y-3">
               <button 
-                onClick={() => handleNavigation("/calories")}
+                onClick={() => setLocation("/calories")}
                 className="block w-full text-right py-3 px-4 text-sm font-medium text-neutral-700 hover:text-primary dark:text-neutral-300 dark:hover:text-primary transition-colors btn-touch rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700"
               >
                 حاسبة السعرات
               </button>
-
+              
               <button 
-                onClick={() => handleNavigation("/subscription")}
+                onClick={() => setLocation("/subscription")}
                 className="block w-full text-right py-3 px-4 text-sm font-medium text-neutral-700 hover:text-primary dark:text-neutral-300 dark:hover:text-primary transition-colors btn-touch rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700"
               >
                 الاشتراكات

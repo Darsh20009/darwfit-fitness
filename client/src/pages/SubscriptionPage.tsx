@@ -26,7 +26,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 
 export default function SubscriptionPage() {
-  const [, navigate] = useLocation();
+  const [, setLocation] = useLocation();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   
@@ -190,7 +190,7 @@ export default function SubscriptionPage() {
                   </li>
                 </ul>
                 <Button 
-                  onClick={() => window.open('/free-plan', '_blank')}
+                  onClick={() => setLocation("/free-plan")}
                   className="w-full bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-bold py-3 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg"
                 >
                   🚀 ابدأ مجاناً الآن
