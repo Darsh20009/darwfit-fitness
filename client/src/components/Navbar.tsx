@@ -25,7 +25,11 @@ export default function Navbar() {
 
   const handleInstagramClick = () => {
     if (!subscriptionId) return;
-
+    
+    const instagramUrl = "https://instagram.com/darwfit";
+    window.open(instagramUrl, "_blank");
+    setIsMobileMenuOpen(false);
+  };
 
   const handleNavigation = (path: string) => {
     navigate(path);
