@@ -26,10 +26,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const storedEndDate = localStorage.getItem("subscriptionEndDate");
     
     if (storedUsername) {
-      setIsLoggedIn(true);
-      setUsername(storedUsername);
-      setSubscriptionId(storedSubscriptionId);
-      setSubscriptionEndDate(storedEndDate);
+      // If it's محمد السهلي, force the correct end date
+      if (storedUsername === "محمد السهلي") {
+        const correctEndDate = "23 يوليو 2025";
+        setIsLoggedIn(true);
+        setUsername(storedUsername);
+        setSubscriptionId(storedSubscriptionId);
+        setSubscriptionEndDate(correctEndDate);
+        
+        // Update localStorage with correct date
+        localStorage.setItem("subscriptionEndDate", correctEndDate);
+      } else {
+        setIsLoggedIn(true);
+        setUsername(storedUsername);
+        setSubscriptionId(storedSubscriptionId);
+        setSubscriptionEndDate(storedEndDate);
+      }
     }
   }, []);
 
