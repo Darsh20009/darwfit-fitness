@@ -23,13 +23,7 @@ export default function Navbar() {
     setIsMobileMenuOpen(false);
   };
 
-  const handleInstagramClick = () => {
-    if (!subscriptionId) return;
-    
-    const instagramUrl = "https://instagram.com/darwfit";
-    window.open(instagramUrl, "_blank");
-    setIsMobileMenuOpen(false);
-  };
+  
 
   const handleNavigation = (path: string) => {
     navigate(path);
@@ -100,14 +94,7 @@ export default function Navbar() {
                       واتساب
                     </Button>
 
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={handleInstagramClick}
-                      className="text-pink-600 border-pink-600 hover:bg-pink-50 dark:hover:bg-pink-900/20 btn-touch"
-                    >
-                      انستقرام
-                    </Button>
+                    
                   </div>
                 )}
 
@@ -197,13 +184,7 @@ export default function Navbar() {
                         تواصل واتساب
                       </Button>
 
-                      <Button
-                        variant="outline"
-                        onClick={handleInstagramClick}
-                        className="w-full text-pink-600 border-pink-600 hover:bg-pink-50 dark:hover:bg-pink-900/20 btn-touch"
-                      >
-                        متابعة انستقرام
-                      </Button>
+                      
                     </div>
                   )}
 
