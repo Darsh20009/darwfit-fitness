@@ -30,3 +30,32 @@ export const subscriptionSchema = z.object({
 });
 
 export type SubscriptionData = z.infer<typeof subscriptionSchema>;
+
+// Free Plan Schema
+export const freePlanSchema = z.object({
+  fullName: z.string().min(2, "الاسم مطلوب"),
+  age: z.number().min(15, "العمر يجب أن يكون 15 سنة على الأقل").max(80, "العمر يجب أن يكون أقل من 80 سنة"),
+  gender: z.enum(["male", "female"], {
+    required_error: "الجنس مطلوب"
+  }),
+  height: z.number().min(120, "الطول يجب أن يكون 120 سم على الأقل").max(250, "الطول يجب أن يكون أقل من 250 سم"),
+  weight: z.number().min(30, "الوزن يجب أن يكون 30 كيلو على الأقل").max(300, "الوزن يجب أن يكون أقل من 300 كيلو"),
+  goal: z.enum(["lose_weight", "gain_weight", "build_muscle", "maintain", "improve_fitness"], {
+    required_error: "الهدف مطلوب"
+  }),
+  activityLevel: z.enum(["sedentary", "light", "moderate", "active", "very_active"], {
+    required_error: "مستوى النشاط مطلوب"
+  }),
+  experienceLevel: z.enum(["beginner", "intermediate", "advanced"], {
+    required_error: "مستوى الخبرة مطلوب"
+  }),
+  workoutPreference: z.enum(["home", "gym", "outdoor", "mixed"], {
+    required_error: "مكان التمرين مطلوب"
+  }),
+  dietaryRestrictions: z.array(z.string()).default([]),
+  timeAvailable: z.enum(["30min", "45min", "60min", "90min"], {
+    required_error: "الوقت المتاح مطلوب"
+  }),
+});
+
+export type FreePlanData = z.infer<typeof freePlanSchema>;

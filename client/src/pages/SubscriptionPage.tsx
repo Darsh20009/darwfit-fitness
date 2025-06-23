@@ -141,6 +141,64 @@ export default function SubscriptionPage() {
         </CardHeader>
         
         <CardContent className="pt-4">
+          {/* Free Plan Card */}
+          <div className="mb-8">
+            <Card className="border-4 border-green-400 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 relative overflow-hidden shadow-2xl">
+              <div className="absolute top-0 right-0 bg-green-500 text-white px-4 py-1 rounded-bl-lg font-bold text-sm">
+                🆓 مجاني
+              </div>
+              <CardHeader className="text-center pb-2">
+                <div className="flex justify-center mb-4">
+                  <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center text-white text-3xl animate-bounce">
+                    🎁
+                  </div>
+                </div>
+                <CardTitle className="text-2xl text-green-700 dark:text-green-400 mb-2">
+                  الخطة المجانية
+                </CardTitle>
+                <div className="text-center">
+                  <span className="text-4xl font-bold text-green-600">0</span>
+                  <span className="text-lg text-gray-600 dark:text-gray-400"> ريال</span>
+                </div>
+                <p className="text-sm text-green-600 mt-2">30 يوماً بالذكاء الاصطناعي</p>
+              </CardHeader>
+              <CardContent className="px-6 pb-6">
+                <ul className="space-y-3 text-sm mb-6">
+                  <li className="flex items-center">
+                    <CheckCircle className="h-4 w-4 ml-2 text-green-500" />
+                    <span>خطة غذائية مخصصة بالذكاء الاصطناعي</span>
+                  </li>
+                  <li className="flex items-center">
+                    <CheckCircle className="h-4 w-4 ml-2 text-green-500" />
+                    <span>برنامج تمريني متكامل لمدة شهر</span>
+                  </li>
+                  <li className="flex items-center">
+                    <CheckCircle className="h-4 w-4 ml-2 text-green-500" />
+                    <span>حساب السعرات والماكروز تلقائياً</span>
+                  </li>
+                  <li className="flex items-center">
+                    <CheckCircle className="h-4 w-4 ml-2 text-green-500" />
+                    <span>تتبع التقدم اليومي مع تقويم تفاعلي</span>
+                  </li>
+                  <li className="flex items-center">
+                    <CheckCircle className="h-4 w-4 ml-2 text-green-500" />
+                    <span>قوالب متعددة حسب مستواك وهدفك</span>
+                  </li>
+                  <li className="flex items-center">
+                    <CheckCircle className="h-4 w-4 ml-2 text-green-500" />
+                    <span>واجهة سهلة ومتجاوبة</span>
+                  </li>
+                </ul>
+                <Button 
+                  onClick={() => window.open('/free-plan', '_blank')}
+                  className="w-full bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-bold py-3 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg"
+                >
+                  🚀 ابدأ مجاناً الآن
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+          
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
             {/* 1 Month Plan */}
             <Card className="border-2 hover:border-primary transition-colors duration-300 hover:shadow-md">

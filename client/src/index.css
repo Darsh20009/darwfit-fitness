@@ -18,12 +18,30 @@
   100% { background-position: 200% 0; }
 }
 
+@keyframes metallic {
+  0%, 100% { 
+    background: linear-gradient(135deg, #ffd700, #ffed4a, #fbbf24, #f59e0b);
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+  }
+  50% { 
+    background: linear-gradient(135deg, #f59e0b, #fbbf24, #ffed4a, #ffd700);
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+  }
+}
+
 .animate-float {
   animation: float 3s ease-in-out infinite;
 }
 
 .animate-glow {
   animation: glow 2s ease-in-out infinite;
+}
+
+.animate-metallic {
+  animation: metallic 3s ease-in-out infinite;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
 }
 
 .shimmer-effect {
@@ -41,6 +59,29 @@
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Steel/Iron effect for DARWFIT logo */
+.steel-text {
+  background: linear-gradient(145deg, #c0c0c0, #808080, #696969, #2f4f4f);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));
+}
+
+/* Creative steel gradient effect */
+.creative-gradient {
+  background: linear-gradient(145deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57);
+  background-size: 400% 400%;
+  animation: gradientShift 8s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 @layer base {
