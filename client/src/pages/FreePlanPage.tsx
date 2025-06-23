@@ -76,7 +76,7 @@ export default function FreePlanPage() {
         dailyCalories: calorieData.daily,
         macros: calorieData.macros,
         createdAt: new Date(),
-        expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 يوم
+        expiresAt: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000), // 15 يوم
       };
       
       // حفظ الخطة في localStorage
@@ -118,7 +118,7 @@ export default function FreePlanPage() {
                 <Sparkles className="h-8 w-8 text-yellow-500 mr-2 animate-pulse" />
               </div>
               <p className="text-xl text-gray-600 dark:text-gray-300">
-                مرحباً {generatedPlan.userData.fullName}، خطتك المخصصة جاهزة لمدة 30 يوماً
+                مرحباً {generatedPlan.userData.fullName}، خطتك المخصصة جاهزة لمدة 15 يوماً
               </p>
               <Badge className="mt-4 px-6 py-2 text-lg bg-gradient-to-r from-green-500 to-blue-500 text-white">
                 {generatedPlan.planType}
@@ -147,7 +147,7 @@ export default function FreePlanPage() {
                 </CardHeader>
                 <CardContent>
                   <div className="text-3xl font-bold text-blue-700 dark:text-blue-400">
-                    30
+                    15
                   </div>
                   <p className="text-sm text-gray-600 dark:text-gray-400">يوماً مجاناً</p>
                 </CardContent>
@@ -348,12 +348,12 @@ export default function FreePlanPage() {
               <Gift className="h-10 w-10 text-yellow-500 mr-3 animate-bounce" style={{animationDelay: '0.5s'}} />
             </div>
             <p className="text-xl md:text-2xl text-gray-700 dark:text-gray-300 mb-4">
-              احصل على خطة غذائية وتدريبية مخصصة لك مجاناً لمدة 30 يوماً
+              احصل على خطة غذائية وتدريبية مخصصة لك مجاناً لمدة 15 يوماً
             </p>
             <div className="flex justify-center space-x-4 mb-6">
               <Badge className="px-4 py-2 bg-green-100 text-green-700 border-green-300">✅ مجاني 100%</Badge>
               <Badge className="px-4 py-2 bg-blue-100 text-blue-700 border-blue-300">🤖 بالذكاء الاصطناعي</Badge>
-              <Badge className="px-4 py-2 bg-purple-100 text-purple-700 border-purple-300">⏰ 30 يوم</Badge>
+              <Badge className="px-4 py-2 bg-purple-100 text-purple-700 border-purple-300">⏰ 15 يوم</Badge>
             </div>
           </div>
 

@@ -53,18 +53,18 @@ export default function FreePlanViewPage() {
     
     const progress = {
       completedDays: newCompletedDays,
-      currentDay: Math.min(day + 1, 30)
+      currentDay: Math.min(day + 1, 15)
     };
     localStorage.setItem('freePlanProgress', JSON.stringify(progress));
     setCurrentDay(progress.currentDay);
   };
 
   const calculateProgress = () => {
-    return (completedDays.length / 30) * 100;
+    return (completedDays.length / 15) * 100;
   };
 
   const getDaysRemaining = () => {
-    if (!freePlan) return 30;
+    if (!freePlan) return 15;
     const createdAt = new Date(freePlan.createdAt);
     const expiresAt = new Date(freePlan.expiresAt);
     const now = new Date();
@@ -109,7 +109,7 @@ export default function FreePlanViewPage() {
               </CardHeader>
               <CardContent className="text-center">
                 <div className="text-3xl font-bold text-blue-700 dark:text-blue-400">
-                  {completedDays.length}/30
+                  {completedDays.length}/15
                 </div>
                 <Progress value={calculateProgress()} className="mt-2" />
               </CardContent>
@@ -339,12 +339,12 @@ export default function FreePlanViewPage() {
               <Card className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm">
                 <CardHeader>
                   <CardTitle className="text-2xl text-center text-blue-600">
-                    📅 جدول الثلاثين يوماً
+                    📅 جدول الخمسة عشر يوماً
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid grid-cols-7 gap-2 mb-6">
-                    {Array.from({ length: 30 }, (_, i) => {
+                  <div className="grid grid-cols-5 gap-2 mb-6">
+                    {Array.from({ length: 15 }, (_, i) => {
                       const day = i + 1;
                       const isCompleted = completedDays.includes(day);
                       const isCurrent = day === currentDay;
@@ -391,7 +391,7 @@ export default function FreePlanViewPage() {
                     </div>
                   </div>
 
-                  {currentDay <= 30 && !completedDays.includes(currentDay) && (
+                  {currentDay <= 15 && !completedDays.includes(currentDay) && (
                     <div className="mt-6 text-center">
                       <Button 
                         onClick={() => markDayCompleted(currentDay)}

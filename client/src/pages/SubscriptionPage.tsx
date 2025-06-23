@@ -29,19 +29,19 @@ export default function SubscriptionPage() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     const form = e.currentTarget;
     const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
-    
+
     try {
       // First, send data to API endpoint
       await apiRequest('POST', '/api/subscription', data);
-      
+
       // Then, open WhatsApp with the complete form data
       const whatsappMessage = `
 🏋️‍♂️ *استبيان اشتراك جديد في داروفت* 🏋️‍♂️
@@ -89,14 +89,14 @@ export default function SubscriptionPage() {
 
       // Encode the message for WhatsApp URL
       const encodedMessage = encodeURIComponent(whatsappMessage);
-      
+
       // Open WhatsApp with the prepared message
       window.open(`https://api.whatsapp.com/send/?phone=201155201921&text=${encodedMessage}&type=phone_number&app_absent=0`, '_blank');
-      
+
       // Show success modal
       const event = new CustomEvent('subscription-success');
       window.dispatchEvent(event);
-      
+
       // Reset form
       form.reset();
     } catch (error) {
@@ -110,7 +110,7 @@ export default function SubscriptionPage() {
       setIsSubmitting(false);
     }
   };
-  
+
   // Helper function to convert goal to Arabic
   const getGoalInArabic = (goal: string): string => {
     switch(goal) {
@@ -126,7 +126,7 @@ export default function SubscriptionPage() {
         return goal;
     }
   };
-  
+
   return (
     <div className="container mx-auto px-4 py-8 min-h-[calc(100vh-70px)]">
       {/* Subscription Info Card */}
@@ -139,7 +139,7 @@ export default function SubscriptionPage() {
             </CardTitle>
           </div>
         </CardHeader>
-        
+
         <CardContent className="pt-4">
           {/* Free Plan Card */}
           <div className="mb-8">
@@ -160,7 +160,7 @@ export default function SubscriptionPage() {
                   <span className="text-4xl font-bold text-green-600">0</span>
                   <span className="text-lg text-gray-600 dark:text-gray-400"> ريال</span>
                 </div>
-                <p className="text-sm text-green-600 mt-2">30 يوماً بالذكاء الاصطناعي</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">15 يوماً بالذكاء الاصطناعي</p>
               </CardHeader>
               <CardContent className="px-6 pb-6">
                 <ul className="space-y-3 text-sm mb-6">
@@ -198,7 +198,7 @@ export default function SubscriptionPage() {
               </CardContent>
             </Card>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
             {/* 1 Month Plan */}
             <Card className="border-2 hover:border-primary transition-colors duration-300 hover:shadow-md">
@@ -222,7 +222,7 @@ export default function SubscriptionPage() {
                 </ul>
               </CardContent>
             </Card>
-            
+
             {/* 3 Month Plan */}
             <Card className="border-2 border-primary bg-primary/5 hover:shadow-md">
               <div className="bg-primary text-white text-center py-1 text-xs font-bold">
@@ -252,7 +252,7 @@ export default function SubscriptionPage() {
                 </ul>
               </CardContent>
             </Card>
-            
+
             {/* 6 Month Plan */}
             <Card className="border-2 hover:border-primary transition-colors duration-300 hover:shadow-md">
               <CardHeader className="p-4 pb-2">
@@ -279,7 +279,7 @@ export default function SubscriptionPage() {
                 </ul>
               </CardContent>
             </Card>
-            
+
             {/* 12 Month Plan */}
             <Card className="border-2 hover:border-primary transition-colors duration-300 hover:shadow-md">
               <CardHeader className="p-4 pb-2">
@@ -307,7 +307,7 @@ export default function SubscriptionPage() {
               </CardContent>
             </Card>
           </div>
-          
+
           <div className="bg-primary/5 p-4 rounded-lg">
             <h4 className="font-bold text-primary mb-2">مميزات الاشتراك</h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -341,7 +341,7 @@ export default function SubscriptionPage() {
               </div>
             </div>
           </div>
-          
+
           <div className="mt-4 p-3 bg-secondary/10 text-secondary rounded-md">
             <p className="text-sm">
               * سيتم التواصل معك خلال 24 ساعة بعد تقديم الاستبيان لإكمال عملية الدفع وتفعيل الاشتراك
@@ -349,7 +349,7 @@ export default function SubscriptionPage() {
           </div>
         </CardContent>
       </Card>
-      
+
         {/* Subscription Form Card */}
         <Card className="max-w-4xl mx-auto bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm shadow-2xl border-0">
           <CardHeader className="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-t-lg">
@@ -360,7 +360,7 @@ export default function SubscriptionPage() {
               🎯 يرجى تعبئة المعلومات التالية بدقة لنتمكن من تصميم برنامج يناسب احتياجاتك بشكل مثالي
             </CardDescription>
           </CardHeader>
-        
+
         <CardContent>
           <form id="subscriptionForm" onSubmit={handleSubmit} className="space-y-8">
             {/* القسم الأول: بيانات عامة */}
@@ -371,12 +371,12 @@ export default function SubscriptionPage() {
                   <Label htmlFor="name">الاسم الكامل (اختياري)</Label>
                   <Input id="name" name="name" />
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="age">العمر</Label>
                   <Input id="age" name="age" type="number" min="15" max="80" required />
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="gender">الجنس</Label>
                   <Select name="gender" required>
@@ -389,7 +389,7 @@ export default function SubscriptionPage() {
                     </SelectContent>
                   </Select>
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="weight">الوزن الحالي (كجم)</Label>
                   <Input 
@@ -402,7 +402,7 @@ export default function SubscriptionPage() {
                     required 
                   />
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="height">الطول (سم)</Label>
                   <Input 
@@ -415,7 +415,7 @@ export default function SubscriptionPage() {
                     required 
                   />
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="phone">رقم الجوال</Label>
                   <Input 
@@ -477,11 +477,11 @@ export default function SubscriptionPage() {
             </div>
 
             <Separator />
-            
+
             {/* القسم الثاني: العادات اليومية الغذائية */}
             <div>
               <h3 className="text-xl font-semibold text-primary mb-4">ثانياً: العادات اليومية الغذائية</h3>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <Label htmlFor="meals_count">كم وجبة رئيسية تتناول يومياً؟</Label>
@@ -498,7 +498,7 @@ export default function SubscriptionPage() {
                     </SelectContent>
                   </Select>
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="snacks_count">كم وجبة خفيفة (سناك) تتناول؟</Label>
                   <Select name="snacks_count" required>
@@ -514,7 +514,7 @@ export default function SubscriptionPage() {
                     </SelectContent>
                   </Select>
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="breakfast_time">متى تتناول وجبة الإفطار عادة؟</Label>
                   <Select name="breakfast_time" required>
@@ -530,7 +530,7 @@ export default function SubscriptionPage() {
                     </SelectContent>
                   </Select>
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label>هل تتناول وجبة قبل النوم؟</Label>
                   <div className="flex space-x-4 space-x-reverse pt-2">
@@ -557,7 +557,7 @@ export default function SubscriptionPage() {
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="water_count">كم كوب ماء تشرب يومياً تقريباً؟</Label>
                   <Select name="water_count" required>
@@ -574,7 +574,7 @@ export default function SubscriptionPage() {
                   </Select>
                 </div>
               </div>
-              
+
               <div className="mt-6 space-y-6">
                 <div className="space-y-2">
                   <Label htmlFor="breakfast_details">ماذا تتناول عادةً في الإفطار؟</Label>
@@ -586,7 +586,7 @@ export default function SubscriptionPage() {
                     required 
                   />
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="lunch_details">ماذا تتناول عادةً في الغداء؟</Label>
                   <Textarea 
@@ -596,7 +596,7 @@ export default function SubscriptionPage() {
                     required 
                   />
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="dinner_details">ماذا تتناول عادةً في العشاء؟</Label>
                   <Textarea 
@@ -606,7 +606,7 @@ export default function SubscriptionPage() {
                     required 
                   />
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label>السناكات المعتادة:</Label>
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-2">
@@ -662,7 +662,7 @@ export default function SubscriptionPage() {
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="other_snacks">أنواع سناكات أخرى (إذا وجدت)</Label>
                   <Input id="other_snacks" name="other_snacks" />
@@ -671,11 +671,11 @@ export default function SubscriptionPage() {
             </div>
 
             <Separator />
-            
+
             {/* القسم الثالث: العادات الرياضية */}
             <div>
               <h3 className="text-xl font-semibold text-primary mb-4">ثالثاً: العادات الرياضية</h3>
-              
+
               <div className="space-y-6">
                 <div className="space-y-2">
                   <Label>هل تمارس رياضة حالياً؟</Label>
@@ -703,7 +703,7 @@ export default function SubscriptionPage() {
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <Label htmlFor="exercise_type">إذا نعم، ما نوع الرياضة؟</Label>
@@ -760,12 +760,12 @@ export default function SubscriptionPage() {
                       </div>
                     </div>
                   </div>
-                  
+
                   <div className="space-y-2">
                     <Label htmlFor="other_exercise">أنواع رياضة أخرى (إذا وجدت)</Label>
                     <Input id="other_exercise" name="other_exercise" />
                   </div>
-                  
+
                   <div className="space-y-2">
                     <Label htmlFor="exercise_times">كم مرة تتمرن أسبوعياً؟</Label>
                     <Select name="exercise_times">
@@ -781,7 +781,7 @@ export default function SubscriptionPage() {
                       </SelectContent>
                     </Select>
                   </div>
-                  
+
                   <div className="space-y-2">
                     <Label htmlFor="exercise_duration">مدة التمرين (بالمتوسط):</Label>
                     <div className="flex space-x-4 space-x-reverse pt-2">
@@ -818,7 +818,7 @@ export default function SubscriptionPage() {
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="injuries">هل لديك أي إصابات رياضية؟</Label>
                   <Textarea 
@@ -830,13 +830,13 @@ export default function SubscriptionPage() {
                 </div>
               </div>
             </div>
-            
+
             <Separator />
-            
+
             {/* القسم الرابع: تفاصيل إضافية */}
             <div>
               <h3 className="text-xl font-semibold text-primary mb-4">رابعاً: تفاصيل إضافية</h3>
-              
+
               <div className="space-y-6">
                 <div className="space-y-2">
                   <Label>هل تعاني من أمراض مزمنة؟</Label>
@@ -893,12 +893,12 @@ export default function SubscriptionPage() {
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="other_diseases">تفاصيل أمراض أخرى (إذا وجدت)</Label>
                   <Input id="other_diseases" name="other_diseases" />
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="food_allergies">هل لديك حساسية تجاه أطعمة معينة؟</Label>
                   <Textarea 
@@ -908,7 +908,7 @@ export default function SubscriptionPage() {
                     rows={2} 
                   />
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="diet_preference">هل تفضل نظام غذائي معين؟</Label>
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-2">
@@ -974,12 +974,12 @@ export default function SubscriptionPage() {
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="other_diet">تفاصيل نظام غذائي آخر (إذا وجد)</Label>
                   <Input id="other_diet" name="other_diet" />
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="additional_notes">ملاحظات إضافية</Label>
                   <Textarea 
@@ -991,9 +991,9 @@ export default function SubscriptionPage() {
                 </div>
               </div>
             </div>
-            
+
             <Separator />
-            
+
             <CardFooter className="flex justify-between px-0 pt-4">
               <Button 
                 type="button" 
