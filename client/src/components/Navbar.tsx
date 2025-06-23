@@ -59,13 +59,6 @@ export default function Navbar() {
               الاشتراكات
             </button>
 
-            <button 
-              onClick={() => navigate("/admin")}
-              className="text-sm font-medium text-neutral-700 hover:text-primary dark:text-neutral-300 dark:hover:text-primary transition-colors btn-touch"
-            >
-              إدارة العملاء
-            </button>
-
             {isLoggedIn && subscriptionId && (
               <Badge variant="outline" className="bg-primary/10 text-primary border-primary px-2 py-1">
                 رقم الاشتراك: {subscriptionId}
@@ -163,13 +156,6 @@ export default function Navbar() {
                 className="block w-full text-right py-3 px-4 text-sm font-medium text-neutral-700 hover:text-primary dark:text-neutral-300 dark:hover:text-primary transition-colors btn-touch rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700"
               >
                 الاشتراكات
-              </button>
-
-              <button 
-                onClick={() => handleNavigation("/admin")}
-                className="block w-full text-right py-3 px-4 text-sm font-medium text-neutral-700 hover:text-primary dark:text-neutral-300 dark:hover:text-primary transition-colors btn-touch rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700"
-              >
-                إدارة العملاء
               </button>
 
               {isLoggedIn && subscriptionId && (

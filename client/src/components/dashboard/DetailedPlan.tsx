@@ -6,8 +6,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { getDailyMealPlan } from "../../data/mealPlans";
 import { getWorkoutByDayIndex } from "../../data/workoutPlans";
-import { getWorkoutByDayIndexForPlan } from "../../data/workoutPlansManager";
-import { useAuth } from "../../hooks/useAuth";
 import { 
   CheckCircle2, 
   Circle, 

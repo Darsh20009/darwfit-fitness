@@ -1,13 +1,11 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { useLocation } from "wouter";
-import { getClientByCredentials, ClientProfile } from "../data/clientProfiles";
 
 interface AuthContextType {
   isLoggedIn: boolean;
   username: string | null;
   subscriptionId: string | null;
   subscriptionEndDate: string | null;
-  clientProfile: ClientProfile | null;
   login: (username: string, password: string) => boolean;
   logout: () => void;
 }
@@ -19,7 +17,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [username, setUsername] = useState<string | null>(null);
   const [subscriptionId, setSubscriptionId] = useState<string | null>(null);
   const [subscriptionEndDate, setSubscriptionEndDate] = useState<string | null>(null);
-  const [clientProfile, setClientProfile] = useState<ClientProfile | null>(null);
   const [, navigate] = useLocation();
 
   // Check if user is already logged in
@@ -27,36 +24,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const storedUsername = localStorage.getItem("username");
     const storedSubscriptionId = localStorage.getItem("subscriptionId");
     const storedEndDate = localStorage.getItem("subscriptionEndDate");
-    const storedClientId = localStorage.getItem("clientId");
     
-    if (storedUsername && storedClientId) {
-      // يمكن تحسين هذا بتخزين معرف العميل واسترجاع البيانات
-      const mockProfile: ClientProfile = {
-        id: storedClientId,
-        name: storedUsername,
-        username: storedUsername,
-        password: "",
-        subscriptionId: storedSubscriptionId || "",
-        subscriptionEndDate: storedEndDate || "",
-        workoutPlanId: "beginner_plan",
-        mealPlanId: "weight_loss_plan",
-        personalInfo: {}
-      };
-      
+    if (storedUsername) {
       setIsLoggedIn(true);
       setUsername(storedUsername);
       setSubscriptionId(storedSubscriptionId);
       setSubscriptionEndDate(storedEndDate);
-      setClientProfile(mockProfile);
     }
   }, []);
 
   const login = (username: string, password: string) => {
-    // البحث عن العميل في قاعدة البيانات
-    const client = getClientByCredentials(username, password);
-    
-    if (client) {
+    // Fixed credentials check
+    if (username === "محمد السهلي" && password === "123456") {
       // Calculate subscription end date (3 months from today)
+      const subsId = "5001";
       const today = new Date();
       const endDateObj = new Date(today.getFullYear(), today.getMonth() + 3, today.getDate());
       
@@ -67,30 +48,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       ];
       const endDate = `${endDateObj.getDate()} ${arabicMonths[endDateObj.getMonth()]} ${endDateObj.getFullYear()}`;
       
-      // تحديث تاريخ انتهاء الاشتراك في بيانات العميل
-      const updatedClient = { ...client, subscriptionEndDate: endDate };
-      
       setIsLoggedIn(true);
-      setUsername(client.name);
-      setSubscriptionId(client.subscriptionId);
+      setUsername(username);
+      setSubscriptionId(subsId);
       setSubscriptionEndDate(endDate);
-      setClientProfile(updatedClient);
       
-      // Save to localStorage
+      // Save to localStorage with better structure
       const authData = {
         isLoggedIn: true,
-        username: client.name,
-        subscriptionId: client.subscriptionId,
+        username,
+        subscriptionId: subsId,
         subscriptionEndDate: endDate,
-        clientId: client.id,
         loginTime: new Date().toISOString()
       };
       
       localStorage.setItem("auth", JSON.stringify(authData));
-      localStorage.setItem("username", client.name);
-      localStorage.setItem("subscriptionId", client.subscriptionId);
+      localStorage.setItem("username", username);
+      localStorage.setItem("subscriptionId", subsId);
       localStorage.setItem("subscriptionEndDate", endDate);
-      localStorage.setItem("clientId", client.id);
       
       return true;
     }
@@ -102,14 +77,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUsername(null);
     setSubscriptionId(null);
     setSubscriptionEndDate(null);
-    setClientProfile(null);
     
     // Clear auth data but keep user preferences
     localStorage.removeItem("auth");
     localStorage.removeItem("username");
     localStorage.removeItem("subscriptionId");
     localStorage.removeItem("subscriptionEndDate");
-    localStorage.removeItem("clientId");
     
     navigate("/");
   };
@@ -120,7 +93,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       username, 
       subscriptionId, 
       subscriptionEndDate,
-      clientProfile,
       login, 
       logout 
     }}>

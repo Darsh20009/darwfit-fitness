@@ -1,16 +1,13 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { getMealSummary } from "../../data/mealPlans";
-import { getMealSummaryForPlan } from "../../data/mealPlansManager";
 import { getWorkoutSummary } from "../../data/workoutPlans";
-import { getWorkoutByDayIndexForPlan } from "../../data/workoutPlansManager";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Calendar, Dumbbell, Utensils, CheckCircle2, ArrowRight, Lock } from "lucide-react";
 import { TabsContent, Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { LocalStorageManager } from "../../lib/localStorage";
-import { useAuth } from "../../hooks/useAuth";
 
 interface DailyPlanProps {
   date: Date;
@@ -20,31 +17,13 @@ interface DailyPlanProps {
 }
 
 export default function DailyPlan({ date, formattedDate, workoutType, dayIndex }: DailyPlanProps) {
-  const { clientProfile } = useAuth();
   const [completedMeals, setCompletedMeals] = useState<Set<string>>(new Set());
   const [completedWorkouts, setCompletedWorkouts] = useState<Set<string>>(new Set());
 
   const isRestDay = dayIndex === 6; // Sunday is rest day
 
-  // استخدام خطة الوجبات الخاصة بالعميل
-  const mealPlanId = clientProfile?.mealPlanId || "weight_loss_plan";
-  const mealSummary = getMealSummaryForPlan(mealPlanId);
-  
-  // استخدام خطة التمارين الخاصة بالعميل
-  const workoutPlanId = clientProfile?.workoutPlanId || "beginner_plan";
-  const workoutSummary = isRestDay ? [] : (() => {
-    const workout = getWorkoutByDayIndexForPlan(dayIndex, workoutPlanId);
-    const summary: { name: string; description: string }[] = [];
-    Object.entries(workout.exercises).forEach(([groupName, exerciseGroup]) => {
-      exerciseGroup.forEach(exercise => {
-        summary.push({
-          name: exercise.name,
-          description: `${exercise.sets} مجموعات × ${exercise.reps}`
-        });
-      });
-    });
-    return summary;
-  })();
+  const mealSummary = getMealSummary();
+  const workoutSummary = isRestDay ? [] : getWorkoutSummary(dayIndex);
 
   const dateKey = date.toISOString().split('T')[0];
 
