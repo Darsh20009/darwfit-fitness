@@ -42,23 +42,49 @@ export default function SubscriptionPage() {
       // First, send data to API endpoint
       await apiRequest('POST', '/api/subscription', data);
       
-      // Then, open WhatsApp with the form data
+      // Then, open WhatsApp with the complete form data
       const whatsappMessage = `
 🏋️‍♂️ *استبيان اشتراك جديد في داروفت* 🏋️‍♂️
 
-الاسم: ${data.name}
-العمر: ${data.age}
-الجنس: ${data.gender === 'male' ? 'ذكر' : 'أنثى'}
-الوزن: ${data.weight} كجم
-الطول: ${data.height} سم
-رقم الجوال: ${data.phone}
-الهدف: ${getGoalInArabic(data.goal as string)}
+👤 *المعلومات الشخصية:*
+━━━━━━━━━━━━━━━
+• الاسم: ${data.name || '-'}
+• العمر: ${data.age || '-'}
+• الجنس: ${data.gender === 'male' ? 'ذكر' : 'أنثى'}
+• الوزن: ${data.weight || '-'} كجم
+• الطول: ${data.height || '-'} سم
+• رقم الجوال: ${data.phone || '-'}
+• الهدف: ${getGoalInArabic(data.main_goal as string || data.goal as string)}
 
-تفاصيل الأكل: ${data.food_details}
+🍽️ *النظام الغذائي:*
+━━━━━━━━━━━━━━━
+• وجبة الإفطار: ${data.breakfast_details || '-'}
+• وجبة الغداء: ${data.lunch_details || '-'}
+• وجبة العشاء: ${data.dinner_details || '-'}
+• عدد الوجبات اليومية: ${data.meals_count || '-'}
+• عدد السناكات: ${data.snacks_count || '-'}
+• توقيت الإفطار: ${data.breakfast_time || '-'}
+• وجبة قبل النوم: ${data.pre_sleep_meal === 'yes' ? 'نعم' : 'لا'}
+• عدد أكواب الماء: ${data.water_count || '-'}
 
-تفاصيل التمرين: ${data.exercise_details}
+💪 *النشاط البدني:*
+━━━━━━━━━━━━━━━
+• ممارسة الرياضة حالياً: ${data.exercise_now === 'yes' ? 'نعم' : 'لا'}
+• نوع التمارين: ${Array.isArray(data.exercise_type) ? data.exercise_type.join('، ') : data.exercise_type || '-'}
+• عدد مرات التمرين: ${data.exercise_times || '-'}
+• مدة التمرين: ${data.exercise_duration || '-'}
+• الإصابات: ${data.injuries || 'لا يوجد'}
 
-سعر الاشتراك: 100 ريال لمدة 3 شهور
+🏥 *معلومات صحية:*
+━━━━━━━━━━━━━━━
+• الأمراض المزمنة: ${Array.isArray(data.chronic_diseases) ? data.chronic_diseases.join('، ') : data.chronic_diseases || 'لا يوجد'}
+• حساسية الطعام: ${data.food_allergies || 'لا يوجد'}
+• النظام الغذائي المفضل: ${data.diet_preference || 'لا يوجد تفضيل'}
+
+💰 *تفاصيل الاشتراك:*
+━━━━━━━━━━━━━━━
+• سعر الاشتراك: 100 ريال
+• مدة الاشتراك: 3 شهور
       `;
 
       // Encode the message for WhatsApp URL
@@ -266,14 +292,16 @@ export default function SubscriptionPage() {
         </CardContent>
       </Card>
       
-      {/* Subscription Form Card */}
-      <Card className="max-w-3xl mx-auto">
-        <CardHeader>
-          <CardTitle className="text-2xl md:text-3xl text-center">استبيان الاشتراك الجديد</CardTitle>
-          <CardDescription className="text-center">
-            يرجى تعبئة المعلومات التالية بدقة لنتمكن من تصميم برنامج يناسب احتياجاتك
-          </CardDescription>
-        </CardHeader>
+        {/* Subscription Form Card */}
+        <Card className="max-w-4xl mx-auto bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm shadow-2xl border-0">
+          <CardHeader className="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-t-lg">
+            <CardTitle className="text-3xl md:text-4xl text-center font-bold">
+              📋 استبيان الاشتراك الجديد
+            </CardTitle>
+            <CardDescription className="text-center text-blue-100 text-lg">
+              🎯 يرجى تعبئة المعلومات التالية بدقة لنتمكن من تصميم برنامج يناسب احتياجاتك بشكل مثالي
+            </CardDescription>
+          </CardHeader>
         
         <CardContent>
           <form id="subscriptionForm" onSubmit={handleSubmit} className="space-y-8">
