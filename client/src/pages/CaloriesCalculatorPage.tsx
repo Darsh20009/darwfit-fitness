@@ -21,7 +21,7 @@ import {
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 // Temporary food database
-const foodDatabase = [
+const foodDatabase = {
   "المطبخ المصري": {
       "كشري": {calories: 350, protein: 8, carbs: 60},
       "فول مدمس": {calories: 132, protein: 7, carbs: 19},
@@ -586,7 +586,7 @@ const foodDatabase = [
       "موس الشوكولاتة": {calories: 280, protein: 4, carbs: 40},
       "سحلب": {calories: 220, protein: 4, carbs: 35}
   }
-];
+};
 
 // Food weight equivalents
 const unitToGramEquivalents: Record<string, number> = {
