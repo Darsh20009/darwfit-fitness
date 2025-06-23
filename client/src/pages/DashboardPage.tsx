@@ -4,7 +4,7 @@ import DailyPlan from "../components/dashboard/DailyPlan";
 import WeeklyCalendar from "../components/dashboard/WeeklyCalendar";
 import DetailedPlan from "../components/dashboard/DetailedPlan";
 import { getDay } from "date-fns";
-import { formatFullDateToArabic, getWorkoutTypeByDate } from "../lib/dates";
+import { formatFullDateToArabic, getWorkoutTypeByDate, calculateRemainingDays } from "../lib/dates";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { 
@@ -21,6 +21,9 @@ export default function DashboardPage() {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [dayIndex, setDayIndex] = useState(getDay(new Date()));
   const [progress, setProgress] = useState(65); // Simulated progress percentage
+  
+  // Calculate remaining subscription days
+  const remainingDays = calculateRemainingDays(subscriptionEndDate || "");
 
   useEffect(() => {
     setDayIndex(getDay(selectedDate));
@@ -82,10 +85,20 @@ export default function DashboardPage() {
             <CardContent className="p-4 flex items-center justify-between">
               <div>
                 <h3 className="text-xs text-neutral-500 dark:text-neutral-400">متبقي من الاشتراك</h3>
-                <p className="text-xl font-bold text-amber-500">90 يوم</p>
+                <p className="text-xl font-bold text-amber-500">
+                  {remainingDays > 0 ? `${remainingDays} يوم` : "انتهى الاشتراك"}
+                </p>
               </div>
-              <div className="bg-amber-50 dark:bg-amber-900/20 p-2 rounded-full">
-                <Clock className="h-6 w-6 text-amber-500" />
+              <div className={`p-2 rounded-full ${
+                remainingDays > 30 ? "bg-amber-50 dark:bg-amber-900/20" : 
+                remainingDays > 7 ? "bg-orange-50 dark:bg-orange-900/20" : 
+                "bg-red-50 dark:bg-red-900/20"
+              }`}>
+                <Clock className={`h-6 w-6 ${
+                  remainingDays > 30 ? "text-amber-500" : 
+                  remainingDays > 7 ? "text-orange-500" : 
+                  "text-red-500"
+                }`} />
               </div>
             </CardContent>
           </Card>

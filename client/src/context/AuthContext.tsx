@@ -36,9 +36,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const login = (username: string, password: string) => {
     // Fixed credentials check
     if (username === "محمد السهلي" && password === "123456") {
-      // Hard-coded subscription details for demo purposes
+      // Calculate subscription end date (3 months from today)
       const subsId = "5001";
-      const endDate = "30 يوليو 2025"; // 3 months from now
+      const today = new Date();
+      const endDateObj = new Date(today.getFullYear(), today.getMonth() + 3, today.getDate());
+      
+      // Format to Arabic date string
+      const arabicMonths = [
+        "يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو",
+        "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"
+      ];
+      const endDate = `${endDateObj.getDate()} ${arabicMonths[endDateObj.getMonth()]} ${endDateObj.getFullYear()}`;
       
       setIsLoggedIn(true);
       setUsername(username);

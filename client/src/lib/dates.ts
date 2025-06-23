@@ -68,3 +68,41 @@ export function getWeekDays(startDate: Date = new Date()): DayData[] {
 
   return days;
 }
+
+export function calculateRemainingDays(endDateString: string): number {
+  if (!endDateString) return 0;
+  
+  try {
+    // Parse Arabic date format "30 يوليو 2025"
+    const monthsMap: { [key: string]: number } = {
+      "يناير": 0, "فبراير": 1, "مارس": 2, "أبريل": 3,
+      "مايو": 4, "يونيو": 5, "يوليو": 6, "أغسطس": 7,
+      "سبتمبر": 8, "أكتوبر": 9, "نوفمبر": 10, "ديسمبر": 11
+    };
+    
+    const parts = endDateString.trim().split(' ');
+    if (parts.length !== 3) return 0;
+    
+    const day = parseInt(parts[0]);
+    const monthName = parts[1];
+    const year = parseInt(parts[2]);
+    
+    const monthIndex = monthsMap[monthName];
+    if (monthIndex === undefined || isNaN(day) || isNaN(year)) return 0;
+    
+    const endDate = new Date(year, monthIndex, day);
+    const today = new Date();
+    
+    // Set both dates to start of day for accurate calculation
+    endDate.setHours(23, 59, 59, 999);
+    today.setHours(0, 0, 0, 0);
+    
+    const timeDiff = endDate.getTime() - today.getTime();
+    const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+    
+    return Math.max(0, daysDiff);
+  } catch (error) {
+    console.error('Error calculating remaining days:', error);
+    return 0;
+  }
+}

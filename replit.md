@@ -97,10 +97,17 @@ Darwfit is a comprehensive fitness and nutrition platform built as a full-stack 
 3. Asset optimization and compression
 4. Environment-specific configuration injection
 
+## Recent Changes
+- January 2025: Successfully migrated from Replit Agent to Replit environment
+- January 2025: Implemented dynamic subscription days calculation based on real subscription end dates
+- January 2025: Enhanced subscription display with color-coded status indicators (green/amber/red)
+- January 2025: Updated authentication system to calculate subscription end date dynamically (3 months from login)
+
 ## Changelog
 ```
 Changelog:
 - June 23, 2025. Initial setup
+- January 2025. Migration to Replit and subscription system improvements
 ```
 
 ## User Preferences
