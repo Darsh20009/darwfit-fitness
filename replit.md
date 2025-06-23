@@ -49,6 +49,9 @@ Darwfit is a comprehensive fitness and nutrition platform built as a full-stack 
 - **Meal Planning**: Comprehensive Arabic meal database with nutritional information
 - **Calorie Calculator**: BMR calculation with activity level adjustments
 - **Progress Tracking**: Local storage for workout and meal completion tracking
+- **Free Plan System**: AI-powered plan generation with multiple templates
+- **Smart Plan Selection**: Algorithm-based template selection based on user profile
+- **30-Day Tracking**: Complete progress monitoring with visual calendar interface
 
 ### User Interface
 - **Responsive Design**: Mobile-first approach with touch-optimized interactions
@@ -106,6 +109,10 @@ Darwfit is a comprehensive fitness and nutrition platform built as a full-stack 
 - January 25, 2025: Updated authentication system to calculate subscription end date dynamically
 - January 25, 2025: Added second user account (يوسف درويش) with 6-month subscription period
 - January 25, 2025: Enhanced website design with modern animations and visual effects
+- January 25, 2025: Created innovative free plan system with AI-generated custom meal and workout plans
+- January 25, 2025: Implemented multiple plan templates (classic, intensive, beginner, female-focused)
+- January 25, 2025: Added smart template selection algorithm based on user data
+- January 25, 2025: Built comprehensive 30-day tracking system with progress monitoring
 
 ## Changelog
 ```
