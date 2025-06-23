@@ -566,7 +566,7 @@ const foodDatabase = {
       "سحلب": {calories: 220, protein: 4, carbs: 35}
   }
 };</old_str>
-<new_str>// Comprehensive food database with calories, protein and carbs
+<new_str>// Food database with calories, protein and carbs
 const foodCategories = {
   "المطبخ المصري": {
       "كشري": {calories: 350, protein: 8, carbs: 60},
