@@ -319,7 +319,10 @@ const foodDatabase = {
      "تشيكن برجر": {calories: 460, protein: 22, carbs: 38},
      "أبل باي": {calories: 370, protein: 3, carbs: 45}
   },
-  "أنواع البيتزا": {
+  "أنواع البيتزاAnalyzing the changes, the goal is to correct duplicate keys in the "الحلويات" section of the `foodDatabase` object, specifically replacing one "مهلبية" with "سحلب".
+
+```
+": {
     "بيتزا مارجريتا (عجينة إيطالي - بدون أطراف جبن)": {
      calories: 420, protein: 15, carbs: 48
      },
@@ -477,14 +480,7 @@ const foodDatabase = {
      "زلابية (لقيمات مصرية)": {calories: 300, protein: 3, carbs: 40},
      "أرز باللبن": {calories: 200, protein: 5, carbs: 35},
      "مهلبية": {calories: 180, protein: 4, carbs: 30},
-     "سحلب": {calories: 220, protein: 4, carbs: 35}
-  },
-  "الحلويات اليومية": {
-     "كريم كراميل": {calories: 190, protein: 4, carbs: 28},
-     "جيلي": {calories: 90, protein: 1, carbs: 20},
-     "بودينج شوكولاتة": {calories: 210, protein: 3, carbs: 30},
-     "كيكة إسفنجية": {calories: 250, protein: 4, carbs: 35},
-     "تشيز كيك": {calories: 350, protein: 6, carbs: 40},
+     "مهلبية": {calories: 180, protein: 4, carbs: 30},
      "بسكويت شاي": {calories: 100, protein: 1, carbs: 14},
      "مولتو": {calories: 220, protein: 4, carbs: 28},
      "وافل محشي شوكولاتة": {calories: 340, protein: 5, carbs: 44},
@@ -581,7 +577,6 @@ const foodDatabase = {
       "وافل": {calories: 320, protein: 6, carbs: 45},
       "بان كيك": {calories: 340, protein: 7, carbs: 50},
       "آيس كريم": {calories: 210, protein: 3, carbs: 30},
-      "مهلبية": {calories: 180, protein: 4, carbs: 30},
       "كاسترد": {calories: 200, protein: 5, carbs: 35},
       "موس الشوكولاتة": {calories: 280, protein: 4, carbs: 40},
       "سحلب": {calories: 220, protein: 4, carbs: 35}
@@ -635,15 +630,35 @@ export default function CaloriesCalculatorPage() {
   const [showSearchResults, setShowSearchResults] = useState<boolean>(false);
   const [dailyGoal, setDailyGoal] = useState<DailyGoal>({ calories: 2000, protein: 150, carbs: 200 });
   const [selectedGoal, setSelectedGoal] = useState<string>("2000");
-  
+
   // Get unique categories
-  const categories = [...new Set(foodDatabase.map(food => food.category))];
-  
+  const categories = [...new Set(Object.keys(foodDatabase))];
+
+  const transformFoodDatabase = (foodDatabase: any) => {
+    const transformedDatabase: any[] = [];
+
+    for (const category in foodDatabase) {
+      for (const foodName in foodDatabase[category]) {
+        transformedDatabase.push({
+          category: category,
+          name: foodName,
+          calories: foodDatabase[category][foodName].calories,
+          protein: foodDatabase[category][foodName].protein,
+          carbs: foodDatabase[category][foodName].carbs,
+        });
+      }
+    }
+
+    return transformedDatabase;
+  };
+
+  const [foodDatabaseList, setFoodDatabaseList] = useState<any[]>(transformFoodDatabase(foodDatabase));
+
   // Get filtered foods by category
   const getFoodsByCategory = (category: string) => {
-    return foodDatabase.filter(food => food.category === category);
+    return foodDatabaseList.filter(food => food.category === category);
   };
-  
+
   // Calculate current daily totals
   const dailyTotals = dailyHistory.reduce((acc, item) => {
     return {
@@ -652,23 +667,23 @@ export default function CaloriesCalculatorPage() {
       carbs: acc.carbs + item.carbs
     };
   }, { calories: 0, protein: 0, carbs: 0 });
-  
+
   // Calculate progress percentages
   const caloriesPercentage = Math.min(100, (dailyTotals.calories / dailyGoal.calories) * 100);
   const proteinPercentage = Math.min(100, (dailyTotals.protein / dailyGoal.protein) * 100);
   const carbsPercentage = Math.min(100, (dailyTotals.carbs / dailyGoal.carbs) * 100);
-  
+
   // Handle category change
   useEffect(() => {
     setSelectedFood("");
     setSelectedFoodData(null);
     resetCalculations();
   }, [selectedCategory]);
-  
+
   // Handle food selection
   useEffect(() => {
     if (selectedFood && !customFoodMode) {
-      const foodData = foodDatabase.find(food => food.name === selectedFood);
+      const foodData = foodDatabaseList.find(food => food.name === selectedFood);
       setSelectedFoodData(foodData);
       calculateNutrition(foodData);
     } else {
@@ -676,11 +691,11 @@ export default function CaloriesCalculatorPage() {
       resetCalculations();
     }
   }, [selectedFood, quantity, unit]);
-  
+
   // Handle search query
   useEffect(() => {
     if (searchQuery.length >= 2) {
-      const results = foodDatabase.filter(food => 
+      const results = foodDatabaseList.filter(food => 
         food.name.includes(searchQuery)
       );
       setSearchResults(results);
@@ -690,48 +705,48 @@ export default function CaloriesCalculatorPage() {
       setShowSearchResults(false);
     }
   }, [searchQuery]);
-  
+
   // Calculate nutrition based on selected food and quantity
   const calculateNutrition = (foodData: any) => {
     if (!foodData) return;
-    
+
     const weightInGrams = quantity * unitToGramEquivalents[unit];
     const scaleFactor = weightInGrams / 100; // Per 100g
-    
+
     setCalculatedCalories(Math.round(foodData.calories * scaleFactor));
     setCalculatedProtein(Math.round(foodData.protein * scaleFactor * 10) / 10);
     setCalculatedCarbs(Math.round(foodData.carbs * scaleFactor * 10) / 10);
   };
-  
+
   // Reset all calculation fields
   const resetCalculations = () => {
     setCalculatedCalories(0);
     setCalculatedProtein(0);
     setCalculatedCarbs(0);
   };
-  
+
   // Handle custom food calculation
   useEffect(() => {
     if (customFoodMode) {
       const weightInGrams = quantity * unitToGramEquivalents[unit];
       const scaleFactor = weightInGrams / 100; // Per 100g
-      
+
       setCalculatedCalories(Math.round(customFoodCalories * scaleFactor));
       setCalculatedProtein(Math.round(customFoodProtein * scaleFactor * 10) / 10);
       setCalculatedCarbs(Math.round(customFoodCarbs * scaleFactor * 10) / 10);
     }
   }, [customFoodMode, customFoodCalories, customFoodProtein, customFoodCarbs, quantity, unit]);
-  
+
   // Add food to daily history
   const addToHistory = () => {
     let newItem: HistoryItem;
-    
+
     if (customFoodMode) {
       if (!customFoodName) {
         alert("الرجاء إدخال اسم الطعام");
         return;
       }
-      
+
       newItem = {
         id: Date.now().toString(),
         name: customFoodName,
@@ -748,7 +763,7 @@ export default function CaloriesCalculatorPage() {
         alert("الرجاء اختيار طعام");
         return;
       }
-      
+
       newItem = {
         id: Date.now().toString(),
         name: selectedFoodData.name,
@@ -761,9 +776,19 @@ export default function CaloriesCalculatorPage() {
         unit: unit
       };
     }
-    
+
+    // Check for duplicate keys before adding
+    const isDuplicate = dailyHistory.some(
+      (item) => item.name === newItem.name && item.category === newItem.category
+    );
+
+    if (isDuplicate) {
+      alert("هذا الطعام موجود بالفعل في سجل اليوم.");
+      return;
+    }
+
     setDailyHistory([...dailyHistory, newItem]);
-    
+
     // Reset form
     setSelectedCategory("");
     setSelectedFood("");
@@ -775,12 +800,12 @@ export default function CaloriesCalculatorPage() {
     setQuantity(1);
     resetCalculations();
   };
-  
+
   // Remove item from history
   const removeFromHistory = (id: string) => {
     setDailyHistory(dailyHistory.filter(item => item.id !== id));
   };
-  
+
   // Format units for display
   const formatUnit = (unit: string, quantity: number) => {
     switch(unit) {
@@ -796,11 +821,11 @@ export default function CaloriesCalculatorPage() {
         return unit;
     }
   };
-  
+
   // Handle goal selection
   const handleGoalChange = (value: string) => {
     setSelectedGoal(value);
-    
+
     switch(value) {
       case "1500":
         setDailyGoal({ calories: 1500, protein: 120, carbs: 170 });
@@ -818,7 +843,7 @@ export default function CaloriesCalculatorPage() {
         setDailyGoal({ calories: 2000, protein: 150, carbs: 200 });
     }
   };
-  
+
   // Select food from search results
   const selectFromSearch = (food: any) => {
     setSelectedCategory(food.category);
@@ -828,14 +853,14 @@ export default function CaloriesCalculatorPage() {
     setShowSearchResults(false);
     setSearchQuery("");
   };
-  
+
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-2xl md:text-3xl font-bold text-center mb-8 flex items-center justify-center">
         <Calculator className="ml-2 h-6 w-6 text-primary" />
         حاسبة السعرات الحرارية
       </h1>
-      
+
       <Tabs defaultValue="calculator" className="w-full">
         <TabsList className="grid w-full grid-cols-2 mb-6">
           <TabsTrigger value="calculator" className="text-sm md:text-base">
@@ -847,7 +872,7 @@ export default function CaloriesCalculatorPage() {
             سجل اليوم
           </TabsTrigger>
         </TabsList>
-        
+
         <TabsContent value="calculator">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card>
@@ -860,7 +885,7 @@ export default function CaloriesCalculatorPage() {
                   ابحث عن الطعام أو أدخل قيمه الغذائية يدوياً
                 </CardDescription>
               </CardHeader>
-              
+
               <CardContent className="space-y-4">
                 {/* Search */}
                 <div className="relative">
@@ -871,7 +896,7 @@ export default function CaloriesCalculatorPage() {
                     className="pl-10"
                   />
                   <Search className="absolute right-3 top-2.5 h-4 w-4 text-neutral-400" />
-                  
+
                   {showSearchResults && searchResults.length > 0 && (
                     <div className="absolute w-full z-10 mt-1 bg-white dark:bg-neutral-800 rounded-md shadow-lg max-h-60 overflow-auto">
                       {searchResults.map((food, index) => (
@@ -888,14 +913,14 @@ export default function CaloriesCalculatorPage() {
                       ))}
                     </div>
                   )}
-                  
+
                   {showSearchResults && searchResults.length === 0 && searchQuery.length >= 2 && (
                     <div className="absolute w-full z-10 mt-1 bg-white dark:bg-neutral-800 rounded-md shadow-lg p-4 text-center">
                       لا توجد نتائج. جرب إضافة طعام مخصص.
                     </div>
                   )}
                 </div>
-                
+
                 {/* Category and Food Selection */}
                 {!customFoodMode && (
                   <>
@@ -911,7 +936,7 @@ export default function CaloriesCalculatorPage() {
                         ))}
                       </SelectContent>
                     </Select>
-                    
+
                     {selectedCategory && (
                       <Select value={selectedFood} onValueChange={setSelectedFood}>
                         <SelectTrigger>
@@ -928,7 +953,7 @@ export default function CaloriesCalculatorPage() {
                     )}
                   </>
                 )}
-                
+
                 {/* Custom Food Inputs */}
                 {customFoodMode && (
                   <div className="space-y-3 p-3 border rounded-md bg-neutral-50 dark:bg-neutral-800">
@@ -970,7 +995,7 @@ export default function CaloriesCalculatorPage() {
                     <p className="text-xs text-neutral-500">جميع القيم لكل 100 جرام</p>
                   </div>
                 )}
-                
+
                 {/* Quantity Input */}
                 <div className="grid grid-cols-2 gap-3">
                   <Select value={unit} onValueChange={setUnit}>
@@ -984,7 +1009,7 @@ export default function CaloriesCalculatorPage() {
                       <SelectItem value="serving">حصة</SelectItem>
                     </SelectContent>
                   </Select>
-                  
+
                   <Input
                     type="number"
                     placeholder="الكمية"
@@ -994,7 +1019,7 @@ export default function CaloriesCalculatorPage() {
                     step={0.25}
                   />
                 </div>
-                
+
                 {/* Results */}
                 <div className="bg-neutral-50 dark:bg-neutral-800 p-4 rounded-md space-y-2">
                   <div className="flex justify-between">
@@ -1010,7 +1035,7 @@ export default function CaloriesCalculatorPage() {
                     <span className="font-bold text-amber-600">{calculatedCarbs} جرام</span>
                   </div>
                 </div>
-                
+
                 <div className="flex gap-2">
                   <Button 
                     onClick={addToHistory} 
@@ -1024,7 +1049,7 @@ export default function CaloriesCalculatorPage() {
                     <PlusCircle className="ml-2 h-4 w-4" />
                     إضافة للسجل
                   </Button>
-                  
+
                   <Button
                     variant="outline"
                     className="flex-none"
@@ -1035,7 +1060,7 @@ export default function CaloriesCalculatorPage() {
                 </div>
               </CardContent>
             </Card>
-            
+
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center">
@@ -1046,7 +1071,7 @@ export default function CaloriesCalculatorPage() {
                   إحصائيات استهلاكك اليومي والأهداف
                 </CardDescription>
               </CardHeader>
-              
+
               <CardContent className="space-y-6">
                 <Select value={selectedGoal} onValueChange={handleGoalChange}>
                   <SelectTrigger>
@@ -1059,14 +1084,14 @@ export default function CaloriesCalculatorPage() {
                     <SelectItem value="3000">زيادة وزن كبيرة (3000 سعرة)</SelectItem>
                   </SelectContent>
                 </Select>
-                
+
                 <div>
                   <div className="flex justify-between mb-1">
                     <span className="text-sm">السعرات الحرارية</span>
                     <span className="text-sm">{dailyTotals.calories} / {dailyGoal.calories}</span>
                   </div>
                   <Progress value={caloriesPercentage} className="h-2.5 mb-3" />
-                  
+
                   <div className="flex justify-between mb-1">
                     <span className="text-sm">البروتين</span>
                     <span className="text-sm">{dailyTotals.protein.toFixed(1)} / {dailyGoal.protein} جرام</span>
@@ -1077,7 +1102,7 @@ export default function CaloriesCalculatorPage() {
                       style={{ width: `${proteinPercentage}%` }}
                     />
                   </Progress>
-                  
+
                   <div className="flex justify-between mb-1">
                     <span className="text-sm">الكربوهيدرات</span>
                     <span className="text-sm">{dailyTotals.carbs.toFixed(1)} / {dailyGoal.carbs} جرام</span>
@@ -1089,14 +1114,14 @@ export default function CaloriesCalculatorPage() {
                     />
                   </Progress>
                 </div>
-                
+
                 <div className="bg-neutral-50 dark:bg-neutral-800 p-4 rounded-md">
                   <h3 className="font-medium mb-2">السعرات المتبقية</h3>
                   <div className="text-3xl font-bold text-primary">
                     {Math.max(0, dailyGoal.calories - dailyTotals.calories)}
                     <span className="text-base font-normal text-neutral-500 dark:text-neutral-400 mr-1">سعرة</span>
                   </div>
-                  
+
                   <div className="mt-4 grid grid-cols-2 gap-2 text-sm">
                     <div>
                       <span className="text-green-600 font-medium">البروتين: </span>
@@ -1108,7 +1133,7 @@ export default function CaloriesCalculatorPage() {
                     </div>
                   </div>
                 </div>
-                
+
                 {/* Status Message */}
                 {dailyTotals.calories > 0 && (
                   <div className={`p-3 rounded-md ${
@@ -1132,7 +1157,7 @@ export default function CaloriesCalculatorPage() {
             </Card>
           </div>
         </TabsContent>
-        
+
         <TabsContent value="history">
           <Card>
             <CardHeader>
@@ -1144,7 +1169,7 @@ export default function CaloriesCalculatorPage() {
                 جميع الأطعمة المسجلة اليوم
               </CardDescription>
             </CardHeader>
-            
+
             <CardContent>
               {dailyHistory.length === 0 ? (
                 <div className="text-center py-6 text-neutral-500 dark:text-neutral-400">
@@ -1166,7 +1191,7 @@ export default function CaloriesCalculatorPage() {
                             {item.category}
                           </Badge>
                         </div>
-                        
+
                         <div className="text-right">
                           <div className="font-medium text-primary">{item.calories} سعرة</div>
                           <div className="flex space-x-4 space-x-reverse text-xs mt-1">
@@ -1175,7 +1200,7 @@ export default function CaloriesCalculatorPage() {
                           </div>
                         </div>
                       </div>
-                      
+
                       <button 
                         className="absolute top-2 left-2 text-red-500 hover:text-red-700"
                         onClick={() => removeFromHistory(item.id)}
