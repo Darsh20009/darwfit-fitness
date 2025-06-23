@@ -34,7 +34,27 @@ export default function FreePlanViewPage() {
 
     const savedPlan = localStorage.getItem('freePlan');
     if (savedPlan) {
-      setFreePlan(JSON.parse(savedPlan));
+      const plan = JSON.parse(savedPlan);
+      
+      // التحقق من انتهاء صلاحية الخطة المجانية
+      const expiresAt = new Date(plan.expiresAt);
+      const now = new Date();
+      
+      if (now > expiresAt) {
+        // انتهت صلاحية الخطة - توجيه للاشتراك
+        localStorage.removeItem('freePlan');
+        localStorage.removeItem('freePlanProgress');
+        
+        // عرض رسالة وتوجيه للاشتراك
+        setTimeout(() => {
+          setLocation('/subscription?expired=true');
+        }, 2000);
+        
+        setFreePlan({ ...plan, expired: true });
+        return;
+      }
+      
+      setFreePlan(plan);
     } else {
       setLocation('/free-plan');
     }
@@ -81,6 +101,86 @@ export default function FreePlanViewPage() {
           <Button onClick={() => setLocation('/free-plan')} className="bg-blue-600 hover:bg-blue-700">
             إنشاء خطة جديدة
           </Button>
+        </div>
+      </div>
+    );
+  }
+
+  // إذا انتهت صلاحية الخطة
+  if (freePlan.expired) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-red-50 via-orange-50 to-yellow-50 dark:from-red-900 dark:via-orange-900 dark:to-yellow-900 flex items-center justify-center">
+        <div className="max-w-2xl mx-auto p-8">
+          <Card className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm shadow-2xl border-4 border-orange-400">
+            <CardHeader className="text-center bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-t-lg">
+              <div className="flex justify-center mb-4">
+                <div className="w-24 h-24 bg-white rounded-full flex items-center justify-center">
+                  <Clock className="h-12 w-12 text-orange-500" />
+                </div>
+              </div>
+              <CardTitle className="text-3xl font-bold mb-2">
+                ⏰ انتهت مدة الاشتراك المجاني
+              </CardTitle>
+              <p className="text-orange-100 text-lg">
+                لقد انتهت مدة الـ 15 يوماً المجانية
+              </p>
+            </CardHeader>
+            <CardContent className="p-8 text-center">
+              <div className="space-y-6">
+                <div className="bg-orange-50 dark:bg-orange-900/20 p-6 rounded-lg">
+                  <h3 className="text-xl font-bold text-orange-600 mb-3">🎉 تهانينا على إكمال الفترة التجريبية!</h3>
+                  <p className="text-gray-700 dark:text-gray-300 mb-4">
+                    لقد أكملت {completedDays.length} يوماً من أصل 15 يوماً في خطتك المجانية
+                  </p>
+                  <div className="bg-white dark:bg-gray-800 p-4 rounded-lg">
+                    <Progress value={(completedDays.length / 15) * 100} className="mb-2" />
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      معدل الإنجاز: {Math.round((completedDays.length / 15) * 100)}%
+                    </p>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <h4 className="text-lg font-bold text-gray-800 dark:text-gray-200">
+                    🚀 للمتابعة، اختر إحدى الباقات المتاحة:
+                  </h4>
+                  
+                  <div className="grid gap-4">
+                    <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-4 rounded-lg text-white">
+                      <h5 className="font-bold text-lg mb-2">⭐ باقة 3 شهور - الأكثر شعبية</h5>
+                      <p className="text-sm mb-3">خطة شاملة مع متابعة أسبوعية</p>
+                      <div className="text-2xl font-bold">100 ريال</div>
+                    </div>
+                    
+                    <div className="bg-gradient-to-r from-green-500 to-teal-600 p-4 rounded-lg text-white">
+                      <h5 className="font-bold text-lg mb-2">💎 باقات مختلفة متاحة</h5>
+                      <p className="text-sm">شهر واحد، 6 شهور، أو سنة كاملة</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Button 
+                    onClick={() => setLocation("/subscription")}
+                    className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold py-4 px-8 rounded-xl text-lg transform hover:scale-105 transition-all duration-300 shadow-lg"
+                  >
+                    🔥 اختيار باقة الآن
+                  </Button>
+                  <Button 
+                    variant="outline"
+                    onClick={() => setLocation("/")}
+                    className="border-orange-400 text-orange-600 hover:bg-orange-50 py-4 px-8 rounded-xl text-lg"
+                  >
+                    🏠 العودة للرئيسية
+                  </Button>
+                </div>
+
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  💡 الباقات المدفوعة تشمل خطط مخصصة أكثر ومتابعة مع مدربين محترفين
+                </p>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     );

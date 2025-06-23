@@ -19,7 +19,7 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select";
-import { ArrowLeft, CheckCircle, Info } from "lucide-react";
+import { ArrowLeft, CheckCircle, Info, Clock } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import { Badge } from "@/components/ui/badge";
@@ -29,6 +29,10 @@ export default function SubscriptionPage() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  // التحقق من وجود معامل expired في الرابط
+  const urlParams = new URLSearchParams(window.location.search);
+  const isExpired = urlParams.get('expired') === 'true';
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -129,6 +133,21 @@ export default function SubscriptionPage() {
 
   return (
     <div className="container mx-auto px-4 py-8 min-h-[calc(100vh-70px)]">
+      {/* Expired Plan Message */}
+      {isExpired && (
+        <Card className="max-w-3xl mx-auto mb-6 border-4 border-orange-400 bg-gradient-to-r from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20">
+          <CardHeader className="text-center">
+            <div className="flex justify-center items-center mb-4">
+              <Clock className="h-8 w-8 text-orange-500 ml-3" />
+              <CardTitle className="text-2xl text-orange-600">🎯 انتهت فترتك التجريبية!</CardTitle>
+            </div>
+            <p className="text-orange-700 dark:text-orange-300 text-lg">
+              تهانينا على إكمال الـ 15 يوماً المجانية! الآن يمكنك الاختيار من الباقات التالية للمتابعة
+            </p>
+          </CardHeader>
+        </Card>
+      )}
+      
       {/* Subscription Info Card */}
       <Card className="max-w-3xl mx-auto mb-6 border-2 border-primary">
         <CardHeader className="bg-primary/5">
