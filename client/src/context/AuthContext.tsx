@@ -34,8 +34,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const login = (username: string, password: string) => {
-  // حفظ بيانات تسجيل الدخول في localStorage
-  localStorage.setItem('auth', JSON.stringify({ username, isLoggedIn: true }));
     // Fixed credentials check
     if (username === "محمد السهلي" && password === "123456") {
       // Hard-coded subscription details for demo purposes
@@ -47,7 +45,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setSubscriptionId(subsId);
       setSubscriptionEndDate(endDate);
       
-      // Save to localStorage
+      // Save to localStorage with better structure
+      const authData = {
+        isLoggedIn: true,
+        username,
+        subscriptionId: subsId,
+        subscriptionEndDate: endDate,
+        loginTime: new Date().toISOString()
+      };
+      
+      localStorage.setItem("auth", JSON.stringify(authData));
       localStorage.setItem("username", username);
       localStorage.setItem("subscriptionId", subsId);
       localStorage.setItem("subscriptionEndDate", endDate);
@@ -63,6 +70,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setSubscriptionId(null);
     setSubscriptionEndDate(null);
     
+    // Clear auth data but keep user preferences
+    localStorage.removeItem("auth");
     localStorage.removeItem("username");
     localStorage.removeItem("subscriptionId");
     localStorage.removeItem("subscriptionEndDate");

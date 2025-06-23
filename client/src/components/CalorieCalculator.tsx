@@ -26,6 +26,7 @@ import {
   Dumbbell, 
   Flame 
 } from "lucide-react";
+import { LocalStorageManager } from "@/lib/localStorage";
 
 type ActivityLevel = "sedentary" | "light" | "moderate" | "active" | "very_active";
 type Goal = "lose" | "maintain" | "gain";
@@ -51,27 +52,63 @@ export default function CalorieCalculator({
   const [gender, setGender] = useState<Gender>(initialGender);
   const [activityLevel, setActivityLevel] = useState<ActivityLevel>("moderate");
   const [goal, setGoal] = useState<Goal>("maintain");
-  
+
   // Results state
   const [bmr, setBmr] = useState(0);
   const [tdee, setTdee] = useState(0);
   const [targetCalories, setTargetCalories] = useState(0);
   const [hasCalculated, setHasCalculated] = useState(false);
   const [macros, setMacros] = useState({ protein: 0, carbs: 0, fat: 0 });
-  
+
+  // Load saved data on component mount
+  useEffect(() => {
+    const savedData = LocalStorageManager.getItem('calorie_form_data');
+    if (savedData) {
+      setWeight(savedData.weight || "");
+      setHeight(savedData.height || "");
+      setAge(savedData.age || "");
+      setGender(savedData.gender || "");
+      setActivityLevel(savedData.activityLevel || "");
+      setGoal(savedData.goal || "");
+      setBmr(savedData.bmr || 0);
+      setTdee(savedData.tdee || 0);
+      setTargetCalories(savedData.targetCalories || 0);
+      setMacros(savedData.macros || { protein: 0, carbs: 0, fat: 0 });
+      setHasCalculated(savedData.hasCalculated || false);
+    }
+  }, []);
+
+  // Save form data whenever it changes
+  useEffect(() => {
+    const formData = {
+      weight,
+      height,
+      age,
+      gender,
+      activityLevel,
+      goal,
+      bmr,
+      tdee,
+      targetCalories,
+      macros,
+      hasCalculated
+    };
+    LocalStorageManager.setItem('calorie_form_data', formData);
+  }, [weight, height, age, gender, activityLevel, goal, bmr, tdee, targetCalories, macros, hasCalculated]);
+
   // Function to calculate BMR using the Mifflin-St Jeor Equation
   const calculateBMR = () => {
     let calculatedBMR = 0;
-    
+
     if (gender === "male") {
       calculatedBMR = 10 * weight + 6.25 * height - 5 * age + 5;
     } else {
       calculatedBMR = 10 * weight + 6.25 * height - 5 * age - 161;
     }
-    
+
     return calculatedBMR;
   };
-  
+
   // Function to calculate TDEE based on activity level
   const calculateTDEE = (baseBMR: number) => {
     const activityMultipliers = {
@@ -81,10 +118,10 @@ export default function CalorieCalculator({
       active: 1.725,       // Heavy exercise 6-7 days/week
       very_active: 1.9     // Very heavy exercise, physical job or training twice a day
     };
-    
+
     return baseBMR * activityMultipliers[activityLevel];
   };
-  
+
   // Function to calculate target calories based on goals
   const calculateTargetCalories = (baseTDEE: number) => {
     if (goal === "lose") {
@@ -95,11 +132,11 @@ export default function CalorieCalculator({
       return baseTDEE; // maintain current weight
     }
   };
-  
+
   // Function to calculate macronutrients
   const calculateMacros = (calories: number) => {
     let protein = 0, carbs = 0, fat = 0;
-    
+
     if (goal === "lose") {
       // Higher protein, moderate fat, lower carbs for weight loss
       protein = weight * 2.2; // 2.2g per kg of body weight
@@ -116,28 +153,46 @@ export default function CalorieCalculator({
       fat = weight * 0.8;     // 0.8g per kg of body weight
       carbs = (calories - (protein * 4 + fat * 9)) / 4;
     }
-    
+
     return {
       protein: Math.round(protein),
       carbs: Math.round(carbs),
       fat: Math.round(fat)
     };
   };
-  
+
   // Handle calculation
   const handleCalculate = () => {
     const calculatedBMR = calculateBMR();
     const calculatedTDEE = calculateTDEE(calculatedBMR);
     const calculatedTargetCalories = calculateTargetCalories(calculatedTDEE);
     const calculatedMacros = calculateMacros(calculatedTargetCalories);
-    
+
     setBmr(Math.round(calculatedBMR));
     setTdee(Math.round(calculatedTDEE));
     setTargetCalories(Math.round(calculatedTargetCalories));
     setMacros(calculatedMacros);
     setHasCalculated(true);
+
+    // const calculationResult = {
+    //   bmr: Math.round(bmr),
+    //   tdee: Math.round(tdee),
+    //   goalCalories: Math.round(goalCalories),
+    //   protein: Math.round(protein),
+    //   carbs: Math.round(carbs),
+    //   fats: Math.round(fats)
+    // };
+
+    // // حساب النتائج وعرضها
+    // setResult(calculationResult);
+
+    // // حفظ النتيجة في التاريخ المحلي
+    // LocalStorageManager.saveCalorieCalculation({
+    //   input: { weight, height, age, gender, activity, goal },
+    //   result: calculationResult
+    // });
   };
-  
+
   // Text utility functions
   const getActivityLevelText = () => {
     const texts = {
@@ -149,7 +204,7 @@ export default function CalorieCalculator({
     };
     return texts[activityLevel];
   };
-  
+
   const getGoalText = () => {
     const texts = {
       lose: "خسارة الوزن",
@@ -158,7 +213,7 @@ export default function CalorieCalculator({
     };
     return texts[goal];
   };
-  
+
   // Reset all values
   const handleReset = () => {
     setWeight(initialWeight || 70);
@@ -169,7 +224,7 @@ export default function CalorieCalculator({
     setGoal("maintain");
     setHasCalculated(false);
   };
-  
+
   return (
     <Card className="w-full max-w-3xl mx-auto">
       <CardHeader>
@@ -183,14 +238,14 @@ export default function CalorieCalculator({
           <Calculator className="h-8 w-8 text-primary" />
         </div>
       </CardHeader>
-      
+
       <CardContent>
         <Tabs defaultValue="calculator" className="w-full">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="calculator">الحاسبة</TabsTrigger>
             <TabsTrigger value="results" disabled={!hasCalculated}>النتائج</TabsTrigger>
           </TabsList>
-          
+
           <TabsContent value="calculator" className="pt-4">
             <div className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -205,7 +260,7 @@ export default function CalorieCalculator({
                     onChange={(e) => setWeight(Number(e.target.value))}
                   />
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="height">الطول (سم)</Label>
                   <Input
@@ -218,7 +273,7 @@ export default function CalorieCalculator({
                   />
                 </div>
               </div>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="age">العمر</Label>
@@ -231,7 +286,7 @@ export default function CalorieCalculator({
                     onChange={(e) => setAge(Number(e.target.value))}
                   />
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="gender">الجنس</Label>
                   <Select value={gender} onValueChange={(value) => setGender(value as Gender)}>
@@ -245,7 +300,7 @@ export default function CalorieCalculator({
                   </Select>
                 </div>
               </div>
-              
+
               <div className="space-y-2">
                 <Label htmlFor="activity">مستوى النشاط البدني</Label>
                 <Select value={activityLevel} onValueChange={(value) => setActivityLevel(value as ActivityLevel)}>
@@ -261,7 +316,7 @@ export default function CalorieCalculator({
                   </SelectContent>
                 </Select>
               </div>
-              
+
               <div className="space-y-2">
                 <Label htmlFor="goal">الهدف</Label>
                 <Select value={goal} onValueChange={(value) => setGoal(value as Goal)}>
@@ -275,7 +330,7 @@ export default function CalorieCalculator({
                   </SelectContent>
                 </Select>
               </div>
-              
+
               <div className="flex justify-end space-x-2 space-x-reverse pt-4">
                 <Button variant="outline" onClick={handleReset}>
                   إعادة تعيين
@@ -287,7 +342,7 @@ export default function CalorieCalculator({
               </div>
             </div>
           </TabsContent>
-          
+
           <TabsContent value="results" className="pt-4 space-y-4">
             {hasCalculated && (
               <>
@@ -300,7 +355,7 @@ export default function CalorieCalculator({
                       <p className="text-xs text-neutral-500">سعرة حرارية / يوم</p>
                     </CardContent>
                   </Card>
-                  
+
                   <Card className="bg-secondary/5 border-secondary/20">
                     <CardContent className="p-4 text-center">
                       <Dumbbell className="h-8 w-8 text-secondary mx-auto mb-2" />
@@ -309,7 +364,7 @@ export default function CalorieCalculator({
                       <p className="text-xs text-neutral-500">سعرة حرارية / يوم</p>
                     </CardContent>
                   </Card>
-                  
+
                   <Card className="bg-green-50 border-green-200 dark:bg-green-900/10 dark:border-green-800">
                     <CardContent className="p-4 text-center">
                       <Flame className="h-8 w-8 text-green-600 mx-auto mb-2" />
@@ -319,33 +374,33 @@ export default function CalorieCalculator({
                     </CardContent>
                   </Card>
                 </div>
-                
+
                 <div className="bg-neutral-50 dark:bg-neutral-800 p-4 rounded-lg">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="font-bold text-lg">العناصر الغذائية المقترحة</h3>
                     <Badge className="bg-primary">{getGoalText()}</Badge>
                   </div>
-                  
+
                   <div className="grid grid-cols-3 gap-4 mb-4">
                     <div className="text-center bg-red-50 dark:bg-red-900/10 p-2 rounded-lg">
                       <h4 className="text-sm text-neutral-600 dark:text-neutral-400">بروتين</h4>
                       <p className="text-xl font-bold text-red-600">{macros.protein}g</p>
                       <p className="text-xs text-neutral-500">{Math.round(macros.protein * 4)} سعرة</p>
                     </div>
-                    
+
                     <div className="text-center bg-amber-50 dark:bg-amber-900/10 p-2 rounded-lg">
                       <h4 className="text-sm text-neutral-600 dark:text-neutral-400">دهون</h4>
                       <p className="text-xl font-bold text-amber-600">{macros.fat}g</p>
                       <p className="text-xs text-neutral-500">{Math.round(macros.fat * 9)} سعرة</p>
                     </div>
-                    
+
                     <div className="text-center bg-blue-50 dark:bg-blue-900/10 p-2 rounded-lg">
                       <h4 className="text-sm text-neutral-600 dark:text-neutral-400">كربوهيدرات</h4>
                       <p className="text-xl font-bold text-blue-600">{macros.carbs}g</p>
                       <p className="text-xs text-neutral-500">{Math.round(macros.carbs * 4)} سعرة</p>
                     </div>
                   </div>
-                  
+
                   <div className="text-sm text-neutral-600 dark:text-neutral-400 space-y-2">
                     <p>
                       <span className="font-medium">المعلومات الشخصية:</span> {age} سنة، {gender === "male" ? "ذكر" : "أنثى"}، {height} سم، {weight} كجم
@@ -358,7 +413,7 @@ export default function CalorieCalculator({
                     </p>
                   </div>
                 </div>
-                
+
                 <div className="p-4 bg-primary/5 rounded-lg">
                   <h3 className="font-bold mb-2">نصائح غذائية:</h3>
                   <ul className="list-disc list-inside space-y-1 text-sm">

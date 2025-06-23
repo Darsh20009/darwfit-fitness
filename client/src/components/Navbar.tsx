@@ -1,99 +1,231 @@
-import { useLocation } from "wouter";
-import ThemeToggle from "./ThemeToggle";
-import { useAuth } from "../hooks/useAuth";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { LogOut, MessageCircle, User } from "lucide-react";
+import { useAuth } from "../hooks/useAuth";
+import { useLocation } from "wouter";
+import { useTheme } from "../context/ThemeContext";
+import { Sun, Moon, Menu, X } from "lucide-react";
+import { useState } from "react";
 
 export default function Navbar() {
+  const { isLoggedIn, username, subscriptionId, logout } = useAuth();
   const [, navigate] = useLocation();
-  const { isLoggedIn, username, subscriptionId, subscriptionEndDate, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // Function to handle WhatsApp contact
-  const contactCoach = () => {
-    window.open("https://api.whatsapp.com/send/?phone=201155201921&text=مرحبا،%20أنا%20مشترك%20في%20Darwfit%20ورقم%20اشتراكي%20" + subscriptionId, "_blank");
+  const handleWhatsAppClick = () => {
+    if (!subscriptionId) return;
+
+    const message = `مرحباً، أحتاج للتواصل معكم بخصوص اشتراكي رقم: ${subscriptionId}`;
+    const phoneNumber = "966555555555"; // رقم واتساب وهمي
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+
+    window.open(whatsappUrl, "_blank");
+    setIsMobileMenuOpen(false);
+  };
+
+  const handleInstagramClick = () => {
+    if (!subscriptionId) return;
+
+    const instagramUrl = "https://instagram.com/darwfit"; // حساب انستقرام وهمي
+    window.open(instagramUrl, "_blank");
+    setIsMobileMenuOpen(false);
+  };
+
+  const handleNavigation = (path: string) => {
+    navigate(path);
+    setIsMobileMenuOpen(false);
   };
 
   return (
-    <nav className="bg-white dark:bg-neutral-800 shadow-md">
-      <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-        <div className="flex items-center space-x-4 space-x-reverse">
+    <nav className="bg-white dark:bg-neutral-800 shadow-md relative">
+      <div className="container mx-auto px-4 py-3">
+        <div className="flex justify-between items-center">
+          {/* Logo */}
           <h1 
-            className="text-2xl font-bold cursor-pointer"
-            onClick={() => navigate("/")}
+            className="text-xl md:text-2xl font-bold cursor-pointer btn-touch"
+            onClick={() => handleNavigation("/")}
           >
             <span className="text-secondary">Darw</span>
             <span className="text-primary">fit</span>
           </h1>
-          
-          <nav className="hidden md:flex items-center mr-6 space-x-6 space-x-reverse">
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-4 space-x-reverse">
             <button 
               onClick={() => navigate("/calories")}
-              className="text-sm font-medium text-neutral-700 hover:text-primary dark:text-neutral-300 dark:hover:text-primary transition-colors"
+              className="text-sm font-medium text-neutral-700 hover:text-primary dark:text-neutral-300 dark:hover:text-primary transition-colors btn-touch"
             >
               حاسبة السعرات
             </button>
-            
+
             <button 
               onClick={() => navigate("/subscription")}
-              className="text-sm font-medium text-neutral-700 hover:text-primary dark:text-neutral-300 dark:hover:text-primary transition-colors"
+              className="text-sm font-medium text-neutral-700 hover:text-primary dark:text-neutral-300 dark:hover:text-primary transition-colors btn-touch"
             >
               الاشتراكات
             </button>
-          </nav>
-          
-          {isLoggedIn && subscriptionId && (
-            <div className="hidden md:flex items-center mr-4 space-x-2 space-x-reverse">
+
+            {isLoggedIn && subscriptionId && (
               <Badge variant="outline" className="bg-primary/10 text-primary border-primary px-2 py-1">
                 رقم الاشتراك: {subscriptionId}
               </Badge>
-              <Badge variant="outline" className="bg-secondary/10 text-secondary border-secondary px-2 py-1">
-                ينتهي في: {subscriptionEndDate}
-              </Badge>
-            </div>
-          )}
-        </div>
-        
-        <div className="flex items-center space-x-3 space-x-reverse">
-          <ThemeToggle />
-          
-          {isLoggedIn && (
-            <>
-              <div className="hidden md:flex items-center">
+            )}
+          </div>
+
+          {/* Desktop Right Side */}
+          <div className="hidden md:flex items-center space-x-2 space-x-reverse">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={toggleTheme}
+              className="rounded-full w-9 h-9 btn-touch"
+            >
+              {theme === "light" ? <Moon size={18} /> : <Sun size={18} />}
+            </Button>
+
+            {isLoggedIn ? (
+              <div className="flex items-center space-x-3 space-x-reverse">
+                <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
+                  أهلاً، {username}
+                </span>
+
+                {subscriptionId && (
+                  <div className="flex items-center space-x-2 space-x-reverse">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={handleWhatsAppClick}
+                      className="text-green-600 border-green-600 hover:bg-green-50 dark:hover:bg-green-900/20 btn-touch"
+                    >
+                      واتساب
+                    </Button>
+
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={handleInstagramClick}
+                      className="text-pink-600 border-pink-600 hover:bg-pink-50 dark:hover:bg-pink-900/20 btn-touch"
+                    >
+                      انستقرام
+                    </Button>
+                  </div>
+                )}
+
                 <Button 
-                  variant="ghost" 
+                  variant="outline" 
                   size="sm" 
-                  onClick={contactCoach}
-                  className="text-green-600 hover:text-green-700 hover:bg-green-50 dark:hover:bg-green-900/20"
+                  onClick={logout}
+                  className="text-red-600 border-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 btn-touch"
                 >
-                  <MessageCircle className="h-4 w-4 ml-2" />
-                  تواصل مع المدرب
+                  تسجيل خروج
                 </Button>
               </div>
-              
-              <div className="flex items-center">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-xs md:text-sm"
-                >
-                  <User className="h-4 w-4 ml-1 text-primary" />
-                  <span className="hidden md:inline">{username}</span>
-                </Button>
-              </div>
-              
+            ) : (
               <Button 
-                variant="ghost" 
-                size="sm" 
-                onClick={logout}
-                className="text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20"
+                onClick={() => navigate("/login")}
+                size="sm"
+                className="btn-touch"
               >
-                <LogOut className="h-4 w-4" />
-                <span className="sr-only md:not-sr-only md:ml-2">تسجيل الخروج</span>
+                تسجيل دخول
               </Button>
-            </>
-          )}
+            )}
+          </div>
+
+          {/* Mobile Menu Button & Theme Toggle */}
+          <div className="flex md:hidden items-center space-x-2 space-x-reverse">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={toggleTheme}
+              className="rounded-full w-9 h-9 btn-touch"
+            >
+              {theme === "light" ? <Moon size={18} /> : <Sun size={18} />}
+            </Button>
+
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="btn-touch"
+            >
+              {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+            </Button>
+          </div>
         </div>
+
+        {/* Mobile Menu */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden absolute top-full left-0 right-0 bg-white dark:bg-neutral-800 shadow-lg z-50 border-t border-neutral-200 dark:border-neutral-700">
+            <div className="p-4 space-y-3">
+              <button 
+                onClick={() => handleNavigation("/calories")}
+                className="block w-full text-right py-3 px-4 text-sm font-medium text-neutral-700 hover:text-primary dark:text-neutral-300 dark:hover:text-primary transition-colors btn-touch rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700"
+              >
+                حاسبة السعرات
+              </button>
+
+              <button 
+                onClick={() => handleNavigation("/subscription")}
+                className="block w-full text-right py-3 px-4 text-sm font-medium text-neutral-700 hover:text-primary dark:text-neutral-300 dark:hover:text-primary transition-colors btn-touch rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700"
+              >
+                الاشتراكات
+              </button>
+
+              {isLoggedIn && subscriptionId && (
+                <div className="px-4 py-2">
+                  <Badge variant="outline" className="bg-primary/10 text-primary border-primary px-2 py-1">
+                    رقم الاشتراك: {subscriptionId}
+                  </Badge>
+                </div>
+              )}
+
+              {isLoggedIn ? (
+                <div className="space-y-3 pt-3 border-t border-neutral-200 dark:border-neutral-700">
+                  <div className="px-4">
+                    <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
+                      أهلاً، {username}
+                    </span>
+                  </div>
+
+                  {subscriptionId && (
+                    <div className="space-y-2">
+                      <Button
+                        variant="outline"
+                        onClick={handleWhatsAppClick}
+                        className="w-full text-green-600 border-green-600 hover:bg-green-50 dark:hover:bg-green-900/20 btn-touch"
+                      >
+                        تواصل واتساب
+                      </Button>
+
+                      <Button
+                        variant="outline"
+                        onClick={handleInstagramClick}
+                        className="w-full text-pink-600 border-pink-600 hover:bg-pink-50 dark:hover:bg-pink-900/20 btn-touch"
+                      >
+                        متابعة انستقرام
+                      </Button>
+                    </div>
+                  )}
+
+                  <Button 
+                    variant="outline" 
+                    onClick={logout}
+                    className="w-full text-red-600 border-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 btn-touch"
+                  >
+                    تسجيل خروج
+                  </Button>
+                </div>
+              ) : (
+                <Button 
+                  onClick={() => handleNavigation("/login")}
+                  className="w-full btn-touch"
+                >
+                  تسجيل دخول
+                </Button>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </nav>
   );
