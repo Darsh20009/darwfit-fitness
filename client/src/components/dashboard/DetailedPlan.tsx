@@ -1,323 +1,306 @@
-import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { getDailyMealPlan } from "../../data/mealPlans";
-import { getWorkoutByDayIndex, getWorkoutInstructions } from "../../data/workoutPlans";
-import { Utensils, Dumbbell, Info, AlertCircle, CheckCircle, ChevronDown, ChevronUp } from "lucide-react";
+
+import { useState, useEffect } from "react";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Progress } from "@/components/ui/progress";
+import { getDailyMealPlan } from "../../data/mealPlans";
+import { getWorkoutByDayIndex } from "../../data/workoutPlans";
+import { 
+  CheckCircle2, 
+  Circle, 
+  ArrowLeft, 
+  Utensils, 
+  Dumbbell,
+  Clock,
+  Target,
+  Info
+} from "lucide-react";
+import { LocalStorageManager } from "../../lib/localStorage";
 
 interface DetailedPlanProps {
-  date: Date;
-  formattedDate: string;
+  type: 'meal' | 'workout';
   dayIndex: number;
+  onBack: () => void;
 }
 
-export default function DetailedPlan({ formattedDate, dayIndex }: DetailedPlanProps) {
+export default function DetailedPlan({ type, dayIndex, onBack }: DetailedPlanProps) {
+  const [completedItems, setCompletedItems] = useState<Set<string>>(new Set());
+  
+  const dateKey = new Date().toISOString().split('T')[0];
+  
   const mealPlan = getDailyMealPlan();
   const workoutPlan = getWorkoutByDayIndex(dayIndex);
-  const workoutInstructions = getWorkoutInstructions();
-  const [completedMeals, setCompletedMeals] = useState<number[]>([]);
-  const [completedExercises, setCompletedExercises] = useState<string[]>([]);
-  
-  const toggleMealCompletion = (index: number) => {
-    setCompletedMeals(prev => 
-      prev.includes(index) 
-        ? prev.filter(i => i !== index) 
-        : [...prev, index]
+  const isRestDay = dayIndex === 6;
+
+  // تحميل البيانات المحفوظة
+  useEffect(() => {
+    if (type === 'meal') {
+      const savedProgress = LocalStorageManager.getMealProgress(dateKey);
+      const completed = new Set(
+        Object.keys(savedProgress).filter(key => savedProgress[key].completed)
+      );
+      setCompletedItems(completed);
+    } else {
+      const savedProgress = LocalStorageManager.getWorkoutProgress(dateKey);
+      const completed = new Set(
+        Object.keys(savedProgress).filter(key => savedProgress[key].completed)
+      );
+      setCompletedItems(completed);
+    }
+  }, [type, dateKey]);
+
+  const toggleItemCompletion = (itemName: string) => {
+    const newCompleted = new Set(completedItems);
+    if (newCompleted.has(itemName)) {
+      newCompleted.delete(itemName);
+    } else {
+      newCompleted.add(itemName);
+    }
+    setCompletedItems(newCompleted);
+    
+    // حفظ في localStorage
+    if (type === 'meal') {
+      const currentProgress = LocalStorageManager.getMealProgress(dateKey);
+      currentProgress[itemName] = {
+        completed: newCompleted.has(itemName),
+        completedAt: new Date().toISOString()
+      };
+      LocalStorageManager.setItem(`meal_progress_${dateKey}`, currentProgress);
+    } else {
+      const currentProgress = LocalStorageManager.getWorkoutProgress(dateKey);
+      currentProgress[itemName] = {
+        completed: newCompleted.has(itemName),
+        completedAt: new Date().toISOString()
+      };
+      LocalStorageManager.setItem(`workout_progress_${dateKey}`, currentProgress);
+    }
+  };
+
+  const renderMealPlan = () => {
+    const meals = [
+      { key: 'breakfast', data: mealPlan.breakfast },
+      { key: 'morningSnack', data: mealPlan.morningSnack },
+      { key: 'lunch', data: mealPlan.lunch },
+      { key: 'afternoonSnack', data: mealPlan.afternoonSnack },
+      { key: 'dinner', data: mealPlan.dinner },
+      { key: 'beforeSleep', data: mealPlan.beforeSleep },
+    ];
+
+    const totalMeals = meals.length;
+    const completedMeals = meals.filter(meal => completedItems.has(meal.data.title)).length;
+    const progress = (completedMeals / totalMeals) * 100;
+
+    return (
+      <div className="space-y-6">
+        {/* Progress Overview */}
+        <Card className="card-mobile">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Target className="h-5 w-5 text-green-600" />
+              التقدم اليومي
+            </CardTitle>
+            <CardDescription>
+              {completedMeals} من {totalMeals} وجبات مكتملة
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Progress value={progress} className="w-full h-3" />
+            <p className="text-sm text-muted-foreground mt-2">
+              {progress.toFixed(0)}% مكتمل
+            </p>
+          </CardContent>
+        </Card>
+
+        {/* Meals */}
+        <div className="space-y-4">
+          {meals.map((meal, index) => (
+            <Card key={meal.key} className="card-mobile">
+              <CardHeader>
+                <CardTitle className="flex items-center justify-between">
+                  <span className="flex items-center gap-2">
+                    <Utensils className="h-5 w-5 text-orange-600" />
+                    {meal.data.title}
+                  </span>
+                  <Button
+                    variant={completedItems.has(meal.data.title) ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => toggleItemCompletion(meal.data.title)}
+                    className="btn-touch"
+                  >
+                    {completedItems.has(meal.data.title) ? (
+                      <CheckCircle2 className="h-4 w-4" />
+                    ) : (
+                      <Circle className="h-4 w-4" />
+                    )}
+                  </Button>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <div className="space-y-2">
+                  {meal.data.items.map((item, itemIndex) => (
+                    <div key={itemIndex} className="flex items-start gap-2">
+                      <span className="text-primary mt-1">•</span>
+                      <span className="text-sm mobile-text">{item}</span>
+                    </div>
+                  ))}
+                </div>
+                
+                {meal.data.nutritionInfo && (
+                  <div className="flex flex-wrap gap-2 pt-2 border-t">
+                    {meal.data.nutritionInfo.protein && (
+                      <Badge variant="secondary" className="text-xs">
+                        بروتين: {meal.data.nutritionInfo.protein}
+                      </Badge>
+                    )}
+                    {meal.data.nutritionInfo.carbs && (
+                      <Badge variant="secondary" className="text-xs">
+                        كارب: {meal.data.nutritionInfo.carbs}
+                      </Badge>
+                    )}
+                    {meal.data.nutritionInfo.fats && (
+                      <Badge variant="secondary" className="text-xs">
+                        دهون: {meal.data.nutritionInfo.fats}
+                      </Badge>
+                    )}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        {/* Nutrition Guide */}
+        <Card className="card-mobile">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Info className="h-5 w-5 text-blue-600" />
+              {mealPlan.nutritionGuide.title}
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-2">
+              {mealPlan.nutritionGuide.items.map((tip, index) => (
+                <div key={index} className="flex items-start gap-2">
+                  <span className="text-blue-600 mt-1">•</span>
+                  <span className="text-sm mobile-text">{tip}</span>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     );
   };
-  
-  const toggleExerciseCompletion = (exerciseName: string) => {
-    setCompletedExercises(prev => 
-      prev.includes(exerciseName) 
-        ? prev.filter(name => name !== exerciseName) 
-        : [...prev, exerciseName]
+
+  const renderWorkoutPlan = () => {
+    if (isRestDay) {
+      return (
+        <Card className="card-mobile">
+          <CardContent className="text-center py-8">
+            <div className="text-4xl mb-4">🛌</div>
+            <div className="text-lg font-medium">يوم راحة</div>
+            <div className="text-sm text-muted-foreground mt-2">
+              يمكنك ممارسة إطالات خفيفة أو مشي بسيط
+            </div>
+          </CardContent>
+        </Card>
+      );
+    }
+
+    const exerciseGroups = Object.entries(workoutPlan.exercises);
+    const totalExercises = exerciseGroups.reduce((total, [_, exercises]) => total + exercises.length, 0);
+    const completedExercises = exerciseGroups.reduce((total, [_, exercises]) => {
+      return total + exercises.filter(ex => completedItems.has(ex.name)).length;
+    }, 0);
+    const progress = totalExercises > 0 ? (completedExercises / totalExercises) * 100 : 0;
+
+    return (
+      <div className="space-y-6">
+        {/* Progress Overview */}
+        <Card className="card-mobile">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Target className="h-5 w-5 text-blue-600" />
+              {workoutPlan.title}
+            </CardTitle>
+            <CardDescription>
+              {completedExercises} من {totalExercises} تمارين مكتملة
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Progress value={progress} className="w-full h-3" />
+            <p className="text-sm text-muted-foreground mt-2">
+              {progress.toFixed(0)}% مكتمل
+            </p>
+            <p className="text-sm text-muted-foreground mt-1">
+              {workoutPlan.description}
+            </p>
+          </CardContent>
+        </Card>
+
+        {/* Exercise Groups */}
+        <div className="space-y-4">
+          {exerciseGroups.map(([groupName, exercises], groupIndex) => (
+            <Card key={groupIndex} className="card-mobile">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Dumbbell className="h-5 w-5 text-blue-600" />
+                  {groupName}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {exercises.map((exercise, exerciseIndex) => (
+                  <div key={exerciseIndex} className="flex items-center justify-between p-3 bg-muted rounded-lg">
+                    <div className="flex-1">
+                      <div className="font-medium mobile-text">{exercise.name}</div>
+                      <div className="text-sm text-muted-foreground mobile-text">
+                        {exercise.sets} مجموعات × {exercise.reps}
+                      </div>
+                    </div>
+                    <Button
+                      variant={completedItems.has(exercise.name) ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => toggleItemCompletion(exercise.name)}
+                      className="btn-touch"
+                    >
+                      {completedItems.has(exercise.name) ? (
+                        <CheckCircle2 className="h-4 w-4" />
+                      ) : (
+                        <Circle className="h-4 w-4" />
+                      )}
+                    </Button>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
     );
   };
-  
-  return (
-    <Card className="mb-8 border-2 border-primary/10">
-      <CardHeader className="bg-gradient-to-r from-primary/5 to-secondary/5">
-        <div className="flex justify-between items-center">
-          <CardTitle className="text-xl md:text-2xl flex items-center">
-            <Info className="ml-2 h-5 w-5 text-primary" />
-            تفاصيل برنامج يوم {formattedDate}
-          </CardTitle>
-          <Badge className="bg-secondary text-white">
-            {workoutPlan.title}
-          </Badge>
-        </div>
-      </CardHeader>
-      
-      <CardContent className="p-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Nutrition Plan */}
-          <div>
-            <div className="flex items-center mb-4">
-              <Utensils className="ml-2 h-5 w-5 text-primary" />
-              <h4 className="text-xl font-bold text-primary">
-                خطة التغذية
-              </h4>
-            </div>
-            
-            <Accordion type="multiple" className="space-y-4">
-              <AccordionItem value="breakfast" className="border overflow-hidden rounded-lg shadow-sm transition-all hover:shadow-md">
-                <AccordionTrigger className={`p-3 ${completedMeals.includes(0) ? 'bg-green-50 dark:bg-green-900/10' : 'bg-neutral-50 dark:bg-neutral-800'}`}>
-                  <div className="flex items-center">
-                    <div 
-                      className={`ml-2 h-5 w-5 rounded-full flex items-center justify-center border ${
-                        completedMeals.includes(0) 
-                        ? 'bg-green-500 text-white border-green-500' 
-                        : 'border-gray-300'
-                      }`}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        toggleMealCompletion(0);
-                      }}
-                    >
-                      {completedMeals.includes(0) && <CheckCircle className="h-4 w-4" />}
-                    </div>
-                    <span className="font-bold text-primary">{mealPlan.breakfast.title}</span>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent className="p-3 pt-1 bg-white dark:bg-neutral-800/50">
-                  <ul className="space-y-1 text-sm pr-6">
-                    {mealPlan.breakfast.items.map((item, i) => (
-                      <li key={i} className="list-disc">{item}</li>
-                    ))}
-                  </ul>
-                </AccordionContent>
-              </AccordionItem>
-              
-              <AccordionItem value="morningSnack" className="border overflow-hidden rounded-lg shadow-sm transition-all hover:shadow-md">
-                <AccordionTrigger className={`p-3 ${completedMeals.includes(1) ? 'bg-green-50 dark:bg-green-900/10' : 'bg-neutral-50 dark:bg-neutral-800'}`}>
-                  <div className="flex items-center">
-                    <div 
-                      className={`ml-2 h-5 w-5 rounded-full flex items-center justify-center border ${
-                        completedMeals.includes(1) 
-                        ? 'bg-green-500 text-white border-green-500' 
-                        : 'border-gray-300'
-                      }`}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        toggleMealCompletion(1);
-                      }}
-                    >
-                      {completedMeals.includes(1) && <CheckCircle className="h-4 w-4" />}
-                    </div>
-                    <span className="font-bold text-primary">{mealPlan.morningSnack.title}</span>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent className="p-3 pt-1 bg-white dark:bg-neutral-800/50">
-                  <ul className="space-y-1 text-sm pr-6">
-                    {mealPlan.morningSnack.items.map((item, i) => (
-                      <li key={i} className="list-disc">{item}</li>
-                    ))}
-                  </ul>
-                </AccordionContent>
-              </AccordionItem>
-              
-              <AccordionItem value="lunch" className="border overflow-hidden rounded-lg shadow-sm transition-all hover:shadow-md">
-                <AccordionTrigger className={`p-3 ${completedMeals.includes(2) ? 'bg-green-50 dark:bg-green-900/10' : 'bg-neutral-50 dark:bg-neutral-800'}`}>
-                  <div className="flex items-center">
-                    <div 
-                      className={`ml-2 h-5 w-5 rounded-full flex items-center justify-center border ${
-                        completedMeals.includes(2) 
-                        ? 'bg-green-500 text-white border-green-500' 
-                        : 'border-gray-300'
-                      }`}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        toggleMealCompletion(2);
-                      }}
-                    >
-                      {completedMeals.includes(2) && <CheckCircle className="h-4 w-4" />}
-                    </div>
-                    <span className="font-bold text-primary">{mealPlan.lunch.title}</span>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent className="p-3 pt-1 bg-white dark:bg-neutral-800/50">
-                  <ul className="space-y-1 text-sm pr-6">
-                    {mealPlan.lunch.items.map((item, i) => (
-                      <li key={i} className="list-disc">{item}</li>
-                    ))}
-                  </ul>
-                </AccordionContent>
-              </AccordionItem>
-              
-              <AccordionItem value="afternoonSnack" className="border overflow-hidden rounded-lg shadow-sm transition-all hover:shadow-md">
-                <AccordionTrigger className={`p-3 ${completedMeals.includes(3) ? 'bg-green-50 dark:bg-green-900/10' : 'bg-neutral-50 dark:bg-neutral-800'}`}>
-                  <div className="flex items-center">
-                    <div 
-                      className={`ml-2 h-5 w-5 rounded-full flex items-center justify-center border ${
-                        completedMeals.includes(3) 
-                        ? 'bg-green-500 text-white border-green-500' 
-                        : 'border-gray-300'
-                      }`}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        toggleMealCompletion(3);
-                      }}
-                    >
-                      {completedMeals.includes(3) && <CheckCircle className="h-4 w-4" />}
-                    </div>
-                    <span className="font-bold text-primary">{mealPlan.afternoonSnack.title}</span>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent className="p-3 pt-1 bg-white dark:bg-neutral-800/50">
-                  <ul className="space-y-1 text-sm pr-6">
-                    {mealPlan.afternoonSnack.items.map((item, i) => (
-                      <li key={i} className="list-disc">{item}</li>
-                    ))}
-                  </ul>
-                </AccordionContent>
-              </AccordionItem>
-              
-              <AccordionItem value="dinner" className="border overflow-hidden rounded-lg shadow-sm transition-all hover:shadow-md">
-                <AccordionTrigger className={`p-3 ${completedMeals.includes(4) ? 'bg-green-50 dark:bg-green-900/10' : 'bg-neutral-50 dark:bg-neutral-800'}`}>
-                  <div className="flex items-center">
-                    <div 
-                      className={`ml-2 h-5 w-5 rounded-full flex items-center justify-center border ${
-                        completedMeals.includes(4) 
-                        ? 'bg-green-500 text-white border-green-500' 
-                        : 'border-gray-300'
-                      }`}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        toggleMealCompletion(4);
-                      }}
-                    >
-                      {completedMeals.includes(4) && <CheckCircle className="h-4 w-4" />}
-                    </div>
-                    <span className="font-bold text-primary">{mealPlan.dinner.title}</span>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent className="p-3 pt-1 bg-white dark:bg-neutral-800/50">
-                  <ul className="space-y-1 text-sm pr-6">
-                    {mealPlan.dinner.items.map((item, i) => (
-                      <li key={i} className="list-disc">{item}</li>
-                    ))}
-                  </ul>
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-            
-            <div className="bg-orange-50 dark:bg-orange-900/10 p-4 rounded-lg mt-4 border border-orange-200 dark:border-orange-800">
-              <h5 className="font-bold text-orange-600 dark:text-orange-400 mb-2 flex items-center">
-                <AlertCircle className="ml-2 h-4 w-4" />
-                إرشادات غذائية مهمة
-              </h5>
-              <ul className="list-disc list-inside space-y-1 text-sm">
-                {mealPlan.nutritionGuide.items.map((item, index) => (
-                  <li key={index} className="text-neutral-700 dark:text-neutral-300">{item}</li>
-                ))}
-              </ul>
-            </div>
-          </div>
-          
-          {/* Workout Plan */}
-          <div>
-            <div className="flex items-center mb-4">
-              <Dumbbell className="ml-2 h-5 w-5 text-secondary" />
-              <h4 className="text-xl font-bold text-secondary">
-                خطة التمارين
-              </h4>
-            </div>
-            
-            <div className="bg-secondary/5 dark:bg-secondary/10 p-4 rounded-lg mb-6 border border-secondary/10">
-              <h5 className="font-bold text-secondary mb-2 text-lg">
-                {workoutPlan.title}
-              </h5>
-              <p className="text-neutral-600 dark:text-neutral-400 mb-4">
-                {workoutPlan.description}
-              </p>
-              
-              <div className="space-y-4">
-                {Object.entries(workoutPlan.exercises).map(([groupName, exercises]) => (
-                  <div key={groupName} className="bg-white dark:bg-neutral-800 rounded-lg p-3 shadow-sm">
-                    <h6 className="font-bold text-secondary mb-2">{groupName}:</h6>
-                    
-                    <div className="space-y-2">
-                      {exercises.map((exercise, index) => (
-                        <div 
-                          key={index} 
-                          className={`flex items-center justify-between rounded-md p-2 transition-colors ${
-                            completedExercises.includes(exercise.name) 
-                              ? 'bg-green-50 dark:bg-green-900/10' 
-                              : 'bg-neutral-50 dark:bg-neutral-700/50'
-                          }`}
-                        >
-                          <div className="flex items-center">
-                            <div 
-                              className={`ml-2 h-5 w-5 rounded-full flex items-center justify-center border cursor-pointer ${
-                                completedExercises.includes(exercise.name) 
-                                ? 'bg-green-500 text-white border-green-500' 
-                                : 'border-gray-300'
-                              }`}
-                              onClick={() => toggleExerciseCompletion(exercise.name)}
-                            >
-                              {completedExercises.includes(exercise.name) && <CheckCircle className="h-4 w-4" />}
-                            </div>
-                            <span className="font-medium">{exercise.name}</span>
-                          </div>
-                          <Badge variant="outline" className="text-secondary border-secondary">
-                            {exercise.sets} × {exercise.reps}
-                          </Badge>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-            
-            <div className="bg-blue-50 dark:bg-blue-900/10 p-4 rounded-lg mb-4 border border-blue-200 dark:border-blue-800">
-              <h5 className="font-bold text-blue-600 dark:text-blue-400 mb-2 flex items-center">
-                <Info className="ml-2 h-4 w-4" />
-                تعليمات التمرين
-              </h5>
-              <ul className="list-disc list-inside space-y-1 text-sm">
-                {workoutInstructions.map((instruction, index) => (
-                  <li key={index} className="text-neutral-700 dark:text-neutral-300">{instruction}</li>
-                ))}
-              </ul>
-            </div>
-            
-            <div className="bg-green-50 dark:bg-green-900/10 p-4 rounded-lg border border-green-200 dark:border-green-800">
-              <h5 className="font-bold text-green-600 dark:text-green-400 mb-2 flex items-center">
-                <Info className="ml-2 h-4 w-4" />
-                ملاحظات عامة
-              </h5>
-              <ul className="list-disc list-inside space-y-1 text-sm">
-                <li className="text-neutral-700 dark:text-neutral-300">التزم بالتغذية بقدر الإمكان لتحقيق أفضل النتائج</li>
-                <li className="text-neutral-700 dark:text-neutral-300">استمر في شرب الماء طوال اليوم</li>
-                <li className="text-neutral-700 dark:text-neutral-300">قم بتسجيل تقدمك في التمارين لزيادة الحماس</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-  );
-}
 
-interface MealItemProps {
-  meal: {
-    title: string;
-    items: string[];
-  };
-  titleColor?: string;
-}
-
-function MealSection({ meal, titleColor = "text-primary" }: MealItemProps) {
   return (
-    <div className="bg-neutral-50 dark:bg-neutral-700 p-4 rounded-lg">
-      <h5 className={`font-bold ${titleColor} mb-2`}>{meal.title}</h5>
-      <ul className="list-disc list-inside space-y-1 text-sm">
-        {meal.items.map((item, index) => (
-          <li key={index}>{item}</li>
-        ))}
-      </ul>
+    <div className="space-y-4">
+      {/* Header with Back Button */}
+      <div className="flex items-center gap-4">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={onBack}
+          className="btn-touch"
+        >
+          <ArrowLeft className="h-4 w-4 ml-2" />
+          رجوع
+        </Button>
+        <h2 className="text-xl font-bold">
+          {type === 'meal' ? 'الخطة الغذائية التفصيلية' : 'خطة التمارين التفصيلية'}
+        </h2>
+      </div>
+
+      {/* Content */}
+      {type === 'meal' ? renderMealPlan() : renderWorkoutPlan()}
     </div>
   );
 }
