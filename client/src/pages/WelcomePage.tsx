@@ -123,11 +123,11 @@ export default function WelcomePage() {
           {/* Action Buttons */}
           <div className="flex flex-col md:flex-row gap-6 justify-center items-center">
             <Button 
-              onClick={() => setLocation("/free-plan")}
+              onClick={() => setLocation("/free-login")}
               className="bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 hover:from-green-600 hover:via-emerald-600 hover:to-teal-600 text-white font-bold py-4 px-10 rounded-2xl transition-all duration-300 text-xl transform hover:scale-110 hover:shadow-2xl shadow-green-500/50"
             >
               <Play className="h-6 w-6 ml-2" />
-              🆓 جرب مجاناً - 30 يوم
+              🆓 العضوية المجانية
             </Button>
             
             <Button 

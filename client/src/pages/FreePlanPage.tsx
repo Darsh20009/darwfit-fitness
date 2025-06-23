@@ -41,6 +41,14 @@ export default function FreePlanPage() {
     setIsGenerating(true);
     
     try {
+      // التحقق من تسجيل دخول المستخدم المجاني
+      const currentUser = localStorage.getItem('currentFreeUser');
+      if (!currentUser) {
+        setLocation('/free-login');
+        setIsGenerating(false);
+        return;
+      }
+
       // محاكاة عملية الذكاء الاصطناعي لإنشاء الخطة
       await new Promise(resolve => setTimeout(resolve, 3000));
       
@@ -56,8 +64,10 @@ export default function FreePlanPage() {
       // إنشاء معرف فريد للخطة
       const planId = `plan_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
       
+      const user = JSON.parse(currentUser);
       const finalPlan = {
         id: planId,
+        userId: user.id,
         userData: data,
         planType: selectedTemplate.name,
         planDescription: selectedTemplate.description,

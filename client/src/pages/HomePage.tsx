@@ -28,10 +28,10 @@ export default function HomePage() {
               
               <div className="flex flex-col md:flex-row gap-6 justify-center items-center mb-16">
                 <Button 
-                  onClick={() => setLocation("/free-plan")}
+                  onClick={() => setLocation("/free-login")}
                   className="bg-gradient-to-r from-green-600 via-blue-600 to-purple-600 hover:from-green-700 hover:via-blue-700 hover:to-purple-700 text-white font-bold py-4 px-10 rounded-2xl transition-all duration-300 text-xl transform hover:scale-110 hover:shadow-2xl animate-glow"
                 >
-                  🆓 خطة مجانية 30 يوم
+                  🆓 العضوية المجانية
                 </Button>
                 <Button 
                   onClick={() => setLocation("/subscription")}
@@ -94,10 +94,10 @@ export default function HomePage() {
             </p>
             <div className="flex flex-col md:flex-row gap-4 justify-center">
               <Button 
-                onClick={() => setLocation("/free-plan")}
+                onClick={() => setLocation("/free-login")}
                 className="bg-white text-blue-600 hover:bg-gray-100 font-bold py-3 px-8 rounded-xl text-lg transform hover:scale-105"
               >
-                جرب مجاناً الآن
+                العضوية المجانية
               </Button>
               <Button 
                 onClick={() => setLocation("/subscription")}

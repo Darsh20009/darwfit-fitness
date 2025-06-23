@@ -190,10 +190,10 @@ export default function SubscriptionPage() {
                   </li>
                 </ul>
                 <Button 
-                  onClick={() => setLocation("/free-plan")}
+                  onClick={() => setLocation("/free-login")}
                   className="w-full bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-bold py-3 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg"
                 >
-                  🚀 ابدأ مجاناً الآن
+                  🚀 ابدأ العضوية المجانية
                 </Button>
               </CardContent>
             </Card>

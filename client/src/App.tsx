@@ -13,6 +13,7 @@ import CaloriesPage from "./pages/CaloriesPage";
 import CaloriesCalculatorPage from "./pages/CaloriesCalculatorPage";
 import FreePlanPage from "./pages/FreePlanPage";
 import FreePlanViewPage from "./pages/FreePlanViewPage";
+import FreeLoginPage from "./pages/FreeLoginPage";
 import NotFound from "@/pages/not-found";
 import SuccessModal from "./components/SuccessModal";
 
@@ -34,6 +35,7 @@ function ProtectedRoutes() {
       <Route path="/calories-calculator" component={CaloriesCalculatorPage} />
       <Route path="/free-plan" component={FreePlanPage} />
       <Route path="/free-plan-view" component={FreePlanViewPage} />
+      <Route path="/free-login" component={FreeLoginPage} />
       <Route path="/dashboard">
         {isLoggedIn ? <DashboardPage /> : <LoginPage />}
       </Route>

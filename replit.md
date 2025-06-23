@@ -113,6 +113,9 @@ Darwfit is a comprehensive fitness and nutrition platform built as a full-stack 
 - January 25, 2025: Implemented multiple plan templates (classic, intensive, beginner, female-focused)
 - January 25, 2025: Added smart template selection algorithm based on user data
 - January 25, 2025: Built comprehensive 30-day tracking system with progress monitoring
+- January 25, 2025: Created separate authentication system for free users with registration/login
+- January 25, 2025: Implemented user account management for free plan users with localStorage
+- January 25, 2025: Added welcome page with DARWFIT branding and metallic effects
 
 ## Changelog
 ```

@@ -25,6 +25,13 @@ export default function FreePlanViewPage() {
   const [, setLocation] = useLocation();
 
   useEffect(() => {
+    // التحقق من تسجيل الدخول أولاً
+    const currentUser = localStorage.getItem('currentFreeUser');
+    if (!currentUser) {
+      setLocation('/free-login');
+      return;
+    }
+
     const savedPlan = localStorage.getItem('freePlan');
     if (savedPlan) {
       setFreePlan(JSON.parse(savedPlan));
@@ -38,7 +45,7 @@ export default function FreePlanViewPage() {
       setCompletedDays(progress.completedDays || []);
       setCurrentDay(progress.currentDay || 1);
     }
-  }, [navigate]);
+  }, [setLocation]);
 
   const markDayCompleted = (day: number) => {
     const newCompletedDays = [...completedDays, day];
