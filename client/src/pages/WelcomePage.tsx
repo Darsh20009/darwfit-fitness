@@ -232,6 +232,33 @@ export default function WelcomePage() {
               🔥 حاسبة السعرات
             </Button>
           </div>
+
+          {/* Member Login Section */}
+          <div className="mb-16">
+            <Card className="bg-white/5 backdrop-blur-lg border border-white/20 shadow-2xl max-w-md mx-auto">
+              <CardContent className="p-8 text-center">
+                <div className="mb-6">
+                  <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-4 rounded-full inline-block mb-4">
+                    <Users className="h-12 w-12 text-white" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-white mb-2">عضو مدفوع؟</h3>
+                  <p className="text-gray-300">سجل دخولك للوصول لخطتك المخصصة</p>
+                </div>
+                
+                <Button 
+                  onClick={() => setLocation("/login")}
+                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 text-lg transform hover:scale-105 shadow-lg"
+                >
+                  <CheckCircle className="h-5 w-5 ml-2" />
+                  تسجيل دخول الأعضاء
+                </Button>
+                
+                <p className="text-gray-400 text-sm mt-4">
+                  لديك رقم اشتراك؟ استخدمه لتسجيل الدخول
+                </p>
+              </CardContent>
+            </Card>
+          </div>
         </div>
 
         {/* Stats Section */}

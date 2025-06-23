@@ -419,14 +419,14 @@ export default function FreePlanViewPage() {
               </p>
               <div className="flex flex-col md:flex-row gap-4 justify-center">
                 <Button 
-                  onClick={() => navigate("/subscription")}
+                  onClick={() => setLocation("/subscription")}
                   className="bg-white text-orange-600 hover:bg-gray-100 font-bold py-3 px-8 rounded-xl text-lg"
                 >
                   🚀 ترقية الآن
                 </Button>
                 <Button 
                   variant="outline"
-                  onClick={() => navigate("/")}
+                  onClick={() => setLocation("/")}
                   className="border-white text-white hover:bg-white/20 py-3 px-8 rounded-xl text-lg"
                 >
                   🏠 العودة للرئيسية
