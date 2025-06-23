@@ -27,7 +27,6 @@ function ProtectedRoutes() {
   return (
     <Switch>
       <Route path="/" component={WelcomePage} />
-      <Route path="/welcome" component={WelcomePage} />
       <Route path="/home" component={HomePage} />
       <Route path="/subscription" component={SubscriptionPage} />
       <Route path="/login" component={LoginPage} />
