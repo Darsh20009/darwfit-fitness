@@ -593,7 +593,7 @@ const foodCategories = {
       "كريب شاورما لحم": {calories: 520, protein: 30, carbs: 46},
       "كريب فراخ بالجبنة": {calories: 500, protein: 26, carbs: 48},
       "كريب سوسيس": {calories: 470, protein: 20, carbs: 50},
-      "كريب بانيه": {calories: 530, protein: 25, carbs: 52},
+      "كريp بانيه": {calories: 530, protein: 25, carbs: 52},
       "كريب بسطرمة": {calories: 490, protein: 24, carbs: 46},
       "كريب سلامي": {calories: 480, protein: 22, carbs: 45},
       "كريب ميكس جبن": {calories: 450, protein: 18, carbs: 44},
