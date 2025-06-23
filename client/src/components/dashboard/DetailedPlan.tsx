@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -27,9 +26,9 @@ interface DetailedPlanProps {
 
 export default function DetailedPlan({ type, dayIndex, onBack }: DetailedPlanProps) {
   const [completedItems, setCompletedItems] = useState<Set<string>>(new Set());
-  
+
   const dateKey = new Date().toISOString().split('T')[0];
-  
+
   const mealPlan = getDailyMealPlan();
   const workoutPlan = getWorkoutByDayIndex(dayIndex);
   const isRestDay = dayIndex === 6;
@@ -59,7 +58,7 @@ export default function DetailedPlan({ type, dayIndex, onBack }: DetailedPlanPro
       newCompleted.add(itemName);
     }
     setCompletedItems(newCompleted);
-    
+
     // حفظ في localStorage
     if (type === 'meal') {
       const currentProgress = LocalStorageManager.getMealProgress(dateKey);
@@ -146,7 +145,7 @@ export default function DetailedPlan({ type, dayIndex, onBack }: DetailedPlanPro
                     </div>
                   ))}
                 </div>
-                
+
                 {meal.data.nutritionInfo && (
                   <div className="flex flex-wrap gap-2 pt-2 border-t">
                     {meal.data.nutritionInfo.protein && (

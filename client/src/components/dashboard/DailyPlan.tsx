@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { getMealSummary } from "../../data/mealPlans";
@@ -18,27 +17,27 @@ interface DailyPlanProps {
 export default function DailyPlan({ selectedDate, onViewDetails }: DailyPlanProps) {
   const [completedMeals, setCompletedMeals] = useState<Set<string>>(new Set());
   const [completedWorkouts, setCompletedWorkouts] = useState<Set<string>>(new Set());
-  
+
   const dayIndex = selectedDate.getDay();
   const isRestDay = dayIndex === 6; // Sunday is rest day
-  
+
   const mealSummary = getMealSummary();
   const workoutSummary = isRestDay ? [] : getWorkoutSummary(dayIndex);
-  
+
   const dateKey = selectedDate.toISOString().split('T')[0];
 
   // تحميل البيانات المحفوظة عند تغيير التاريخ
   useEffect(() => {
     const savedMealProgress = LocalStorageManager.getMealProgress(dateKey);
     const savedWorkoutProgress = LocalStorageManager.getWorkoutProgress(dateKey);
-    
+
     const completedMealNames = new Set(
       Object.keys(savedMealProgress).filter(key => savedMealProgress[key].completed)
     );
     const completedWorkoutNames = new Set(
       Object.keys(savedWorkoutProgress).filter(key => savedWorkoutProgress[key].completed)
     );
-    
+
     setCompletedMeals(completedMealNames);
     setCompletedWorkouts(completedWorkoutNames);
   }, [dateKey]);
@@ -51,7 +50,7 @@ export default function DailyPlan({ selectedDate, onViewDetails }: DailyPlanProp
       newCompleted.add(mealName);
     }
     setCompletedMeals(newCompleted);
-    
+
     // حفظ في localStorage
     const currentProgress = LocalStorageManager.getMealProgress(dateKey);
     currentProgress[mealName] = {
@@ -69,7 +68,7 @@ export default function DailyPlan({ selectedDate, onViewDetails }: DailyPlanProp
       newCompleted.add(workoutName);
     }
     setCompletedWorkouts(newCompleted);
-    
+
     // حفظ في localStorage
     const currentProgress = LocalStorageManager.getWorkoutProgress(dateKey);
     currentProgress[workoutName] = {

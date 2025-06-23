@@ -140,3 +140,75 @@
     @apply text-base; /* Prevents zoom on iOS */
   }
 }
+
+/* تحسين للأجهزة المحمولة */
+.btn-touch {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  min-height: 44px; /* الحد الأدنى لحجم اللمس */
+  min-width: 44px;
+}
+
+/* تحسينات إضافية للجوال */
+@media (max-width: 768px) {
+  .container {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  /* تحسين حجم النصوص للجوال */
+  .text-sm {
+    font-size: 14px !important;
+  }
+
+  .text-xs {
+    font-size: 12px !important;
+  }
+
+  /* تحسين المسافات للجوال */
+  .space-x-2 > * + * {
+    margin-right: 8px !important;
+  }
+
+  .space-y-2 > * + * {
+    margin-top: 8px !important;
+  }
+
+  /* تحسين البطاقات للجوال */
+  .card {
+    border-radius: 12px;
+  }
+
+  /* تحسين الأزرار للجوال */
+  button {
+    border-radius: 8px;
+    font-weight: 500;
+  }
+
+  /* منع التكبير عند النقر على الإدخالات */
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* تحسين للمناظر الصغيرة جداً */
+@media (max-width: 480px) {
+  .grid-cols-2 {
+    gap: 12px !important;
+  }
+
+  .grid-cols-4 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+/* إخفاء شريط التمرير على الجوال إذا لزم الأمر */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
