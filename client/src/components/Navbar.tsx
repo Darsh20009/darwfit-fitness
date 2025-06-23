@@ -16,7 +16,7 @@ export default function Navbar() {
     if (!subscriptionId) return;
 
     const message = `مرحباً، أحتاج للتواصل معكم بخصوص اشتراكي رقم: ${subscriptionId}`;
-    const phoneNumber = "966555555555"; // رقم واتساب وهمي
+    const phoneNumber = "201155201921"; 
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 
     window.open(whatsappUrl, "_blank");
@@ -26,10 +26,6 @@ export default function Navbar() {
   const handleInstagramClick = () => {
     if (!subscriptionId) return;
 
-    const instagramUrl = "https://instagram.com/darwfit"; // حساب انستقرام وهمي
-    window.open(instagramUrl, "_blank");
-    setIsMobileMenuOpen(false);
-  };
 
   const handleNavigation = (path: string) => {
     navigate(path);
