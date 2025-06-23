@@ -10,21 +10,22 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { LocalStorageManager } from "../../lib/localStorage";
 
 interface DailyPlanProps {
-  selectedDate: Date;
-  onViewDetails: (type: 'meal' | 'workout', dayIndex: number) => void;
+  date: Date;
+  formattedDate: string;
+  workoutType: string;
+  dayIndex: number;
 }
 
-export default function DailyPlan({ selectedDate, onViewDetails }: DailyPlanProps) {
+export default function DailyPlan({ date, formattedDate, workoutType, dayIndex }: DailyPlanProps) {
   const [completedMeals, setCompletedMeals] = useState<Set<string>>(new Set());
   const [completedWorkouts, setCompletedWorkouts] = useState<Set<string>>(new Set());
 
-  const dayIndex = selectedDate.getDay();
   const isRestDay = dayIndex === 6; // Sunday is rest day
 
   const mealSummary = getMealSummary();
   const workoutSummary = isRestDay ? [] : getWorkoutSummary(dayIndex);
 
-  const dateKey = selectedDate.toISOString().split('T')[0];
+  const dateKey = date.toISOString().split('T')[0];
 
   // تحميل البيانات المحفوظة عند تغيير التاريخ
   useEffect(() => {
@@ -80,6 +81,11 @@ export default function DailyPlan({ selectedDate, onViewDetails }: DailyPlanProp
 
   const mealProgress = (completedMeals.size / mealSummary.length) * 100;
   const workoutProgress = isRestDay ? 100 : (completedWorkouts.size / workoutSummary.length) * 100;
+
+  const handleViewDetails = (type: 'meal' | 'workout') => {
+    // يمكن إضافة منطق التنقل هنا لاحقاً
+    console.log(`View ${type} details for day ${dayIndex}`);
+  };
 
   return (
     <div className="space-y-6">
@@ -146,7 +152,7 @@ export default function DailyPlan({ selectedDate, onViewDetails }: DailyPlanProp
                 <Button 
                   variant="outline" 
                   size="sm"
-                  onClick={() => onViewDetails('meal', dayIndex)}
+                  onClick={() => handleViewDetails('meal')}
                   className="btn-touch"
                 >
                   التفاصيل
@@ -190,7 +196,7 @@ export default function DailyPlan({ selectedDate, onViewDetails }: DailyPlanProp
                   <Button 
                     variant="outline" 
                     size="sm"
-                    onClick={() => onViewDetails('workout', dayIndex)}
+                    onClick={() => handleViewDetails('workout')}
                     className="btn-touch"
                   >
                     التفاصيل
