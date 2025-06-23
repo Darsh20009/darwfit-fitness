@@ -581,10 +581,99 @@ const foodDatabase = {
       "وافل": {calories: 320, protein: 6, carbs: 45},
       "بان كيك": {calories: 340, protein: 7, carbs: 50},
       "آيس كريم": {calories: 210, protein: 3, carbs: 30},
-      "مهلبية": {calories: 180, protein: 4, carbs: 30},
       "كاسترد": {calories: 200, protein: 5, carbs: 35},
       "موس الشوكولاتة": {calories: 280, protein: 4, carbs: 40},
-      "سحلب": {calories: 220, protein: 4, carbs: 35}
+      "سحلب": {calories: 220, protein: 4, carbs: 35},
+      "شوكولاتة ساخنة": {calories: 240, protein: 6, carbs: 32},
+      "كيك رد فيلفت": {calories: 380, protein: 5, carbs: 48},
+      "كب كيك": {calories: 320, protein: 4, carbs: 42},
+      "مافن الشوكولاتة": {calories: 350, protein: 5, carbs: 45}
+  },
+  "الأطعمة البحرية": {
+      "جمبري مشوي": {calories: 120, protein: 23, carbs: 1},
+      "كابوريا مسلوقة": {calories: 95, protein: 18, carbs: 2},
+      "محار": {calories: 80, protein: 14, carbs: 4},
+      "سردين معلب": {calories: 190, protein: 22, carbs: 0},
+      "ماكريل مشوي": {calories: 220, protein: 25, carbs: 0},
+      "سي باس مشوي": {calories: 150, protein: 28, carbs: 0},
+      "حبار مقلي": {calories: 180, protein: 18, carbs: 8},
+      "أخطبوط مسلوق": {calories: 140, protein: 25, carbs: 4},
+      "سمك موسى": {calories: 130, protein: 26, carbs: 0},
+      "هامور مشوي": {calories: 160, protein: 30, carbs: 0}
+  },
+  "المكسرات والبذور": {
+      "لوز محمص": {calories: 170, protein: 6, carbs: 6},
+      "جوز برازيلي": {calories: 190, protein: 4, carbs: 3},
+      "كاجو": {calories: 160, protein: 5, carbs: 9},
+      "فستق حلبي": {calories: 150, protein: 6, carbs: 8},
+      "بندق": {calories: 180, protein: 4, carbs: 5},
+      "جوز الهند مبشور": {calories: 190, protein: 2, carbs: 7},
+      "بذور عباد الشمس": {calories: 160, protein: 6, carbs: 6},
+      "بذور اليقطين": {calories: 150, protein: 7, carbs: 5},
+      "بذور الشيا": {calories: 140, protein: 5, carbs: 12},
+      "بذور الكتان": {calories: 150, protein: 5, carbs: 8},
+      "طحينة": {calories: 180, protein: 5, carbs: 6},
+      "زبدة اللوز": {calories: 190, protein: 7, carbs: 6}
+  },
+  "الأعشاب والتوابل": {
+      "كركم مطحون": {calories: 10, protein: 0, carbs: 2},
+      "قرفة مطحونة": {calories: 8, protein: 0, carbs: 2},
+      "زنجبيل طازج": {calories: 5, protein: 0, carbs: 1},
+      "نعناع طازج": {calories: 3, protein: 0, carbs: 1},
+      "بقدونس طازج": {calories: 5, protein: 0, carbs: 1},
+      "كزبرة طازجة": {calories: 5, protein: 0, carbs: 1},
+      "ريحان طازج": {calories: 4, protein: 0, carbs: 1},
+      "زعتر مجفف": {calories: 15, protein: 1, carbs: 2},
+      "شطة حمراء": {calories: 8, protein: 0, carbs: 2},
+      "فلفل أسود": {calories: 6, protein: 0, carbs: 1}
+  },
+  "منتجات الألبان الإضافية": {
+      "جبنة حلوم": {calories: 320, protein: 22, carbs: 2},
+      "جبنة ماعز": {calories: 280, protein: 18, carbs: 1},
+      "ريكوتا": {calories: 150, protein: 11, carbs: 3},
+      "جبنة كريمية": {calories: 340, protein: 6, carbs: 4},
+      "مازكاربوني": {calories: 430, protein: 5, carbs: 3},
+      "جبنة زرقاء": {calories: 350, protein: 21, carbs: 2},
+      "جبنة بارميزان": {calories: 390, protein: 32, carbs: 1},
+      "جبنة إدام": {calories: 360, protein: 25, carbs: 1},
+      "جبنة غودا": {calories: 380, protein: 24, carbs: 2},
+      "كريمة طبخ": {calories: 200, protein: 2, carbs: 3}
+  },
+  "الحبوب والبقوليات الإضافية": {
+      "كينوا مطبوخة": {calories: 120, protein: 4, carbs: 22},
+      "برغل مطبوخ": {calories: 80, protein: 3, carbs: 17},
+      "شعير مطبوخ": {calories: 100, protein: 2, carbs: 22},
+      "أرز بري": {calories: 85, protein: 3, carbs: 18},
+      "حنطة سوداء": {calories: 90, protein: 3, carbs: 19},
+      "دخن مطبوخ": {calories: 110, protein: 3, carbs: 23},
+      "شوفان خام": {calories: 150, protein: 5, carbs: 27},
+      "ذرة صفراء": {calories: 90, protein: 3, carbs: 19},
+      "لوبيا": {calories: 130, protein: 8, carbs: 23},
+      "ترمس مسلوق": {calories: 180, protein: 15, carbs: 16}
+  },
+  "الأطعمة الآسيوية الإضافية": {
+      "بوك تشوي": {calories: 15, protein: 2, carbs: 2},
+      "الفطر الآسيوي": {calories: 25, protein: 3, carbs: 4},
+      "براعم الخيزران": {calories: 20, protein: 2, carbs: 3},
+      "جذر اللوتس": {calories: 70, protein: 2, carbs: 17},
+      "ميسو": {calories: 35, protein: 2, carbs: 5},
+      "صوص الصويا قليل الصوديوم": {calories: 8, protein: 1, carbs: 1},
+      "زيت السمسم": {calories: 120, protein: 0, carbs: 0},
+      "خل الأرز": {calories: 5, protein: 0, carbs: 1},
+      "نوري (أعشاب بحرية)": {calories: 35, protein: 6, carbs: 5},
+      "واسابي": {calories: 10, protein: 0, carbs: 2}
+  },
+  "الفواكه الاستوائية": {
+      "مانجوستين": {calories: 60, protein: 1, carbs: 15},
+      "رامبوتان": {calories: 70, protein: 1, carbs: 16},
+      "ليتشي": {calories: 65, protein: 1, carbs: 17},
+      "دوريان": {calories: 150, protein: 1, carbs: 27},
+      "فاكهة التنين": {calories: 50, protein: 1, carbs: 11},
+      "ستار فروت": {calories: 30, protein: 1, carbs: 7},
+      "جوافة": {calories: 110, protein: 4, carbs: 23},
+      "باشن فروت": {calories: 100, protein: 2, carbs: 23},
+      "كيوي": {calories: 60, protein: 1, carbs: 15},
+      "بابايا": {calories: 40, protein: 1, carbs: 10}
   }
 };
 
