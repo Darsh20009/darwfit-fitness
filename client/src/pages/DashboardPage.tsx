@@ -18,14 +18,14 @@ import {
 
 export default function DashboardPage() {
   const { username, subscriptionId, subscriptionEndDate } = useAuth();
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [dayIndex, setDayIndex] = useState(getDay(new Date()));
   const [progress, setProgress] = useState(65); // Simulated progress percentage
-  
+
   useEffect(() => {
     setDayIndex(getDay(selectedDate));
   }, [selectedDate]);
-  
+
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Dashboard Header with Stats */}
@@ -39,7 +39,7 @@ export default function DashboardPage() {
               برنامجك مصمم خصيصاً لتحقيق أهدافك بطريقة صحية ومستدامة
             </p>
           </div>
-          
+
           <div className="mt-4 md:mt-0 flex flex-col items-center md:items-end">
             <Badge variant="outline" className="bg-primary/10 text-primary border-primary px-3 py-1.5 mb-2 text-sm">
               <Calendar className="h-4 w-4 ml-2" />
@@ -51,7 +51,7 @@ export default function DashboardPage() {
             </Badge>
           </div>
         </div>
-        
+
         {/* Stats Cards */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 mt-6">
           <Card>
@@ -65,7 +65,7 @@ export default function DashboardPage() {
               </div>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardContent className="p-4 flex items-center justify-between">
               <div>
@@ -77,7 +77,7 @@ export default function DashboardPage() {
               </div>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardContent className="p-4 flex items-center justify-between">
               <div>
@@ -89,7 +89,7 @@ export default function DashboardPage() {
               </div>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardContent className="p-4 flex items-center justify-between">
               <div>
@@ -103,7 +103,7 @@ export default function DashboardPage() {
           </Card>
         </div>
       </div>
-      
+
       {/* Today's Plan Summary */}
       <DailyPlan 
         date={selectedDate}
@@ -111,13 +111,13 @@ export default function DashboardPage() {
         workoutType={getWorkoutTypeByDate(selectedDate)}
         dayIndex={dayIndex}
       />
-      
+
       {/* Weekly Calendar */}
       <WeeklyCalendar 
         selectedDate={selectedDate}
         onSelectDate={setSelectedDate}
       />
-      
+
       {/* Detailed Plan */}
       <DetailedPlan 
         date={selectedDate}
