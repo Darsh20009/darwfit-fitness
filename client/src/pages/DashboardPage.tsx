@@ -3,6 +3,7 @@ import { useAuth } from "../hooks/useAuth";
 import DailyPlan from "../components/dashboard/DailyPlan";
 import WeeklyCalendar from "../components/dashboard/WeeklyCalendar";
 import DetailedPlan from "../components/dashboard/DetailedPlan";
+import CreativeUserProfile from "../components/CreativeUserProfile";
 import { getDay } from "date-fns";
 import { formatFullDateToArabic, getWorkoutTypeByDate, calculateRemainingDays } from "../lib/dates";
 import { Badge } from "@/components/ui/badge";
@@ -117,26 +118,66 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Today's Plan Summary */}
-      <DailyPlan 
-        date={selectedDate}
-        formattedDate={formatFullDateToArabic(selectedDate)}
-        workoutType={getWorkoutTypeByDate(selectedDate)}
-        dayIndex={dayIndex}
-      />
+      {/* Main Content with Tabs */}
+      <div className="space-y-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+          <Card className="cursor-pointer hover:shadow-lg transition-all duration-300 border-2 border-blue-200 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20">
+            <CardContent className="p-4 text-center">
+              <Calendar className="h-8 w-8 text-blue-600 mx-auto mb-2" />
+              <div className="text-lg font-bold text-blue-800 dark:text-blue-300">اليوم</div>
+              <p className="text-xs text-blue-600 dark:text-blue-400">خطة اليوم</p>
+            </CardContent>
+          </Card>
 
-      {/* Weekly Calendar */}
-      <WeeklyCalendar 
-        selectedDate={selectedDate}
-        onSelectDate={setSelectedDate}
-      />
+          <Card className="cursor-pointer hover:shadow-lg transition-all duration-300 border-2 border-green-200 bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20">
+            <CardContent className="p-4 text-center">
+              <Trophy className="h-8 w-8 text-green-600 mx-auto mb-2" />
+              <div className="text-lg font-bold text-green-800 dark:text-green-300">الملف الشخصي</div>
+              <p className="text-xs text-green-600 dark:text-green-400">ملفك الإبداعي</p>
+            </CardContent>
+          </Card>
 
-      {/* Detailed Plan */}
-      <DetailedPlan 
-        date={selectedDate}
-        formattedDate={formatFullDateToArabic(selectedDate)}
-        dayIndex={dayIndex}
-      />
+          <Card className="cursor-pointer hover:shadow-lg transition-all duration-300 border-2 border-purple-200 bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20">
+            <CardContent className="p-4 text-center">
+              <Activity className="h-8 w-8 text-purple-600 mx-auto mb-2" />
+              <div className="text-lg font-bold text-purple-800 dark:text-purple-300">التقدم</div>
+              <p className="text-xs text-purple-600 dark:text-purple-400">متابعة الإنجازات</p>
+            </CardContent>
+          </Card>
+
+          <Card className="cursor-pointer hover:shadow-lg transition-all duration-300 border-2 border-orange-200 bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20">
+            <CardContent className="p-4 text-center">
+              <Heart className="h-8 w-8 text-orange-600 mx-auto mb-2" />
+              <div className="text-lg font-bold text-orange-800 dark:text-orange-300">التفاصيل</div>
+              <p className="text-xs text-orange-600 dark:text-orange-400">خطة مفصلة</p>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Today's Plan Summary */}
+        <DailyPlan 
+          date={selectedDate}
+          formattedDate={formatFullDateToArabic(selectedDate)}
+          workoutType={getWorkoutTypeByDate(selectedDate)}
+          dayIndex={dayIndex}
+        />
+
+        {/* Creative User Profile */}
+        <CreativeUserProfile />
+
+        {/* Weekly Calendar */}
+        <WeeklyCalendar 
+          selectedDate={selectedDate}
+          onSelectDate={setSelectedDate}
+        />
+
+        {/* Detailed Plan */}
+        <DetailedPlan 
+          date={selectedDate}
+          formattedDate={formatFullDateToArabic(selectedDate)}
+          dayIndex={dayIndex}
+        />
+      </div>
     </div>
   );
 }
