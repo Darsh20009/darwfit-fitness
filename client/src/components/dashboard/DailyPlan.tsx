@@ -128,6 +128,12 @@ export default function DailyPlan({ date, formattedDate, workoutType, dayIndex }
     console.log(`View ${type} details for day ${dayIndex}`);
   };
 
+  // الوظيفة الذكية للتحميل التلقائي حسب نوع الجهاز
+  const handleSmartDownload = () => {
+    const isMobile = window.innerWidth < 768;
+    handleDownloadWorkout(isMobile);
+  };
+
   const handleDownloadWorkout = (isMobile = false) => {
     import("../../data/mealPlans").then(({ getDailyMealPlan }) => {
       const fullMealPlan = getDailyMealPlan();
@@ -136,37 +142,37 @@ export default function DailyPlan({ date, formattedDate, workoutType, dayIndex }
         date: date.toLocaleDateString('ar-SA'),
         dayNumber: dayIndex + 1,
         workout: {
-          title: isRestDay ? "يوم راحة" : `تمرين اليوم ${dayIndex + 1}`,
-          duration: isRestDay ? "راحة" : "45 دقيقة",
+          title: isRestDay ? "🛌 يوم راحة واستجمام" : `🏋️ تمرين اليوم ${dayIndex + 1} - خطة دارو فيت`,
+          duration: isRestDay ? "راحة تامة" : "45-60 دقيقة تمرين فعال",
           exercises: isRestDay ? [] : workoutSummary.map(exercise => ({
-            name: exercise.name,
+            name: `💪 ${exercise.name}`,
             sets: exercise.sets || 3,
             reps: exercise.reps || "10-12",
             rest: exercise.rest || "60 ثانية",
-            notes: exercise.notes,
+            notes: exercise.notes ? `📝 ${exercise.notes}` : "تركز على الشكل الصحيح",
             weight: exerciseWeights.get(exercise.name) || 0
           }))
         },
         meals: {
           breakfast: [{
-            name: fullMealPlan.breakfast.title,
-            description: fullMealPlan.breakfast.items.join(", "),
+            name: `🌅 ${fullMealPlan.breakfast.title}`,
+            description: fullMealPlan.breakfast.items.join(" • "),
             calories: 350,
             protein: 30,
             carbs: 40,
             fats: 8
           }],
           lunch: [{
-            name: fullMealPlan.lunch.title,
-            description: fullMealPlan.lunch.items.join(", "),
+            name: `☀️ ${fullMealPlan.lunch.title}`,
+            description: fullMealPlan.lunch.items.join(" • "),
             calories: 500,
             protein: 45,
             carbs: 55,
             fats: 12
           }],
           dinner: [{
-            name: fullMealPlan.dinner.title,
-            description: fullMealPlan.dinner.items.join(", "),
+            name: `🌙 ${fullMealPlan.dinner.title}`,
+            description: fullMealPlan.dinner.items.join(" • "),
             calories: 400,
             protein: 35,
             carbs: 15,
@@ -174,16 +180,16 @@ export default function DailyPlan({ date, formattedDate, workoutType, dayIndex }
           }],
           snacks: [
             {
-              name: fullMealPlan.morningSnack.title,
-              description: fullMealPlan.morningSnack.items.join(", "),
+              name: `🥤 ${fullMealPlan.morningSnack.title}`,
+              description: fullMealPlan.morningSnack.items.join(" • "),
               calories: 150,
               protein: 6,
               carbs: 18,
               fats: 8
             },
             {
-              name: fullMealPlan.afternoonSnack.title,
-              description: fullMealPlan.afternoonSnack.items.join(", "),
+              name: `🍎 ${fullMealPlan.afternoonSnack.title}`,
+              description: fullMealPlan.afternoonSnack.items.join(" • "),
               calories: 120,
               protein: 12,
               carbs: 12,
@@ -445,36 +451,23 @@ export default function DailyPlan({ date, formattedDate, workoutType, dayIndex }
                 <span>تمارين اليوم</span>
                 {!isRestDay && (
                   <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-                    <div className="flex gap-1">
-                      <Button 
-                        variant="outline" 
-                        size="sm"
-                        onClick={() => handleDownloadWorkout(false)}
-                        className="btn-touch group relative overflow-hidden bg-gradient-to-r from-blue-50 to-cyan-50 border-2 border-blue-200 text-blue-700 hover:from-blue-100 hover:to-cyan-100 hover:border-blue-300 hover:text-blue-800 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl min-h-[48px] flex-1 px-3 py-2"
-                      >
-                        <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-cyan-400 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
-                        <div className="relative flex items-center justify-center">
-                          <div className="bg-blue-100 rounded-full p-1 ml-1 group-hover:bg-blue-200 transition-colors duration-300">
-                            <Download className="h-3 w-3 text-blue-600 group-hover:animate-bounce" />
-                          </div>
-                          <span className="font-medium text-xs">💻 كمبيوتر</span>
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={handleSmartDownload}
+                      className="btn-touch group relative overflow-hidden bg-gradient-to-r from-emerald-50 to-green-50 border-2 border-emerald-200 text-emerald-700 hover:from-emerald-100 hover:to-green-100 hover:border-emerald-300 hover:text-emerald-800 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl min-h-[48px] px-4 py-2"
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 to-green-400 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+                      <div className="relative flex items-center justify-center">
+                        <div className="bg-emerald-100 rounded-full p-1 ml-2 group-hover:bg-emerald-200 transition-colors duration-300">
+                          <Download className="h-4 w-4 text-emerald-600 group-hover:animate-bounce" />
                         </div>
-                      </Button>
-                      <Button 
-                        variant="outline" 
-                        size="sm"
-                        onClick={() => handleDownloadWorkout(true)}
-                        className="btn-touch group relative overflow-hidden bg-gradient-to-r from-cyan-50 to-teal-50 border-2 border-cyan-200 text-cyan-700 hover:from-cyan-100 hover:to-teal-100 hover:border-cyan-300 hover:text-cyan-800 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl min-h-[48px] flex-1 px-3 py-2"
-                      >
-                        <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-teal-400 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
-                        <div className="relative flex items-center justify-center">
-                          <div className="bg-cyan-100 rounded-full p-1 ml-1 group-hover:bg-cyan-200 transition-colors duration-300">
-                            <Download className="h-3 w-3 text-cyan-600 group-hover:animate-bounce" />
-                          </div>
-                          <span className="font-medium text-xs">📱 جوال</span>
+                        <span className="font-medium text-sm">📥 تحميل ذكي</span>
+                        <div className="bg-emerald-200 text-emerald-800 text-xs px-2 py-1 rounded-full mr-2 group-hover:bg-emerald-300">
+                          {window.innerWidth < 768 ? '📱' : '💻'}
                         </div>
-                      </Button>
-                    </div>
+                      </div>
+                    </Button>
                     <Button 
                       variant="outline" 
                       size="sm"
@@ -491,7 +484,7 @@ export default function DailyPlan({ date, formattedDate, workoutType, dayIndex }
                 )}
               </CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-6 pt-0 bg-[#020817]">
               {isRestDay ? (
                 <div className="text-center py-8">
                   <div className="text-4xl mb-4">🛌</div>
