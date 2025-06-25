@@ -103,16 +103,16 @@ Darwfit is a comprehensive fitness and nutrition platform built as a full-stack 
 4. Environment-specific configuration injection
 
 ## Recent Changes
-- June 25, 2025: Created revolutionary Enhanced Free Plan system with 40+ exercises and 15+ budget foods
+- June 25, 2025: Created revolutionary tabbed dashboard interface with 5 sections (اليوم، الملف الشخصي، النصائح، التقدم، التفاصيل)
+- June 25, 2025: Implemented custom user icons for each client (محمد السهلي: Crown, يوسف درويش: Star, خالد عمر: Dumbbell)
+- June 25, 2025: Built dedicated tips section with smart fitness and budget advice
+- June 25, 2025: Created comprehensive progress tracking with visual statistics and achievements
+- June 25, 2025: Separated user profile display into dedicated tab with creative presentation
+- June 25, 2025: Enhanced Enhanced Free Plan system with 40+ exercises and 15+ budget foods
 - June 25, 2025: Built comprehensive exercise database with difficulty levels, equipment requirements, and detailed instructions
 - June 25, 2025: Implemented budget-friendly food database with costs, nutritional info, and cooking methods
-- June 25, 2025: Added creative user profiles with personality traits, achievements, and challenges for all users
-- June 25, 2025: Enhanced dashboard with creative visual cards and integrated user profile display
 - June 25, 2025: Updated خالد محمد to خالد عمر سعيد with specialized muscle-building nutrition plan (15-year-old focused)
 - June 25, 2025: Created 4-phase annual nutrition system targeting cost-effective muscle building
-- June 25, 2025: Added progressive workout plans (beginner, intermediate, advanced) with creative variations
-- June 25, 2025: Implemented budget fitness tips and money-saving strategies for users
-- June 25, 2025: Enhanced website design with modern gradients, animations, and interactive elements
 - January 25, 2025: Successfully migrated from Replit Agent to Replit environment
 - January 25, 2025: Implemented dynamic subscription days calculation based on real subscription end dates
 - January 25, 2025: Enhanced subscription display with color-coded status indicators (green/amber/red)
