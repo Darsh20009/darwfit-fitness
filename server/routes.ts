@@ -193,6 +193,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
     if (username === "محمد السهلي" && password === "123456") {
       res.status(200).json({ success: true });
+    } else if (username === "يوسف درويش" && password === "182009") {
+      res.status(200).json({ success: true });
+    } else if (username === "خالد محمد" && password === "123789") {
+      res.status(200).json({ success: true });
     } else {
       res.status(401).json({ success: false, message: "اسم المستخدم أو كلمة المرور غير صحيحة" });
     }
