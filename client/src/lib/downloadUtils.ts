@@ -727,7 +727,7 @@ export function downloadMealPlan(dayPlan: DayPlan) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>النظام الغذائي - اليوم ${dayPlan.dayNumber}</title>
+    <title>النظام الغذائي الإبداعي - اليوم ${dayPlan.dayNumber}</title>
     <style>
         * {
             margin: 0;
@@ -737,29 +737,120 @@ export function downloadMealPlan(dayPlan: DayPlan) {
 
         body {
             font-family: 'Tajawal', 'Arial', sans-serif;
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 25%, #312e81 50%, #1e293b 75%, #0f172a 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
             min-height: 100vh;
             padding: 20px;
             direction: rtl;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            25% { background-position: 100% 50%; }
+            50% { background-position: 100% 100%; }
+            75% { background-position: 0% 100%; }
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 255, 198, 0.2) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(45deg, transparent 24%, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.05) 26%, transparent 27%, transparent 74%, rgba(255,255,255,0.05) 75%, rgba(255,255,255,0.05) 76%, transparent 77%);
+            background-size: 50px 50px;
+            animation: movePattern 20s linear infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        @keyframes movePattern {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
         }
 
         .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
+            background: rgba(15, 23, 42, 0.95);
+            border-radius: 25px;
             overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            backdrop-filter: blur(10px);
+            box-shadow: 
+                0 0 0 1px rgba(148, 163, 184, 0.3),
+                0 25px 80px rgba(0,0,0,0.6),
+                0 0 100px rgba(168, 85, 247, 0.4),
+                inset 0 1px 0 rgba(255,255,255,0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            position: relative;
+            animation: containerFloat 6s ease-in-out infinite;
+        }
+
+        @keyframes containerFloat {
+            0%, 100% { transform: translateY(0px) rotateX(0deg); }
+            50% { transform: translateY(-10px) rotateX(2deg); }
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, 
+                #8b5cf6 0%, 
+                #06b6d4 25%, 
+                #10b981 50%, 
+                #f59e0b 75%, 
+                #ef4444 100%);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
 
         .header {
-            background: linear-gradient(135deg, #059669, #047857);
+            background: linear-gradient(135deg, 
+                #1e1b4b 0%, 
+                #3730a3 25%, 
+                #7c3aed 50%, 
+                #c026d3 75%, 
+                #e11d48 100%);
+            background-size: 300% 300%;
+            animation: headerGradient 8s ease infinite;
             color: white;
-            padding: 30px;
+            padding: 40px;
             text-align: center;
             position: relative;
             overflow: hidden;
+        }
+
+        @keyframes headerGradient {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
         }
 
         .header::before {
@@ -769,27 +860,68 @@ export function downloadMealPlan(dayPlan: DayPlan) {
             left: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-            animation: rotate 20s linear infinite;
+            background: conic-gradient(from 0deg, 
+                transparent, 
+                rgba(255,255,255,0.3), 
+                transparent, 
+                rgba(255,255,255,0.1), 
+                transparent);
+            animation: rotateComplex 15s linear infinite;
         }
 
-        @keyframes rotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        @keyframes rotateComplex {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.1); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 30% 20%, rgba(168, 85, 247, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(59, 130, 246, 0.3) 0%, transparent 50%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
         }
 
         .header h1 {
-            font-size: 2.2em;
-            margin-bottom: 10px;
+            font-size: 2.8em;
+            margin-bottom: 15px;
             position: relative;
-            z-index: 1;
+            z-index: 2;
+            background: linear-gradient(45deg, #ffffff, #e2e8f0, #ffffff, #cbd5e1);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: textShine 3s ease-in-out infinite;
+            text-shadow: 0 0 30px rgba(255,255,255,0.5);
+            font-weight: 900;
+            letter-spacing: 2px;
+        }
+
+        @keyframes textShine {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
         }
 
         .header p {
-            font-size: 1.1em;
-            opacity: 0.9;
+            font-size: 1.3em;
             position: relative;
-            z-index: 1;
+            z-index: 2;
+            color: rgba(255,255,255,0.95);
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            font-weight: 600;
+            margin-bottom: 8px;
         }
 
         .nutrition-summary {
@@ -831,48 +963,134 @@ export function downloadMealPlan(dayPlan: DayPlan) {
         }
 
         .meal-section {
-            margin-bottom: 30px;
-            background: rgba(240, 242, 247, 0.8);
-            border-radius: 15px;
-            padding: 25px;
-            border-right: 5px solid #10b981;
+            margin-bottom: 35px;
+            background: rgba(30, 41, 59, 0.9);
+            border-radius: 20px;
+            padding: 30px;
+            border-right: 4px solid transparent;
+            background-clip: padding-box;
+            position: relative;
+            box-shadow: 
+                0 8px 32px rgba(0,0,0,0.4),
+                inset 0 1px 0 rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .meal-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, #8b5cf6, #06b6d4, #10b981, #f59e0b);
+            border-radius: 0 20px 20px 0;
+            animation: borderGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes borderGlow {
+            0% { box-shadow: 0 0 10px rgba(139, 92, 246, 0.6); }
+            100% { box-shadow: 0 0 20px rgba(139, 92, 246, 1), 0 0 30px rgba(139, 92, 246, 0.8); }
+        }
+
+        .meal-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 15px 40px rgba(0,0,0,0.6),
+                0 0 30px rgba(139, 92, 246, 0.3),
+                inset 0 1px 0 rgba(255,255,255,0.2);
         }
 
         .meal-section h2 {
-            color: #047857;
-            margin-bottom: 20px;
-            font-size: 1.5em;
+            color: #e2e8f0;
+            margin-bottom: 25px;
+            font-size: 1.8em;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 15px;
+            font-weight: 800;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            background: linear-gradient(45deg, #ffffff, #cbd5e1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .meal-item {
-            background: white;
-            margin: 15px 0;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            border-right: 4px solid #f59e0b;
-            transition: transform 0.3s ease;
+            background: rgba(51, 65, 85, 0.8);
+            margin: 20px 0;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 
+                0 8px 25px rgba(0,0,0,0.3),
+                inset 0 1px 0 rgba(255,255,255,0.1);
+            border-right: 4px solid transparent;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+        }
+
+        .meal-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, #f59e0b, #ef4444, #ec4899);
+            animation: itemBorderPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes itemBorderPulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        .meal-item::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(245, 158, 11, 0.1), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            animation: rotate 8s linear infinite;
         }
 
         .meal-item:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 
+                0 15px 40px rgba(0,0,0,0.4),
+                0 0 30px rgba(245, 158, 11, 0.3),
+                inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+
+        .meal-item:hover::after {
+            opacity: 1;
         }
 
         .meal-name {
-            font-size: 1.2em;
-            font-weight: bold;
-            color: #1f2937;
-            margin-bottom: 10px;
+            font-size: 1.4em;
+            font-weight: 800;
+            color: #f1f5f9;
+            margin-bottom: 12px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            background: linear-gradient(45deg, #ffffff, #e2e8f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .meal-description {
-            color: #6b7280;
-            margin-bottom: 10px;
-            line-height: 1.5;
+            color: #cbd5e1;
+            margin-bottom: 15px;
+            line-height: 1.6;
+            font-size: 1.05em;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
         }
 
         .meal-nutrition {

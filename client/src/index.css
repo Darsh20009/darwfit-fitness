@@ -465,11 +465,38 @@
 
 @keyframes downloadGlow {
   0%, 100% { 
-    box-shadow: 0 0 10px rgba(34, 197, 94, 0.3), 0 0 20px rgba(34, 197, 94, 0.1);
+    box-shadow: 
+      0 8px 25px rgba(0,0,0,0.3),
+      0 0 20px rgba(124, 58, 237, 0.4),
+      inset 0 1px 0 rgba(255,255,255,0.2);
   }
   50% { 
-    box-shadow: 0 0 20px rgba(34, 197, 94, 0.6), 0 0 40px rgba(34, 197, 94, 0.3);
+    box-shadow: 
+      0 15px 40px rgba(0,0,0,0.4),
+      0 0 40px rgba(124, 58, 237, 0.8),
+      0 0 80px rgba(168, 85, 247, 0.5),
+      inset 0 1px 0 rgba(255,255,255,0.3);
   }
+}
+
+@keyframes neonPulse {
+  0%, 100% { 
+    text-shadow: 
+      0 0 5px rgba(124, 58, 237, 0.8),
+      0 0 10px rgba(124, 58, 237, 0.6),
+      0 0 15px rgba(124, 58, 237, 0.4);
+  }
+  50% { 
+    text-shadow: 
+      0 0 10px rgba(168, 85, 247, 1),
+      0 0 20px rgba(168, 85, 247, 0.8),
+      0 0 30px rgba(168, 85, 247, 0.6),
+      0 0 40px rgba(168, 85, 247, 0.4);
+  }
+}
+
+.download-btn-creative:hover span {
+  animation: neonPulse 2s ease-in-out infinite;
 }
 
 @keyframes floatingIcon {
@@ -483,25 +510,53 @@
   50% { opacity: 1; transform: scale(1) rotate(180deg); }
 }
 
-/* تأثير التحميل المتقدم */
+/* تأثير التحميل المتقدم الإبداعي */
 .download-btn-creative {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg, #10b981, #059669, #047857);
-  border: none;
+  background: linear-gradient(135deg, #1e1b4b, #3730a3, #7c3aed, #c026d3);
+  background-size: 300% 300%;
+  animation: creativeBgShift 4s ease infinite;
+  border: 2px solid transparent;
   color: white;
-  border-radius: 15px;
-  padding: 12px 20px;
-  font-weight: 600;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.2);
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border-radius: 18px;
+  padding: 14px 24px;
+  font-weight: 700;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   transform-style: preserve-3d;
+  box-shadow: 
+    0 8px 25px rgba(0,0,0,0.3),
+    0 0 20px rgba(124, 58, 237, 0.4),
+    inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+@keyframes creativeBgShift {
+  0%, 100% { background-position: 0% 50%; }
+  25% { background-position: 100% 0%; }
+  50% { background-position: 100% 100%; }
+  75% { background-position: 0% 100%; }
 }
 
 .download-btn-creative:hover {
-  animation: downloadPulse 1s ease-in-out infinite, downloadGlow 2s ease-in-out infinite;
-  transform: translateY(-3px) scale(1.05);
-  box-shadow: 0 8px 25px rgba(34, 197, 94, 0.4);
+  animation: 
+    creativeBgShift 2s ease infinite,
+    downloadPulse 1s ease-in-out infinite, 
+    downloadGlow 2s ease-in-out infinite,
+    creativeFloat 3s ease-in-out infinite;
+  transform: translateY(-5px) scale(1.08) rotateX(5deg);
+  box-shadow: 
+    0 15px 40px rgba(0,0,0,0.4),
+    0 0 40px rgba(124, 58, 237, 0.6),
+    0 0 80px rgba(168, 85, 247, 0.3),
+    inset 0 1px 0 rgba(255,255,255,0.3);
+  border-color: rgba(168, 85, 247, 0.6);
+}
+
+@keyframes creativeFloat {
+  0%, 100% { transform: translateY(-5px) scale(1.08) rotateX(5deg) rotateZ(0deg); }
+  33% { transform: translateY(-8px) scale(1.1) rotateX(3deg) rotateZ(1deg); }
+  66% { transform: translateY(-3px) scale(1.06) rotateX(7deg) rotateZ(-1deg); }
 }
 
 .download-btn-creative::before {

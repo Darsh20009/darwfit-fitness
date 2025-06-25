@@ -355,36 +355,28 @@ export default function DailyPlan({ date, formattedDate, workoutType, dayIndex }
               <CardTitle className="flex items-center justify-between">
                 <span>الوجبات اليومية</span>
                 <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-                  <div className="flex gap-1">
-                    <Button 
-                      variant="outline" 
-                      size="sm"
-                      onClick={() => handleDownloadMeal(false)}
-                      className="btn-touch group relative overflow-hidden bg-gradient-to-r from-emerald-50 to-green-50 border-2 border-emerald-200 text-emerald-700 hover:from-emerald-100 hover:to-green-100 hover:border-emerald-300 hover:text-emerald-800 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl flex-1"
-                    >
-                      <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 to-green-400 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
-                      <div className="relative flex items-center justify-center">
-                        <div className="bg-emerald-100 rounded-full p-1 ml-1 group-hover:bg-emerald-200 transition-colors duration-300">
-                          <Download className="h-3 w-3 text-emerald-600 group-hover:animate-bounce" />
-                        </div>
-                        <span className="font-medium text-xs">💻 كمبيوتر</span>
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => {
+                      const isMobile = window.innerWidth < 768;
+                      handleDownloadMeal(isMobile);
+                    }}
+                    className="btn-touch group relative overflow-hidden bg-gradient-to-r from-emerald-900 via-green-800 to-teal-900 border-2 border-emerald-600 text-emerald-100 hover:from-emerald-800 hover:via-green-700 hover:to-teal-800 hover:border-emerald-400 hover:text-emerald-50 transform hover:scale-105 transition-all duration-500 shadow-2xl hover:shadow-emerald-500/30 flex-1 download-btn-creative"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 via-green-300 to-teal-400 opacity-0 group-hover:opacity-30 transition-opacity duration-500"></div>
+                    <div className="absolute inset-0 bg-gradient-to-45 from-transparent via-white/10 to-transparent -skew-x-12 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                    <div className="relative flex items-center justify-center">
+                      <div className="bg-emerald-700 rounded-full p-2 ml-2 group-hover:bg-emerald-500 transition-all duration-300 download-icon-creative">
+                        <Download className="h-4 w-4 text-emerald-100 group-hover:animate-pulse group-hover:text-white" />
                       </div>
-                    </Button>
-                    <Button 
-                      variant="outline" 
-                      size="sm"
-                      onClick={() => handleDownloadMeal(true)}
-                      className="btn-touch group relative overflow-hidden bg-gradient-to-r from-green-50 to-teal-50 border-2 border-green-200 text-green-700 hover:from-green-100 hover:to-teal-100 hover:border-green-300 hover:text-green-800 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl flex-1"
-                    >
-                      <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-teal-400 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
-                      <div className="relative flex items-center justify-center">
-                        <div className="bg-green-100 rounded-full p-1 ml-1 group-hover:bg-green-200 transition-colors duration-300">
-                          <Download className="h-3 w-3 text-green-600 group-hover:animate-bounce" />
-                        </div>
-                        <span className="font-medium text-xs">📱 جوال</span>
+                      <span className="font-bold text-sm">🍽️ تحميل ذكي</span>
+                      <div className="bg-emerald-600 text-emerald-100 text-xs px-2 py-1 rounded-full mr-2 group-hover:bg-emerald-400 group-hover:text-emerald-900 transition-all duration-300">
+                        {window.innerWidth < 768 ? '📱 جوال' : '💻 كمبيوتر'}
                       </div>
-                    </Button>
-                  </div>
+                    </div>
+                    <div className="absolute top-1 right-1 text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300">✨</div>
+                  </Button>
                   <Button 
                     variant="outline" 
                     size="sm"
@@ -454,19 +446,25 @@ export default function DailyPlan({ date, formattedDate, workoutType, dayIndex }
                     <Button 
                       variant="outline" 
                       size="sm"
-                      onClick={handleSmartDownload}
-                      className="btn-touch group relative overflow-hidden bg-gradient-to-r from-emerald-50 to-green-50 border-2 border-emerald-200 text-emerald-700 hover:from-emerald-100 hover:to-green-100 hover:border-emerald-300 hover:text-emerald-800 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl min-h-[48px] px-4 py-2"
+                      onClick={() => {
+                        const isMobile = window.innerWidth < 768;
+                        handleDownloadWorkout(isMobile);
+                      }}
+                      className="btn-touch group relative overflow-hidden bg-gradient-to-r from-purple-900 via-indigo-800 to-blue-900 border-2 border-purple-600 text-purple-100 hover:from-purple-800 hover:via-indigo-700 hover:to-blue-800 hover:border-purple-400 hover:text-purple-50 transform hover:scale-105 transition-all duration-500 shadow-2xl hover:shadow-purple-500/30 min-h-[48px] px-4 py-2 download-btn-creative"
                     >
-                      <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 to-green-400 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+                      <div className="absolute inset-0 bg-gradient-to-r from-purple-400 via-indigo-300 to-blue-400 opacity-0 group-hover:opacity-30 transition-opacity duration-500"></div>
+                      <div className="absolute inset-0 bg-gradient-to-45 from-transparent via-white/20 to-transparent -skew-x-12 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
                       <div className="relative flex items-center justify-center">
-                        <div className="bg-emerald-100 rounded-full p-1 ml-2 group-hover:bg-emerald-200 transition-colors duration-300">
-                          <Download className="h-4 w-4 text-emerald-600 group-hover:animate-bounce" />
+                        <div className="bg-purple-700 rounded-full p-2 ml-2 group-hover:bg-purple-500 transition-all duration-300 download-icon-creative">
+                          <Download className="h-5 w-5 text-purple-100 group-hover:animate-pulse group-hover:text-white" />
                         </div>
-                        <span className="font-medium text-sm">📥 تحميل ذكي</span>
-                        <div className="bg-emerald-200 text-emerald-800 text-xs px-2 py-1 rounded-full mr-2 group-hover:bg-emerald-300">
-                          {window.innerWidth < 768 ? '📱' : '💻'}
+                        <span className="font-bold text-sm">💪 تحميل ذكي</span>
+                        <div className="bg-purple-600 text-purple-100 text-xs px-3 py-1 rounded-full mr-2 group-hover:bg-purple-400 group-hover:text-purple-900 transition-all duration-300">
+                          {window.innerWidth < 768 ? '📱 جوال' : '💻 كمبيوتر'}
                         </div>
                       </div>
+                      <div className="absolute top-1 right-1 text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-pulse">🔥</div>
+                      <div className="absolute bottom-1 left-1 text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-500 animate-bounce">⚡</div>
                     </Button>
                     <Button 
                       variant="outline" 
