@@ -79,6 +79,12 @@ export default function SubscriptionPage() {
 • مدة التمرين: ${data.exercise_duration || '-'}
 • الإصابات: ${data.injuries || 'لا يوجد'}
 
+📊 *معلومات BMI:*
+━━━━━━━━━━━━━━━
+• عمل BMI من قبل: ${data.has_done_bmi === 'yes' ? 'نعم' : 'لا'}
+• النتيجة السابقة: ${data.previous_bmi_result || 'لم يذكر'}
+• رأيه في النتيجة: ${data.bmi_feedback || 'لم يذكر'}
+
 🏥 *معلومات صحية:*
 ━━━━━━━━━━━━━━━
 • الأمراض المزمنة: ${Array.isArray(data.chronic_diseases) ? data.chronic_diseases.join('، ') : data.chronic_diseases || 'لا يوجد'}
@@ -87,15 +93,30 @@ export default function SubscriptionPage() {
 
 💰 *تفاصيل الاشتراك:*
 ━━━━━━━━━━━━━━━
-• سعر الاشتراك: 100 ريال
-• مدة الاشتراك: 3 شهور
+• نوع الاشتراك: ${getSubscriptionTypeInArabic(data.subscription_type as string)}
+• السعر: ${getSubscriptionPrice(data.subscription_type as string)}
       `;
 
       // Encode the message for WhatsApp URL
       const encodedMessage = encodeURIComponent(whatsappMessage);
 
-      // Open WhatsApp with the prepared message
-      window.open(`https://api.whatsapp.com/send/?phone=201155201921&text=${encodedMessage}&type=phone_number&app_absent=0`, '_blank');
+      // Open WhatsApp with the prepared message - works on both mobile and desktop
+      const whatsappUrl = `https://api.whatsapp.com/send/?phone=201155201921&text=${encodedMessage}&type=phone_number&app_absent=0`;
+      
+      // For mobile devices, try to open WhatsApp directly
+      if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        // Try WhatsApp app first, then fallback to web
+        const whatsappAppUrl = `whatsapp://send?phone=201155201921&text=${encodedMessage}`;
+        window.location.href = whatsappAppUrl;
+        
+        // Fallback to web version after a short delay
+        setTimeout(() => {
+          window.open(whatsappUrl, '_blank');
+        }, 2000);
+      } else {
+        // For desktop, open in new tab
+        window.open(whatsappUrl, '_blank');
+      }
 
       // Show success modal
       const event = new CustomEvent('subscription-success');
@@ -131,8 +152,40 @@ export default function SubscriptionPage() {
     }
   };
 
+  // Helper function to convert subscription type to Arabic
+  const getSubscriptionTypeInArabic = (type: string): string => {
+    switch(type) {
+      case '1month': 
+        return 'شهر واحد (30 يوم)';
+      case '3months': 
+        return '3 شهور (90 يوم)';
+      case '6months': 
+        return '6 شهور (180 يوم)';
+      case '12months': 
+        return 'سنة كاملة (365 يوم)';
+      default:
+        return type;
+    }
+  };
+
+  // Helper function to get subscription price
+  const getSubscriptionPrice = (type: string): string => {
+    switch(type) {
+      case '1month': 
+        return '50 ريال';
+      case '3months': 
+        return '100 ريال';
+      case '6months': 
+        return '200 ريال';
+      case '12months': 
+        return '500 ريال';
+      default:
+        return 'غير محدد';
+    }
+  };
+
   return (
-    <div className="container mx-auto px-4 py-8 min-h-[calc(100vh-70px)]">
+    <div className="container mx-auto px-4 py-4 sm:py-8 min-h-[calc(100vh-70px)]">
       {/* Expired Plan Message */}
       {isExpired && (
         <Card className="max-w-3xl mx-auto mb-6 border-4 border-orange-400 bg-gradient-to-r from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20">
@@ -371,17 +424,17 @@ export default function SubscriptionPage() {
 
         {/* Subscription Form Card */}
         <Card className="max-w-4xl mx-auto bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm shadow-2xl border-0">
-          <CardHeader className="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-t-lg">
-            <CardTitle className="text-3xl md:text-4xl text-center font-bold">
+          <CardHeader className="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-t-lg px-4 sm:px-6">
+            <CardTitle className="text-2xl sm:text-3xl md:text-4xl text-center font-bold">
               📋 استبيان الاشتراك الجديد
             </CardTitle>
-            <CardDescription className="text-center text-blue-100 text-lg">
+            <CardDescription className="text-center text-blue-100 text-base sm:text-lg">
               🎯 يرجى تعبئة المعلومات التالية بدقة لنتمكن من تصميم برنامج يناسب احتياجاتك بشكل مثالي
             </CardDescription>
           </CardHeader>
 
-        <CardContent>
-          <form id="subscriptionForm" onSubmit={handleSubmit} className="space-y-8">
+        <CardContent className="px-4 sm:px-6">
+          <form id="subscriptionForm" onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
             {/* القسم الأول: بيانات عامة */}
             <div>
               <h3 className="text-xl font-semibold text-primary mb-4">أولاً: بيانات عامة</h3>
@@ -446,9 +499,9 @@ export default function SubscriptionPage() {
                   />
                 </div>
 
-                <div className="space-y-2">
+                <div className="space-y-2 sm:col-span-2">
                   <Label>هدفك الأساسي</Label>
-                  <div className="grid grid-cols-2 gap-2 pt-2">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2">
                     <div className="flex items-center space-x-2 space-x-reverse">
                       <input 
                         type="radio" 
@@ -852,9 +905,64 @@ export default function SubscriptionPage() {
 
             <Separator />
 
-            {/* القسم الرابع: تفاصيل إضافية */}
+            {/* القسم الرابع: معلومات عن BMI */}
             <div>
-              <h3 className="text-xl font-semibold text-primary mb-4">رابعاً: تفاصيل إضافية</h3>
+              <h3 className="text-xl font-semibold text-primary mb-4">رابعاً: معلومات عن مؤشر كتلة الجسم (BMI)</h3>
+              
+              <div className="space-y-6">
+                <div className="space-y-2">
+                  <Label>هل قمت بحساب مؤشر كتلة الجسم (BMI) من قبل؟</Label>
+                  <div className="flex space-x-4 space-x-reverse pt-2">
+                    <div className="flex items-center space-x-2 space-x-reverse">
+                      <input 
+                        type="radio" 
+                        id="has_done_bmi_yes" 
+                        name="has_done_bmi" 
+                        value="yes"
+                        className="ml-2"
+                        required
+                      />
+                      <Label htmlFor="has_done_bmi_yes" className="font-normal">نعم</Label>
+                    </div>
+                    <div className="flex items-center space-x-2 space-x-reverse">
+                      <input 
+                        type="radio" 
+                        id="has_done_bmi_no" 
+                        name="has_done_bmi" 
+                        value="no"
+                        className="ml-2"
+                      />
+                      <Label htmlFor="has_done_bmi_no" className="font-normal">لا</Label>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="previous_bmi_result">إذا كانت إجابتك نعم، ما هي النتيجة التي حصلت عليها؟</Label>
+                  <Input 
+                    id="previous_bmi_result" 
+                    name="previous_bmi_result" 
+                    placeholder="مثال: 25.3 أو وزن زائد أو سمنة من الدرجة الأولى" 
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="bmi_feedback">ما رأيك في النتيجة التي حصلت عليها؟ وهل تعتقد أنها دقيقة؟</Label>
+                  <Textarea 
+                    id="bmi_feedback" 
+                    name="bmi_feedback" 
+                    placeholder="شاركنا رأيك في نتيجة BMI وما إذا كنت تشعر أنها تعكس حالتك الصحية بدقة"
+                    rows={3}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <Separator />
+
+            {/* القسم الخامس: تفاصيل إضافية */}
+            <div>
+              <h3 className="text-xl font-semibold text-primary mb-4">خامساً: تفاصيل إضافية</h3>
 
               <div className="space-y-6">
                 <div className="space-y-2">
@@ -1013,18 +1121,118 @@ export default function SubscriptionPage() {
 
             <Separator />
 
-            <CardFooter className="flex justify-between px-0 pt-4">
+            {/* قسم اختيار نوع الاشتراك */}
+            <div>
+              <h3 className="text-xl font-semibold text-primary mb-4">سادساً: اختيار نوع الاشتراك</h3>
+              
+              <div className="space-y-4">
+                <Label className="text-base font-medium">اختر نوع الاشتراك المناسب لك:</Label>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                  {/* 1 Month Plan */}
+                  <div className="relative">
+                    <input 
+                      type="radio" 
+                      id="subscription_1month" 
+                      name="subscription_type" 
+                      value="1month"
+                      className="sr-only peer"
+                      required
+                    />
+                    <Label 
+                      htmlFor="subscription_1month" 
+                      className="flex flex-col p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-primary peer-checked:border-primary peer-checked:bg-primary/5 transition-all"
+                    >
+                      <span className="font-semibold text-center mb-2">شهر واحد</span>
+                      <span className="text-2xl font-bold text-center text-primary">50 ريال</span>
+                      <span className="text-sm text-center text-gray-600">30 يوم</span>
+                    </Label>
+                  </div>
+
+                  {/* 3 Month Plan */}
+                  <div className="relative">
+                    <input 
+                      type="radio" 
+                      id="subscription_3months" 
+                      name="subscription_type" 
+                      value="3months"
+                      className="sr-only peer"
+                    />
+                    <Label 
+                      htmlFor="subscription_3months" 
+                      className="flex flex-col p-4 border-2 border-primary rounded-lg cursor-pointer hover:border-primary peer-checked:border-primary peer-checked:bg-primary/10 transition-all relative"
+                    >
+                      <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 bg-primary text-white px-2 py-1 rounded text-xs font-bold">
+                        الأكثر شعبية
+                      </div>
+                      <span className="font-semibold text-center mb-2 mt-2">3 شهور</span>
+                      <span className="text-2xl font-bold text-center text-primary">100 ريال</span>
+                      <span className="text-sm text-center text-gray-600">90 يوم</span>
+                    </Label>
+                  </div>
+
+                  {/* 6 Month Plan */}
+                  <div className="relative">
+                    <input 
+                      type="radio" 
+                      id="subscription_6months" 
+                      name="subscription_type" 
+                      value="6months"
+                      className="sr-only peer"
+                    />
+                    <Label 
+                      htmlFor="subscription_6months" 
+                      className="flex flex-col p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-primary peer-checked:border-primary peer-checked:bg-primary/5 transition-all"
+                    >
+                      <span className="font-semibold text-center mb-2">6 شهور</span>
+                      <span className="text-2xl font-bold text-center text-primary">200 ريال</span>
+                      <span className="text-sm text-center text-gray-600">180 يوم</span>
+                    </Label>
+                  </div>
+
+                  {/* 12 Month Plan */}
+                  <div className="relative">
+                    <input 
+                      type="radio" 
+                      id="subscription_12months" 
+                      name="subscription_type" 
+                      value="12months"
+                      className="sr-only peer"
+                    />
+                    <Label 
+                      htmlFor="subscription_12months" 
+                      className="flex flex-col p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-primary peer-checked:border-primary peer-checked:bg-primary/5 transition-all"
+                    >
+                      <span className="font-semibold text-center mb-2">سنة كاملة</span>
+                      <span className="text-2xl font-bold text-center text-primary">500 ريال</span>
+                      <span className="text-sm text-center text-gray-600">365 يوم</span>
+                    </Label>
+                  </div>
+                </div>
+
+                <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
+                  <p className="text-sm text-blue-700 dark:text-blue-300">
+                    💡 <strong>ملاحظة:</strong> سيتم التواصل معك خلال 24 ساعة لإكمال عملية الدفع وتفعيل الاشتراك
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <Separator />
+
+            <CardFooter className="flex flex-col sm:flex-row justify-between gap-4 px-0 pt-4">
               <Button 
                 type="button" 
                 variant="outline" 
-                onClick={() => navigate("/")}
+                onClick={() => setLocation("/")}
+                className="w-full sm:w-auto"
               >
                 <ArrowLeft className="ml-2 h-4 w-4" />
                 رجوع
               </Button>
               <Button 
                 type="submit" 
-                className="bg-primary hover:bg-primary-dark"
+                className="bg-primary hover:bg-primary-dark w-full sm:w-auto"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? "جاري الإرسال..." : "إرسال الاستبيان"}

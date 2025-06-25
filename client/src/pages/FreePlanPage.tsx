@@ -298,36 +298,118 @@ export default function FreePlanPage() {
 
   if (isGenerating) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-blue-900 dark:to-purple-900 flex items-center justify-center">
-        <div className="text-center space-y-8">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-blue-900 dark:to-purple-900 flex items-center justify-center overflow-hidden">
+        <div className="text-center space-y-8 relative">
+          {/* خلفية متحركة */}
+          <div className="absolute inset-0 -z-10">
+            <div className="absolute top-20 left-10 w-20 h-20 bg-blue-400/20 rounded-full animate-bounce"></div>
+            <div className="absolute top-40 right-16 w-16 h-16 bg-purple-400/20 rounded-full animate-bounce" style={{animationDelay: '0.5s'}}></div>
+            <div className="absolute bottom-20 left-20 w-24 h-24 bg-pink-400/20 rounded-full animate-bounce" style={{animationDelay: '1s'}}></div>
+            <div className="absolute bottom-40 right-10 w-18 h-18 bg-green-400/20 rounded-full animate-bounce" style={{animationDelay: '1.5s'}}></div>
+          </div>
+          
+          {/* اللودر الرئيسي */}
           <div className="relative">
-            <div className="w-32 h-32 mx-auto">
+            <div className="w-40 h-40 mx-auto relative">
+              {/* الحلقات الدوارة */}
               <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full animate-spin opacity-75"></div>
-              <div className="absolute inset-2 bg-white dark:bg-gray-900 rounded-full flex items-center justify-center">
-                <Sparkles className="h-12 w-12 text-purple-600 animate-pulse" />
+              <div className="absolute inset-2 bg-gradient-to-r from-green-500 via-yellow-500 to-red-500 rounded-full animate-spin opacity-60" style={{animationDirection: 'reverse', animationDuration: '3s'}}></div>
+              <div className="absolute inset-4 bg-white dark:bg-gray-900 rounded-full flex items-center justify-center shadow-2xl">
+                <div className="text-center">
+                  <Sparkles className="h-12 w-12 text-purple-600 animate-pulse mx-auto mb-2" />
+                  <div className="text-xs font-bold text-purple-600">AI</div>
+                </div>
               </div>
             </div>
           </div>
           
-          <div className="space-y-4">
-            <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-              🤖 الذكاء الاصطناعي يحضر خطتك المثالية
+          <div className="space-y-6">
+            <h2 className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+              🧠 الذكاء الاصطناعي يحضر خطتك المثالية
             </h2>
-            <div className="space-y-2 text-lg text-gray-600 dark:text-gray-300">
-              <p className="animate-pulse">🔍 تحليل بياناتك الشخصية...</p>
-              <p className="animate-pulse" style={{animationDelay: '0.5s'}}>🍽️ تصميم خطة غذائية مخصصة...</p>
-              <p className="animate-pulse" style={{animationDelay: '1s'}}>💪 إنشاء برنامج تمريني مناسب...</p>
-              <p className="animate-pulse" style={{animationDelay: '1.5s'}}>✨ إضافة اللمسات الأخيرة...</p>
+            
+            {/* مراحل الإنشاء المتحركة */}
+            <div className="space-y-4 max-w-2xl mx-auto">
+              <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl p-4 transform transition-all duration-500 hover:scale-105 animate-pulse">
+                <div className="flex items-center space-x-4 space-x-reverse">
+                  <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center animate-spin">
+                    <span className="text-white font-bold text-lg">🔍</span>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-blue-600">تحليل بياناتك الشخصية</h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">حساب السعرات والماكروز المناسبة لهدفك</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl p-4 transform transition-all duration-500 hover:scale-105 animate-pulse" style={{animationDelay: '0.5s'}}>
+                <div className="flex items-center space-x-4 space-x-reverse">
+                  <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center animate-bounce">
+                    <span className="text-white font-bold text-lg">🍽️</span>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-green-600">تصميم خطة غذائية مخصصة</h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">وجبات متوازنة تناسب نمط حياتك</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl p-4 transform transition-all duration-500 hover:scale-105 animate-pulse" style={{animationDelay: '1s'}}>
+                <div className="flex items-center space-x-4 space-x-reverse">
+                  <div className="w-12 h-12 bg-gradient-to-r from-red-500 to-red-600 rounded-full flex items-center justify-center animate-pulse">
+                    <span className="text-white font-bold text-lg">💪</span>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-red-600">إنشاء برنامج تمريني مناسب</h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">تمارين تناسب مستواك ومكان التدريب</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl p-4 transform transition-all duration-500 hover:scale-105 animate-pulse" style={{animationDelay: '1.5s'}}>
+                <div className="flex items-center space-x-4 space-x-reverse">
+                  <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-purple-600 rounded-full flex items-center justify-center animate-spin">
+                    <span className="text-white font-bold text-lg">✨</span>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-purple-600">إضافة اللمسات الأخيرة</h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">تحسين وتخصيص خطتك للحصول على أفضل النتائج</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           
-          <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl p-6 max-w-md mx-auto border border-purple-200 dark:border-purple-700">
-            <p className="text-purple-600 dark:text-purple-400 font-medium">
-              ⏱️ يتم إنشاء خطة مخصصة لك بالكامل...
-            </p>
-            <div className="mt-4 w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-              <div className="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full animate-pulse" style={{width: '75%'}}></div>
+          {/* شريط التقدم المحسن */}
+          <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl p-6 max-w-lg mx-auto border-2 border-purple-200 dark:border-purple-700 shadow-2xl">
+            <div className="flex items-center justify-center mb-4">
+              <div className="animate-pulse">
+                <span className="text-2xl">🚀</span>
+              </div>
+              <p className="text-purple-600 dark:text-purple-400 font-bold text-lg mr-3">
+                جاري إنشاء خطتك الشخصية...
+              </p>
             </div>
+            
+            <div className="relative w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4 overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full animate-pulse transform origin-left">
+                <div className="h-full bg-gradient-to-r from-blue-400 to-purple-400 rounded-full animate-pulse" style={{width: '85%'}}></div>
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-ping"></div>
+            </div>
+            
+            <div className="mt-4 text-center">
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                🎯 تخصيص الخطة حسب هدفك: <span className="font-bold text-purple-600">جاري المعالجة...</span>
+              </p>
+            </div>
+          </div>
+          
+          {/* رسائل تحفيزية */}
+          <div className="space-y-2 text-base text-gray-600 dark:text-gray-300 max-w-md mx-auto">
+            <p className="animate-bounce">🔥 خطة مخصصة 100% لك</p>
+            <p className="animate-bounce" style={{animationDelay: '0.3s'}}>⚡ نتائج مضمونة في 15 يوم</p>
+            <p className="animate-bounce" style={{animationDelay: '0.6s'}}>🎯 مناسبة لمستواك ووقتك</p>
           </div>
         </div>
       </div>
@@ -365,24 +447,24 @@ export default function FreePlanPage() {
               </CardTitle>
             </CardHeader>
             
-            <CardContent className="p-8">
+            <CardContent className="p-4 md:p-8">
               <Form {...form}>
-                <form id="freePlanForm" onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                <form id="freePlanForm" onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 md:space-y-8">
                   {/* Personal Info */}
-                  <div className="grid md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                     <FormField
                       control={form.control}
                       name="fullName"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-lg font-medium flex items-center">
+                          <FormLabel className="text-base md:text-lg font-medium flex items-center mb-2">
                             👤 الاسم الكامل
                           </FormLabel>
                           <FormControl>
                             <Input 
                               {...field} 
                               placeholder="أدخل اسمك الكامل"
-                              className="text-lg py-3 border-2 border-blue-200 dark:border-blue-700 focus:border-blue-500"
+                              className="text-base md:text-lg py-4 md:py-3 border-2 border-blue-200 dark:border-blue-700 focus:border-blue-500 rounded-xl btn-touch"
                             />
                           </FormControl>
                           <FormMessage />
@@ -395,16 +477,17 @@ export default function FreePlanPage() {
                       name="age"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-lg font-medium flex items-center">
+                          <FormLabel className="text-base md:text-lg font-medium flex items-center mb-2">
                             🎂 العمر
                           </FormLabel>
                           <FormControl>
                             <Input 
                               type="number"
+                              inputMode="numeric"
                               {...field} 
                               onChange={(e) => field.onChange(Number(e.target.value))}
                               placeholder="عمرك بالسنوات"
-                              className="text-lg py-3 border-2 border-blue-200 dark:border-blue-700 focus:border-blue-500"
+                              className="text-base md:text-lg py-4 md:py-3 border-2 border-blue-200 dark:border-blue-700 focus:border-blue-500 rounded-xl btn-touch"
                             />
                           </FormControl>
                           <FormMessage />
@@ -413,18 +496,18 @@ export default function FreePlanPage() {
                     />
                   </div>
 
-                  <div className="grid md:grid-cols-3 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
                     <FormField
                       control={form.control}
                       name="gender"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-lg font-medium flex items-center">
+                          <FormLabel className="text-base md:text-lg font-medium flex items-center mb-2">
                             ⚧️ الجنس
                           </FormLabel>
                           <Select onValueChange={field.onChange} defaultValue={field.value}>
                             <FormControl>
-                              <SelectTrigger className="text-lg py-3 border-2 border-blue-200 dark:border-blue-700">
+                              <SelectTrigger className="text-base md:text-lg py-4 md:py-3 border-2 border-blue-200 dark:border-blue-700 rounded-xl btn-touch h-14 md:h-12">
                                 <SelectValue placeholder="اختر الجنس" />
                               </SelectTrigger>
                             </FormControl>
@@ -443,16 +526,17 @@ export default function FreePlanPage() {
                       name="height"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-lg font-medium flex items-center">
+                          <FormLabel className="text-base md:text-lg font-medium flex items-center mb-2">
                             📏 الطول (سم)
                           </FormLabel>
                           <FormControl>
                             <Input 
                               type="number"
+                              inputMode="numeric"
                               {...field} 
                               onChange={(e) => field.onChange(Number(e.target.value))}
                               placeholder="الطول بالسنتيمتر"
-                              className="text-lg py-3 border-2 border-blue-200 dark:border-blue-700 focus:border-blue-500"
+                              className="text-base md:text-lg py-4 md:py-3 border-2 border-blue-200 dark:border-blue-700 focus:border-blue-500 rounded-xl btn-touch"
                             />
                           </FormControl>
                           <FormMessage />
@@ -465,16 +549,17 @@ export default function FreePlanPage() {
                       name="weight"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-lg font-medium flex items-center">
+                          <FormLabel className="text-base md:text-lg font-medium flex items-center mb-2">
                             ⚖️ الوزن (كجم)
                           </FormLabel>
                           <FormControl>
                             <Input 
                               type="number"
+                              inputMode="numeric"
                               {...field} 
                               onChange={(e) => field.onChange(Number(e.target.value))}
                               placeholder="الوزن بالكيلوجرام"
-                              className="text-lg py-3 border-2 border-blue-200 dark:border-blue-700 focus:border-blue-500"
+                              className="text-base md:text-lg py-4 md:py-3 border-2 border-blue-200 dark:border-blue-700 focus:border-blue-500 rounded-xl btn-touch"
                             />
                           </FormControl>
                           <FormMessage />
@@ -484,18 +569,18 @@ export default function FreePlanPage() {
                   </div>
 
                   {/* Goals and Preferences */}
-                  <div className="grid md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                     <FormField
                       control={form.control}
                       name="goal"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-lg font-medium flex items-center">
+                          <FormLabel className="text-base md:text-lg font-medium flex items-center mb-2">
                             🎯 هدفك الرئيسي
                           </FormLabel>
                           <Select onValueChange={field.onChange} defaultValue={field.value}>
                             <FormControl>
-                              <SelectTrigger className="text-lg py-3 border-2 border-blue-200 dark:border-blue-700">
+                              <SelectTrigger className="text-base md:text-lg py-4 md:py-3 border-2 border-blue-200 dark:border-blue-700 rounded-xl btn-touch h-14 md:h-12">
                                 <SelectValue placeholder="ما هو هدفك؟" />
                               </SelectTrigger>
                             </FormControl>
@@ -517,12 +602,12 @@ export default function FreePlanPage() {
                       name="activityLevel"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-lg font-medium flex items-center">
+                          <FormLabel className="text-base md:text-lg font-medium flex items-center mb-2">
                             🏃 مستوى النشاط اليومي
                           </FormLabel>
                           <Select onValueChange={field.onChange} defaultValue={field.value}>
                             <FormControl>
-                              <SelectTrigger className="text-lg py-3 border-2 border-blue-200 dark:border-blue-700">
+                              <SelectTrigger className="text-base md:text-lg py-4 md:py-3 border-2 border-blue-200 dark:border-blue-700 rounded-xl btn-touch h-14 md:h-12">
                                 <SelectValue placeholder="كم تتحرك يومياً؟" />
                               </SelectTrigger>
                             </FormControl>
@@ -540,18 +625,18 @@ export default function FreePlanPage() {
                     />
                   </div>
 
-                  <div className="grid md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                     <FormField
                       control={form.control}
                       name="experienceLevel"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-lg font-medium flex items-center">
+                          <FormLabel className="text-base md:text-lg font-medium flex items-center mb-2">
                             💪 مستوى خبرتك في التمارين
                           </FormLabel>
                           <Select onValueChange={field.onChange} defaultValue={field.value}>
                             <FormControl>
-                              <SelectTrigger className="text-lg py-3 border-2 border-blue-200 dark:border-blue-700">
+                              <SelectTrigger className="text-base md:text-lg py-4 md:py-3 border-2 border-blue-200 dark:border-blue-700 rounded-xl btn-touch h-14 md:h-12">
                                 <SelectValue placeholder="ما مستوى خبرتك؟" />
                               </SelectTrigger>
                             </FormControl>
@@ -571,12 +656,12 @@ export default function FreePlanPage() {
                       name="workoutPreference"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-lg font-medium flex items-center">
+                          <FormLabel className="text-base md:text-lg font-medium flex items-center mb-2">
                             🏠 مكان التمرين المفضل
                           </FormLabel>
                           <Select onValueChange={field.onChange} defaultValue={field.value}>
                             <FormControl>
-                              <SelectTrigger className="text-lg py-3 border-2 border-blue-200 dark:border-blue-700">
+                              <SelectTrigger className="text-base md:text-lg py-4 md:py-3 border-2 border-blue-200 dark:border-blue-700 rounded-xl btn-touch h-14 md:h-12">
                                 <SelectValue placeholder="أين تفضل التمرين؟" />
                               </SelectTrigger>
                             </FormControl>
@@ -598,12 +683,12 @@ export default function FreePlanPage() {
                     name="timeAvailable"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-lg font-medium flex items-center">
+                        <FormLabel className="text-base md:text-lg font-medium flex items-center mb-2">
                           ⏰ الوقت المتاح يومياً للتمرين
                         </FormLabel>
                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                           <FormControl>
-                            <SelectTrigger className="text-lg py-3 border-2 border-blue-200 dark:border-blue-700">
+                            <SelectTrigger className="text-base md:text-lg py-4 md:py-3 border-2 border-blue-200 dark:border-blue-700 rounded-xl btn-touch h-14 md:h-12">
                               <SelectValue placeholder="كم من الوقت متاح لديك؟" />
                             </SelectTrigger>
                           </FormControl>
@@ -625,12 +710,12 @@ export default function FreePlanPage() {
                     name="dietaryRestrictions"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-lg font-medium flex items-center">
+                        <FormLabel className="text-base md:text-lg font-medium flex items-center mb-3">
                           🥗 القيود الغذائية (اختياري)
                         </FormLabel>
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-3">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-3">
                           {dietaryOptions.map((option) => (
-                            <div key={option} className="flex items-center space-x-2">
+                            <div key={option} className="flex items-center space-x-3 space-x-reverse p-3 bg-gray-50 dark:bg-gray-800 rounded-xl border-2 border-transparent hover:border-blue-200 dark:hover:border-blue-700 transition-colors btn-touch">
                               <Checkbox
                                 id={option}
                                 checked={field.value?.includes(option)}
@@ -641,9 +726,9 @@ export default function FreePlanPage() {
                                     field.onChange(field.value.filter((item: string) => item !== option));
                                   }
                                 }}
-                                className="border-2 border-blue-300"
+                                className="border-2 border-blue-300 w-5 h-5"
                               />
-                              <Label htmlFor={option} className="text-sm">{option}</Label>
+                              <Label htmlFor={option} className="text-sm md:text-base cursor-pointer flex-1 text-right">{option}</Label>
                             </div>
                           ))}
                         </div>
@@ -655,11 +740,11 @@ export default function FreePlanPage() {
               </Form>
             </CardContent>
             
-            <CardFooter className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/30 dark:to-blue-900/30 p-8">
+            <CardFooter className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/30 dark:to-blue-900/30 p-4 md:p-8 space-y-4">
               <Button 
                 type="submit" 
                 form="freePlanForm"
-                className="w-full bg-gradient-to-r from-green-600 via-blue-600 to-purple-600 hover:from-green-700 hover:via-blue-700 hover:to-purple-700 text-white font-bold py-4 px-8 rounded-2xl transition-all duration-300 transform hover:scale-105 hover:shadow-2xl text-xl"
+                className="w-full bg-gradient-to-r from-green-600 via-blue-600 to-purple-600 hover:from-green-700 hover:via-blue-700 hover:to-purple-700 text-white font-bold py-5 md:py-4 px-6 md:px-8 rounded-2xl transition-all duration-300 transform hover:scale-105 hover:shadow-2xl text-lg md:text-xl btn-touch"
                 disabled={isGenerating}
               >
                 {isGenerating ? (
@@ -673,6 +758,16 @@ export default function FreePlanPage() {
                     <ArrowLeft className="mr-3 h-6 w-6" />
                   </>
                 )}
+              </Button>
+              
+              <Button 
+                type="button"
+                variant="ghost"
+                onClick={() => setLocation("/")}
+                className="w-full text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 py-4 px-6 rounded-xl transition-all duration-300 btn-touch text-base md:text-lg"
+              >
+                <ArrowLeft className="ml-2 h-5 w-5" />
+                العودة للصفحة الرئيسية
               </Button>
             </CardFooter>
           </Card>

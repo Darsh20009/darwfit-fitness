@@ -14,8 +14,10 @@ import {
   Star,
   Gift,
   TrendingUp,
-  Award
+  Award,
+  Download
 } from "lucide-react";
+import { downloadWorkoutPlan, downloadMealPlan, DayPlan } from "@/lib/downloadUtils";
 import { useLocation } from "wouter";
 
 export default function FreePlanViewPage() {
@@ -91,6 +93,182 @@ export default function FreePlanViewPage() {
     const timeLeft = expiresAt.getTime() - now.getTime();
     const daysLeft = Math.ceil(timeLeft / (1000 * 60 * 60 * 24));
     return Math.max(0, daysLeft);
+  };
+
+  const handleDownloadWorkout = (day: number) => {
+    try {
+      // العثور على التمرين الصحيح لليوم المحدد
+      const workoutForDay = freePlan.workoutPlan.find((w: any) => w.day === day) || freePlan.workoutPlan[0];
+      
+      const dayPlan: DayPlan = {
+        date: new Date().toLocaleDateString('ar-SA'),
+        dayNumber: day,
+        workout: {
+          title: workoutForDay?.title || `تمرين اليوم ${day}`,
+          duration: workoutForDay?.duration || "45 دقيقة",
+          exercises: workoutForDay?.exercises?.main?.map((exercise: any) => ({
+            name: exercise.name || "",
+            sets: exercise.sets || 3,
+            reps: exercise.reps || "10-12",
+            rest: exercise.rest || "60 ثانية",
+            notes: exercise.description || ""
+          })) || []
+        },
+        meals: {
+          breakfast: [{
+            name: freePlan.mealPlan.breakfast?.title || "الإفطار",
+            description: freePlan.mealPlan.breakfast?.items?.join(", ") || "",
+            calories: freePlan.mealPlan.breakfast?.calories || 0,
+            protein: freePlan.mealPlan.breakfast?.protein || 0,
+            carbs: freePlan.mealPlan.breakfast?.carbs || 0,
+            fats: freePlan.mealPlan.breakfast?.fats || 0
+          }],
+          lunch: [{
+            name: freePlan.mealPlan.lunch?.title || "الغداء",
+            description: freePlan.mealPlan.lunch?.items?.join(", ") || "",
+            calories: freePlan.mealPlan.lunch?.calories || 0,
+            protein: freePlan.mealPlan.lunch?.protein || 0,
+            carbs: freePlan.mealPlan.lunch?.carbs || 0,
+            fats: freePlan.mealPlan.lunch?.fats || 0
+          }],
+          dinner: [{
+            name: freePlan.mealPlan.dinner?.title || "العشاء",
+            description: freePlan.mealPlan.dinner?.items?.join(", ") || "",
+            calories: freePlan.mealPlan.dinner?.calories || 0,
+            protein: freePlan.mealPlan.dinner?.protein || 0,
+            carbs: freePlan.mealPlan.dinner?.carbs || 0,
+            fats: freePlan.mealPlan.dinner?.fats || 0
+          }],
+          snacks: [{
+            name: freePlan.mealPlan.snack1?.title || "وجبة خفيفة",
+            description: freePlan.mealPlan.snack1?.items?.join(", ") || "",
+            calories: freePlan.mealPlan.snack1?.calories || 0,
+            protein: freePlan.mealPlan.snack1?.protein || 0,
+            carbs: freePlan.mealPlan.snack1?.carbs || 0,
+            fats: freePlan.mealPlan.snack1?.fats || 0
+          }]
+        },
+        totalCalories: calculateTotalCalories(),
+        totalProtein: calculateTotalMacros().protein,
+        totalCarbs: calculateTotalMacros().carbs,
+        totalFats: calculateTotalMacros().fats
+      };
+      
+      downloadWorkoutPlan(dayPlan);
+    } catch (error) {
+      console.error("خطأ في تحميل التمرين:", error);
+      alert("حدث خطأ أثناء تحميل التمرين. يرجى المحاولة مرة أخرى.");
+    }
+  };
+
+  const handleDownloadMeal = (day: number) => {
+    try {
+      const dayPlan: DayPlan = {
+        date: new Date().toLocaleDateString('ar-SA'),
+        dayNumber: day,
+        workout: {
+          title: `تمرين اليوم ${day}`,
+          duration: "45 دقيقة",
+          exercises: []
+        },
+        meals: {
+          breakfast: [{
+            name: freePlan.mealPlan.breakfast?.title || "الإفطار",
+            description: freePlan.mealPlan.breakfast?.items?.join(", ") || "",
+            calories: freePlan.mealPlan.breakfast?.calories || 0,
+            protein: freePlan.mealPlan.breakfast?.protein || 0,
+            carbs: freePlan.mealPlan.breakfast?.carbs || 0,
+            fats: freePlan.mealPlan.breakfast?.fats || 0
+          }],
+          lunch: [{
+            name: freePlan.mealPlan.lunch?.title || "الغداء",
+            description: freePlan.mealPlan.lunch?.items?.join(", ") || "",
+            calories: freePlan.mealPlan.lunch?.calories || 0,
+            protein: freePlan.mealPlan.lunch?.protein || 0,
+            carbs: freePlan.mealPlan.lunch?.carbs || 0,
+            fats: freePlan.mealPlan.lunch?.fats || 0
+          }],
+          dinner: [{
+            name: freePlan.mealPlan.dinner?.title || "العشاء",
+            description: freePlan.mealPlan.dinner?.items?.join(", ") || "",
+            calories: freePlan.mealPlan.dinner?.calories || 0,
+            protein: freePlan.mealPlan.dinner?.protein || 0,
+            carbs: freePlan.mealPlan.dinner?.carbs || 0,
+            fats: freePlan.mealPlan.dinner?.fats || 0
+          }],
+          snacks: [
+            {
+              name: freePlan.mealPlan.snack1?.title || "الوجبة الخفيفة الأولى",
+              description: freePlan.mealPlan.snack1?.items?.join(", ") || "",
+              calories: freePlan.mealPlan.snack1?.calories || 0,
+              protein: freePlan.mealPlan.snack1?.protein || 0,
+              carbs: freePlan.mealPlan.snack1?.carbs || 0,
+              fats: freePlan.mealPlan.snack1?.fats || 0
+            },
+            {
+              name: freePlan.mealPlan.snack2?.title || "الوجبة الخفيفة الثانية",
+              description: freePlan.mealPlan.snack2?.items?.join(", ") || "",
+              calories: freePlan.mealPlan.snack2?.calories || 0,
+              protein: freePlan.mealPlan.snack2?.protein || 0,
+              carbs: freePlan.mealPlan.snack2?.carbs || 0,
+              fats: freePlan.mealPlan.snack2?.fats || 0
+            }
+          ]
+        },
+        totalCalories: calculateTotalCalories(),
+        totalProtein: calculateTotalMacros().protein,
+        totalCarbs: calculateTotalMacros().carbs,
+        totalFats: calculateTotalMacros().fats
+      };
+      
+      downloadMealPlan(dayPlan);
+    } catch (error) {
+      console.error("خطأ في تحميل النظام الغذائي:", error);
+      alert("حدث خطأ أثناء تحميل النظام الغذائي. يرجى المحاولة مرة أخرى.");
+    }
+  };
+
+  const calculateTotalCalories = () => {
+    if (!freePlan?.mealPlan) return 0;
+    let total = 0;
+    
+    // حساب سعرات كل وجبة بشكل منفصل
+    if (freePlan.mealPlan.breakfast?.calories) total += freePlan.mealPlan.breakfast.calories;
+    if (freePlan.mealPlan.lunch?.calories) total += freePlan.mealPlan.lunch.calories;
+    if (freePlan.mealPlan.dinner?.calories) total += freePlan.mealPlan.dinner.calories;
+    if (freePlan.mealPlan.snack1?.calories) total += freePlan.mealPlan.snack1.calories;
+    if (freePlan.mealPlan.snack2?.calories) total += freePlan.mealPlan.snack2.calories;
+    
+    return total;
+  };
+
+  const calculateTotalMacros = () => {
+    if (!freePlan?.mealPlan) return { protein: 0, carbs: 0, fats: 0 };
+    
+    let protein = 0, carbs = 0, fats = 0;
+    
+    // حساب الماكروز لكل وجبة بشكل منفصل
+    if (freePlan.mealPlan.breakfast?.protein) protein += freePlan.mealPlan.breakfast.protein;
+    if (freePlan.mealPlan.breakfast?.carbs) carbs += freePlan.mealPlan.breakfast.carbs;
+    if (freePlan.mealPlan.breakfast?.fats) fats += freePlan.mealPlan.breakfast.fats;
+    
+    if (freePlan.mealPlan.lunch?.protein) protein += freePlan.mealPlan.lunch.protein;
+    if (freePlan.mealPlan.lunch?.carbs) carbs += freePlan.mealPlan.lunch.carbs;
+    if (freePlan.mealPlan.lunch?.fats) fats += freePlan.mealPlan.lunch.fats;
+    
+    if (freePlan.mealPlan.dinner?.protein) protein += freePlan.mealPlan.dinner.protein;
+    if (freePlan.mealPlan.dinner?.carbs) carbs += freePlan.mealPlan.dinner.carbs;
+    if (freePlan.mealPlan.dinner?.fats) fats += freePlan.mealPlan.dinner.fats;
+    
+    if (freePlan.mealPlan.snack1?.protein) protein += freePlan.mealPlan.snack1.protein;
+    if (freePlan.mealPlan.snack1?.carbs) carbs += freePlan.mealPlan.snack1.carbs;
+    if (freePlan.mealPlan.snack1?.fats) fats += freePlan.mealPlan.snack1.fats;
+    
+    if (freePlan.mealPlan.snack2?.protein) protein += freePlan.mealPlan.snack2.protein;
+    if (freePlan.mealPlan.snack2?.carbs) carbs += freePlan.mealPlan.snack2.carbs;
+    if (freePlan.mealPlan.snack2?.fats) fats += freePlan.mealPlan.snack2.fats;
+    
+    return { protein, carbs, fats };
   };
 
   if (!freePlan) {
@@ -283,7 +461,7 @@ export default function FreePlanViewPage() {
               </TabsTrigger>
               <TabsTrigger value="calendar" className="text-lg">
                 <Calendar className="h-5 w-5 ml-2" />
-                جدول الـ 30 يوم
+                جدول الـ 15 يوماً
               </TabsTrigger>
             </TabsList>
 
@@ -340,6 +518,16 @@ export default function FreePlanViewPage() {
                               ))}
                             </ul>
                           </div>
+                        </div>
+                        
+                        <div className="mt-4 text-center">
+                          <Button 
+                            onClick={() => handleDownloadMeal(currentDay)}
+                            className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold py-2 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                          >
+                            <Download className="h-4 w-4 ml-2 animate-bounce" />
+                            📥 تحميل النظام الغذائي
+                          </Button>
                         </div>
                       </CardContent>
                     </Card>
@@ -428,6 +616,16 @@ export default function FreePlanViewPage() {
                           ))}
                         </div>
                       </div>
+                      
+                      <div className="mt-6 text-center">
+                        <Button 
+                          onClick={() => handleDownloadWorkout(workout.day)}
+                          className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-2 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                        >
+                          <Download className="h-4 w-4 ml-2 animate-bounce" />
+                          💪 تحميل تمرين اليوم {workout.day}
+                        </Button>
+                      </div>
                     </CardContent>
                   </Card>
                 ))}
@@ -439,7 +637,7 @@ export default function FreePlanViewPage() {
               <Card className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm">
                 <CardHeader>
                   <CardTitle className="text-2xl text-center text-blue-600">
-                    📅 جدول الخمسة عشر يوماً
+                    📅 جدول الـ 15 يوماً
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
