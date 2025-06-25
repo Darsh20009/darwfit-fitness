@@ -101,6 +101,39 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         localStorage.setItem("subscriptionId", correctSubId);
         localStorage.setItem("subscriptionEndDate", correctEndDate);
         sessionStorage.setItem("auth", JSON.stringify(authData));
+      }
+      // If it's خالد محمد, calculate 1 year from today
+      else if (username === "خالد محمد") {
+        const today = new Date();
+        const endDateObj = new Date(today.getFullYear() + 1, today.getMonth(), today.getDate());
+        
+        const arabicMonths = [
+          "يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو",
+          "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"
+        ];
+        const correctEndDate = `${endDateObj.getDate()} ${arabicMonths[endDateObj.getMonth()]} ${endDateObj.getFullYear()}`;
+        const correctSubId = "2010";
+        
+        setIsLoggedIn(true);
+        setUsername(username);
+        setSubscriptionId(correctSubId);
+        setSubscriptionEndDate(correctEndDate);
+        
+        // حفظ البيانات في كلا المكانين
+        const authData = {
+          isLoggedIn: true,
+          username,
+          subscriptionId: correctSubId,
+          subscriptionEndDate: correctEndDate,
+          loginTime: new Date().toISOString(),
+          lastActive: new Date().toISOString()
+        };
+        
+        localStorage.setItem("auth", JSON.stringify(authData));
+        localStorage.setItem("username", username);
+        localStorage.setItem("subscriptionId", correctSubId);
+        localStorage.setItem("subscriptionEndDate", correctEndDate);
+        sessionStorage.setItem("auth", JSON.stringify(authData));
       } else {
         setIsLoggedIn(true);
         setUsername(username);
@@ -153,6 +186,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // Calculate 6 months from today
       const today = new Date();
       const endDateObj = new Date(today.getFullYear(), today.getMonth() + 6, today.getDate());
+      
+      const arabicMonths = [
+        "يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو",
+        "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"
+      ];
+      endDate = `${endDateObj.getDate()} ${arabicMonths[endDateObj.getMonth()]} ${endDateObj.getFullYear()}`;
+      isValid = true;
+    }
+    // Check for خالد محمد
+    else if (username === "خالد محمد" && password === "123789") {
+      subsId = "2010";
+      // Calculate 1 year from today
+      const today = new Date();
+      const endDateObj = new Date(today.getFullYear() + 1, today.getMonth(), today.getDate());
       
       const arabicMonths = [
         "يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو",

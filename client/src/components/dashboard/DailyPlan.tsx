@@ -2,6 +2,9 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { getMealSummary } from "../../data/mealPlans";
 import { getWorkoutSummary } from "../../data/workoutPlans";
+import { getKhaledMealSummary, getKhaledMealPlanByMonth } from "../../data/khaledMealPlans";
+import { getKhaledWorkoutSummary, getKhaledWorkoutByMonth } from "../../data/khaledWorkoutPlans";
+import { useAuthContext } from "../../context/AuthContext";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Calendar, Dumbbell, Utensils, CheckCircle2, ArrowRight, Lock, Download, Target, Weight } from "lucide-react";
@@ -22,11 +25,41 @@ export default function DailyPlan({ date, formattedDate, workoutType, dayIndex }
   const [completedMeals, setCompletedMeals] = useState<Set<string>>(new Set());
   const [completedWorkouts, setCompletedWorkouts] = useState<Set<string>>(new Set());
   const [exerciseWeights, setExerciseWeights] = useState<Map<string, number>>(new Map());
-
+  
+  const { username } = useAuthContext();
+  const isKhaled = username === "خالد محمد";
   const isRestDay = dayIndex === 6; // Sunday is rest day
 
-  const mealSummary = getMealSummary();
-  const workoutSummary = isRestDay ? [] : getWorkoutSummary(dayIndex);
+  // Get the appropriate meal and workout plans based on user
+  let mealSummary, workoutSummary;
+  
+  if (isKhaled) {
+    // For Khaled, get current month and use his specialized plans
+    const currentMonth = new Date().getMonth() + 1; // 1-12
+    const khaledMealPlan = getKhaledMealPlanByMonth(currentMonth);
+    const khaledWorkout = isRestDay ? null : getKhaledWorkoutByMonth(currentMonth, dayIndex);
+    
+    // Convert Khaled's meal plan to match the expected format
+    mealSummary = [
+      { meal: khaledMealPlan.breakfast.title, description: khaledMealPlan.breakfast.items.join(", ") },
+      { meal: khaledMealPlan.morningSnack.title, description: khaledMealPlan.morningSnack.items.join(", ") },
+      { meal: khaledMealPlan.lunch.title, description: khaledMealPlan.lunch.items.join(", ") },
+      { meal: khaledMealPlan.afternoonSnack.title, description: khaledMealPlan.afternoonSnack.items.join(", ") },
+      { meal: khaledMealPlan.dinner.title, description: khaledMealPlan.dinner.items.join(", ") },
+      { meal: khaledMealPlan.beforeSleep.title, description: khaledMealPlan.beforeSleep.items.join(", ") }
+    ];
+    
+    workoutSummary = isRestDay ? [] : (khaledWorkout ? [
+      { name: khaledWorkout.title, description: khaledWorkout.description },
+      { name: "العضلات المستهدفة", description: khaledWorkout.targetMuscles },
+      { name: "مدة التمرين", description: khaledWorkout.duration },
+      { name: "المرحلة", description: khaledWorkout.phase }
+    ] : []);
+  } else {
+    // For other users, use the original plans
+    mealSummary = getMealSummary();
+    workoutSummary = isRestDay ? [] : getWorkoutSummary(dayIndex);  
+  }
 
   const dateKey = date.toISOString().split('T')[0];
 
