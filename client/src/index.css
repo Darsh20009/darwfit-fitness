@@ -265,6 +265,36 @@
   /* تحسين الأزرار للجوال */
   button {
     border-radius: 8px;
+  }
+
+  /* تحسين النماذج للجوال */
+  input, textarea, select {
+    font-size: 16px !important; /* منع التكبير في Safari */
+  }
+
+  /* تحسين قوائم الاختيار للجوال */
+  [role="combobox"] {
+    min-height: 48px;
+  }
+
+  /* تحسين الـ checkboxes للجوال */
+  input[type="checkbox"] {
+    min-width: 20px;
+    min-height: 20px;
+  }
+
+  /* تحسين الأزرار للمس */
+  .btn-touch {
+    min-height: 48px;
+    min-width: 48px;
+    padding: 12px 16px;
+  }
+
+  /* تحسين الهوامش */
+  .max-w-4xl {
+    max-width: 100%;
+    margin: 0 auto;
+  }
     font-weight: 500;
   }
 
@@ -272,6 +302,55 @@
   input, select, textarea {
     font-size: 16px !important;
   }
+
+/* تنسيقات خاصة للوزن والتمارين */
+.weight-input-container {
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  border: 2px solid #0369a1;
+  border-radius: 12px;
+  padding: 12px;
+  transition: all 0.3s ease;
+}
+
+.weight-input-container:hover {
+  border-color: #0284c7;
+  box-shadow: 0 4px 12px rgba(3, 105, 161, 0.15);
+  transform: translateY(-1px);
+}
+
+.exercise-card {
+  background: linear-gradient(135deg, #fafafa 0%, #f0f9ff 100%);
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  transition: all 0.3s ease;
+}
+
+.exercise-card:hover {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+  border-color: #3b82f6;
+}
+
+.weight-badge {
+  background: linear-gradient(45deg, #3b82f6, #1d4ed8);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+
+.mobile-weight-input {
+  font-size: 16px !important;
+  font-weight: bold;
+  text-align: center;
+  color: #1e40af;
 }
 
 /* تحسين للمناظر الصغيرة جداً */
@@ -293,4 +372,240 @@
 
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
+}
+
+/* تأثيرات إبداعية للتحميل على الجوال */
+@keyframes downloadPulse {
+  0%, 100% { 
+    transform: scale(1) rotate(0deg);
+    filter: hue-rotate(0deg);
+  }
+  25% { 
+    transform: scale(1.05) rotate(5deg);
+    filter: hue-rotate(90deg);
+  }
+  50% { 
+    transform: scale(1.1) rotate(0deg);
+    filter: hue-rotate(180deg);
+  }
+  75% { 
+    transform: scale(1.05) rotate(-5deg);
+    filter: hue-rotate(270deg);
+  }
+}
+
+/* تحسينات خاصة لأزرار التحميل على الجوال */
+@media (max-width: 640px) {
+  .btn-touch {
+    min-height: 48px !important;
+    padding: 12px 16px !important;
+    font-size: 14px !important;
+    justify-content: center !important;
+    border-radius: 12px !important;
+  }
+  
+  .btn-touch .relative {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 4px !important;
+  }
+  
+  /* تحسين التباعد في الكروت */
+  .card-mobile .flex.gap-2 {
+    flex-direction: column !important;
+    gap: 12px !important;
+    width: 100% !important;
+  }
+  
+  /* تحسين عرض العناوين */
+  .card-mobile .flex.justify-between {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 16px !important;
+  }
+  
+  /* تحسين أزرار التحميل المزدوجة */
+  .download-buttons-mobile {
+    display: flex !important;
+    gap: 4px !important;
+    width: 100% !important;
+  }
+  
+  .download-buttons-mobile .btn-touch {
+    flex: 1 !important;
+    min-width: 0 !important;
+    font-size: 12px !important;
+    padding: 8px 4px !important;
+  }
+  
+  /* تحسين النصوص للأزرار الصغيرة */
+  .btn-touch .text-xs {
+    font-size: 11px !important;
+    white-space: nowrap !important;
+  }
+}
+
+/* تحسين إضافي للجوالات الصغيرة جداً */
+@media (max-width: 380px) {
+  .download-buttons-mobile .btn-touch {
+    font-size: 10px !important;
+    padding: 6px 2px !important;
+  }
+  
+  .download-buttons-mobile .btn-touch .relative {
+    flex-direction: column !important;
+    gap: 2px !important;
+  }
+  
+  .download-buttons-mobile .btn-touch .text-xs {
+    font-size: 9px !important;
+  }
+}
+
+@keyframes downloadGlow {
+  0%, 100% { 
+    box-shadow: 0 0 10px rgba(34, 197, 94, 0.3), 0 0 20px rgba(34, 197, 94, 0.1);
+  }
+  50% { 
+    box-shadow: 0 0 20px rgba(34, 197, 94, 0.6), 0 0 40px rgba(34, 197, 94, 0.3);
+  }
+}
+
+@keyframes floatingIcon {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33% { transform: translateY(-3px) rotate(2deg); }
+  66% { transform: translateY(3px) rotate(-2deg); }
+}
+
+@keyframes sparkle {
+  0%, 100% { opacity: 0; transform: scale(0) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1) rotate(180deg); }
+}
+
+/* تأثير التحميل المتقدم */
+.download-btn-creative {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #10b981, #059669, #047857);
+  border: none;
+  color: white;
+  border-radius: 15px;
+  padding: 12px 20px;
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform-style: preserve-3d;
+}
+
+.download-btn-creative:hover {
+  animation: downloadPulse 1s ease-in-out infinite, downloadGlow 2s ease-in-out infinite;
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 25px rgba(34, 197, 94, 0.4);
+}
+
+.download-btn-creative::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.5s;
+}
+
+.download-btn-creative:hover::before {
+  left: 100%;
+}
+
+.download-btn-creative::after {
+  content: '✨';
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  font-size: 12px;
+  opacity: 0;
+  animation: sparkle 2s ease-in-out infinite;
+}
+
+.download-btn-creative:hover::after {
+  opacity: 1;
+}
+
+/* تأثير خاص لأيقونة التحميل */
+.download-icon-creative {
+  display: inline-block;
+  animation: floatingIcon 3s ease-in-out infinite;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+}
+
+.download-btn-creative:hover .download-icon-creative {
+  animation: floatingIcon 0.5s ease-in-out infinite, downloadPulse 1s ease-in-out infinite;
+}
+
+/* تأثير الموجة للنقر */
+@keyframes ripple {
+  0% {
+    transform: scale(0);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+.download-btn-creative:active::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  background: rgba(255,255,255,0.3);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: ripple 0.6s ease-out;
+}
+
+/* تحسينات للجوال */
+@media (max-width: 768px) {
+  .download-btn-creative {
+    padding: 14px 18px;
+    font-size: 14px;
+    border-radius: 12px;
+    min-height: 48px;
+    min-width: 120px;
+  }
+  
+  .download-icon-creative {
+    font-size: 16px;
+  }
+}
+
+/* تأثير مخصص لزر تحميل التمارين */
+.workout-download-btn {
+  background: linear-gradient(135deg, #3b82f6, #2563eb, #1d4ed8);
+  position: relative;
+  overflow: hidden;
+}
+
+.workout-download-btn:hover {
+  animation: downloadPulse 1s ease-in-out infinite;
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+}
+
+.workout-download-btn::after {
+  content: '💪';
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  font-size: 12px;
+  opacity: 0;
+  animation: sparkle 2s ease-in-out infinite 0.5s;
+}
+
+.workout-download-btn:hover::after {
+  opacity: 1;
 }

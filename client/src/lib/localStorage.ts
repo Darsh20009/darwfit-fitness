@@ -1,4 +1,3 @@
-
 // مكتبة لحفظ البيانات في ذاكرة الجهاز المحلية
 export class LocalStorageManager {
   // حفظ البيانات
@@ -119,4 +118,15 @@ export class LocalStorageManager {
       console.error('Error clearing localStorage:', error);
     }
   }
+    // إضافة الدوال المفقودة لأوزان التمارين
+    static getExerciseWeights(date: string): Map<string, number> {
+      const weights = this.getItem(`exercise_weights_${date}`) || {};
+      return new Map(Object.entries(weights).map(([key, value]) => [key, value as number]));
+    }
+  
+    static setExerciseWeight(date: string, exerciseName: string, weight: number) {
+      const currentWeights = this.getItem(`exercise_weights_${date}`) || {};
+      currentWeights[exerciseName] = weight;
+      this.setItem(`exercise_weights_${date}`, currentWeights);
+    }
 }
