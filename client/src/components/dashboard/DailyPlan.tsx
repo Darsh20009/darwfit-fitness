@@ -331,7 +331,6 @@ export default function DailyPlan({ date, formattedDate, workoutType, dayIndex }
           </CardContent>
         </Card>
       </div>
-
       <Tabs defaultValue="meals" className="w-full">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="meals" className="flex items-center gap-2">
@@ -504,7 +503,7 @@ export default function DailyPlan({ date, formattedDate, workoutType, dayIndex }
               ) : (
                 <div className="space-y-4">
                   {workoutSummary.map((exercise, index) => (
-                    <div key={index} className="bg-gradient-to-r from-gray-50 to-blue-50 rounded-xl p-4 border border-gray-200 hover:shadow-lg transition-all duration-300">
+                    <div key={index} className="from-gray-50 to-blue-50 rounded-xl p-4 border border-gray-200 hover:shadow-lg transition-all duration-300 bg-[#020817]">
                       <div className="flex items-start justify-between mb-3">
                         <div className="flex-1">
                           <div className="font-bold text-gray-800 mobile-text flex items-center gap-2">
