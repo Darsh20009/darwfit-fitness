@@ -506,7 +506,7 @@ export default function DailyPlan({ date, formattedDate, workoutType, dayIndex }
                     <div key={index} className="from-gray-50 to-blue-50 rounded-xl p-4 border border-gray-200 hover:shadow-lg transition-all duration-300 bg-[#020817]">
                       <div className="flex items-start justify-between mb-3">
                         <div className="flex-1">
-                          <div className="font-bold text-gray-800 mobile-text flex items-center gap-2">
+                          <div className="font-bold mobile-text flex items-center gap-2 text-[#5491e8]">
                             <Dumbbell className="h-4 w-4 text-blue-600" />
                             {exercise.name}
                           </div>
