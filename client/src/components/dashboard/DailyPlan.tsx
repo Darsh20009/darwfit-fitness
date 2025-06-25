@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { getMealSummary } from "../../data/mealPlans";
 import { getWorkoutSummary } from "../../data/workoutPlans";
-import { getKhaledMealSummary, getKhaledMealPlanByMonth } from "../../data/khaledMealPlans";
-import { getKhaledWorkoutSummary, getKhaledWorkoutByMonth } from "../../data/khaledWorkoutPlans";
+import { getKhaledOmarMealPlanByMonth } from "../../data/khaledNewMealPlan";
+import { getUserProfile } from "../../data/userProfiles";
 import { useAuthContext } from "../../context/AuthContext";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -27,16 +27,16 @@ export default function DailyPlan({ date, formattedDate, workoutType, dayIndex }
   const [exerciseWeights, setExerciseWeights] = useState<Map<string, number>>(new Map());
   
   const { username } = useAuthContext();
-  const isKhaled = username === "خالد محمد";
+  const isKhaled = username === "خالد عمر";
   const isRestDay = dayIndex === 6; // Sunday is rest day
 
   // Get the appropriate meal and workout plans based on user
   let mealSummary, workoutSummary;
   
   if (isKhaled) {
-    // For Khaled, get current month and use his specialized meal plans but same workouts as others
+    // For Khaled Omar, get current month and use his muscle-building meal plans
     const currentMonth = new Date().getMonth() + 1; // 1-12
-    const khaledMealPlan = getKhaledMealPlanByMonth(currentMonth);
+    const khaledMealPlan = getKhaledOmarMealPlanByMonth(currentMonth);
     
     // Convert Khaled's meal plan to match the expected format
     mealSummary = [

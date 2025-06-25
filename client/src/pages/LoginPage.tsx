@@ -44,7 +44,7 @@ export default function LoginPage() {
           });
           return;
         }
-      } else if (username === "خالد محمد") {
+      } else if (username === "خالد عمر") {
         if (password !== "123789" || subscriptionId !== "2010") {
           toast({
             title: "خطأ في تسجيل الدخول",

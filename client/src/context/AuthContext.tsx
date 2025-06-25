@@ -102,8 +102,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         localStorage.setItem("subscriptionEndDate", correctEndDate);
         sessionStorage.setItem("auth", JSON.stringify(authData));
       }
-      // If it's خالد محمد, calculate 1 year from today
-      else if (username === "خالد محمد") {
+      // If it's خالد عمر, calculate 1 year from today
+      else if (username === "خالد عمر") {
         const today = new Date();
         const endDateObj = new Date(today.getFullYear() + 1, today.getMonth(), today.getDate());
         
@@ -194,8 +194,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       endDate = `${endDateObj.getDate()} ${arabicMonths[endDateObj.getMonth()]} ${endDateObj.getFullYear()}`;
       isValid = true;
     }
-    // Check for خالد محمد
-    else if (username === "خالد محمد" && password === "123789") {
+    // Check for خالد عمر
+    else if (username === "خالد عمر" && password === "123789") {
       subsId = "2010";
       // Calculate 1 year from today
       const today = new Date();
