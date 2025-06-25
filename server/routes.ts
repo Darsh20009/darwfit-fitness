@@ -46,6 +46,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
 نوع التمارين: ${Array.isArray(subscriptionData.exercise_type) ? subscriptionData.exercise_type.join(', ') : '-'}
 عدد مرات التمرين: ${subscriptionData.exercise_times || '-'}
 مدة التمرين: ${subscriptionData.exercise_duration || '-'}
+معلومات BMI:
+عمل BMI من قبل: ${subscriptionData.has_done_bmi === 'yes' ? 'نعم' : 'لا'}
+النتيجة السابقة: ${subscriptionData.previous_bmi_result || 'لم يذكر'}
+رأيه في النتيجة: ${subscriptionData.bmi_feedback || 'لم يذكر'}
+نوع الاشتراك المختار: ${subscriptionData.subscription_type || 'لم يحدد'}
 ----------------------------------
 `;
 

@@ -27,6 +27,12 @@ export const subscriptionSchema = z.object({
   goal: z.enum(["lose_weight", "gain_muscle", "maintain", "improve_fitness"]),
   food_details: z.string().min(5, { message: "يرجى إدخال تفاصيل الأكل" }),
   exercise_details: z.string().min(5, { message: "يرجى إدخال تفاصيل التمرين" }),
+  // BMI related fields
+  has_done_bmi: z.enum(["yes", "no"]),
+  previous_bmi_result: z.string().optional(),
+  bmi_feedback: z.string().optional(),
+  // Subscription type
+  subscription_type: z.enum(["1month", "3months", "6months", "12months"]),
 });
 
 export type SubscriptionData = z.infer<typeof subscriptionSchema>;
