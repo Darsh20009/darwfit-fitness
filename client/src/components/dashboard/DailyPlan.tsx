@@ -541,7 +541,7 @@ export default function DailyPlan({ date, formattedDate, workoutType, dayIndex }
                       </div>
 
                       {/* Weight Input Section */}
-                      <div className="bg-white rounded-lg p-3 border border-blue-200">
+                      <div className="rounded-lg p-3 border border-blue-200 bg-[#020817]">
                         <div className="flex items-center gap-3">
                           <div className="flex items-center gap-2 text-blue-700">
                             <Weight className="h-4 w-4" />
