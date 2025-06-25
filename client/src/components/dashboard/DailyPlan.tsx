@@ -395,7 +395,7 @@ export default function DailyPlan({ date, formattedDate, workoutType, dayIndex }
                 </div>
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-3">
+            <CardContent className="p-6 pt-0 bg-[#020817] space-y-3">
               {mealSummary.map((meal, index) => (
                 <div key={index} className="flex items-center justify-between p-3 bg-muted rounded-lg">
                   <div className="flex-1">
