@@ -34,10 +34,9 @@ export default function DailyPlan({ date, formattedDate, workoutType, dayIndex }
   let mealSummary, workoutSummary;
   
   if (isKhaled) {
-    // For Khaled, get current month and use his specialized plans
+    // For Khaled, get current month and use his specialized meal plans but same workouts as others
     const currentMonth = new Date().getMonth() + 1; // 1-12
     const khaledMealPlan = getKhaledMealPlanByMonth(currentMonth);
-    const khaledWorkout = isRestDay ? null : getKhaledWorkoutByMonth(currentMonth, dayIndex);
     
     // Convert Khaled's meal plan to match the expected format
     mealSummary = [
@@ -49,12 +48,8 @@ export default function DailyPlan({ date, formattedDate, workoutType, dayIndex }
       { meal: khaledMealPlan.beforeSleep.title, description: khaledMealPlan.beforeSleep.items.join(", ") }
     ];
     
-    workoutSummary = isRestDay ? [] : (khaledWorkout ? [
-      { name: khaledWorkout.title, description: khaledWorkout.description },
-      { name: "العضلات المستهدفة", description: khaledWorkout.targetMuscles },
-      { name: "مدة التمرين", description: khaledWorkout.duration },
-      { name: "المرحلة", description: khaledWorkout.phase }
-    ] : []);
+    // Use the same workouts as other users
+    workoutSummary = isRestDay ? [] : getWorkoutSummary(dayIndex);
   } else {
     // For other users, use the original plans
     mealSummary = getMealSummary();

@@ -106,9 +106,9 @@ Darwfit is a comprehensive fitness and nutrition platform built as a full-stack 
 - June 25, 2025: Successfully migrated from Replit Agent to standard Replit environment
 - June 25, 2025: Added third user account (خالد محمد) with specialized yearly subscription
 - June 25, 2025: Implemented custom annual meal plans for خالد محمد with 4 phases (Foundation, Intensification, Peak, Stabilization)
-- June 25, 2025: Created specialized workout plans for خالد محمد with 5-day weekly schedule
-- June 25, 2025: Integrated phase-based progression system for both meal and workout plans
+- June 25, 2025: Unified workout plans across all users - خالد محمد now uses same workout system as محمد السهلي and يوسف درويش
 - June 25, 2025: Updated authentication system to support خالد محمد with 1-year subscription
+- June 25, 2025: Fixed login authentication issues by adding خالد محمد credentials to both backend and frontend
 - January 25, 2025: Successfully migrated from Replit Agent to Replit environment
 - January 25, 2025: Implemented dynamic subscription days calculation based on real subscription end dates
 - January 25, 2025: Enhanced subscription display with color-coded status indicators (green/amber/red)
