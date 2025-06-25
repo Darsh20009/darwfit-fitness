@@ -44,6 +44,15 @@ export default function LoginPage() {
           });
           return;
         }
+      } else if (username === "خالد محمد") {
+        if (password !== "123789" || subscriptionId !== "2010") {
+          toast({
+            title: "خطأ في تسجيل الدخول",
+            description: "اسم المستخدم أو كلمة المرور أو رقم الاشتراك غير صحيح",
+            variant: "destructive",
+          });
+          return;
+        }
       } else {
         // For other users, check credentials
         if (password !== "123456") {
