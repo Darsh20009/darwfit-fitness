@@ -40,7 +40,7 @@ export default function Navbar() {
         <div className="flex justify-between items-center">
           {/* Logo */}
           <div className="relative">
-              <h1 className="text-3xl font-black luxury-darwfit-logo relative z-10">
+              <h1 className="text-3xl font-black luxury-darwfit-logo relative z-10 bg-[#262626]">
                 DARWFIT
               </h1>
               <div className="absolute inset-0 luxury-darwfit-glow animate-pulse bg-[#262626]"></div>
