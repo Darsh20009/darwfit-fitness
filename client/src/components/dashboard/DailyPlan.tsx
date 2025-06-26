@@ -388,27 +388,49 @@ export default function DailyPlan({ date, formattedDate, workoutType, dayIndex }
                       const isMobile = window.innerWidth < 768;
                       handleDownloadMeal(isMobile);
                     }}
-                    className="btn-touch group relative overflow-hidden bg-gradient-to-br from-emerald-800 via-emerald-900 to-emerald-800 border border-emerald-700/50 text-emerald-200 hover:from-emerald-700 hover:via-emerald-800 hover:to-emerald-700 hover:border-emerald-600 hover:text-emerald-100 transform hover:scale-[1.02] hover:-translate-y-0.5 transition-all duration-700 shadow-2xl hover:shadow-emerald-800/40 flex-1 min-h-[52px] backdrop-blur-sm"
+                    className="btn-touch group relative overflow-hidden bg-gradient-to-br from-slate-900 via-orange-950 to-slate-900 border-2 border-orange-400/30 text-orange-100 hover:border-orange-300 transform hover:scale-[1.08] hover:-translate-y-2 hover:-rotate-1 transition-all duration-1000 shadow-2xl hover:shadow-orange-400/30 flex-1 min-h-[60px] px-6 py-3 backdrop-blur-md rounded-2xl"
                   >
-                    <div className="absolute inset-0 bg-gradient-to-br from-emerald-600/20 via-emerald-500/10 to-emerald-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                    {/* خلفية متحركة مع تأثير الموجات */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 via-amber-500/5 to-yellow-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 animate-pulse"></div>
+                    
+                    {/* خطوط ضوئية متحركة */}
                     <div className="absolute inset-0">
-                      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-emerald-400/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                      <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-emerald-400/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                      <div className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-orange-400 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 animate-pulse"></div>
+                      <div className="absolute bottom-0 right-0 w-full h-0.5 bg-gradient-to-l from-transparent via-amber-400 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
+                      <div className="absolute left-0 top-0 w-0.5 h-full bg-gradient-to-b from-transparent via-yellow-400 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                      <div className="absolute right-0 bottom-0 w-0.5 h-full bg-gradient-to-t from-transparent via-orange-400 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-800"></div>
                     </div>
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -skew-x-12 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1200 ease-out"></div>
-                    <div className="relative flex items-center justify-center gap-3 px-2">
-                      <div className="bg-emerald-800 rounded-xl p-2.5 ml-1 group-hover:bg-emerald-700 transition-all duration-500 shadow-inner border border-emerald-700/50">
-                        <Download className="h-5 w-5 text-emerald-300 group-hover:text-emerald-100 group-hover:animate-pulse transition-colors duration-300" />
+                    
+                    {/* تأثير الضوء المتحرك */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent -skew-x-12 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1500 ease-out"></div>
+                    
+                    {/* جزيئات متحركة */}
+                    <div className="absolute top-1 left-3 w-1 h-1 bg-orange-400 rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-ping transition-all duration-500"></div>
+                    <div className="absolute bottom-2 right-4 w-1.5 h-1.5 bg-amber-400 rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-bounce transition-all duration-700"></div>
+                    <div className="absolute top-3 right-2 w-1 h-1 bg-yellow-400 rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-pulse transition-all duration-900"></div>
+                    
+                    <div className="relative flex items-center justify-center gap-4 px-2">
+                      {/* أيقونة محاطة بهالة ضوئية */}
+                      <div className="relative bg-gradient-to-br from-orange-700 to-orange-900 rounded-2xl p-3 group-hover:bg-gradient-to-br group-hover:from-orange-600 group-hover:to-orange-800 transition-all duration-700 shadow-lg border border-orange-600/50 group-hover:border-orange-400/70">
+                        <div className="absolute inset-0 bg-orange-400/20 rounded-2xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-700 animate-pulse"></div>
+                        <Download className="relative h-6 w-6 text-orange-200 group-hover:text-orange-100 group-hover:animate-bounce transition-all duration-500" />
                       </div>
+                      
                       <div className="flex flex-col items-center">
-                        <span className="font-semibold text-sm tracking-wide">🍽️ تحميل خطة الوجبات اليوم</span>
-                        <div className="bg-gradient-to-r from-emerald-700 to-emerald-600 text-emerald-200 text-xs px-3 py-0.5 rounded-full mt-1 group-hover:from-emerald-600 group-hover:to-emerald-500 group-hover:text-emerald-100 transition-all duration-500 border border-emerald-600/30">
-                          {window.innerWidth < 768 ? '📱 تصميم إبداعي للجوال' : '💻 تصميم فاخر للديسكتوب'}
+                        <span className="font-bold text-base tracking-wider bg-gradient-to-r from-orange-200 via-amber-200 to-yellow-200 bg-clip-text text-transparent group-hover:from-orange-100 group-hover:via-amber-100 group-hover:to-yellow-100 transition-all duration-700">
+                          🍽️ تحميل خطة الوجبات اليوم
+                        </span>
+                        <div className="bg-gradient-to-r from-orange-800/80 to-amber-800/80 text-orange-100 text-xs px-4 py-1 rounded-full mt-2 group-hover:from-orange-600/90 group-hover:to-amber-600/90 group-hover:text-white transition-all duration-700 border border-orange-600/40 group-hover:border-orange-400/60 backdrop-blur-sm">
+                          {window.innerWidth < 768 ? '📱 نسخة إبداعية للجوال' : '🖥️ نسخة فاخرة للديسكتوب'}
                         </div>
                       </div>
                     </div>
-                    <div className="absolute top-2 right-2 text-xs opacity-0 group-hover:opacity-70 transition-all duration-500 text-emerald-400">💎</div>
-                    <div className="absolute bottom-2 left-2 text-xs opacity-0 group-hover:opacity-50 transition-all duration-700 text-emerald-500">⭐</div>
+                    
+                    {/* أيقونات متحركة في الزوايا */}
+                    <div className="absolute top-2 right-3 text-lg opacity-0 group-hover:opacity-100 transition-all duration-700 group-hover:animate-spin text-yellow-400">🌟</div>
+                    <div className="absolute bottom-2 left-3 text-lg opacity-0 group-hover:opacity-100 transition-all duration-1000 group-hover:animate-pulse text-red-400">🍎</div>
+                    <div className="absolute top-2 left-3 text-sm opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:animate-bounce text-green-400">🥗</div>
+                    <div className="absolute bottom-2 right-3 text-sm opacity-0 group-hover:opacity-100 transition-all duration-800 group-hover:animate-ping text-blue-400">✨</div>
                   </Button>
                   <Button 
                     variant="outline" 
@@ -483,27 +505,49 @@ export default function DailyPlan({ date, formattedDate, workoutType, dayIndex }
                         const isMobile = window.innerWidth < 768;
                         handleDownloadWorkout(isMobile);
                       }}
-                      className="btn-touch group relative overflow-hidden bg-gradient-to-br from-emerald-800 via-emerald-900 to-emerald-800 border border-emerald-700/50 text-emerald-200 hover:from-emerald-700 hover:via-emerald-800 hover:to-emerald-700 hover:border-emerald-600 hover:text-emerald-100 transform hover:scale-[1.02] hover:-translate-y-0.5 transition-all duration-700 shadow-2xl hover:shadow-emerald-800/40 min-h-[52px] px-4 py-2 backdrop-blur-sm"
+                      className="btn-touch group relative overflow-hidden bg-gradient-to-br from-slate-900 via-emerald-950 to-slate-900 border-2 border-emerald-400/30 text-emerald-100 hover:border-emerald-300 transform hover:scale-[1.08] hover:-translate-y-2 hover:rotate-1 transition-all duration-1000 shadow-2xl hover:shadow-emerald-400/30 min-h-[60px] px-6 py-3 backdrop-blur-md rounded-2xl"
                     >
-                      <div className="absolute inset-0 bg-gradient-to-br from-emerald-600/20 via-emerald-500/10 to-emerald-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                      {/* خلفية متحركة مع تأثير الموجات */}
+                      <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 via-cyan-500/5 to-teal-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 animate-pulse"></div>
+                      
+                      {/* خطوط ضوئية متحركة */}
                       <div className="absolute inset-0">
-                        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-emerald-400/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                        <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-emerald-400/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                        <div className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-emerald-400 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 animate-pulse"></div>
+                        <div className="absolute bottom-0 right-0 w-full h-0.5 bg-gradient-to-l from-transparent via-cyan-400 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
+                        <div className="absolute left-0 top-0 w-0.5 h-full bg-gradient-to-b from-transparent via-teal-400 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div className="absolute right-0 bottom-0 w-0.5 h-full bg-gradient-to-t from-transparent via-emerald-400 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-800"></div>
                       </div>
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/8 to-transparent -skew-x-12 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1200 ease-out"></div>
-                      <div className="relative flex items-center justify-center gap-3 px-1">
-                        <div className="bg-emerald-800 rounded-xl p-2.5 ml-1 group-hover:bg-emerald-700 transition-all duration-500 shadow-inner border border-emerald-700/50">
-                          <Download className="h-5 w-5 text-emerald-300 group-hover:text-emerald-100 group-hover:animate-pulse transition-colors duration-300" />
+                      
+                      {/* تأثير الضوء المتحرك */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent -skew-x-12 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1500 ease-out"></div>
+                      
+                      {/* جزيئات متحركة */}
+                      <div className="absolute top-1 left-3 w-1 h-1 bg-emerald-400 rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-ping transition-all duration-500"></div>
+                      <div className="absolute bottom-2 right-4 w-1.5 h-1.5 bg-cyan-400 rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-bounce transition-all duration-700"></div>
+                      <div className="absolute top-3 right-2 w-1 h-1 bg-teal-400 rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-pulse transition-all duration-900"></div>
+                      
+                      <div className="relative flex items-center justify-center gap-4 px-2">
+                        {/* أيقونة محاطة بهالة ضوئية */}
+                        <div className="relative bg-gradient-to-br from-emerald-700 to-emerald-900 rounded-2xl p-3 group-hover:bg-gradient-to-br group-hover:from-emerald-600 group-hover:to-emerald-800 transition-all duration-700 shadow-lg border border-emerald-600/50 group-hover:border-emerald-400/70">
+                          <div className="absolute inset-0 bg-emerald-400/20 rounded-2xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-700 animate-pulse"></div>
+                          <Download className="relative h-6 w-6 text-emerald-200 group-hover:text-emerald-100 group-hover:animate-bounce transition-all duration-500" />
                         </div>
+                        
                         <div className="flex flex-col items-center">
-                          <span className="font-semibold text-sm tracking-wide">💪 تحميل خطة التمارين اليوم</span>
-                          <div className="bg-gradient-to-r from-emerald-700 to-emerald-600 text-emerald-200 text-xs px-3 py-0.5 rounded-full mt-1 group-hover:from-emerald-600 group-hover:to-emerald-500 group-hover:text-emerald-100 transition-all duration-500 border border-emerald-600/30">
-                            {window.innerWidth < 768 ? '📱 تصميم إبداعي للجوال' : '💻 تصميم فاخر للديسكتوب'}
+                          <span className="font-bold text-base tracking-wider bg-gradient-to-r from-emerald-200 via-cyan-200 to-teal-200 bg-clip-text text-transparent group-hover:from-emerald-100 group-hover:via-cyan-100 group-hover:to-teal-100 transition-all duration-700">
+                            ⚡ تحميل خطة التمارين اليوم
+                          </span>
+                          <div className="bg-gradient-to-r from-emerald-800/80 to-teal-800/80 text-emerald-100 text-xs px-4 py-1 rounded-full mt-2 group-hover:from-emerald-600/90 group-hover:to-teal-600/90 group-hover:text-white transition-all duration-700 border border-emerald-600/40 group-hover:border-emerald-400/60 backdrop-blur-sm">
+                            {window.innerWidth < 768 ? '📱 نسخة إبداعية للجوال' : '🖥️ نسخة فاخرة للديسكتوب'}
                           </div>
                         </div>
                       </div>
-                      <div className="absolute top-2 right-2 text-xs opacity-0 group-hover:opacity-70 transition-all duration-500 text-emerald-400 animate-pulse">🏆</div>
-                      <div className="absolute bottom-2 left-2 text-xs opacity-0 group-hover:opacity-50 transition-all duration-700 text-emerald-500">🔥</div>
+                      
+                      {/* أيقونات متحركة في الزوايا */}
+                      <div className="absolute top-2 right-3 text-lg opacity-0 group-hover:opacity-100 transition-all duration-700 group-hover:animate-spin text-yellow-400">⭐</div>
+                      <div className="absolute bottom-2 left-3 text-lg opacity-0 group-hover:opacity-100 transition-all duration-1000 group-hover:animate-pulse text-orange-400">🚀</div>
+                      <div className="absolute top-2 left-3 text-sm opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:animate-bounce text-green-400">💎</div>
+                      <div className="absolute bottom-2 right-3 text-sm opacity-0 group-hover:opacity-100 transition-all duration-800 group-hover:animate-ping text-blue-400">✨</div>
                     </Button>
                     <Button 
                       variant="outline" 
