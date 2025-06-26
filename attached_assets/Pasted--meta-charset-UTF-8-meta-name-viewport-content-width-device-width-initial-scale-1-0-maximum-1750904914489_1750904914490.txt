@@ -1,0 +1,2752 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>حاسبة السعرات الحرارية</title>
+<style>
+    :root {
+        --primary-color: #2196F3;
+        --success-color: #4CAF50;
+        --warning-color: #FFC107;
+        --danger-color: #F44336;
+        --carbs-color: #FF9800;
+        --text-color: #ffffff;
+        --background-color: #121212;
+        --card-background: #1e1e1e;
+    }
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    body {
+        background-color: var(--background-color);
+        color: var(--text-color);
+        line-height: 1.6;
+        font-size: 16px;
+    }
+    .container {
+        width: 100%;
+        max-width: 100%;
+        margin: 0 auto;
+        padding: 15px;
+    }
+    header {
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+    h1 {
+        color: var(--primary-color);
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+    }
+    h2 {
+        font-size: 1.4rem;
+        margin-bottom: 1rem;
+    }
+    h3 {
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+    }
+    .main-content {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    .calculator-section {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        width: 100%;
+    }
+    .food-selection, .daily-summary, .calories-needs {
+        background: var(--card-background);
+        padding: 1.5rem;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+    .input-field {
+        width: 100%;
+        padding: 12px;
+        margin: 8px 0;
+        border: 1px solid #333;
+        border-radius: 6px;
+        background-color: #333;
+        color: var(--text-color);
+        font-size: 1rem;
+    }
+    select.input-field {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        background-size: 15px;
+    }
+    .quantity-section {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        margin: 1rem 0;
+    }
+    @media (min-width: 768px) {
+        .quantity-section {
+            flex-direction: row;
+        }
+    }
+    .button {
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 6px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        margin: 8px 0;
+    }
+    .button.primary {
+        background-color: var(--primary-color);
+        color: white;
+    }
+    .button.secondary {
+        background-color: #6c757d;
+        color: white;
+    }
+    .button.danger {
+        background-color: var(--danger-color);
+        color: white;
+    }
+    .calories-result {
+        margin: 1rem 0;
+        text-align: center;
+        font-size: 1.2rem;
+    }
+    .stats {
+        margin: 1.5rem 0;
+    }
+    .stat-item {
+        margin: 1rem 0;
+    }
+    .progress-container {
+        width: 100%;
+        height: 20px;
+        background-color: #e0e0e0;
+        border-radius: 10px;
+        margin: 1rem 0;
+        overflow: hidden;
+    }
+    .progress-bar {
+        height: 100%;
+        transition: width 0.3s ease;
+        width: 0%;
+    }
+    .calories-bar {
+        background-color: var(--primary-color);
+    }
+    .protein-bar {
+        background-color: var(--success-color);
+    }
+    .carbs-bar {
+        background-color: var(--carbs-color);
+    }
+    .status-message {
+        margin: 1rem 0;
+        padding: 10px;
+        border-radius: 6px;
+        text-align: center;
+    }
+    .status-message.success {
+        background-color: #e8f5e9;
+        color: var(--success-color);
+    }
+    .status-message.warning {
+        background-color: #fff3e0;
+        color: var(--warning-color);
+    }
+    .status-message.danger {
+        background-color: #ffebee;
+        color: var(--danger-color);
+    }
+    .hidden {
+        display: none;
+    }
+    .custom-food-entry {
+        display: none;
+        margin-top: 1rem;
+        padding: 1rem;
+        border: 1px solid #333;
+        border-radius: 6px;
+        background-color: #333;
+    }
+    .custom-food-entry.active {
+        display: block;
+    }
+    .search-container {
+        position: relative;
+        margin-bottom: 1rem;
+    }
+    .search-bar {
+        width: 100%;
+    }
+    .search-results {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        max-height: 200px;
+        overflow-y: auto;
+        background: var(--card-background);
+        border-radius: 0 0 6px 6px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        z-index: 10;
+        display: none;
+    }
+    .search-results.visible {
+        display: block;
+    }
+    .search-item {
+        padding: 10px;
+        cursor: pointer;
+        border-bottom: 1px solid #333;
+    }
+    .search-item:hover {
+        background-color: #333;
+    }
+    .login-section {
+        margin-top: 2rem;
+        background: var(--card-background);
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+    .login-section h2 {
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+    }
+    .forgot-password {
+        margin-top: 10px;
+        color: var(--primary-color);
+        cursor: pointer;
+        text-decoration: underline;
+        text-align: center;
+        display: block;
+    }
+    .logout-button {
+        position: fixed;
+        top: 15px;
+        right: 15px;
+        background-color: var(--danger-color);
+        color: white;
+        padding: 8px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        z-index: 100;
+    }
+    .form-group {
+        margin-bottom: 1rem;
+    }
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+    }
+    .tab-buttons {
+        display: flex;
+        margin-bottom: 1rem;
+    }
+    .tab-button {
+        flex: 1;
+        padding: 10px;
+        text-align: center;
+        background: #333;
+        border: none;
+        color: white;
+        cursor: pointer;
+    }
+    .tab-button.active {
+        background: var(--primary-color);
+    }
+    .food-history {
+        max-height: 200px;
+        overflow-y: auto;
+        margin-top: 1rem;
+    }
+    .history-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px;
+        border-bottom: 1px solid #333;
+    }
+    .remove-history {
+        color: var(--danger-color);
+        cursor: pointer;
+    }
+    .nutrient-info {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 5px;
+        font-size: 0.9rem;
+        color: #ccc;
+    }
+    .progress-group {
+        margin-bottom: 1rem;
+    }
+    .progress-label {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 5px;
+    }
+    .food-category {
+        font-size: 0.8rem;
+        color: #aaa;
+    }
+</style>
+
+<div class="container" id="loginContainer">
+    <h1>تسجيل الدخول</h1>
+    <form id="loginForm">
+        <div class="form-group">
+            <input type="text" id="loginCode" class="input-field" placeholder="الكود المكون من 4 أرقام" required="">
+        </div>
+        <button type="submit" class="button primary">تسجيل الدخول</button>
+    </form>
+    <div class="forgot-password" id="forgotPassword">نسيت كلمة المرور؟</div>
+    <button id="showCreateAccount" class="button secondary">إنشاء حساب جديد</button>
+</div>
+
+<div class="container hidden" id="createAccountContainer">
+    <h1>إنشاء حساب جديد</h1>
+    <form id="createAccountForm">
+        <div class="form-group">
+            <input type="text" id="name" class="input-field" placeholder="الاسم" required="">
+        </div>
+        <div class="form-group">
+            <input type="number" id="age" class="input-field" placeholder="العمر" required="">
+        </div>
+        <button type="submit" class="button primary">إنشاء حساب</button>
+    </form>
+    <button id="showLogin" class="button secondary">العودة لتسجيل الدخول</button>
+</div>
+
+<div class="container hidden" id="resetPasswordContainer">
+    <h1>إعادة تعيين الكود</h1>
+    <form id="resetPasswordForm">
+        <div class="form-group">
+            <input type="text" id="nameReset" class="input-field" placeholder="الاسم" required="">
+        </div>
+        <button type="submit" class="button primary">إرسال الكود الجديد</button>
+    </form>
+    <button id="showLoginFromReset" class="button secondary">العودة لتسجيل الدخول</button>
+</div>
+
+<div class="container hidden" id="mainContent">
+    <button id="logoutButton" class="logout-button">تسجيل الخروج</button>
+    <header>
+        <h1>حاسبة السعرات الحرارية 🍽</h1>
+    </header>
+    
+    <div class="tab-buttons">
+        <button class="tab-button active" data-tab="calculator">الحاسبة</button>
+        <button class="tab-button" data-tab="history">السجل</button>
+        <button class="tab-button" data-tab="profile">الملف الشخصي</button>
+    </div>
+    
+    <main class="main-content">
+        <div class="tab-content active" id="calculatorTab">
+            <div class="calculator-section">
+                <div class="food-selection">
+                    <h2>🍳 إضافة وجبة جديدة</h2>
+                    <div class="search-container">
+                        <div class="search-bar">
+                            <input type="text" id="searchFood" placeholder="ابحث عن الطعام..." class="input-field">
+                        </div>
+                        <div id="searchResults" class="search-results"></div>
+                    </div>
+                    <select id="foodCategory" class="input-field">
+                        <option value="">اختر نوع الطعام</option>
+                        <option value="custom">✨ طعام مخصص</option>
+                    </select>
+                    <select id="foodItem" class="input-field">
+                        <option value="">اختر الطعام</option>
+                    </select>
+                    <div id="customFoodEntry" class="custom-food-entry">
+                        <input type="text" id="customFoodName" class="input-field" placeholder="اسم الطعام">
+                        <input type="number" id="customCalories" class="input-field" placeholder="السعرات الحرارية لكل 100 جرام">
+                        <input type="number" id="customProtein" class="input-field" placeholder="البروتين لكل 100 جرام">
+                        <input type="number" id="customCarbs" class="input-field" placeholder="الكربوهيدرات لكل 100 جرام">
+                    </div>
+                    <div class="quantity-section">
+                        <select id="quantityType" class="input-field">
+                            <option value="tablespoon">ملعقة</option>
+                            <option value="gram">جرام</option>
+                            <option value="serving">حصة</option>
+                            <option value="cup">كوب</option>
+                            <option value="other">أخرى</option>
+                        </select>
+                        <input type="number" id="quantity" class="input-field" min="0" step="0.25" value="1">
+                    </div>
+                    <div class="calories-result">
+                        <h3>السعرات الحرارية: <span id="caloriesAmount">0</span> سعرة</h3>
+                        <h3>البروتين: <span id="proteinAmount">0</span> جرام</h3>
+                        <h3>الكربوهيدرات: <span id="carbsAmount">0</span> جرام</h3>
+                    </div>
+                    <button id="addFood" class="button primary">➕ إضافة للحساب اليومي</button>
+                </div>
+                
+                <div class="daily-summary">
+                    <h2>📊 ملخص اليوم</h2>
+                    <div class="goals-section">
+                        <select id="goalType" class="input-field">
+                            <option value="1500">خسارة وزن (نظام غذائي خفيف)</option>
+                            <option value="1800">خسارة وزن (نظام غذائي متوسط)</option>
+                            <option value="2000">الحفاظ على الوزن</option>
+                            <option value="2500">زيادة وزن</option>
+                            <option value="custom">تخصيص</option>
+                        </select>
+                        <input type="number" id="customGoal" class="input-field hidden" placeholder="أدخل هدفك اليومي">
+                    </div>
+                    <div class="stats">
+                        <div class="stat-item">
+                            <h3>🎯 الهدف اليومي:</h3>
+                            <p id="dailyGoal">0 سعرة</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3>🍽 السعرات المستهلكة:</h3>
+                            <p id="consumedCalories">0 سعرة</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3>⚖ السعرات المتبقية:</h3>
+                            <p id="remainingCalories">0 سعرة</p>
+                        </div>
+                    </div>
+                    <div class="progress-group">
+                        <div class="progress-label">
+                            <span>السعرات الحرارية</span>
+                            <span id="caloriesProgressText">0%</span>
+                        </div>
+                        <div class="progress-container">
+                            <div id="caloriesBar" class="progress-bar calories-bar"></div>
+                        </div>
+                    </div>
+                    <div class="progress-group">
+                        <div class="progress-label">
+                            <span>البروتين</span>
+                            <span id="proteinProgressText">0%</span>
+                        </div>
+                        <div class="progress-container">
+                            <div id="proteinBar" class="progress-bar protein-bar"></div>
+                        </div>
+                    </div>
+                    <div class="progress-group">
+                        <div class="progress-label">
+                            <span>الكربوهيدرات</span>
+                            <span id="carbsProgressText">0%</span>
+                        </div>
+                        <div class="progress-container">
+                            <div id="carbsBar" class="progress-bar carbs-bar"></div>
+                        </div>
+                    </div>
+                    <div id="statusMessage" class="status-message"></div>
+                    <button id="resetDay" class="button secondary">🔄 إعادة تعيين اليوم</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tab-content hidden" id="historyTab">
+            <div class="food-selection">
+                <h2>📅 سجل الأطعمة</h2>
+                <div class="food-history" id="foodHistory">
+                    
+                </div>
+                <button id="clearHistory" class="button danger" style="margin-top: 1rem;">مسح السجل</button>
+            </div>
+        </div>
+        
+        <div class="tab-content hidden" id="profileTab">
+            <div class="calories-needs">
+                <h2>👤 الملف الشخصي</h2>
+                <div id="profileInfo" style="margin-bottom: 1.5rem;">
+                    
+                </div>
+                
+                <h2>احتياجاتك اليومية</h2>
+                <form id="caloriesNeedsForm">
+                    <select id="gender" class="input-field" required="">
+                        <option value="">اختر الجنس</option>
+                        <option value="male">ذكر</option>
+                        <option value="female">أنثى</option>
+                    </select>
+                    <input type="number" id="ageNeeds" class="input-field" placeholder="العمر (سنوات)" required="">
+                    <input type="number" id="weightNeeds" class="input-field" placeholder="الوزن (كجم)" required="">
+                    <input type="number" id="heightNeeds" class="input-field" placeholder="الطول (سم)" required="">
+                    <select id="activityLevel" class="input-field" required="">
+                        <option value="">اختر مستوى النشاط</option>
+                        <option value="1.2">قليل النشاط (لا تمارين)</option>
+                        <option value="1.375">خفيف النشاط (تمارين خفيفة 1-3 أيام/أسبوع)</option>
+                        <option value="1.55">متوسط النشاط (تمارين متوسطة 3-5 أيام/أسبوع)</option>
+                        <option value="1.725">نشيط (تمارين شاقة 6-7 أيام/أسبوع)</option>
+                        <option value="1.9">نشيط جدًا (تمارين شاقة يوميًا أو عمل بدني شاق)</option>
+                    </select>
+                    <button type="submit" class="button primary">حساب الاحتياجات</button>
+                </form>
+                <div id="caloriesNeedsResult" class="calories-result"></div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script>
+    // Food database with calories, protein and carbs
+    const foodCategories = {
+        "المطبخ المصري": {
+            "كشري": {calories: 350, protein: 8, carbs: 60},
+            "فول مدمس": {calories: 132, protein: 7, carbs: 19},
+            "طعمية": {calories: 290, protein: 13, carbs: 25},
+            "ملوخية": {calories: 95, protein: 6, carbs: 10},
+            "بامية": {calories: 85, protein: 5, carbs: 9},
+            "مسقعة": {calories: 140, protein: 9, carbs: 12},
+            "محشي كرنب": {calories: 165, protein: 7, carbs: 15},
+            "رز بالخلطة": {calories: 180, protein: 5, carbs: 35},
+            "كبدة اسكندراني": {calories: 180, protein: 25, carbs: 5},
+            "حمام محشي": {calories: 300, protein: 28, carbs: 20},
+            "رقاق باللحمة": {calories: 385, protein: 22, carbs: 30},
+            "سلطة بلدي": {calories: 50, protein: 2, carbs: 8},
+            "بابا غنوج": {calories: 70, protein: 3, carbs: 6},
+            "طحينة": {calories: 90, protein: 3, carbs: 5},
+            "مخلل": {calories: 15, protein: 0, carbs: 3},
+            "كوارع": {calories: 400, protein: 35, carbs: 10},
+            "ممبار": {calories: 350, protein: 30, carbs: 8},
+            "حواوشي": {calories: 280, protein: 18, carbs: 25},
+            "فتة": {calories: 450, protein: 15, carbs: 40},
+            "كبدة": {calories: 220, protein: 30, carbs: 5},
+            "كريب شاورما فراخ": {calories: 480, protein: 28, carbs: 45},
+            "كريب شاورما لحم": {calories: 520, protein: 30, carbs: 46},
+            "كريب فراخ بالجبنة": {calories: 500, protein: 26, carbs: 48},
+            "كريب سوسيس": {calories: 470, protein: 20, carbs: 50},
+            "كريب بانيه": {calories: 530, protein: 25, carbs: 52},
+            "كريب بسطرمة": {calories: 490, protein: 24, carbs: 46},
+            "كريب سلامي": {calories: 480, protein: 22, carbs: 45},
+            "كريب ميكس جبن": {calories: 450, protein: 18, carbs: 44},
+            "كريب جبنة رومي": {calories: 430, protein: 16, carbs: 42},
+            "كريب جبنة موتزاريلا": {calories: 440, protein: 17, carbs: 43},
+            "كريب جبنة شيدر": {calories: 450, protein: 18, carbs: 44},
+            "كريب جبنة + خضار": {calories: 420, protein: 14, carbs: 40},
+            "كريب لحمة مفرومة": {calories: 500, protein: 28, carbs: 46},
+            "كريب بطاطس": {calories: 430, protein: 12, carbs: 50},
+            "كريب سجق بلدي": {calories: 510, protein: 25, carbs: 48},
+            "كريب كبدة اسكندراني": {calories: 490, protein: 27, carbs: 45},
+            "كريب جمبري": {calories: 520, protein: 30, carbs: 44},
+            "كريب تونة": {calories: 450, protein: 22, carbs: 42},
+            "كريب ميكس فراخ + سوسيس": {calories: 530, protein: 28, carbs: 49},
+            "كريب كفتة": {calories: 500, protein: 26, carbs: 46},
+            "كريب نوتيلا": {calories: 520, protein: 10, carbs: 58},
+            "كريب نوتيلا + موز": {calories: 560, protein: 11, carbs: 62},
+            "كريب نوتيلا + فراولة": {calories: 570, protein: 11, carbs: 64},
+            "كريب نوتيلا + مكسرات": {calories: 600, protein: 12, carbs: 65},
+            "كريب بالعسل": {calories: 500, protein: 9, carbs: 60},
+            "كريب مربي": {calories: 490, protein: 8, carbs: 55},
+            "كريب كراميل": {calories: 510, protein: 9, carbs: 58},
+            "كريب زبدة + سكر": {calories: 460, protein: 7, carbs: 52},
+            "كريب نوتيلا + مارشميلو": {calories: 590, protein: 10, carbs: 66},
+            "أوريو": {calories: 530, protein: 9, carbs: 60},
+            "كريب نوتيلا + آيس كريم": {calories: 610, protein: 12, carbs: 68},
+            "كريب شوكولاتة بيضاء": {calories: 540, protein: 10, carbs: 62},
+            "كريب نوتيلا + كراميل": {calories: 580, protein: 11, carbs: 65},
+            "كريب دايت جبنة قريش": {calories: 300, protein: 20, carbs: 28},
+            "كريب شوفان + زبادي": {calories: 320, protein: 18, carbs: 30},
+            "كريب خضار مشوي": {calories: 340, protein: 10, carbs: 35},
+            "كريب سبانخ": {calories: 330, protein: 12, carbs: 34},
+            "كريب تونة لايت": {calories: 360, protein: 22, carbs: 32},
+            "كريب بزيت الزيتون + جبنة فيتا": {calories: 370, protein: 14, carbs:30},
+            "عدس أصفر بشوربة": {calories: 250, protein: 12, carbs: 35},
+            "عدس بجبة": {calories: 230, protein: 10, carbs: 32},
+            "كشك": {calories: 300, protein: 8, carbs: 40},
+            "بيض بلدي مسلوق": {calories: 70, protein: 6, carbs: 1},
+            "بيض بالبسطرمة": {calories: 220, protein: 12, carbs: 2},
+            "جبنة قديمة": {calories: 110, protein: 6, carbs: 1},
+            "جبنة قريش": {calories: 90, protein: 12, carbs: 1},
+            "عيش بلدي من الطين": {calories: 160, protein: 4, carbs: 32},
+            "طاجن بامية": {calories: 190, protein: 7, carbs: 20},
+            "طاجن مسقعة": {calories: 200, protein: 6, carbs: 25},
+            "كوسا مطبوخة": {calories: 140, protein: 5, carbs: 18},
+            "ملوخية خضرا": {calories: 95, protein: 6, carbs: 10},
+            "رز معمر": {calories: 400, protein: 10, carbs: 50},
+            "بطاطس في الفرن": {calories: 250, protein: 4, carbs: 30},
+            "شوربة لسان عصفور": {calories: 220, protein: 6, carbs: 25},
+               // حادق
+            "فطير باللحمة المفرومة": {calories: 580, protein: 18, carbs: 40},
+            "فطير بالفراخ": {calories: 560, protein: 20, carbs: 42},
+            "فطير بالسجق البلدي": {calories: 600, protein: 21, carbs: 41},
+            "فطير بالبسطرمة": {calories: 590, protein: 20, carbs: 43},
+            "فطير بالكبدة": {calories: 570, protein: 19, carbs: 40},
+            "فطير بالتونة": {calories: 540, protein: 18, carbs: 38},
+            "فطير بالجبنة الموتزاريلا": {calories: 500, protein: 12, carbs: 37},
+            "فطير ميكس جبن": {calories: 530, protein: 15, carbs: 36},
+            "فطير جبنة + خضار": {calories: 480, protein: 14, carbs: 35},
+            "فطير سبانخ وجبن": {calories: 460, protein: 12, carbs: 34},
+            "فطير بطاطس": {calories: 450, protein: 10, carbs: 42},
+            "فطير بالبسطرمة والجبنة": {calories: 580, protein: 18, carbs: 39},
+              // حلو
+            "فطير بالعسل الأبيض": {calories: 500, protein: 7, carbs: 58},
+            "فطير بالعسل الأسود": {calories: 510, protein: 8, carbs: 60},
+            "فطير بالعسل والطحينة": {calories: 530, protein: 9, carbs: 62},
+            "فطير بالسكر البودرة": {calories: 470, protein: 6, carbs: 54},
+            "فطير بالمربى": {calories: 490, protein: 7, carbs: 56},
+            "فطير بالكاسترد": {calories: 540, protein: 8, carbs: 58},
+            "فطير بالشوكولاتة": {calories: 550, protein: 9, carbs: 60},
+            "فطير نوتيلا": {calories: 570, protein: 10, carbs: 60},
+            "فطير نوتيلا + موز": {calories: 600, protein: 11, carbs: 64},
+            "فطير نوتيلا + مكسرات": {calories: 630, protein: 12, carbs: 65},
+            "فطير نوتيلا + كراميل": {calories: 640, protein: 12, carbs: 66},
+            "فطير زبدة + سكر": {calories: 520, protein: 9, carbs: 57},
+                // ميكس / سبيشل
+            "فطير ميكس لحوم وجبن": {calories: 640, protein: 25, carbs: 43},
+            "فطير سوبر سبيشل (جبن + لحوم + خضار)": {calories: 660, protein: 26, carbs: 45},
+            "فطير حادق + حلو (نصفين)": {calories: 700, protein: 28, carbs: 60},
+            "فطير شوكولاتة + موز + مكسرات": {calories: 680, protein: 13, carbs: 68},
+        },
+        "المطبخ السعودي والخليجي": {
+            "كبسة لحم": {calories: 320, protein: 25, carbs: 30},
+            "مندي دجاج": {calories: 280, protein: 30, carbs: 25},
+            "مطبق": {calories: 310, protein: 12, carbs: 35},
+            "جريش": {calories: 220, protein: 8, carbs: 30},
+            "مرقوق": {calories: 245, protein: 15, carbs: 25},
+            "مضغوط": {calories: 290, protein: 22, carbs: 20},
+            "معصوب": {calories: 270, protein: 6, carbs: 45},
+            "شاكرية": {calories: 190, protein: 5, carbs: 35},
+            "مجبوس": {calories: 315, protein: 20, carbs: 30},
+            "صالونة": {calories: 225, protein: 18, carbs: 15},
+            "تبولة": {calories: 100, protein: 3, carbs: 15},
+            "حمص بالطحينة": {calories: 150, protein: 5, carbs: 12},
+            "لبنة بالنعناع": {calories: 120, protein: 5, carbs: 8},
+            "سليق": {calories: 300, protein: 10, carbs: 40},
+            "مفطح": {calories: 500, protein: 40, carbs: 30},
+            "قرصان": {calories: 350, protein: 25, carbs: 25},
+            "مراصيع": {calories: 280, protein: 18, carbs: 20},
+            "فتة تمر": {calories: 200, protein: 3, carbs: 45}
+        },
+        "المطبخ الشامي": {
+           "فتوش": {calories: 120, protein: 3, carbs: 15},
+           "تبولة": {calories: 100, protein: 3, carbs: 18},
+           "كبة مقلية": {calories: 260, protein: 12, carbs: 20},
+           "كبة بالصينية": {calories: 300, protein: 14, carbs: 25},
+           "شيش طاووق": {calories: 220, protein: 30, carbs: 5}, 
+           "كباب حلبي": {calories: 290, protein: 28, carbs: 6},
+           "محشي كوسا": {calories: 190, protein: 7, carbs: 18},
+           "مقلوبة": {calories: 280, protein: 10, carbs: 35},
+           "يالنجي": {calories: 160, protein: 4, carbs: 22},
+           "شاورما دجاج": {calories: 320, protein: 27, carbs: 15},
+           "شاورما لحم": {calories: 350, protein: 30, carbs: 12},
+           "ورق عنب": {calories: 140, protein: 3, carbs: 20},
+           "بابا غنوج": {calories: 80, protein: 3, carbs: 10},
+           "حمص باللحمة": {calories: 250, protein: 15, carbs: 18},
+            "منسف": {calories: 420, protein: 30, carbs: 35}
+        },
+        "المطبخ التركي": {
+           "إسكندر كباب": {calories: 450, protein: 35, carbs: 30},
+           "دونر": {calories: 350, protein: 28, carbs: 25},
+           "بوريك": {calories: 320, protein: 10, carbs: 35},
+           "كفتة تركية": {calories: 280, protein: 24, carbs: 10},
+           "مانتي": {calories: 300, protein: 12, carbs: 35},
+           "شوربة عدس": {calories: 150, protein: 7, carbs: 20},
+           "سلطة تركية": {calories: 90, protein: 2, carbs: 12},
+           "كومبير (بطاطا محشية)": {calories: 400, protein: 10, carbs: 50},
+           "سميت": {calories: 260, protein: 6, carbs: 30},
+           "كنافة تركية": {calories: 370, protein: 6, carbs: 45},
+           "بقلاوة تركية": {calories: 330, protein: 5, carbs: 40},
+           "رز بلبن تركي (Sütlaç)": {calories: 220, protein: 6, carbs: 30},
+           "عيش باللحم (Lahmacun)": {calories: 280, protein: 14, carbs: 32},
+           "بيدا بالجبنة": {calories: 300, protein: 12, carbs: 35},
+           "كوشاريك": {calories: 240, protein: 8, carbs: 28}
+        },
+        "المطبخ الهندي": {
+           "برياني دجاج": {calories: 420, protein: 25, carbs: 45},
+           "برياني لحم": {calories: 450, protein: 30, carbs: 42},
+           "ماسالا دجاج": {calories: 380, protein: 28, carbs: 20},
+           "تيكا ماسالا": {calories: 390, protein: 27, carbs: 18},
+           "دال (عدس هندي)": {calories: 250, protein: 12, carbs: 30},
+           "تشاباتي": {calories: 140, protein: 4, carbs: 20},
+           "نان": {calories: 280, protein: 6, carbs: 38},
+           "سمبوسة هندية": {calories: 300, protein: 5, carbs: 28},
+           "ألو جوبى": {calories: 210, protein: 5, carbs: 25},
+           "بالاك بانير": {calories: 330, protein: 12, carbs: 15},
+           "كيما": {calories: 360, protein: 22, carbs: 10},
+           "كوفتا هندية": {calories: 340, protein: 14, carbs: 20},
+           "تشاي ماسالا": {calories: 120, protein: 3, carbs: 15},
+           "كاري خضار": {calories: 270, protein: 8, carbs: 22},
+           "بانير تيكا": {calories: 300, protein: 15, carbs: 10}
+        },
+        "المطبخ الصيني": {
+           "نودلز بالخضار": {calories: 300, protein: 8, carbs: 40},
+           "نودلز بالدجاج": {calories: 350, protein: 18, carbs: 35},
+           "أرز مقلي بالخضار": {calories: 320, protein: 10, carbs: 45},
+           "أرز مقلي بالدجاج": {calories: 360, protein: 20, carbs: 40},
+           "دجاج سويت أند ساور": {calories: 390, protein: 22, carbs: 35},
+           "دجاج كونغ باو": {calories: 370, protein: 25, carbs: 30},
+           "سبرينغ رول": {calories: 200, protein: 4, carbs: 22},
+           "حساء الذرة": {calories: 150, protein: 6, carbs: 18},
+           "دامبلينغز": {calories: 280, protein: 10, carbs: 25},
+           "توفو بالخضار": {calories: 250, protein: 12, carbs: 20},
+           "مانجورين": {calories: 320, protein: 14, carbs: 28},
+           "تشاو مين": {calories: 330, protein: 15, carbs: 36},
+           "بطة بكين": {calories: 420, protein: 30, carbs: 15},
+           "بيف بالخضار": {calories: 370, protein: 28, carbs: 18},
+           "فطائر الباو": {calories: 290, protein: 9, carbs: 32}
+        },
+        "السناكس": {
+           "شيبس بطاطس": {calories: 150, protein: 2, carbs: 15},
+           "بوشار (فشار)": {calories: 90, protein: 3, carbs: 12},
+           "مكسرات مشكلة": {calories: 200, protein: 6, carbs: 8},
+           "كوكيز بالشوكولاتة": {calories: 180, protein: 2, carbs: 22},
+           "كراكرز مالح": {calories: 120, protein: 3, carbs: 15},
+           "باتشيتو": {calories: 140, protein: 2, carbs: 18},
+           "سناك جبنة": {calories: 160, protein: 4, carbs: 14},
+           "بسكويت شاي": {calories: 100, protein: 1, carbs: 14},
+           "مولتو": {calories: 220, protein: 4, carbs: 28},
+           "أوريو": {calories: 160, protein: 2, carbs: 20},
+           "بسكويت بالتمر": {calories: 130, protein: 2, carbs: 18},
+           "برينجلز": {calories: 160, protein: 1, carbs: 17},
+           "دوريتوس": {calories: 150, protein: 2, carbs: 16},
+           "بسكويت بالزبدة": {calories: 170, protein: 2, carbs: 20},
+           "ميني بيتزا سناك": {calories: 210, protein: 5, carbs: 25}
+        },
+        "المشروبات الطبيعية": {
+           "عصير برتقال طازج": {calories: 110, protein: 2, carbs: 25},
+           "عصير تفاح طبيعي": {calories: 120, protein: 1, carbs: 28},
+           "عصير جوافة": {calories: 140, protein: 2, carbs: 30},
+           "عصير مانجو": {calories: 160, protein: 1, carbs: 35},
+           "عصير رمان": {calories: 130, protein: 1, carbs: 28},
+           "عصير شمام": {calories: 100, protein: 1, carbs: 20},
+           "عصير فراولة": {calories: 120, protein: 2, carbs: 25},
+           "عصير ليمون": {calories: 90, protein: 1, carbs: 18},
+           "كوكتيل فواكه": {calories: 180, protein: 2, carbs: 35},
+           "عصير قصب": {calories: 170, protein: 2, carbs: 40},
+           "سوبيا طبيعية": {calories: 150, protein: 1, carbs: 35},
+           "تمر هندي": {calories: 140, protein: 1, carbs: 30},
+           "عرقسوس": {calories: 130, protein: 1, carbs: 28},
+           "لبن رايب": {calories: 80, protein: 3, carbs: 10},
+           "لبن بالعسل": {calories: 150, protein: 4, carbs: 18}
+        },
+        "المشروبات الصناعية": {
+           "بيبسي": {calories: 150, protein: 0, carbs: 39},
+           "كوكاكولا": {calories: 140, protein: 0, carbs: 38},
+           "سفن أب": {calories: 140, protein: 0, carbs: 36},
+           "ميرندا برتقال": {calories: 160, protein: 0, carbs: 42},
+           "فانتا": {calories: 150, protein: 0, carbs: 40},
+           "ريد بول": {calories: 110, protein: 1, carbs: 28},
+           "مشروب طاقة مونستر": {calories: 120, protein: 0, carbs: 29},
+           "عصير معلب مانجو": {calories: 160, protein: 0, carbs: 38},
+           "عصير تفاح معلب": {calories: 150, protein: 0, carbs: 36},
+           "لبن بنكهات صناعية": {calories: 170, protein: 3, carbs: 28},
+           "نسكويك": {calories: 190, protein: 4, carbs: 32},
+           "مشروب شوكولاتة بارد": {calories: 210, protein: 5, carbs: 35},
+           "شاي مثلج": {calories: 120, protein: 0, carbs: 28},
+           "عصير تانج": {calories: 140, protein: 0, carbs: 35},
+           "مياه غازية بنكهات": {calories: 100, protein: 0, carbs: 25}
+        },
+        "المطبخ الياباني": {
+           "سوشي": {calories: 300, protein: 15, carbs: 35},
+           "رامن": {calories: 450, protein: 18, carbs: 50},
+           "ياكيسوبا": {calories: 400, protein: 14, carbs: 45},
+           "ترياكي دجاج": {calories: 370, protein: 25, carbs: 25},
+           "تمبورا": {calories: 320, protein: 10, carbs: 28},
+           "ميسو شوربة": {calories: 80, protein: 3, carbs: 8},
+           "اونيغيري": {calories: 180, protein: 4, carbs: 36},
+           "تاكوياكي": {calories: 290, protein: 10, carbs: 30},
+           "شاشيمي": {calories: 200, protein: 25, carbs: 2},
+           "اودون": {calories: 380, protein: 12, carbs: 42},
+           "غيوزا": {calories: 240, protein: 10, carbs: 20},
+           "شوكو بان": {calories: 220, protein: 5, carbs: 28},
+           "موشي": {calories: 170, protein: 3, carbs: 25},
+           "كاري ياباني": {calories: 400, protein: 18, carbs: 35},
+           "تيبانياكي": {calories: 390, protein: 26, carbs: 15}
+        },
+        "المطبخ المكسيكي": {
+           "تاكو": {calories: 300, protein: 18, carbs: 20},
+           "بوريتو": {calories: 500, protein: 30, carbs: 45},
+           "كاساديا": {calories: 420, protein: 22, carbs: 35},
+           "فاهيتا": {calories: 390, protein: 25, carbs: 30},
+           "إنشيلادا": {calories: 400, protein: 20, carbs: 40},
+           "تشيميتشانغا": {calories: 450, protein: 22, carbs: 38},
+           "غواكامولي": {calories: 150, protein: 2, carbs: 10},
+           "ناتشوز بالجبن": {calories: 350, protein: 8, carbs: 35},
+           "أرز مكسيكي": {calories: 280, protein: 6, carbs: 45},
+           "فاصوليا مكسيكية": {calories: 220, protein: 10, carbs: 25},
+           "صوص سالسا": {calories: 50, protein: 1, carbs: 10},
+           "سلطة تاكو": {calories: 300, protein: 14, carbs: 20},
+           "تشورو": {calories: 270, protein: 3, carbs: 40},
+           "تورتيا": {calories: 200, protein: 4, carbs: 30},
+           "بيكو دي غايو": {calories: 60, protein: 1, carbs: 8}
+        },
+        "المطبخ الأمريكي": {
+           "ستيك لحم": {calories: 500, protein: 40, carbs: 5},
+           "ماك آند تشيز": {calories: 450, protein: 15, carbs: 50},
+           "تشكن وينجز": {calories: 390, protein: 25, carbs: 12},
+           "كلوب ساندويتش": {calories: 420, protein: 22, carbs: 35},
+           "تشيز برجر": {calories: 540, protein: 28, carbs: 38},
+           "هوت كيك": {calories: 320, protein: 6, carbs: 40},
+           "فرايز بالجبن": {calories: 410, protein: 10, carbs: 42},
+           "براونيز": {calories: 360, protein: 5, carbs: 45},
+           "كورندوغ": {calories: 310, protein: 12, carbs: 28},
+           "سلطة كول سلو": {calories: 180, protein: 2, carbs: 14},
+           "دونات أمريكي": {calories: 350, protein: 4, carbs: 50},
+           "كورن فليكس بالحليب": {calories: 200, protein: 5, carbs: 30},
+           "بطاطا بوريه": {calories: 250, protein: 4, carbs: 35},
+           "تشيكن برجر": {calories: 460, protein: 22, carbs: 38},
+           "أبل باي": {calories: 370, protein: 3, carbs: 45}
+        },
+        "أنواع البيتزا": {
+          "بيتزا مارجريتا (عجينة إيطالي - بدون أطراف جبن)": {
+           calories: 420, protein: 15, carbs: 48
+           },
+          "بيتزا خضار (عجينة عادية - بدون أطراف جبن)": {
+          calories: 450, protein: 14, carbs: 50
+         },
+           "بيتزا بيبروني (عجينة بان - بأطراف جبن)": {
+          calories: 520, protein: 20, carbs: 55
+         },
+          "بيتزا دجاج باربيكيو (عجينة إيطالي - بأطراف جبن)": {
+           calories: 530, protein: 22, carbs: 52
+         },
+          "بيتزا سي فود (عجينة رقيقة - بدون أطراف جبن)": {
+          calories: 480, protein: 24, carbs: 45
+         },
+          "بيتزا سوبر سوبريم (عجينة بان - بأطراف جبن)": {
+          calories: 550, protein: 25, carbs: 58
+         },
+          "بيتزا جبنة مشكل (عجينة إيطالي - بأطراف جبن)": {
+          calories: 500, protein: 21, carbs: 50
+         },
+          "بيتزا سلامي (عجينة عادية - بدون أطراف جبن)": {
+          calories: 470, protein: 19, carbs: 48
+         },
+          "بيتزا تونة (عجينة رقيقة - بدون أطراف جبن)": {
+          calories: 460, protein: 20, carbs: 46
+         },
+          "بيتزا فاهيتا دجاج (عجينة بان - بأطراف جبن)": {
+          calories: 540, protein: 23, carbs: 54
+         },
+          "بيتزا مشروم (عجينة إيطالي - بدون أطراف جبن)": {
+          calories: 430, protein: 16, carbs: 47
+         },
+          "بيتزا لحم مفروم (عجينة عادية - بأطراف جبن)": {
+           calories: 510, protein: 22, carbs: 50
+         },
+          "بيتزا رانش دجاج (عجينة بان - بأطراف جبن)": {
+           calories: 560, protein: 24, carbs: 56
+         },
+          "بيتزا هاواي (عجينة رقيقة - بدون أطراف جبن)": {
+           calories: 490, protein: 18, carbs: 50
+         },
+          "بيتزا ببروني (عجينة إيطالي - بأطراف جبن)": {
+          calories: 530, protein: 22, carbs: 52
+         },
+        },
+        "أنواع البرجر": {
+           "برجر لحم كلاسيك (عيش عادي - بدون جبن)": {
+            calories: 500, protein: 28, carbs: 35
+            },
+           "تشيز برجر (عيش عادي - شريحة جبن واحدة)": {
+           calories: 540, protein: 30, carbs: 36
+           },
+           "برجر دبل لحم (عيش بريوش - جبن مزدوج)": {
+           calories: 680, protein: 40, carbs: 38
+           },
+           "برجر دجاج مقلي (عيش عادي - صوص رانش)": {
+           calories: 520, protein: 26, carbs: 40
+           },
+           "برجر دجاج مشوي (عيش توست - بدون صوصات)": {
+           calories: 430, protein: 28, carbs: 28
+           },
+           "سبايسي برجر دجاج (عيش عادي - صوص حار)": {
+           calories: 550, protein: 27, carbs: 40
+           },
+           "برجر مشروم سوس (عيش بريوش - مشروم و جبن)": {
+           calories: 600, protein: 32, carbs: 38
+           },
+           "برجر نباتي (عيش حبوب كاملة - بدون جبن)": {
+            calories: 480, protein: 20, carbs: 42
+           },
+           "برجر بيض وجبن (عيش توست - بيض + شيدر)": {
+        calories: 470, protein: 22, carbs: 30
+           },
+           "برجر ببروني (عيش بريوش - لحم + ببروني)": {
+           calories: 620, protein: 35, carbs: 36
+           },
+           "برجر بجبن موزاريلا (عيش عادي - جبن سايح)": {
+            calories: 560, protein: 30, carbs: 35
+           },
+            "برجر كرسبي (عيش عادي - دجاج مقلي)": {
+            calories: 540, protein: 25, carbs: 38
+            },
+           "برجر تركي (عيش توست - صوص زبادي)": {
+            calories: 500, protein: 27, carbs: 33
+           },
+           "برجر ستيك (عيش بريوش - لحم شرائح)": {
+            calories: 620, protein: 38, carbs: 35
+           },
+           "ميني برجر (صغير الحجم - جبن فقط)": {
+           calories: 320, protein: 14, carbs: 28
+           },
+        },
+        "الصوصات": {
+           "كاتشب": {calories: 20, protein: 0, carbs: 5},
+           "مايونيز": {calories: 90, protein: 0, carbs: 1},
+           "مايونيز لايت": {calories: 40, protein: 0, carbs: 1},
+           "مستردة": {calories: 10, protein: 0, carbs: 1},
+           "صوص باربيكيو": {calories: 40, protein: 0, carbs: 9},
+           "صوص رانش": {calories: 70, protein: 1, carbs: 2},
+           "صوص ثومية": {calories: 100, protein: 1, carbs: 3},
+           "صوص شيدر": {calories: 110, protein: 2, carbs: 3},
+           "صوص سويت آند ساور": {calories: 45, protein: 0, carbs: 11},
+            "سبايسي مايونيز": {calories: 95, protein: 0, carbs: 2},
+           "صوص الفلفل الأسود": {calories: 60, protein: 1, carbs: 4},
+           "صوص مشروم": {calories: 90, protein: 2, carbs: 5},
+           "صوص بيج تايستي": {calories: 100, protein: 1, carbs: 2},
+           "صوص بيج ماك": {calories: 90, protein: 1, carbs: 3},
+           "صوص كنتاكي": {calories: 85, protein: 1, carbs: 2},
+           "صوص بافلو": {calories: 45, protein: 0, carbs: 1},
+           "صوص شطة": {calories: 5, protein: 0, carbs: 1},
+           "صوص ترياكي": {calories: 35, protein: 1, carbs: 7},
+           "صوص تشيلي": {calories: 40, protein: 0, carbs: 3},
+           "صوص البيستو": {calories: 90, protein: 1, carbs: 2},
+           "صوص الجبنة الزرقاء": {calories: 120, protein: 2, carbs: 2},
+           "صوص كارميل": {calories: 60, protein: 0, carbs: 12},
+           "صوص شوكولاتة": {calories: 70, protein: 1, carbs: 10},
+           "صوص هوني مسترد": {calories: 60, protein: 0, carbs: 6},
+           "صوص فرنسي": {calories: 80, protein: 1, carbs: 4},
+           "صوص إيطالي": {calories: 60, protein: 1, carbs: 3},
+           "زيت وليمون": {calories: 90, protein: 0, carbs: 1},
+           "صوص الزبادي بالنعناع": {calories: 50, protein: 2, carbs: 3},
+           "صوص صويا": {calories: 10, protein: 1, carbs: 1},
+           "صوص سويت تشيلي": {calories: 60, protein: 0, carbs: 13}
+        },
+        "الحلويات الغربية": {
+           "تشيز كيك": {calories: 350, protein: 6, carbs: 40},
+           "براونيز": {calories: 360, protein: 5, carbs: 45},
+           "تارت الفواكه": {calories: 330, protein: 4, carbs: 42},
+           "موس الشوكولاتة": {calories: 280, protein: 4, carbs: 40},
+           "كريب نوتيلا": {calories: 370, protein: 6, carbs: 45},
+           "كوكيز أمريكي": {calories: 180, protein: 2, carbs: 24},
+           "وافل": {calories: 320, protein: 6, carbs: 45},
+           "بان كيك": {calories: 340, protein: 7, carbs: 50},
+           "آيس كريم فانيلا": {calories: 210, protein: 3, carbs: 30},
+           "كاسترد": {calories: 200, protein: 5, carbs: 35},
+           "تيراميسو": {calories: 360, protein: 6, carbs: 38},
+           "فروتي بارفيه": {calories: 300, protein: 5, carbs: 40},
+           "دونات بالشوكولاتة": {calories: 370, protein: 5, carbs: 48},
+           "كعك الزبدة": {calories: 400, protein: 6, carbs: 50},
+           "ماربل كيك": {calories: 320, protein: 5, carbs: 38}
+        },
+        "الحلويات المصرية": {
+           "أم علي": {calories: 250, protein: 5, carbs: 35},
+           "بسبوسة": {calories: 300, protein: 5, carbs: 45},
+           "كنافة": {calories: 350, protein: 6, carbs: 50},
+           "بلح الشام": {calories: 280, protein: 4, carbs: 45},
+           "قطايف": {calories: 280, protein: 4, carbs: 40},
+           "غريبة": {calories: 350, protein: 4, carbs: 50},
+           "كحك بالعجوة": {calories: 320, protein: 4, carbs: 40},
+           "كحك بالسمن": {calories: 370, protein: 4, carbs: 42},
+           "بيتي فور": {calories: 330, protein: 3, carbs: 38},
+           "سابليه": {calories: 340, protein: 4, carbs: 36},
+           "فطير مشلتت بالعسل": {calories: 420, protein: 6, carbs: 50},
+           "زلابية (لقيمات مصرية)": {calories: 300, protein: 3, carbs: 40},
+           "أرز باللبن": {calories: 200, protein: 5, carbs: 35},
+           "مهلبية": {calories: 180, protein: 4, carbs: 30},
+           "سحلب": {calories: 220, protein: 4, carbs: 35}
+        },
+        "الحلويات اليومية": {
+           "كريم كراميل": {calories: 190, protein: 4, carbs: 28},
+           "جيلي": {calories: 90, protein: 1, carbs: 20},
+           "بودينج شوكولاتة": {calories: 210, protein: 3, carbs: 30},
+           "كيكة إسفنجية": {calories: 250, protein: 4, carbs: 35},
+           "تشيز كيك": {calories: 350, protein: 6, carbs: 40},
+           "بسكويت شاي": {calories: 100, protein: 1, carbs: 14},
+           "مولتو": {calories: 220, protein: 4, carbs: 28},
+           "وافل محشي شوكولاتة": {calories: 340, protein: 5, carbs: 44},
+           "بان كيك بالعسل": {calories: 320, protein: 5, carbs: 38},
+           "كريب نوتيلا": {calories: 370, protein: 6, carbs: 45},
+           "دونات محشي": {calories: 360, protein: 4, carbs: 46},
+           "كوكيز شوكولاتة": {calories: 180, protein: 2, carbs: 24},
+           "ماربل كيك": {calories: 320, protein: 5, carbs: 38},
+           "كاسترد": {calories: 200, protein: 5, carbs: 35},
+           "فروتي بارفيه": {calories: 300, protein: 5, carbs: 40}
+        },
+        "المخبوزات": {
+           "عيش بلدي": {calories: 150, protein: 4, carbs: 30},
+           "عيش أبيض": {calories: 140, protein: 4, carbs: 28},
+           "عيش توست": {calories: 80, protein: 2, carbs: 15},
+           "خبز الشوفان": {calories: 120, protein: 5, carbs: 20},
+           "خبز القمح الكامل": {calories: 130, protein: 4, carbs: 24},
+           "باتيه بالجبنة": {calories: 240, protein: 6, carbs: 28},
+           "كرواسون": {calories: 270, protein: 5, carbs: 30},
+           "بيتزا ميني": {calories: 300, protein: 8, carbs: 32},
+           "عيش الفينو": {calories: 160, protein: 4, carbs: 30},
+           "خبز الباجيت": {calories: 220, protein: 6, carbs: 36},
+           "عيش السن": {calories: 110, protein: 6, carbs: 16},
+           "خبز التورتيلا": {calories: 150, protein: 4, carbs: 25},
+           "خبز الزعتر": {calories: 180, protein: 5, carbs: 22},
+           "فطير محشي": {calories: 300, protein: 7, carbs: 35},
+           "فطير بالسكر": {calories: 320, protein: 6, carbs: 38}
+        },
+        "الفواكه": {
+           "موز": {calories: 90, protein: 1, carbs: 22},
+           "تفاح": {calories: 80, protein: 0, carbs: 20},
+           "برتقال": {calories: 60, protein: 1, carbs: 15},
+           "عنب": {calories: 70, protein: 0, carbs: 18},
+           "جوافة": {calories: 80, protein: 2, carbs: 17},
+           "مانجو": {calories: 100, protein: 1, carbs: 25},
+           "رمان": {calories: 90, protein: 1, carbs: 20},
+           "كمثرى": {calories: 85, protein: 1, carbs: 21},
+           "بطيخ": {calories: 30, protein: 1, carbs: 8},
+           "شمام": {calories: 35, protein: 1, carbs: 9},
+           "فراولة": {calories: 40, protein: 1, carbs: 10},
+           "توت": {calories: 50, protein: 1, carbs: 12},
+           "أناناس": {calories: 60, protein: 0, carbs: 15},
+           "خوخ": {calories: 70, protein: 1, carbs: 18},
+           "مشمش": {calories: 50, protein: 1, carbs: 12}
+        },
+        "السلطات": {
+           "سلطة خضراء": {calories: 50, protein: 2, carbs: 8},
+           "سلطة زبادي": {calories: 70, protein: 3, carbs: 5},
+           "سلطة طحينة": {calories: 90, protein: 3, carbs: 5},
+           "سلطة بابا غنوج": {calories: 80, protein: 3, carbs: 6},
+           "سلطة يونانية": {calories: 120, protein: 4, carbs: 10},
+           "سلطة فتوش": {calories: 100, protein: 2, carbs: 15},
+           "سلطة تبولة": {calories: 90, protein: 3, carbs: 14},
+           "سلطة سيزر": {calories: 180, protein: 7, carbs: 10},
+           "سلطة ملفوف": {calories: 60, protein: 2, carbs: 9},
+           "سلطة جرجير": {calories: 40, protein: 2, carbs: 6},
+           "سلطة تونة": {calories: 150, protein: 10, carbs: 5},
+           "سلطة دجاج مشوي": {calories: 220, protein: 20, carbs: 7},
+           "سلطة الشمندر": {calories: 70, protein: 2, carbs: 14},
+           "سلطة الحمص": {calories: 160, protein: 6, carbs: 12},
+           "سلطة البقوليات": {calories: 180, protein: 8, carbs: 20}
+        },
+        "أكلات دايت وكيتو": {
+           "صدور دجاج مشوي": {calories: 165, protein: 31, carbs: 0},
+           "تونة بدون زيت": {calories: 90, protein: 20, carbs: 0},
+           "بيض مسلوق": {calories: 70, protein: 6, carbs: 1},
+           "سلطة تونة دايت": {calories: 120, protein: 12, carbs: 3},
+           "أومليت بيض بالخضار": {calories: 180, protein: 10, carbs: 4},
+           "زهره مشوية (قرنبيط)": {calories: 70, protein: 4, carbs: 8},
+           "شوربة خضار دايت": {calories: 90, protein: 3, carbs: 12},
+           "بروكلي مطهي": {calories: 55, protein: 4, carbs: 6},
+           "ستيك لحم خالي من الدهون": {calories: 250, protein: 30, carbs: 0},
+           "كوسا محشية دايت": {calories: 160, protein: 10, carbs: 10},
+           "كيتو خبز باللوز": {calories: 110, protein: 5, carbs: 2},
+           "كيتو بيتزا بالجبنة": {calories: 220, protein: 12, carbs: 4},
+           "زبدة الفول السوداني (بدون سكر)": {calories: 190, protein: 8, carbs: 5},
+           "بيض مع أفوكادو": {calories: 240, protein: 9, carbs: 3},
+           "تشكن رول كيتو": {calories: 300, protein: 25, carbs: 2}
+        },
+        "أطعمة متنوعة": {
+           "كبدة اسكندراني مع جبن": {calories: 240, protein: 18, carbs: 14},
+           "ميني بيتزا بدون زيت": {calories: 249, protein: 7, carbs: 48},
+           "أرز باللبن كبير": {calories: 548, protein: 12, carbs: 18},
+           "تفاح مع جبن": {calories: 400, protein: 21, carbs: 15},
+           "نسكافيه حار": {calories: 464, protein: 9, carbs: 25},
+           "خبز تورتيلا كبير": {calories: 511, protein: 2, carbs: 7},
+           "كفتة مشوية بدون زيت": {calories: 362, protein: 6, carbs: 30},
+           "ميني بيتزا مع جبن": {calories: 278, protein: 20, carbs: 58},
+           "تيراميسو كبير": {calories: 574, protein: 19, carbs: 27},
+           "خوخ صغير": {calories: 494, protein: 7, carbs: 56},
+           "نسكافيه صغير": {calories: 522, protein: 2, carbs: 57},
+           "عيش توست": {calories: 448, protein: 25, carbs: 57},
+           "مسقعة بارد": {calories: 475, protein: 2, carbs: 54},
+           "سبرينغ رول": {calories: 233, protein: 15, carbs: 38},
+           "أرز باللبن متوسط": {calories: 102, protein: 20, carbs: 6},
+           "رمان متوسط": {calories: 455, protein: 14, carbs: 10},
+           "قهوة تركية حار": {calories: 243, protein: 19, carbs: 38},
+           "خبز تورتيلا بدون زيت": {calories: 586, protein: 23, carbs: 12},
+           "برياني لحم كبير": {calories: 543, protein: 23, carbs: 13},
+           "كرواسون بالزيتون مع جبن": {calories: 315, protein: 4, carbs: 10},
+           "تيراميسو مع جبن": {calories: 482, protein: 23, carbs: 58},
+           "عنب حار": {calories: 250, protein: 24, carbs: 5},
+           "كابتشينو بدون زيت": {calories: 351, protein: 18, carbs: 43},
+           "خبز تورتيلا كبير": {calories: 145, protein: 17, carbs: 50},
+           "سمك مشوي حار": {calories: 117, protein: 3, carbs: 41},
+           "ساندويتش تونة حار": {calories: 383, protein: 5, carbs: 19},
+           "كنافة كبير": {calories: 138, protein: 15, carbs: 56},
+           "أناناس": {calories: 516, protein: 28, carbs: 45},
+           "نسكافيه كبير": {calories: 278, protein: 28, carbs: 31},
+           "خبز القمح الكامل بارد": {calories: 195, protein: 18, carbs: 24},
+           "شاورما دجاج متوسط": {calories: 453, protein: 11, carbs: 9},
+           "سبرينغ رول صغير": {calories: 496, protein: 6, carbs: 53},
+           "دونات بدون زيت": {calories: 231, protein: 4, carbs: 28},
+           "شمام كبير": {calories: 501, protein: 9, carbs: 22},
+           "قهوة تركية بدون زيت": {calories: 357, protein: 30, carbs: 49},
+           "عيش بلدي صغير": {calories: 461, protein: 15, carbs: 42},
+           "كباب لحم بارد": {calories: 106, protein: 16, carbs: 12},
+           "ساندويتش تونة بدون زيت": {calories: 266, protein: 6, carbs: 25},
+           "كيكة شوكولاتة كبير": {calories: 114, protein: 3, carbs: 60},
+           "بطيخ": {calories: 441, protein: 26, carbs: 22},
+           "لبن رايب": {calories: 124, protein: 20, carbs: 17},
+           "فطير مشلتت كبير": {calories: 574, protein: 4, carbs: 16},
+           "مندي دجاج صغير": {calories: 241, protein: 29, carbs: 22},
+           "ساندويتش تونة بارد": {calories: 229, protein: 29, carbs: 44},
+           "كيكة شوكولاتة": {calories: 339, protein: 19, carbs: 38},
+           "فراولة كبير": {calories: 427, protein: 28, carbs: 37},
+           "عصير رمان صغير": {calories: 199, protein: 28, carbs: 48},
+           "خبز القمح الكامل": {calories: 495, protein: 30, carbs: 27},
+           "فتة لحم بدون زيت": {calories: 291, protein: 21, carbs: 57},
+           "فلافل بارد": {calories: 153, protein: 28, carbs: 56},
+           "تيراميسو كبير": {calories: 488, protein: 29, carbs: 33},
+           "مانجو": {calories: 590, protein: 6, carbs: 22},
+           "شاي مثلج بارد": {calories: 184, protein: 16, carbs: 36},
+           "خبز شوفان متوسط": {calories: 595, protein: 25, carbs: 14},
+           "مكرونة بالبشاميل صغير": {calories: 353, protein: 3, carbs: 47},
+           "كرواسون بالزيتون بارد": {calories: 100, protein: 10, carbs: 19},
+           "تيراميسو بدون زيت": {calories: 139, protein: 22, carbs: 9},
+           "رمان حار": {calories: 366, protein: 18, carbs: 28},
+           "عصير رمان بدون زيت": {calories: 251, protein: 20, carbs: 33},
+           "عيش توست متوسط": {calories: 182, protein: 13, carbs: 5},
+           "فتة لحم مع جبن": {calories: 361, protein: 28, carbs: 18},
+           "توست بالجبن متوسط": {calories: 287, protein: 8, carbs: 19},
+           "لقيمات كبير": {calories: 211, protein: 18, carbs: 45},
+           "توت بدون زيت": {calories: 445, protein: 20, carbs: 19},
+           "كابتشينو": {calories: 211, protein: 6, carbs: 21},
+           "خبز القمح الكامل متوسط": {calories: 111, protein: 26, carbs: 48},
+           "أرز بالخضار": {calories: 252, protein: 14, carbs: 7},
+           "كرواسون بالزيتون بدون زيت": {calories: 342, protein: 6, carbs: 60},
+           "تشيز كيك متوسط": {calories: 555, protein: 26, carbs: 39},
+           "عنب بارد": {calories: 258, protein: 16, carbs: 32},
+           "شاي مثلج كبير": {calories: 184, protein: 22, carbs: 53},
+           "عيش فينو حار": {calories: 169, protein: 19, carbs: 15},
+           "سمك مشوي كبير": {calories: 484, protein: 2, carbs: 38},
+           "ساندويتش تونة صغير": {calories: 476, protein: 27, carbs: 15},
+           "كنافة بدون زيت": {calories: 195, protein: 25, carbs: 12},
+           "مانجو متوسط": {calories: 465, protein: 27, carbs: 27},
+           "لبن رايب صغير": {calories: 372, protein: 22, carbs: 13},
+           "كرواسون صغير": {calories: 346, protein: 14, carbs: 30},
+           "أرز بالخضار": {calories: 145, protein: 11, carbs: 11},
+           "ساندويتش تونة بدون زيت": {calories: 162, protein: 29, carbs: 45},
+           "لقيمات صغير": {calories: 298, protein: 11, carbs: 41},
+           "مانجو بارد": {calories: 250, protein: 27, carbs: 14},
+           "عصير برتقال بدون زيت": {calories: 519, protein: 14, carbs: 50},
+           "فطير مشلتت كبير": {calories: 570, protein: 11, carbs: 40},
+           "كباب لحم متوسط": {calories: 170, protein: 25, carbs: 40},
+           "توست بالجبن": {calories: 120, protein: 20, carbs: 35},
+           "تشيز كيك": {calories: 511, protein: 25, carbs: 20},
+           "رمان متوسط": {calories: 594, protein: 30, carbs: 24},
+           "عصير برتقال": {calories: 247, protein: 12, carbs: 14},
+           "خبز شوفان مع جبن": {calories: 552, protein: 17, carbs: 17},
+           "كباب لحم مع جبن": {calories: 503, protein: 2, carbs: 44},
+           "ساندويتش تونة حار": {calories: 240, protein: 18, carbs: 42},
+           "لقيمات مع جبن": {calories: 227, protein: 23, carbs: 34},
+           "تفاح متوسط": {calories: 588, protein: 2, carbs: 11},
+           "عصير برتقال بدون زيت": {calories: 189, protein: 20, carbs: 36},
+           "خبز تورتيلا بارد": {calories: 292, protein: 9, carbs: 32},
+           "شاورما دجاج": {calories: 589, protein: 19, carbs: 47},
+           "ساندويتش تونة صغير": {calories: 500, protein: 6, carbs: 17},
+           "زلابية كبير": {calories: 431, protein: 19, carbs: 35},
+           "كمثرى كبير": {calories: 212, protein: 17, carbs: 9},
+           "عصير برتقال": {calories: 241, protein: 5, carbs: 52},
+           "عيش توست صغير": {calories: 492, protein: 11, carbs: 49},
+           "كفتة مشوية مع جبن": {calories: 424, protein: 8, carbs: 30},
+           "فلافل بدون زيت": {calories: 109, protein: 28, carbs: 25},
+           "أرز باللبن كبير": {calories: 473, protein: 17, carbs: 30},
+           "تفاح بارد": {calories: 585, protein: 15, carbs: 27},
+           "عصير تفاح صغير": {calories: 310, protein: 18, carbs: 58},
+           "عيش بلدي كبير": {calories: 599, protein: 2, carbs: 43},
+           "سمك مشوي": {calories: 395, protein: 12, carbs: 29},
+           "كرواسون بالزيتون كبير": {calories: 445, protein: 19, carbs: 44},
+           "بسبوسة بدون زيت": {calories: 143, protein: 5, carbs: 31},
+           "كمثرى بدون زيت": {calories: 126, protein: 17, carbs: 20},
+           "كابتشينو صغير": {calories: 543, protein: 8, carbs: 19},
+           "خبز شوفان كبير": {calories: 105, protein: 30, carbs: 17},
+           "محشي ورق عنب حار": {calories: 474, protein: 25, carbs: 59},
+           "توست زبدة فول سوداني مع جبن": {calories: 343, protein: 27, carbs: 54},
+           "بسبوسة بارد": {calories: 563, protein: 25, carbs: 31},
+           "خوخ": {calories: 215, protein: 15, carbs: 53},
+           "عصير برتقال متوسط": {calories: 239, protein: 16, carbs: 58},
+           "عيش توست": {calories: 102, protein: 28, carbs: 8},
+           "لازانيا متوسط": {calories: 553, protein: 3, carbs: 51},
+           "كرواسون بالزيتون بدون زيت": {calories: 555, protein: 30, carbs: 9},
+           "دونات مع جبن": {calories: 498, protein: 24, carbs: 58},
+           "شمام بارد": {calories: 371, protein: 2, carbs: 40},
+           "عصير برتقال صغير": {calories: 255, protein: 20, carbs: 41},
+           "خبز القمح الكامل صغير": {calories: 312, protein: 7, carbs: 60},
+           "كبدة اسكندراني صغير": {calories: 387, protein: 15, carbs: 25},
+           "فلافل": {calories: 146, protein: 14, carbs: 12},
+           "دونات حار": {calories: 436, protein: 25, carbs: 13},
+           "توت مع جبن": {calories: 227, protein: 17, carbs: 46},
+           "عصير تفاح كبير": {calories: 214, protein: 8, carbs: 20},
+           "عيش فينو بارد": {calories: 290, protein: 2, carbs: 50},
+           "كفتة مشوية حار": {calories: 336, protein: 8, carbs: 9},
+           "كرواسون بالزيتون بدون زيت": {calories: 234, protein: 18, carbs: 17},
+           "لقيمات": {calories: 177, protein: 17, carbs: 38},
+           "عنب متوسط": {calories: 413, protein: 26, carbs: 28},
+           "عصير تفاح متوسط": {calories: 446, protein: 27, carbs: 41},
+           "عيش بلدي مع جبن": {calories: 490, protein: 21, carbs: 56},
+           "كباب لحم مع جبن": {calories: 360, protein: 8, carbs: 26},
+           "ساندويتش تونة كبير": {calories: 133, protein: 16, carbs: 19},
+           "تيراميسو حار": {calories: 160, protein: 25, carbs: 53},
+           "مانجو حار": {calories: 349, protein: 22, carbs: 25},
+           "عصير تفاح صغير": {calories: 599, protein: 22, carbs: 51},
+           "فطير مشلتت متوسط": {calories: 463, protein: 23, carbs: 59},
+           "طاجن بامية متوسط": {calories: 481, protein: 10, carbs: 19},
+           "توست بالجبن صغير": {calories: 270, protein: 4, carbs: 57},
+           "زلابية بدون زيت": {calories: 351, protein: 6, carbs: 6},
+           "رمان صغير": {calories: 315, protein: 3, carbs: 50},
+           "عصير تفاح كبير": {calories: 561, protein: 3, carbs: 20},
+           "خبز القمح الكامل صغير": {calories: 373, protein: 16, carbs: 58},
+           "أرز بالخضار بارد": {calories: 126, protein: 30, carbs: 17},
+           "فلافل مع جبن": {calories: 404, protein: 15, carbs: 18},
+           "تشيز كيك مع جبن": {calories: 473, protein: 5, carbs: 6},
+           "موز بارد": {calories: 354, protein: 30, carbs: 47},
+           "لبن رايب بارد": {calories: 387, protein: 29, carbs: 20},
+           "كرواسون حار": {calories: 373, protein: 25, carbs: 15},
+           "طاجن بامية صغير": {calories: 420, protein: 28, carbs: 49},
+           "توست زبدة فول سوداني": {calories: 137, protein: 14, carbs: 17},
+           "دونات بدون زيت": {calories: 583, protein: 13, carbs: 36},
+           "شمام": {calories: 279, protein: 5, carbs: 41},
+           "عصير رمان حار": {calories: 353, protein: 12, carbs: 58},
+           "كرواسون كبير": {calories: 464, protein: 28, carbs: 48},
+           "مسقعة حار": {calories: 392, protein: 4, carbs: 11},
+           "توست زبدة فول سوداني كبير": {calories: 326, protein: 21, carbs: 38},
+           "تشيز كيك صغير": {calories: 305, protein: 28, carbs: 8},
+           "بطيخ مع جبن": {calories: 292, protein: 4, carbs: 39},
+           "شاي مثلج بدون زيت": {calories: 114, protein: 21, carbs: 41},
+           "خبز القمح الكامل حار": {calories: 567, protein: 24, carbs: 17},
+           "محشي ورق عنب كبير": {calories: 434, protein: 2, carbs: 54},
+           "توست بالجبن كبير": {calories: 380, protein: 29, carbs: 26},
+           "دونات بارد": {calories: 162, protein: 24, carbs: 53},
+           "رمان": {calories: 523, protein: 27, carbs: 7},
+           "عصير تفاح بارد": {calories: 131, protein: 23, carbs: 12},
+           "فطير مشلتت كبير": {calories: 243, protein: 28, carbs: 23},
+           "طاجن بامية": {calories: 311, protein: 25, carbs: 47},
+           "سبرينغ رول صغير": {calories: 564, protein: 15, carbs: 51},
+           "لقيمات صغير": {calories: 368, protein: 3, carbs: 11},
+           "رمان بدون زيت": {calories: 146, protein: 22, carbs: 5},
+           "كابتشينو بدون زيت": {calories: 309, protein: 16, carbs: 57},
+           "عيش بلدي صغير": {calories: 404, protein: 23, carbs: 37},
+           "سمك مشوي حار": {calories: 255, protein: 13, carbs: 32},
+           "ساندويتش تونة مع جبن": {calories: 329, protein: 12, carbs: 54},
+           "زلابية": {calories: 514, protein: 26, carbs: 31},
+           "مانجو متوسط": {calories: 330, protein: 12, carbs: 38},
+           "كابتشينو مع جبن": {calories: 446, protein: 6, carbs: 6},
+           "خبز تورتيلا": {calories: 151, protein: 10, carbs: 60},
+           "مكرونة بالبشاميل حار": {calories: 354, protein: 4, carbs: 28},
+           "توست بالجبن كبير": {calories: 177, protein: 7, carbs: 53},
+           "لقيمات كبير": {calories: 533, protein: 26, carbs: 57},
+           "فراولة بدون زيت": {calories: 424, protein: 10, carbs: 31},
+           "عصير برتقال": {calories: 327, protein: 14, carbs: 57},
+           "عيش بلدي متوسط": {calories: 450, protein: 29, carbs: 39},
+           "كفتة مشوية بارد": {calories: 543, protein: 12, carbs: 43},
+           "ميني بيتزا صغير": {calories: 560, protein: 24, carbs: 49},
+           "تيراميسو صغير": {calories: 582, protein: 25, carbs: 14},
+           "خوخ متوسط": {calories: 432, protein: 27, carbs: 44},
+           "كابتشينو كبير": {calories: 546, protein: 24, carbs: 23},
+           "كرواسون صغير": {calories: 343, protein: 17, carbs: 55},
+           "مسقعة بارد": {calories: 297, protein: 29, carbs: 50},
+           "توست زبدة فول سوداني": {calories: 471, protein: 14, carbs: 6},
+           "بسبوسة بدون زيت": {calories: 448, protein: 10, carbs: 39},
+           "تفاح صغير": {calories: 309, protein: 16, carbs: 45},
+           "قهوة تركية كبير": {calories: 232, protein: 25, carbs: 50},
+           "عيش توست كبير": {calories: 185, protein: 15, carbs: 40},
+           "محشي ورق عنب صغير": {calories: 241, protein: 20, carbs: 16},
+           "سبرينغ رول صغير": {calories: 218, protein: 13, carbs: 15},
+           "دونات حار": {calories: 171, protein: 3, carbs: 7},
+           "بطيخ كبير": {calories: 488, protein: 16, carbs: 31},
+           "نسكافيه حار": {calories: 590, protein: 18, carbs: 31},
+           "عيش بلدي بارد": {calories: 479, protein: 10, carbs: 34},
+           "كشري": {calories: 504, protein: 24, carbs: 55},
+           "فلافل": {calories: 147, protein: 16, carbs: 50},
+           "بسبوسة بدون زيت": {calories: 550, protein: 7, carbs: 58},
+           "توت": {calories: 115, protein: 19, carbs: 53},
+           "عصير رمان كبير": {calories: 573, protein: 4, carbs: 24},
+           "عيش بلدي بارد": {calories: 523, protein: 13, carbs: 15},
+           "فتة لحم مع جبن": {calories: 146, protein: 10, carbs: 47},
+           "ساندويتش تونة": {calories: 326, protein: 21, carbs: 9},
+           "تيراميسو بارد": {calories: 205, protein: 3, carbs: 60},
+           "شمام متوسط": {calories: 217, protein: 15, carbs: 8},
+           "عصير برتقال صغير": {calories: 272, protein: 13, carbs: 57},
+           "خبز تورتيلا كبير": {calories: 476, protein: 12, carbs: 20},
+           "فتة لحم كبير": {calories: 510, protein: 20, carbs: 27},
+           "كرواسون بالزيتون": {calories: 572, protein: 27, carbs: 42},
+           "كيكة شوكولاتة متوسط": {calories: 490, protein: 26, carbs: 20},
+           "خوخ بدون زيت": {calories: 403, protein: 15, carbs: 45},
+           "عصير برتقال": {calories: 157, protein: 5, carbs: 26},
+           "عيش بلدي": {calories: 170, protein: 5, carbs: 26},
+           "برياني لحم بارد": {calories: 473, protein: 9, carbs: 60},
+           "ميني بيتزا حار": {calories: 406, protein: 27, carbs: 52},
+           "تشيز كيك حار": {calories: 570, protein: 12, carbs: 43},
+           "كمثرى صغير": {calories: 483, protein: 14, carbs: 6},
+           "لبن رايب": {calories: 246, protein: 11, carbs: 55},
+           "عيش فينو بدون زيت": {calories: 440, protein: 21, carbs: 39},
+           "لازانيا بدون زيت": {calories: 198, protein: 5, carbs: 45},
+           "توست زبدة فول سوداني صغير": {calories: 267, protein: 2, carbs: 49},
+           "دونات متوسط": {calories: 332, protein: 6, carbs: 54},
+           "عنب كبير": {calories: 204, protein: 6, carbs: 35},
+           "عصير تفاح صغير": {calories: 244, protein: 22, carbs: 18},
+           "عيش توست كبير": {calories: 552, protein: 22, carbs: 50},
+           "مكرونة بالبشاميل متوسط": {calories: 334, protein: 7, carbs: 33},
+           "فلافل صغير": {calories: 123, protein: 14, carbs: 23},
+           "تيراميسو بدون زيت": {calories: 218, protein: 21, carbs: 33},
+           "موز صغير": {calories: 387, protein: 7, carbs: 9},
+           "عصير رمان بارد": {calories: 441, protein: 13, carbs: 25},
+           "فطير مشلتت كبير": {calories: 509, protein: 18, carbs: 57},
+           "طاجن بامية مع جبن": {calories: 453, protein: 10, carbs: 54},
+           "توست بالجبن صغير": {calories: 172, protein: 6, carbs: 23},
+           "تشيز كيك مع جبن": {calories: 358, protein: 3, carbs: 27},
+           "شمام مع جبن": {calories: 499, protein: 14, carbs: 52},
+           "لبن رايب": {calories: 413, protein: 13, carbs: 7},
+           "خبز شوفان متوسط": {calories: 522, protein: 12, carbs: 16},
+           "كشري": {calories: 462, protein: 4, carbs: 23},
+           "سبرينغ رول صغير": {calories: 105, protein: 2, carbs: 55},
+           "لقيمات متوسط": {calories: 555, protein: 14, carbs: 60},
+           "كمثرى متوسط": {calories: 171, protein: 10, carbs: 22},
+           "عصير تفاح": {calories: 224, protein: 27, carbs: 28},
+           "فطير مشلتت بدون زيت": {calories: 538, protein: 4, carbs: 15},
+           "محشي ورق عنب بارد": {calories: 495, protein: 5, carbs: 14},
+           "توست بالجبن بدون زيت": {calories: 327, protein: 23, carbs: 27},
+           "كنافة كبير": {calories: 576, protein: 15, carbs: 57},
+           "رمان بدون زيت": {calories: 242, protein: 23, carbs: 14},
+           "شاي مثلج بارد": {calories: 413, protein: 23, carbs: 11},
+           "عيش بلدي بدون زيت": {calories: 350, protein: 25, carbs: 52},
+           "كباب لحم كبير": {calories: 199, protein: 14, carbs: 49},
+           "سبرينغ رول حار": {calories: 173, protein: 24, carbs: 58},
+           "تيراميسو مع جبن": {calories: 545, protein: 13, carbs: 36},
+           "موز": {calories: 481, protein: 2, carbs: 50},
+           "قهوة تركية حار": {calories: 540, protein: 11, carbs: 26},
+           "خبز شوفان متوسط": {calories: 508, protein: 27, carbs: 35},
+           "كشري": {calories: 359, protein: 4, carbs: 43},
+           "فلافل متوسط": {calories: 404, protein: 4, carbs: 26},
+           "لقيمات بدون زيت": {calories: 245, protein: 26, carbs: 11},
+           "رمان صغير": {calories: 480, protein: 4, carbs: 60},
+           "قهوة تركية بارد": {calories: 516, protein: 9, carbs: 10},
+           "فطير مشلتت بارد": {calories: 413, protein: 29, carbs: 58},
+           "محشي ورق عنب بدون زيت": {calories: 539, protein: 25, carbs: 14},
+           "توست زبدة فول سوداني": {calories: 439, protein: 7, carbs: 26},
+           "تشيز كيك كبير": {calories: 156, protein: 18, carbs: 56},
+           "فراولة كبير": {calories: 250, protein: 29, carbs: 35},
+           "شاي مثلج مع جبن": {calories: 149, protein: 13, carbs: 17},
+           "خبز القمح الكامل بارد": {calories: 357, protein: 21, carbs: 31},
+           "كشري متوسط": {calories: 115, protein: 29, carbs: 43},
+           "توست بالجبن بارد": {calories: 564, protein: 30, carbs: 15},
+           "أرز باللبن متوسط": {calories: 357, protein: 14, carbs: 12},
+           "عنب متوسط": {calories: 144, protein: 6, carbs: 33},
+           "قهوة تركية بدون زيت": {calories: 549, protein: 12, carbs: 39},
+           "عيش توست مع جبن": {calories: 177, protein: 20, carbs: 45},
+           "شاورما دجاج مع جبن": {calories: 216, protein: 27, carbs: 59},
+           "فلافل بدون زيت": {calories: 554, protein: 18, carbs: 59},
+           "أرز باللبن متوسط": {calories: 583, protein: 30, carbs: 39},
+           "بطيخ حار": {calories: 202, protein: 10, carbs: 47},
+           "قهوة تركية بدون زيت": {calories: 212, protein: 12, carbs: 44},
+           "عيش توست مع جبن": {calories: 275, protein: 3, carbs: 6},
+           "سمك مشوي حار": {calories: 360, protein: 17, carbs: 37},
+           "توست بالجبن بارد": {calories: 237, protein: 3, carbs: 58},
+           "دونات متوسط": {calories: 455, protein: 25, carbs: 40},
+           "شمام بارد": {calories: 291, protein: 15, carbs: 51},
+           "عصير تفاح صغير": {calories: 251, protein: 5, carbs: 15},
+           "كرواسون بارد": {calories: 580, protein: 8, carbs: 47},
+           "مسقعة": {calories: 139, protein: 26, carbs: 10},
+           "فلافل بدون زيت": {calories: 377, protein: 27, carbs: 20},
+           "كنافة بارد": {calories: 351, protein: 18, carbs: 59},
+           "فراولة بارد": {calories: 503, protein: 22, carbs: 40},
+           "نسكافيه مع جبن": {calories: 557, protein: 17, carbs: 45},
+           "عيش توست بارد": {calories: 449, protein: 5, carbs: 39},
+           "شاورما دجاج": {calories: 124, protein: 28, carbs: 57},
+           "توست بالجبن بدون زيت": {calories: 372, protein: 8, carbs: 45},
+           "كنافة مع جبن": {calories: 542, protein: 27, carbs: 28},
+           "مانجو كبير": {calories: 440, protein: 18, carbs: 23},
+           "عصير برتقال متوسط": {calories: 310, protein: 7, carbs: 50},
+           "كرواسون بدون زيت": {calories: 355, protein: 26, carbs: 12},
+           "شاورما دجاج حار": {calories: 465, protein: 26, carbs: 58},
+           "ساندويتش تونة": {calories: 491, protein: 5, carbs: 18},
+           "كنافة صغير": {calories: 568, protein: 11, carbs: 47},
+           "عنب بارد": {calories: 474, protein: 12, carbs: 6},
+           "كابتشينو صغير": {calories: 561, protein: 17, carbs: 17},
+           "خبز شوفان متوسط": {calories: 449, protein: 12, carbs: 49},
+           "كبدة اسكندراني بدون زيت": {calories: 207, protein: 10, carbs: 35},
+           "كرواسون بالزيتون كبير": {calories: 104, protein: 3, carbs: 21},
+           "تشيز كيك": {calories: 259, protein: 9, carbs: 29},
+           "بطيخ حار": {calories: 489, protein: 23, carbs: 48},
+           "عصير رمان متوسط": {calories: 203, protein: 4, carbs: 21},
+           "خبز القمح الكامل بارد": {calories: 566, protein: 17, carbs: 6},
+           "أرز بالخضار": {calories: 486, protein: 13, carbs: 18},
+           "توست زبدة فول سوداني صغير": {calories: 115, protein: 26, carbs: 30},
+           "كيكة شوكولاتة بدون زيت": {calories: 543, protein: 12, carbs: 36},
+           "كمثرى صغير": {calories: 535, protein: 10, carbs: 44},
+           "عصير رمان حار": {calories: 500, protein: 30, carbs: 33},
+           "خبز شوفان حار": {calories: 389, protein: 16, carbs: 24},
+           "سمك مشوي صغير": {calories: 578, protein: 7, carbs: 37},
+           "ميني بيتزا بارد": {calories: 346, protein: 29, carbs: 16},
+           "تيراميسو حار": {calories: 132, protein: 16, carbs: 56},
+           "عنب مع جبن": {calories: 148, protein: 7, carbs: 9},
+           "لبن رايب متوسط": {calories: 487, protein: 5, carbs: 31},
+           "عيش توست": {calories: 524, protein: 17, carbs: 8},
+           "أرز بالخضار بارد": {calories: 185, protein: 29, carbs: 58},
+           "توست زبدة فول سوداني مع جبن": {calories: 285, protein: 19, carbs: 18},
+           "لقيمات كبير": {calories: 538, protein: 16, carbs: 21},
+           "عنب بدون زيت": {calories: 286, protein: 14, carbs: 52},
+           "كابتشينو كبير": {calories: 356, protein: 8, carbs: 40},
+           "عيش فينو": {calories: 499, protein: 24, carbs: 43},
+           "طاجن بامية بارد": {calories: 273, protein: 10, carbs: 48},
+           "سبرينغ رول صغير": {calories: 485, protein: 23, carbs: 26},
+           "تشيز كيك كبير": {calories: 142, protein: 24, carbs: 40},
+           "موز بارد": {calories: 289, protein: 20, carbs: 52},
+           "كابتشينو كبير": {calories: 242, protein: 4, carbs: 10},
+           "كرواسون متوسط": {calories: 307, protein: 21, carbs: 59},
+           "مكرونة بالبشاميل حار": {calories: 108, protein: 25, carbs: 5},
+           "سبرينغ رول حار": {calories: 353, protein: 3, carbs: 60},
+           "دونات صغير": {calories: 171, protein: 27, carbs: 26},
+           "فراولة بدون زيت": {calories: 354, protein: 12, carbs: 11},
+           "عصير برتقال بارد": {calories: 226, protein: 18, carbs: 16},
+           "عيش بلدي بارد": {calories: 169, protein: 30, carbs: 7},
+           "مندي دجاج متوسط": {calories: 154, protein: 30, carbs: 56},
+           "سبرينغ رول مع جبن": {calories: 228, protein: 20, carbs: 11},
+           "تشيز كيك كبير": {calories: 171, protein: 25, carbs: 47},
+           "خوخ بدون زيت": {calories: 238, protein: 16, carbs: 49},
+           "قهوة تركية صغير": {calories: 355, protein: 18, carbs: 9},
+           "عيش بلدي صغير": {calories: 533, protein: 29, carbs: 24},
+           "برياني لحم مع جبن": {calories: 478, protein: 19, carbs: 23},
+           "توست زبدة فول سوداني بدون زيت": {calories: 172, protein: 5, carbs: 53},
+           "كيكة شوكولاتة متوسط": {calories: 527, protein: 8, carbs: 20},
+           "كمثرى حار": {calories: 537, protein: 13, carbs: 6},
+           "شاي مثلج مع جبن": {calories: 132, protein: 6, carbs: 6},
+           "كرواسون حار": {calories: 484, protein: 11, carbs: 32},
+           "لازانيا": {calories: 287, protein: 28, carbs: 47},
+           "سبرينغ رول صغير": {calories: 501, protein: 6, carbs: 5},
+           "أرز باللبن بارد": {calories: 276, protein: 25, carbs: 40},
+           "موز بارد": {calories: 498, protein: 12, carbs: 40},
+           "نسكافيه متوسط": {calories: 326, protein: 18, carbs: 57},
+           "فطير مشلتت حار": {calories: 511, protein: 22, carbs: 50},
+           "كباب لحم صغير": {calories: 131, protein: 17, carbs: 53},
+           "كرواسون بالزيتون حار": {calories: 506, protein: 19, carbs: 27},
+           "أرز باللبن": {calories: 246, protein: 11, carbs: 36},
+           "عنب صغير": {calories: 420, protein: 14, carbs: 44},
+           "عصير رمان مع جبن": {calories: 223, protein: 11, carbs: 11},
+           "خبز تورتيلا بدون زيت": {calories: 248, protein: 11, carbs: 49},
+           "لازانيا كبير": {calories: 119, protein: 27, carbs: 40},
+           "ساندويتش تونة كبير": {calories: 275, protein: 9, carbs: 40},
+           "أرز باللبن حار": {calories: 207, protein: 2, carbs: 43},
+           "شمام حار": {calories: 447, protein: 2, carbs: 47},
+           "قهوة تركية حار": {calories: 302, protein: 17, carbs: 42},
+           "كرواسون بدون زيت": {calories: 416, protein: 22, carbs: 56},
+           "فتة لحم بارد": {calories: 340, protein: 23, carbs: 58},
+           "ساندويتش تونة بارد": {calories: 214, protein: 6, carbs: 57},
+           "تشيز كيك حار": {calories: 255, protein: 3, carbs: 53},
+           "كمثرى صغير": {calories: 425, protein: 21, carbs: 10},
+           "عصير رمان بدون زيت": {calories: 159, protein: 28, carbs: 14},
+           "عيش فينو كبير": {calories: 187, protein: 27, carbs: 59},
+           "طاجن بامية متوسط": {calories: 307, protein: 5, carbs: 8},
+           "فلافل كبير": {calories: 213, protein: 11, carbs: 36},
+           "تشيز كيك": {calories: 149, protein: 15, carbs: 33},
+           "توت": {calories: 556, protein: 7, carbs: 59},
+           "عصير رمان كبير": {calories: 519, protein: 5, carbs: 56},
+           "عيش بلدي حار": {calories: 118, protein: 11, carbs: 22},
+           "محشي ورق عنب بارد": {calories: 527, protein: 30, carbs: 12},
+           "سبرينغ رول كبير": {calories: 149, protein: 13, carbs: 6},
+           "بسبوسة كبير": {calories: 332, protein: 15, carbs: 43},
+           "كمثرى بارد": {calories: 301, protein: 5, carbs: 42},
+           "كابتشينو متوسط": {calories: 280, protein: 27, carbs: 25},
+           "خبز تورتيلا متوسط": {calories: 154, protein: 10, carbs: 23},
+           "مسقعة حار": {calories: 280, protein: 26, carbs: 52},
+           "ميني بيتزا صغير": {calories: 107, protein: 7, carbs: 13},
+           "لقيمات بدون زيت": {calories: 402, protein: 16, carbs: 38},
+           "موز بدون زيت": {calories: 545, protein: 22, carbs: 12},
+           "شاي مثلج بارد": {calories: 223, protein: 3, carbs: 56},
+           "عيش فينو بدون زيت": {calories: 566, protein: 25, carbs: 52},
+           "كباب لحم بارد": {calories: 414, protein: 28, carbs: 31},
+           "ميني بيتزا كبير": {calories: 210, protein: 30, carbs: 35},
+           "لقيمات حار": {calories: 238, protein: 6, carbs: 49},
+           "تفاح صغير": {calories: 267, protein: 19, carbs: 5},
+           "عصير رمان بارد": {calories: 120, protein: 10, carbs: 48},
+           "عيش فينو بارد": {calories: 309, protein: 9, carbs: 22},
+           "شاورما دجاج صغير": {calories: 500, protein: 12, carbs: 50},
+           "كرواسون بالزيتون مع جبن": {calories: 155, protein: 10, carbs: 34},
+           "دونات صغير": {calories: 414, protein: 11, carbs: 31},
+           "شمام مع جبن": {calories: 166, protein: 15, carbs: 41},
+           "شاي مثلج بارد": {calories: 580, protein: 29, carbs: 20},
+           "عيش بلدي حار": {calories: 218, protein: 20, carbs: 50},
+           "لازانيا بدون زيت": {calories: 318, protein: 7, carbs: 29},
+           "كرواسون بالزيتون بارد": {calories: 548, protein: 21, carbs: 47},
+           "كيكة شوكولاتة حار": {calories: 562, protein: 11, carbs: 21},
+           "بطيخ صغير": {calories: 134, protein: 15, carbs: 39},
+           "عصير تفاح متوسط": {calories: 533, protein: 14, carbs: 9},
+           "خبز تورتيلا بدون زيت": {calories: 303, protein: 27, carbs: 47},
+           "لازانيا بدون زيت": {calories: 193, protein: 13, carbs: 48},
+           "توست بالجبن متوسط": {calories: 439, protein: 17, carbs: 30},
+           "تيراميسو": {calories: 358, protein: 13, carbs: 13},
+           "توت مع جبن": {calories: 288, protein: 30, carbs: 7},
+           "قهوة تركية بارد": {calories: 294, protein: 6, carbs: 15},
+           "عيش فينو صغير": {calories: 260, protein: 8, carbs: 49},
+           "طاجن بامية صغير": {calories: 442, protein: 27, carbs: 13},
+           "ميني بيتزا متوسط": {calories: 282, protein: 18, carbs: 14},
+           "لقيمات حار": {calories: 163, protein: 3, carbs: 16},
+           "توت صغير": {calories: 202, protein: 15, carbs: 38},
+           "كابتشينو كبير": {calories: 199, protein: 26, carbs: 57},
+           "عيش بلدي حار": {calories: 100, protein: 19, carbs: 45},
+           "كفتة مشوية مع جبن": {calories: 105, protein: 21, carbs: 38},
+           "ميني بيتزا حار": {calories: 573, protein: 15, carbs: 49},
+           "كيكة شوكولاتة": {calories: 550, protein: 26, carbs: 19},
+           "أناناس مع جبن": {calories: 527, protein: 5, carbs: 13},
+           "لبن رايب صغير": {calories: 254, protein: 25, carbs: 54},
+           "عيش فينو بارد": {calories: 442, protein: 5, carbs: 36},
+           "شاورما دجاج مع جبن": {calories: 495, protein: 19, carbs: 56},
+           "ميني بيتزا صغير": {calories: 210, protein: 11, carbs: 23},
+           "لقيمات كبير": {calories: 210, protein: 14, carbs: 42},
+           "مانجو": {calories: 519, protein: 29, carbs: 13},
+           "لبن رايب": {calories: 249, protein: 26, carbs: 55},
+           "خبز تورتيلا بارد": {calories: 534, protein: 21, carbs: 29},
+           "كشري صغير": {calories: 528, protein: 21, carbs: 5},
+           "توست زبدة فول سوداني حار": {calories: 151, protein: 24, carbs: 38},
+           "كنافة كبير": {calories: 407, protein: 9, carbs: 6},
+           "مانجو بارد": {calories: 340, protein: 2, carbs: 52},
+           "عصير برتقال متوسط": {calories: 282, protein: 3, carbs: 53},
+           "عيش فينو متوسط": {calories: 164, protein: 7, carbs: 9},
+           "لازانيا بدون زيت": {calories: 135, protein: 3, carbs: 31},
+           "فلافل بارد": {calories: 593, protein: 26, carbs: 5},
+           "كيكة شوكولاتة": {calories: 243, protein: 30, carbs: 14},
+           "خوخ متوسط": {calories: 542, protein: 27, carbs: 40},
+           "عصير برتقال متوسط": {calories: 500, protein: 23, carbs: 53},
+           "خبز تورتيلا مع جبن": {calories: 563, protein: 9, carbs: 37},
+           "طاجن بامية بدون زيت": {calories: 362, protein: 29, carbs: 9},
+           "فلافل حار": {calories: 289, protein: 25, carbs: 14},
+           "تيراميسو حار": {calories: 450, protein: 26, carbs: 9},
+           "خوخ بدون زيت": {calories: 193, protein: 5, carbs: 26},
+           "نسكافيه كبير": {calories: 373, protein: 13, carbs: 20},
+           "عيش بلدي": {calories: 252, protein: 12, carbs: 39},
+           "كفتة مشوية مع جبن": {calories: 287, protein: 20, carbs: 7},
+           "توست بالجبن كبير": {calories: 408, protein: 20, carbs: 48},
+           "تشيز كيك": {calories: 337, protein: 6, carbs: 50},
+           "موز متوسط": {calories: 311, protein: 15, carbs: 12},
+           "شاي مثلج بارد": {calories: 228, protein: 14, carbs: 13},
+           "كرواسون مع جبن": {calories: 124, protein: 27, carbs: 18},
+           "محشي ورق عنب بدون زيت": {calories: 422, protein: 2, carbs: 39},
+           "ساندويتش تونة صغير": {calories: 158, protein: 7, carbs: 45},
+           "كيكة شوكولاتة": {calories: 431, protein: 5, carbs: 48},
+           "شمام بارد": {calories: 458, protein: 7, carbs: 40},
+           "كابتشينو": {calories: 537, protein: 27, carbs: 28},
+           "فطير مشلتت صغير": {calories: 522, protein: 7, carbs: 34},
+           "مندي دجاج صغير": {calories: 409, protein: 9, carbs: 48},
+           "فلافل مع جبن": {calories: 127, protein: 6, carbs: 40},
+           "تشيز كيك بدون زيت": {calories: 398, protein: 15, carbs: 23},
+           "تفاح بدون زيت": {calories: 300, protein: 22, carbs: 19},
+           "نسكافيه بارد": {calories: 140, protein: 11, carbs: 36},
+           "فطير مشلتت مع جبن": {calories: 171, protein: 24, carbs: 9},
+           "سمك مشوي صغير": {calories: 585, protein: 7, carbs: 11},
+           "توست بالجبن": {calories: 233, protein: 20, carbs: 31},
+           "تشيز كيك كبير": {calories: 469, protein: 20, carbs: 26},
+           "شمام كبير": {calories: 197, protein: 15, carbs: 42},
+           "كابتشينو متوسط": {calories: 222, protein: 26, carbs: 37},
+           "خبز تورتيلا حار": {calories: 550, protein: 29, carbs: 19},
+           "مسقعة بارد": {calories: 445, protein: 22, carbs: 54},
+           "توست زبدة فول سوداني بدون زيت": {calories: 600, protein: 26, carbs: 41},
+           "بسبوسة مع جبن": {calories: 189, protein: 4, carbs: 30},
+           "أناناس": {calories: 445, protein: 15, carbs: 19},
+           "كابتشينو بارد": {calories: 235, protein: 8, carbs: 27},
+           "خبز شوفان مع جبن": {calories: 248, protein: 10, carbs: 60},
+           "مكرونة بالبشاميل صغير": {calories: 169, protein: 14, carbs: 33},
+           "سبرينغ رول حار": {calories: 438, protein: 6, carbs: 45},
+           "بسبوسة": {calories: 325, protein: 30, carbs: 52},
+           "موز بارد": {calories: 591, protein: 2, carbs: 16},
+           "عصير تفاح بارد": {calories: 513, protein: 30, carbs: 35},
+           "عيش توست": {calories: 533, protein: 3, carbs: 60},
+           "أرز بالخضار": {calories: 328, protein: 28, carbs: 14},
+           "فلافل كبير": {calories: 447, protein: 5, carbs: 23},
+           "دونات كبير": {calories: 526, protein: 2, carbs: 7},
+           "مانجو مع جبن": {calories: 486, protein: 4, carbs: 22},
+           "عصير تفاح مع جبن": {calories: 147, protein: 24, carbs: 27},
+           "فطير مشلتت بارد": {calories: 365, protein: 26, carbs: 40},
+           "كفتة مشوية بارد": {calories: 225, protein: 25, carbs: 33},
+           "سبرينغ رول حار": {calories: 297, protein: 8, carbs: 57},
+           "زلابية كبير": {calories: 149, protein: 28, carbs: 13},
+           "بطيخ بدون زيت": {calories: 207, protein: 16, carbs: 46},
+           "عصير رمان بدون زيت": {calories: 196, protein: 7, carbs: 30},
+           "عيش فينو كبير": {calories: 401, protein: 9, carbs: 17},
+           "لازانيا بارد": {calories: 509, protein: 15, carbs: 25},
+           "كرواسون بالزيتون صغير": {calories: 189, protein: 16, carbs: 25},
+           "زلابية متوسط": {calories: 177, protein: 14, carbs: 47},
+           "فراولة متوسط": {calories: 464, protein: 27, carbs: 44},
+           "عصير تفاح متوسط": {calories: 219, protein: 18, carbs: 23},
+           "خبز تورتيلا متوسط": {calories: 348, protein: 18, carbs: 22},
+           "أرز بالخضار صغير": {calories: 486, protein: 12, carbs: 11},
+           "كرواسون بالزيتون": {calories: 484, protein: 12, carbs: 11},
+           "لقيمات كبير": {calories: 305, protein: 16, carbs: 24},
+           "موز": {calories: 330, protein: 15, carbs: 51},
+           "عصير رمان": {calories: 222, protein: 26, carbs: 38},
+           "فطير مشلتت حار": {calories: 139, protein: 20, carbs: 27},
+           "محشي ورق عنب متوسط": {calories: 279, protein: 26, carbs: 23},
+           "ساندويتش تونة": {calories: 429, protein: 19, carbs: 6},
+           "كيكة شوكولاتة بدون زيت": {calories: 303, protein: 21, carbs: 57},
+           "مانجو صغير": {calories: 295, protein: 9, carbs: 21},
+           "عصير برتقال بارد": {calories: 141, protein: 11, carbs: 53},
+           "خبز شوفان": {calories: 113, protein: 16, carbs: 47},
+           "محشي ورق عنب بارد": {calories: 184, protein: 28, carbs: 12},
+           "ميني بيتزا كبير": {calories: 350, protein: 6, carbs: 44},
+           "بسبوسة بدون زيت": {calories: 237, protein: 16, carbs: 23},
+           "كمثرى مع جبن": {calories: 425, protein: 23, carbs: 47},
+           "نسكافيه متوسط": {calories: 370, protein: 18, carbs: 56},
+           "خبز القمح الكامل مع جبن": {calories: 596, protein: 8, carbs: 32},
+           "شاورما دجاج": {calories: 447, protein: 2, carbs: 20},
+           "توست بالجبن مع جبن": {calories: 527, protein: 18, carbs: 47},
+           "كنافة صغير": {calories: 539, protein: 16, carbs: 43},
+           "بطيخ حار": {calories: 567, protein: 6, carbs: 36},
+           "لبن رايب كبير": {calories: 405, protein: 27, carbs: 35},
+           "عيش بلدي بارد": {calories: 477, protein: 30, carbs: 57},
+           "مكرونة بالبشاميل صغير": {calories: 583, protein: 21, carbs: 27},
+           "سبرينغ رول حار": {calories: 112, protein: 28, carbs: 45},
+           "أرز باللبن كبير": {calories: 593, protein: 9, carbs: 14},
+           "كمثرى حار": {calories: 564, protein: 18, carbs: 18},
+           "عصير برتقال بارد": {calories: 435, protein: 28, carbs: 50},
+           "عيش توست صغير": {calories: 102, protein: 28, carbs: 23},
+           "أرز بالخضار بدون زيت": {calories: 183, protein: 13, carbs: 14},
+           "توست بالجبن حار": {calories: 314, protein: 3, carbs: 13},
+           "زلابية حار": {calories: 448, protein: 16, carbs: 41},
+           "خوخ صغير": {calories: 426, protein: 12, carbs: 48},
+           "كابتشينو": {calories: 500, protein: 10, carbs: 16},
+           "خبز تورتيلا حار": {calories: 594, protein: 25, carbs: 9},
+           "محشي ورق عنب حار": {calories: 395, protein: 2, carbs: 34},
+           "توست زبدة فول سوداني كبير": {calories: 466, protein: 25, carbs: 35},
+           "كيكة شوكولاتة": {calories: 375, protein: 17, carbs: 24},
+           "توت حار": {calories: 179, protein: 29, carbs: 14},
+           "قهوة تركية متوسط": {calories: 582, protein: 21, carbs: 9},
+           "عيش بلدي بارد": {calories: 181, protein: 10, carbs: 56},
+           "سمك مشوي حار": {calories: 406, protein: 28, carbs: 48},
+           "ساندويتش تونة صغير": {calories: 498, protein: 9, carbs: 13},
+           "بسبوسة حار": {calories: 140, protein: 10, carbs: 15},
+           "مانجو بدون زيت": {calories: 327, protein: 30, carbs: 19},
+           "عصير تفاح بدون زيت": {calories: 375, protein: 4, carbs: 34},
+           "عيش فينو كبير": {calories: 439, protein: 12, carbs: 20},
+           "سمك مشوي بدون زيت": {calories: 310, protein: 23, carbs: 38},
+           "ميني بيتزا كبير": {calories: 563, protein: 12, carbs: 13},
+           "تيراميسو مع جبن": {calories: 286, protein: 28, carbs: 5},
+           "موز حار": {calories: 582, protein: 27, carbs: 59},
+           "عصير رمان حار": {calories: 465, protein: 25, carbs: 48},
+           "فطير مشلتت بدون زيت": {calories: 423, protein: 4, carbs: 46},
+           "طاجن بامية حار": {calories: 416, protein: 13, carbs: 7},
+           "توست بالجبن": {calories: 182, protein: 10, carbs: 57},
+           "لقيمات بارد": {calories: 289, protein: 11, carbs: 42},
+           "تفاح صغير": {calories: 314, protein: 10, carbs: 45},
+           "عصير برتقال صغير": {calories: 451, protein: 22, carbs: 56},
+           "عيش فينو كبير": {calories: 463, protein: 9, carbs: 42},
+           "أرز بالخضار متوسط": {calories: 111, protein: 2, carbs: 57},
+           "كرواسون بالزيتون مع جبن": {calories: 506, protein: 6, carbs: 33},
+           "تشيز كيك كبير": {calories: 132, protein: 3, carbs: 42},
+           "مانجو بارد": {calories: 141, protein: 9, carbs: 31},
+           "عصير رمان صغير": {calories: 543, protein: 30, carbs: 33},
+           "خبز شوفان": {calories: 171, protein: 5, carbs: 45},
+           "لازانيا بدون زيت": {calories: 266, protein: 13, carbs: 15},
+           "توست زبدة فول سوداني": {calories: 177, protein: 9, carbs: 27},
+           "تشيز كيك متوسط": {calories: 479, protein: 7, carbs: 15},
+           "توت حار": {calories: 146, protein: 27, carbs: 29},
+           "عصير تفاح مع جبن": {calories: 251, protein: 12, carbs: 17},
+           "خبز شوفان": {calories: 176, protein: 28, carbs: 32},
+           "كباب لحم صغير": {calories: 482, protein: 4, carbs: 6},
+           "سبرينغ رول كبير": {calories: 102, protein: 23, carbs: 36},
+           "كنافة حار": {calories: 296, protein: 3, carbs: 43},
+           "عنب مع جبن": {calories: 440, protein: 5, carbs: 9},
+           "عصير تفاح صغير": {calories: 580, protein: 26, carbs: 15},
+           "فطير مشلتت متوسط": {calories: 148, protein: 26, carbs: 33},
+           "سمك مشوي حار": {calories: 394, protein: 12, carbs: 45},
+           "توست بالجبن مع جبن": {calories: 424, protein: 20, carbs: 7},
+           "تيراميسو متوسط": {calories: 402, protein: 24, carbs: 22},
+           "فراولة متوسط": {calories: 397, protein: 20, carbs: 8},
+           "قهوة تركية كبير": {calories: 272, protein: 14, carbs: 48},
+           "عيش توست": {calories: 365, protein: 11, carbs: 27},
+           "أرز بالخضار بارد": {calories: 127, protein: 20, carbs: 38},
+           "توست بالجبن متوسط": {calories: 116, protein: 12, carbs: 42},
+           "تيراميسو حار": {calories: 594, protein: 19, carbs: 44},
+           "بطيخ كبير": {calories: 305, protein: 11, carbs: 20},
+           "شاي مثلج كبير": {calories: 323, protein: 28, carbs: 48},
+           "فطير مشلتت": {calories: 504, protein: 19, carbs: 59},
+           "طاجن بامية مع جبن": {calories: 266, protein: 13, carbs: 20},
+           "فلافل متوسط": {calories: 510, protein: 26, carbs: 38},
+           "أرز باللبن بدون زيت": {calories: 270, protein: 4, carbs: 20},
+           "توت مع جبن": {calories: 529, protein: 8, carbs: 25},
+           "قهوة تركية متوسط": {calories: 299, protein: 7, carbs: 36},
+           "خبز شوفان بارد": {calories: 505, protein: 15, carbs: 43},
+           "لازانيا حار": {calories: 227, protein: 24, carbs: 39},
+           "سبرينغ رول بدون زيت": {calories: 535, protein: 8, carbs: 27},
+           "تيراميسو متوسط": {calories: 421, protein: 20, carbs: 5},
+           "خوخ متوسط": {calories: 328, protein: 26, carbs: 17},
+           "شاي مثلج متوسط": {calories: 171, protein: 14, carbs: 56},
+           "خبز شوفان مع جبن": {calories: 274, protein: 15, carbs: 27},
+           "سمك مشوي حار": {calories: 224, protein: 5, carbs: 6},
+           "كرواسون بالزيتون مع جبن": {calories: 352, protein: 5, carbs: 25},
+           "بسبوسة كبير": {calories: 596, protein: 10, carbs: 25},
+           "فراولة صغير": {calories: 241, protein: 19, carbs: 19},
+           "كابتشينو بدون زيت": {calories: 211, protein: 11, carbs: 38},
+           "خبز القمح الكامل كبير": {calories: 544, protein: 7, carbs: 24},
+           "مسقعة صغير": {calories: 406, protein: 11, carbs: 24},
+           "توست زبدة فول سوداني بارد": {calories: 280, protein: 24, carbs: 55},
+           "كنافة كبير": {calories: 360, protein: 12, carbs: 19},
+           "رمان كبير": {calories: 339, protein: 11, carbs: 60},
+           "عصير تفاح صغير": {calories: 163, protein: 12, carbs: 40},
+           "عيش فينو بارد": {calories: 110, protein: 8, carbs: 39},
+           "كباب لحم بدون زيت": {calories: 241, protein: 6, carbs: 34},
+           "سبرينغ رول متوسط": {calories: 202, protein: 2, carbs: 27},
+           "تشيز كيك بارد": {calories: 501, protein: 23, carbs: 32},
+           "مانجو بدون زيت": {calories: 466, protein: 11, carbs: 56},
+           "عصير تفاح بدون زيت": {calories: 305, protein: 20, carbs: 50},
+           "خبز تورتيلا بدون زيت": {calories: 185, protein: 6, carbs: 20},
+           "برياني لحم كبير": {calories: 256, protein: 6, carbs: 33},
+           "سبرينغ رول": {calories: 499, protein: 29, carbs: 7},
+           "لقيمات متوسط": {calories: 243, protein: 18, carbs: 50},
+           "شمام صغير": {calories: 187, protein: 13, carbs: 26},
+           "قهوة تركية صغير": {calories: 178, protein: 21, carbs: 58},
+           "فطير مشلتت": {calories: 415, protein: 20, carbs: 55},
+           "مسقعة مع جبن": {calories: 119, protein: 7, carbs: 26},
+           "فلافل حار": {calories: 182, protein: 17, carbs: 44},
+           "بسبوسة متوسط": {calories: 262, protein: 25, carbs: 17},
+           "تفاح متوسط": {calories: 406, protein: 10, carbs: 10},
+           "شاي مثلج صغير": {calories: 414, protein: 6, carbs: 5},
+           "خبز تورتيلا بارد": {calories: 548, protein: 30, carbs: 21},
+           "كشري متوسط": {calories: 477, protein: 22, carbs: 18},
+           "توست زبدة فول سوداني بدون زيت": {calories: 290, protein: 24, carbs: 10},
+           "بسبوسة بدون زيت": {calories: 139, protein: 27, carbs: 29},
+           "تفاح مع جبن": {calories: 575, protein: 3, carbs: 9},
+           "شاي مثلج حار": {calories: 313, protein: 22, carbs: 13},
+           "خبز تورتيلا بارد": {calories: 490, protein: 13, carbs: 14},
+           "محشي ورق عنب كبير": {calories: 256, protein: 17, carbs: 42},
+           "ميني بيتزا صغير": {calories: 437, protein: 5, carbs: 51},
+           "كنافة بدون زيت": {calories: 229, protein: 13, carbs: 25},
+           "موز بدون زيت": {calories: 405, protein: 3, carbs: 29},
+           "شاي مثلج بدون زيت": {calories: 575, protein: 28, carbs: 39},
+           "خبز شوفان": {calories: 122, protein: 25, carbs: 16},
+           "طاجن بامية كبير": {calories: 311, protein: 7, carbs: 11},
+           "فلافل حار": {calories: 204, protein: 20, carbs: 59},
+           "دونات مع جبن": {calories: 334, protein: 24, carbs: 50},
+           "موز بدون زيت": {calories: 155, protein: 13, carbs: 45},
+           "عصير تفاح حار": {calories: 388, protein: 2, carbs: 57},
+           "فطير مشلتت حار": {calories: 422, protein: 18, carbs: 14},
+           "لازانيا بدون زيت": {calories: 518, protein: 25, carbs: 60},
+           "ميني بيتزا بدون زيت": {calories: 103, protein: 3, carbs: 58},
+           "تشيز كيك": {calories: 212, protein: 4, carbs: 18},
+           "كمثرى حار": {calories: 431, protein: 29, carbs: 17},
+           "كابتشينو حار": {calories: 222, protein: 9, carbs: 33},
+           "عيش توست": {calories: 403, protein: 5, carbs: 41},
+           "كبدة اسكندراني بدون زيت": {calories: 175, protein: 25, carbs: 27},
+           "ميني بيتزا كبير": {calories: 425, protein: 6, carbs: 60},
+           "تشيز كيك بارد": {calories: 319, protein: 8, carbs: 49},
+           "خوخ مع جبن": {calories: 334, protein: 21, carbs: 60},
+           "لبن رايب متوسط": {calories: 483, protein: 6, carbs: 39},
+           "فطير مشلتت كبير": {calories: 529, protein: 15, carbs: 7},
+           "كباب لحم بارد": {calories: 237, protein: 21, carbs: 28},
+           "فلافل كبير": {calories: 269, protein: 9, carbs: 49},
+           "كنافة بارد": {calories: 329, protein: 25, carbs: 18},
+           "رمان متوسط": {calories: 439, protein: 5, carbs: 22},
+           "عصير برتقال كبير": {calories: 460, protein: 6, carbs: 17},
+           "عيش توست صغير": {calories: 544, protein: 8, carbs: 8},
+           "كباب لحم مع جبن": {calories: 557, protein: 26, carbs: 51},
+           "ساندويتش تونة صغير": {calories: 140, protein: 17, carbs: 12},
+           "تشيز كيك": {calories: 116, protein: 30, carbs: 16},
+           "كمثرى مع جبن": {calories: 598, protein: 25, carbs: 24},
+           "عصير تفاح متوسط": {calories: 325, protein: 18, carbs: 53},
+           "عيش فينو بارد": {calories: 214, protein: 21, carbs: 38},
+           "مكرونة بالبشاميل بدون زيت": {calories: 589, protein: 12, carbs: 31},
+           "سبرينغ رول كبير": {calories: 437, protein: 10, carbs: 46},
+           "كيكة شوكولاتة بارد": {calories: 178, protein: 3, carbs: 57},
+           "بطيخ بارد": {calories: 144, protein: 18, carbs: 50},
+           "لبن رايب بارد": {calories: 280, protein: 30, carbs: 12},
+           "خبز القمح الكامل بدون زيت": {calories: 468, protein: 21, carbs: 27},
+           "أرز بالخضار": {calories: 525, protein: 26, carbs: 21},
+           "كرواسون بالزيتون مع جبن": {calories: 209, protein: 24, carbs: 37},
+           "دونات بدون زيت": {calories: 159, protein: 20, carbs: 10},
+           "توت بدون زيت": {calories: 347, protein: 22, carbs: 8},
+           "عصير تفاح بدون زيت": {calories: 456, protein: 5, carbs: 51},
+           "خبز شوفان متوسط": {calories: 194, protein: 5, carbs: 43},
+           "محشي ورق عنب صغير": {calories: 496, protein: 30, carbs: 35},
+           "سبرينغ رول بدون زيت": {calories: 571, protein: 19, carbs: 8},
+           "دونات بارد": {calories: 478, protein: 30, carbs: 10},
+           "شمام": {calories: 336, protein: 28, carbs: 24},
+           "عصير رمان بارد": {calories: 439, protein: 24, carbs: 50},
+           "كرواسون متوسط": {calories: 557, protein: 25, carbs: 15},
+           "كشري كبير": {calories: 557, protein: 18, carbs: 48},
+           "كرواسون بالزيتون صغير": {calories: 529, protein: 30, carbs: 35},
+           "دونات بارد": {calories: 178, protein: 4, carbs: 8},
+           "عنب صغير": {calories: 496, protein: 30, carbs: 11},
+           "عصير رمان متوسط": {calories: 370, protein: 3, carbs: 47},
+           "خبز شوفان": {calories: 233, protein: 4, carbs: 11},
+           "كبدة اسكندراني كبير": {calories: 404, protein: 11, carbs: 57},
+           "فلافل كبير": {calories: 570, protein: 9, carbs: 17},
+           "دونات بدون زيت": {calories: 174, protein: 25, carbs: 59},
+           "عنب مع جبن": {calories: 347, protein: 22, carbs: 15},
+           "عصير برتقال صغير": {calories: 324, protein: 5, carbs: 8},
+           "عيش توست متوسط": {calories: 590, protein: 30, carbs: 58},
+           "مسقعة صغير": {calories: 557, protein: 18, carbs: 54},
+           "ساندويتش تونة مع جبن": {calories: 200, protein: 30, carbs: 20},
+           "زلابية كبير": {calories: 193, protein: 11, carbs: 49},
+           "رمان مع جبن": {calories: 288, protein: 22, carbs: 22},
+           "لبن رايب متوسط": {calories: 546, protein: 9, carbs: 48},
+           "خبز القمح الكامل بدون زيت": {calories: 351, protein: 20, carbs: 17},
+           "سمك مشوي مع جبن": {calories: 413, protein: 26, carbs: 31},
+           "فلافل بارد": {calories: 117, protein: 18, carbs: 14},
+           "دونات بارد": {calories: 416, protein: 17, carbs: 50},
+           "رمان صغير": {calories: 221, protein: 26, carbs: 14},
+           "شاي مثلج كبير": {calories: 396, protein: 4, carbs: 56},
+           "عيش فينو بارد": {calories: 377, protein: 3, carbs: 35},
+           "مكرونة بالبشاميل بدون زيت": {calories: 147, protein: 19, carbs: 31},
+           "كرواسون بالزيتون بدون زيت": {calories: 234, protein: 10, carbs: 12},
+           "لقيمات كبير": {calories: 587, protein: 8, carbs: 8},
+           "رمان حار": {calories: 335, protein: 16, carbs: 56},
+           "عصير رمان بارد": {calories: 295, protein: 25, carbs: 57},
+           "عيش بلدي كبير": {calories: 433, protein: 7, carbs: 52},
+           "طاجن بامية صغير": {calories: 234, protein: 29, carbs: 51},
+           "كرواسون بالزيتون بدون زيت": {calories: 277, protein: 17, carbs: 28},
+           "زلابية بدون زيت": {calories: 320, protein: 17, carbs: 18},
+           "بطيخ حار": {calories: 558, protein: 10, carbs: 41},
+           "عصير برتقال صغير": {calories: 131, protein: 7, carbs: 40},
+           "كرواسون بارد": {calories: 321, protein: 3, carbs: 5},
+           "كشري بدون زيت": {calories: 269, protein: 6, carbs: 55},
+           "توست بالجبن بدون زيت": {calories: 306, protein: 11, carbs: 10},
+           "تيراميسو بدون زيت": {calories: 211, protein: 13, carbs: 33},
+           "عنب": {calories: 446, protein: 17, carbs: 55},
+           "نسكافيه صغير": {calories: 467, protein: 12, carbs: 5},
+           "خبز القمح الكامل": {calories: 106, protein: 11, carbs: 13},
+           "محشي ورق عنب مع جبن": {calories: 553, protein: 13, carbs: 51},
+           "سبرينغ رول صغير": {calories: 367, protein: 8, carbs: 51},
+           "تيراميسو بدون زيت": {calories: 478, protein: 9, carbs: 57},
+           "مانجو كبير": {calories: 369, protein: 4, carbs: 39},
+           "كابتشينو حار": {calories: 381, protein: 5, carbs: 60},
+           "عيش فينو مع جبن": {calories: 300, protein: 2, carbs: 13},
+           "شاورما دجاج كبير": {calories: 286, protein: 19, carbs: 46},
+           "ساندويتش تونة صغير": {calories: 471, protein: 30, carbs: 16},
+           "تيراميسو متوسط": {calories: 189, protein: 2, carbs: 18},
+           "موز كبير": {calories: 534, protein: 16, carbs: 60},
+           "كابتشينو بارد": {calories: 138, protein: 11, carbs: 56},
+           "خبز القمح الكامل حار": {calories: 480, protein: 13, carbs: 59},
+           "أرز بالخضار": {calories: 338, protein: 25, carbs: 21},
+           "توست زبدة فول سوداني حار": {calories: 541, protein: 21, carbs: 36},
+           "تيراميسو بارد": {calories: 400, protein: 19, carbs: 57},
+           "تفاح كبير": {calories: 383, protein: 3, carbs: 52},
+           "شاي مثلج متوسط": {calories: 518, protein: 9, carbs: 26},
+           "عيش فينو بدون زيت": {calories: 387, protein: 26, carbs: 37},
+           "أرز بالخضار حار": {calories: 101, protein: 18, carbs: 60},
+           "سبرينغ رول بدون زيت": {calories: 527, protein: 22, carbs: 5},
+           "تشيز كيك كبير": {calories: 518, protein: 28, carbs: 45},
+           "توت مع جبن": {calories: 498, protein: 7, carbs: 43},
+           "نسكافيه حار": {calories: 490, protein: 17, carbs: 19},
+           "عيش توست مع جبن": {calories: 214, protein: 4, carbs: 55},
+           "طاجن بامية حار": {calories: 578, protein: 25, carbs: 26},
+           "توست بالجبن بدون زيت": {calories: 201, protein: 28, carbs: 31},
+           "كنافة صغير": {calories: 259, protein: 12, carbs: 49},
+           "كمثرى كبير": {calories: 495, protein: 24, carbs: 46},
+           "عصير تفاح متوسط": {calories: 592, protein: 18, carbs: 23},
+           "عيش بلدي متوسط": {calories: 277, protein: 12, carbs: 9},
+           "لازانيا بارد": {calories: 589, protein: 8, carbs: 41},
+           "كرواسون بالزيتون مع جبن": {calories: 325, protein: 12, carbs: 30},
+           "بسبوسة حار": {calories: 564, protein: 9, carbs: 13},
+           "خوخ": {calories: 259, protein: 5, carbs: 37},
+           "عصير تفاح بدون زيت": {calories: 413, protein: 4, carbs: 57},
+           "كرواسون حار": {calories: 475, protein: 25, carbs: 55},
+           "كفتة مشوية": {calories: 437, protein: 9, carbs: 7},
+           "فلافل حار": {calories: 544, protein: 8, carbs: 14},
+           "زلابية بارد": {calories: 122, protein: 5, carbs: 50},
+           "كمثرى": {calories: 407, protein: 2, carbs: 15},
+           "شاي مثلج حار": {calories: 202, protein: 10, carbs: 17},
+           "خبز تورتيلا بدون زيت": {calories: 168, protein: 13, carbs: 52},
+           "كفتة مشوية بدون زيت": {calories: 572, protein: 10, carbs: 35},
+           "توست زبدة فول سوداني حار": {calories: 511, protein: 10, carbs: 20},
+           "لقيمات كبير": {calories: 526, protein: 14, carbs: 14},
+           "تفاح كبير": {calories: 102, protein: 11, carbs: 11},
+           "نسكافيه كبير": {calories: 143, protein: 27, carbs: 6},
+           "خبز شوفان كبير": {calories: 519, protein: 27, carbs: 52},
+           "مسقعة بدون زيت": {calories: 550, protein: 3, carbs: 37},
+           "فلافل صغير": {calories: 361, protein: 28, carbs: 22},
+           "بسبوسة": {calories: 433, protein: 15, carbs: 10},
+           "أناناس حار": {calories: 233, protein: 7, carbs: 24},
+           "نسكافيه مع جبن": {calories: 479, protein: 18, carbs: 28},
+           "عيش فينو متوسط": {calories: 161, protein: 28, carbs: 52},
+           "سمك مشوي بارد": {calories: 198, protein: 7, carbs: 44},
+           "سبرينغ رول حار": {calories: 132, protein: 14, carbs: 23},
+           "كنافة صغير": {calories: 492, protein: 30, carbs: 38},
+           "خوخ مع جبن": {calories: 135, protein: 29, carbs: 10},
+           "نسكافيه بدون زيت": {calories: 430, protein: 10, carbs: 17},
+           "عيش توست حار": {calories: 211, protein: 18, carbs: 54},
+           "محشي ورق عنب متوسط": {calories: 489, protein: 11, carbs: 24},
+           "سبرينغ رول بارد": {calories: 572, protein: 9, carbs: 12},
+           "تيراميسو بارد": {calories: 529, protein: 21, carbs: 44},
+           "رمان كبير": {calories: 559, protein: 25, carbs: 41},
+           "لبن رايب صغير": {calories: 200, protein: 18, carbs: 44},
+           "عيش فينو": {calories: 254, protein: 5, carbs: 18},
+           "فتة لحم بارد": {calories: 286, protein: 25, carbs: 52},
+           "توست بالجبن كبير": {calories: 307, protein: 11, carbs: 54},
+           "بسبوسة بارد": {calories: 335, protein: 19, carbs: 56},
+           "توت بدون زيت": {calories: 219, protein: 19, carbs: 32},
+           "شاي مثلج بدون زيت": {calories: 169, protein: 8, carbs: 50},
+           "خبز تورتيلا متوسط": {calories: 195, protein: 15, carbs: 27},
+           "مسقعة بارد": {calories: 410, protein: 12, carbs: 45},
+           "توست زبدة فول سوداني كبير": {calories: 131, protein: 10, carbs: 28},
+           "لقيمات بارد": {calories: 303, protein: 9, carbs: 46},
+           "أناناس صغير": {calories: 262, protein: 24, carbs: 49},
+           "لبن رايب متوسط": {calories: 512, protein: 16, carbs: 50},
+           "عيش بلدي بدون زيت": {calories: 551, protein: 18, carbs: 55},
+           "محشي ورق عنب بارد": {calories: 280, protein: 5, carbs: 38},
+           "فلافل حار": {calories: 231, protein: 30, carbs: 31},
+           "كيكة شوكولاتة حار": {calories: 427, protein: 2, carbs: 16},
+           "عنب بارد": {calories: 600, protein: 12, carbs: 39},
+           "شاي مثلج حار": {calories: 283, protein: 13, carbs: 48},
+           "عيش فينو": {calories: 545, protein: 21, carbs: 41},
+           "طاجن بامية صغير": {calories: 263, protein: 14, carbs: 22},
+           "كرواسون بالزيتون بارد": {calories: 171, protein: 3, carbs: 8},
+           "تشيز كيك بدون زيت": {calories: 565, protein: 23, carbs: 16},
+           "رمان مع جبن": {calories: 116, protein: 30, carbs: 5},
+           "عصير رمان كبير": {calories: 558, protein: 12, carbs: 15},
+           "خبز تورتيلا حار": {calories: 161, protein: 9, carbs: 17},
+           "كباب لحم صغير": {calories: 229, protein: 27, carbs: 22},
+           "ميني بيتزا متوسط": {calories: 257, protein: 5, carbs: 28},
+           "كيكة شوكولاتة بدون زيت": {calories: 258, protein: 20, carbs: 43},
+           "توت كبير": {calories: 274, protein: 23, carbs: 18},
+           "قهوة تركية صغير": {calories: 269, protein: 20, carbs: 56},
+           "عيش فينو بدون زيت": {calories: 366, protein: 26, carbs: 16},
+           "كباب لحم حار": {calories: 369, protein: 9, carbs: 11},
+           "توست زبدة فول سوداني حار": {calories: 300, protein: 20, carbs: 15},
+           "بسبوسة كبير": {calories: 600, protein: 24, carbs: 38},
+           "مانجو بارد": {calories: 534, protein: 2, carbs: 49},
+           "عصير تفاح بارد": {calories: 397, protein: 21, carbs: 31},
+           "عيش فينو كبير": {calories: 245, protein: 10, carbs: 15},
+           "طاجن بامية متوسط": {calories: 537, protein: 15, carbs: 7},
+           "ساندويتش تونة": {calories: 567, protein: 16, carbs: 58},
+           "تيراميسو مع جبن": {calories: 195, protein: 25, carbs: 36},
+           "مانجو بارد": {calories: 169, protein: 19, carbs: 31},
+           "شاي مثلج متوسط": {calories: 318, protein: 14, carbs: 15},
+           "عيش فينو حار": {calories: 422, protein: 24, carbs: 47},
+           "مندي دجاج كبير": {calories: 340, protein: 21, carbs: 59},
+           "كرواسون بالزيتون صغير": {calories: 124, protein: 10, carbs: 19},
+           "تشيز كيك بارد": {calories: 234, protein: 18, carbs: 35},
+           "توت بدون زيت": {calories: 567, protein: 29, carbs: 11},
+           "نسكافيه متوسط": {calories: 593, protein: 10, carbs: 38},
+           "خبز القمح الكامل بدون زيت": {calories: 362, protein: 25, carbs: 35},
+           "سمك مشوي متوسط": {calories: 580, protein: 30, carbs: 39},
+           "توست زبدة فول سوداني بدون زيت": {calories: 455, protein: 16, carbs: 31},
+           "تيراميسو بارد": {calories: 550, protein: 15, carbs: 28},
+           "مانجو": {calories: 177, protein: 16, carbs: 44},
+           "عصير تفاح متوسط": {calories: 358, protein: 8, carbs: 33},
+           "فطير مشلتت بارد": {calories: 411, protein: 26, carbs: 47},
+           "لازانيا بارد": {calories: 432, protein: 13, carbs: 40},
+           "كرواسون بالزيتون متوسط": {calories: 238, protein: 9, carbs: 29},
+           "لقيمات صغير": {calories: 318, protein: 3, carbs: 29},
+           "أناناس حار": {calories: 210, protein: 11, carbs: 8},
+           "عصير رمان بارد": {calories: 555, protein: 23, carbs: 27},
+           "خبز القمح الكامل صغير": {calories: 587, protein: 10, carbs: 45},
+           "مسقعة حار": {calories: 429, protein: 3, carbs: 39},
+           "ميني بيتزا بارد": {calories: 403, protein: 21, carbs: 46},
+           "كنافة حار": {calories: 156, protein: 14, carbs: 52},
+           "بطيخ بارد": {calories: 543, protein: 15, carbs: 47},
+           "عصير رمان حار": {calories: 503, protein: 14, carbs: 52},
+           "عيش فينو حار": {calories: 108, protein: 29, carbs: 56},
+           "مسقعة حار": {calories: 457, protein: 8, carbs: 33},
+           "ميني بيتزا بدون زيت": {calories: 506, protein: 18, carbs: 9},
+           "زلابية حار": {calories: 567, protein: 22, carbs: 11},
+           "مانجو مع جبن": {calories: 239, protein: 18, carbs: 36},
+           "عصير برتقال كبير": {calories: 540, protein: 3, carbs: 5},
+           "عيش بلدي حار": {calories: 396, protein: 17, carbs: 52},
+           "لازانيا صغير": {calories: 466, protein: 10, carbs: 44},
+           "ساندويتش تونة": {calories: 294, protein: 20, carbs: 36},
+           "لقيمات بارد": {calories: 598, protein: 11, carbs: 49},
+           "مانجو كبير": {calories: 215, protein: 26, carbs: 43},
+           "عصير رمان صغير": {calories: 145, protein: 22, carbs: 15},
+           "فطير مشلتت حار": {calories: 290, protein: 4, carbs: 37},
+           "محشي ورق عنب بارد": {calories: 304, protein: 19, carbs: 26},
+           "توست زبدة فول سوداني": {calories: 292, protein: 10, carbs: 50},
+           "بسبوسة بارد": {calories: 201, protein: 10, carbs: 8},
+           "فراولة بدون زيت": {calories: 302, protein: 17, carbs: 33},
+           "كابتشينو صغير": {calories: 156, protein: 24, carbs: 11},
+           "عيش فينو بارد": {calories: 531, protein: 29, carbs: 52},
+           "كفتة مشوية صغير": {calories: 319, protein: 10, carbs: 7},
+           "ساندويتش تونة بدون زيت": {calories: 412, protein: 5, carbs: 46},
+           "بسبوسة متوسط": {calories: 446, protein: 18, carbs: 12},
+           "خوخ حار": {calories: 495, protein: 7, carbs: 44},
+           "قهوة تركية بارد": {calories: 141, protein: 9, carbs: 25},
+           "خبز القمح الكامل متوسط": {calories: 596, protein: 23, carbs: 57},
+           "فتة لحم متوسط": {calories: 315, protein: 20, carbs: 40},
+           "ساندويتش تونة بارد": {calories: 470, protein: 24, carbs: 36},
+           "أرز باللبن": {calories: 112, protein: 15, carbs: 45},
+           "موز كبير": {calories: 515, protein: 4, carbs: 14},
+           "كابتشينو حار": {calories: 145, protein: 29, carbs: 15},
+           "خبز تورتيلا بدون زيت": {calories: 448, protein: 13, carbs: 26},
+           "فتة لحم متوسط": {calories: 262, protein: 9, carbs: 43},
+           "كرواسون بالزيتون بدون زيت": {calories: 572, protein: 2, carbs: 40},
+           "زلابية مع جبن": {calories: 293, protein: 17, carbs: 48},
+           "فراولة مع جبن": {calories: 278, protein: 6, carbs: 18},
+           "عصير رمان صغير": {calories: 148, protein: 30, carbs: 6},
+           "خبز تورتيلا صغير": {calories: 518, protein: 18, carbs: 58},
+           "سمك مشوي متوسط": {calories: 419, protein: 13, carbs: 17},
+           "توست زبدة فول سوداني": {calories: 324, protein: 19, carbs: 34},
+           "تشيز كيك متوسط": {calories: 440, protein: 15, carbs: 10},
+           "أناناس مع جبن": {calories: 556, protein: 11, carbs: 35},
+           "عصير رمان متوسط": {calories: 344, protein: 18, carbs: 12},
+           "فطير مشلتت مع جبن": {calories: 402, protein: 14, carbs: 54},
+           "كبدة اسكندراني كبير": {calories: 264, protein: 16, carbs: 15},
+           "كرواسون بالزيتون كبير": {calories: 188, protein: 21, carbs: 44},
+           "تيراميسو متوسط": {calories: 463, protein: 16, carbs: 9},
+           "رمان مع جبن": {calories: 364, protein: 26, carbs: 51},
+           "شاي مثلج بدون زيت": {calories: 564, protein: 7, carbs: 11},
+           "كرواسون صغير": {calories: 538, protein: 20, carbs: 55},
+           "محشي ورق عنب بدون زيت": {calories: 325, protein: 17, carbs: 40},
+           "ميني بيتزا متوسط": {calories: 363, protein: 14, carbs: 6},
+           "دونات بدون زيت": {calories: 225, protein: 21, carbs: 38},
+           "فراولة حار": {calories: 238, protein: 27, carbs: 28},
+           "عصير تفاح حار": {calories: 390, protein: 9, carbs: 20},
+           "عيش بلدي": {calories: 494, protein: 22, carbs: 50},
+           "محشي ورق عنب مع جبن": {calories: 405, protein: 11, carbs: 58},
+           "ميني بيتزا حار": {calories: 264, protein: 29, carbs: 50},
+           "تيراميسو متوسط": {calories: 179, protein: 6, carbs: 51},
+           "تفاح كبير": {calories: 148, protein: 27, carbs: 24},
+           "عصير برتقال بدون زيت": {calories: 560, protein: 29, carbs: 49},
+           "عيش توست متوسط": {calories: 279, protein: 10, carbs: 50},
+           "كشري بدون زيت": {calories: 528, protein: 8, carbs: 15},
+           "سبرينغ رول": {calories: 564, protein: 27, carbs: 56},
+           "كيكة شوكولاتة متوسط": {calories: 366, protein: 28, carbs: 26},
+           "رمان": {calories: 266, protein: 14, carbs: 41},
+           "نسكافيه كبير": {calories: 442, protein: 16, carbs: 6},
+           "عيش بلدي مع جبن": {calories: 226, protein: 4, carbs: 48},
+           "طاجن بامية بارد": {calories: 154, protein: 18, carbs: 33},
+           "ميني بيتزا بارد": {calories: 464, protein: 15, carbs: 57},
+           "بسبوسة بدون زيت": {calories: 497, protein: 16, carbs: 56},
+           "كمثرى مع جبن": {calories: 336, protein: 20, carbs: 10},
+           "عصير رمان مع جبن": {calories: 202, protein: 16, carbs: 44},
+           "كرواسون كبير": {calories: 523, protein: 7, carbs: 13},
+           "كباب لحم بارد": {calories: 535, protein: 25, carbs: 17},
+           "توست زبدة فول سوداني بدون زيت": {calories: 223, protein: 16, carbs: 55},
+           "لقيمات صغير": {calories: 561, protein: 20, carbs: 7},
+           "مانجو كبير": {calories: 525, protein: 2, carbs: 51},
+           "لبن رايب متوسط": {calories: 128, protein: 27, carbs: 49},
+           "خبز القمح الكامل مع جبن": {calories: 532, protein: 22, carbs: 55},
+           "مكرونة بالبشاميل صغير": {calories: 391, protein: 28, carbs: 52},
+           "ساندويتش تونة صغير": {calories: 273, protein: 14, carbs: 26},
+           "زلابية صغير": {calories: 220, protein: 4, carbs: 17},
+           "تفاح مع جبن": {calories: 172, protein: 20, carbs: 15},
+           "عصير برتقال متوسط": {calories: 237, protein: 14, carbs: 37},
+           "خبز القمح الكامل كبير": {calories: 392, protein: 21, carbs: 29},
+           "لازانيا بدون زيت": {calories: 583, protein: 19, carbs: 36},
+           "ميني بيتزا مع جبن": {calories: 507, protein: 25, carbs: 8},
+           "دونات صغير": {calories: 144, protein: 7, carbs: 36},
+           "موز كبير": {calories: 105, protein: 24, carbs: 54},
+           "شاي مثلج متوسط": {calories: 426, protein: 4, carbs: 33},
+           "خبز القمح الكامل كبير": {calories: 230, protein: 22, carbs: 6},
+           "مسقعة متوسط": {calories: 561, protein: 3, carbs: 31},
+           "توست بالجبن": {calories: 473, protein: 27, carbs: 35},
+           "كنافة بدون زيت": {calories: 280, protein: 30, carbs: 24},
+           "كمثرى حار": {calories: 156, protein: 30, carbs: 34},
+           "قهوة تركية": {calories: 548, protein: 16, carbs: 49},
+           "عيش فينو صغير": {calories: 391, protein: 22, carbs: 36},
+           "كبدة اسكندراني": {calories: 260, protein: 21, carbs: 20},
+           "كرواسون بالزيتون": {calories: 456, protein: 8, carbs: 9},
+           "كنافة صغير": {calories: 362, protein: 15, carbs: 30},
+           "عنب حار": {calories: 513, protein: 5, carbs: 24},
+           "لبن رايب حار": {calories: 524, protein: 11, carbs: 39},
+           "كرواسون حار": {calories: 296, protein: 30, carbs: 16},
+           "كباب لحم كبير": {calories: 398, protein: 2, carbs: 48},
+           "فلافل": {calories: 363, protein: 27, carbs: 18},
+           "تيراميسو بارد": {calories: 254, protein: 26, carbs: 6},
+           "مانجو": {calories: 291, protein: 18, carbs: 32},
+           "عصير تفاح مع جبن": {calories: 369, protein: 12, carbs: 17},
+           "خبز شوفان متوسط": {calories: 543, protein: 15, carbs: 5},
+           "محشي ورق عنب متوسط": {calories: 544, protein: 24, carbs: 15},
+           "ساندويتش تونة كبير": {calories: 139, protein: 18, carbs: 53},
+           "أرز باللبن صغير": {calories: 591, protein: 15, carbs: 12},
+           "تفاح بدون زيت": {calories: 107, protein: 15, carbs: 11}
+        },
+        "الحلويات": {
+            "كنافة": {calories: 350, protein: 6, carbs: 50},
+            "بقلاوة": {calories: 320, protein: 5, carbs: 45},
+            "قطايف": {calories: 280, protein: 4, carbs: 40},
+            "أم علي": {calories: 250, protein: 5, carbs: 35},
+            "مهلبية": {calories: 180, protein: 4, carbs: 30},
+            "أرز باللبن": {calories: 200, protein: 5, carbs: 35},
+            "بسبوسة": {calories: 300, protein: 5, carbs: 45},
+            "لقيمات": {calories: 250, protein: 3, carbs: 40},
+            "بلح الشام": {calories: 280, protein: 4, carbs: 45},
+            "غريبة": {calories: 350, protein: 4, carbs: 50},
+            "تشيز كيك": {calories: 320, protein: 6, carbs: 40},
+            "كيك الشوكولاتة": {calories: 340, protein: 5, carbs: 45},
+            "دونات": {calories: 350, protein: 4, carbs: 50},
+            "وافل": {calories: 320, protein: 6, carbs: 45},
+            "بان كيك": {calories: 340, protein: 7, carbs: 50},
+            "آيس كريم": {calories: 210, protein: 3, carbs: 30},
+            "مهلبية": {calories: 180, protein: 4, carbs: 30},
+            "كاسترد": {calories: 200, protein: 5, carbs: 35},
+            "موس الشوكولاتة": {calories: 280, protein: 4, carbs: 40},
+            "سحلب": {calories: 220, protein: 4, carbs: 35}
+        },
+    };
+
+    // Quantity types
+    const quantityTypes = {
+        "tablespoon": 15,    // 15 جرام لكل ملعقة
+        "gram": 1,           // 1 جرام لكل جرام
+        "serving": 100,      // 100 جرام لكل حصة
+        "cup": 240,          // 240 جرام لكل كوب
+        "other": 1           // أخرى (يتم إدخال الكمية يدويًا بالجرام)
+    };
+
+    // State management
+    let state = {
+        dailyGoal: 0,
+        consumedCalories: 0,
+        remainingCalories: 0,
+        proteinGoal: 0,
+        consumedProtein: 0,
+        carbsGoal: 0,
+        consumedCarbs: 0,
+        customFoods: {},
+        foodHistory: [],
+        userNeeds: null
+    };
+
+    // DOM Elements
+    const elements = {
+        foodCategory: document.getElementById('foodCategory'),
+        foodItem: document.getElementById('foodItem'),
+        quantityType: document.getElementById('quantityType'),
+        quantity: document.getElementById('quantity'),
+        caloriesAmount: document.getElementById('caloriesAmount'),
+        proteinAmount: document.getElementById('proteinAmount'),
+        carbsAmount: document.getElementById('carbsAmount'),
+        addFood: document.getElementById('addFood'),
+        goalType: document.getElementById('goalType'),
+        customGoal: document.getElementById('customGoal'),
+        dailyGoal: document.getElementById('dailyGoal'),
+        consumedCalories: document.getElementById('consumedCalories'),
+        remainingCalories: document.getElementById('remainingCalories'),
+        caloriesBar: document.getElementById('caloriesBar'),
+        proteinBar: document.getElementById('proteinBar'),
+        carbsBar: document.getElementById('carbsBar'),
+        caloriesProgressText: document.getElementById('caloriesProgressText'),
+        proteinProgressText: document.getElementById('proteinProgressText'),
+        carbsProgressText: document.getElementById('carbsProgressText'),
+        statusMessage: document.getElementById('statusMessage'),
+        resetDay: document.getElementById('resetDay'),
+        customFoodEntry: document.getElementById('customFoodEntry'),
+        customFoodName: document.getElementById('customFoodName'),
+        customCalories: document.getElementById('customCalories'),
+        customProtein: document.getElementById('customProtein'),
+        customCarbs: document.getElementById('customCarbs'),
+        searchFood: document.getElementById('searchFood'),
+        searchResults: document.getElementById('searchResults'),
+        loginForm: document.getElementById('loginForm'),
+        createAccountForm: document.getElementById('createAccountForm'),
+        resetPasswordForm: document.getElementById('resetPasswordForm'),
+        showCreateAccount: document.getElementById('showCreateAccount'),
+        showLogin: document.getElementById('showLogin'),
+        showLoginFromReset: document.getElementById('showLoginFromReset'),
+        forgotPassword: document.getElementById('forgotPassword'),
+        caloriesNeedsForm: document.getElementById('caloriesNeedsForm'),
+        gender: document.getElementById('gender'),
+        ageNeeds: document.getElementById('ageNeeds'),
+        weightNeeds: document.getElementById('weightNeeds'),
+        heightNeeds: document.getElementById('heightNeeds'),
+        activityLevel: document.getElementById('activityLevel'),
+        caloriesNeedsResult: document.getElementById('caloriesNeedsResult'),
+        logoutButton: document.getElementById('logoutButton'),
+        foodHistory: document.getElementById('foodHistory'),
+        clearHistory: document.getElementById('clearHistory'),
+        profileInfo: document.getElementById('profileInfo'),
+        tabButtons: document.querySelectorAll('.tab-button'),
+        tabContents: document.querySelectorAll('.tab-content')
+    };
+
+    // Initialize food categories
+    function initializeFoodCategories() {
+        for (const category in foodCategories) {
+            const option = document.createElement('option');
+            option.value = category;
+            option.textContent = category;
+            elements.foodCategory.appendChild(option);
+        }
+    }
+
+    // Update food items based on selected category
+    function updateFoodItems(category) {
+        elements.foodItem.innerHTML = '<option value="">اختر الطعام</option>';
+        if (category === 'custom') {
+            elements.customFoodEntry.classList.add('active');
+            elements.foodItem.classList.add('hidden');
+        } else {
+            elements.customFoodEntry.classList.remove('active');
+            elements.foodItem.classList.remove('hidden');
+            if (category && foodCategories[category]) {
+                const foods = foodCategories[category];
+                for (const food in foods) {
+                    const option = document.createElement('option');
+                    option.value = food;
+                    option.textContent = food;
+                    elements.foodItem.appendChild(option);
+                }
+            }
+        }
+    }
+
+    // Search food items with better performance
+    function searchFoodItems(query) {
+        const results = [];
+        if (!query || query.length < 2) return results;
+        
+        const queryLower = query.toLowerCase();
+        for (const category in foodCategories) {
+            for (const food in foodCategories[category]) {
+                if (food.toLowerCase().includes(queryLower)) {
+                    results.push({ 
+                        category, 
+                        food,
+                        calories: foodCategories[category][food].calories,
+                        protein: foodCategories[category][food].protein,
+                        carbs: foodCategories[category][food].carbs
+                    });
+                }
+            }
+        }
+        return results;
+    }
+
+    // Handle search input with debounce
+    let searchTimeout;
+    elements.searchFood.addEventListener('input', () => {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+            const query = elements.searchFood.value.trim();
+            const results = searchFoodItems(query);
+            displaySearchResults(results);
+        }, 300);
+    });
+
+    // Display search results
+    function displaySearchResults(results) {
+        elements.searchResults.innerHTML = '';
+        
+        if (results.length === 0) {
+            elements.searchResults.classList.remove('visible');
+            return;
+        }
+        
+        results.slice(0, 10).forEach(result => {
+            const item = document.createElement('div');
+            item.className = 'search-item';
+            item.innerHTML = `
+                <div>${result.food}</div>
+                <div class="nutrient-info">
+                    <span>${result.calories} سعرة</span>
+                    <span>${result.protein} جرام بروتين</span>
+                    <span>${result.carbs} جرام كارب</span>
+                </div>
+                <div class="food-category">${result.category}</div>
+            `;
+            item.addEventListener('click', () => {
+                selectFoodFromSearch(result.category, result.food);
+            });
+            elements.searchResults.appendChild(item);
+        });
+        
+        elements.searchResults.classList.add('visible');
+    }
+
+    // Select food from search results
+    function selectFoodFromSearch(category, food) {
+        elements.foodCategory.value = category;
+        updateFoodItems(category);
+        elements.foodItem.value = food;
+        elements.searchFood.value = '';
+        elements.searchResults.classList.remove('visible');
+        calculateNutrients();
+    }
+
+    // Hide search results when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!elements.searchFood.contains(e.target) && !elements.searchResults.contains(e.target)) {
+            elements.searchResults.classList.remove('visible');
+        }
+    });
+
+    // Calculate grams based on quantity type
+    function getGramsFromQuantity(quantity, quantityType) {
+        return quantity * (quantityTypes[quantityType] || 1);
+    }
+
+    // Calculate calories, protein and carbs
+    function calculateNutrients() {
+        const category = elements.foodCategory.value;
+        const quantity = parseFloat(elements.quantity.value) || 0;
+        const quantityType = elements.quantityType.value;
+        let calories = 0;
+        let protein = 0;
+        let carbs = 0;
+        
+        if (category === 'custom') {
+            const customCalories = parseFloat(elements.customCalories.value) || 0;
+            const customProtein = parseFloat(elements.customProtein.value) || 0;
+            const customCarbs = parseFloat(elements.customCarbs.value) || 0;
+            const grams = getGramsFromQuantity(quantity, quantityType);
+            calories = (customCalories * grams) / 100;
+            protein = (customProtein * grams) / 100;
+            carbs = (customCarbs * grams) / 100;
+        } else {
+            const food = elements.foodItem.value;
+            if (category && food) {
+                const foodData = foodCategories[category][food];
+                const grams = getGramsFromQuantity(quantity, quantityType);
+                calories = (foodData.calories * grams) / 100;
+                protein = (foodData.protein * grams) / 100;
+                carbs = (foodData.carbs * grams) / 100;
+            }
+        }
+        
+        elements.caloriesAmount.textContent = Math.round(calories);
+        elements.proteinAmount.textContent = Math.round(protein);
+        elements.carbsAmount.textContent = Math.round(carbs);
+        return { calories, protein, carbs };
+    }
+
+    // Update progress
+    function updateProgress() {
+        elements.dailyGoal.textContent = `${state.dailyGoal} سعرة`;
+        elements.consumedCalories.textContent = `${state.consumedCalories} سعرة`;
+        elements.remainingCalories.textContent = `${state.remainingCalories} سعرة`;
+        
+        // Update calories progress
+        const caloriesProgress = (state.dailyGoal > 0) ? (state.consumedCalories / state.dailyGoal) * 100 : 0;
+        elements.caloriesBar.style.width = `${Math.min(caloriesProgress, 100)}%`;
+        elements.caloriesProgressText.textContent = `${Math.round(caloriesProgress)}%`;
+        
+        // Update protein progress
+        const proteinProgress = (state.proteinGoal > 0) ? (state.consumedProtein / state.proteinGoal) * 100 : 0;
+        elements.proteinBar.style.width = `${Math.min(proteinProgress, 100)}%`;
+        elements.proteinProgressText.textContent = `${Math.round(proteinProgress)}%`;
+        
+        // Update carbs progress
+        const carbsProgress = (state.carbsGoal > 0) ? (state.consumedCarbs / state.carbsGoal) * 100 : 0;
+        elements.carbsBar.style.width = `${Math.min(carbsProgress, 100)}%`;
+        elements.carbsProgressText.textContent = `${Math.round(carbsProgress)}%`;
+        
+        // Update status message
+        if (caloriesProgress < 80) {
+            elements.statusMessage.className = 'status-message success';
+            elements.statusMessage.textContent = '🟢 أنت ضمن المعدل المطلوب';
+        } else if (caloriesProgress < 100) {
+            elements.statusMessage.className = 'status-message warning';
+            elements.statusMessage.textContent = '🟡 اقتربت من هدفك اليومي';
+        } else {
+            elements.statusMessage.className = 'status-message danger';
+            elements.statusMessage.textContent = '🔴 تجاوزت هدفك اليومي';
+        }
+    }
+
+    // Update food history display
+    function updateFoodHistory() {
+        elements.foodHistory.innerHTML = '';
+        if (state.foodHistory.length === 0) {
+            elements.foodHistory.innerHTML = '<p>لا توجد أطعمة مسجلة بعد</p>';
+            return;
+        }
+        
+        state.foodHistory.forEach((item, index) => {
+            const historyItem = document.createElement('div');
+            historyItem.className = 'history-item';
+            historyItem.innerHTML = `
+                <div>
+                    <div>${item.name}</div>
+                    <div class="nutrient-info">
+                        <span>${item.calories} سعرة</span>
+                        <span>${item.protein} جرام بروتين</span>
+                        <span>${item.carbs} جرام كارب</span>
+                    </div>
+                </div>
+                <span class="remove-history" data-index="${index}">❌</span>
+            `;
+            elements.foodHistory.appendChild(historyItem);
+        });
+        
+        // Add event listeners to remove buttons
+        document.querySelectorAll('.remove-history').forEach(button => {
+            button.addEventListener('click', function() {
+                const index = parseInt(this.getAttribute('data-index'));
+                removeFoodFromHistory(index);
+            });
+        });
+    }
+
+    // Remove food from history
+    function removeFoodFromHistory(index) {
+        const removedItem = state.foodHistory[index];
+        state.consumedCalories -= removedItem.calories;
+        state.consumedProtein -= removedItem.protein;
+        state.consumedCarbs -= removedItem.carbs;
+        state.remainingCalories = state.dailyGoal - state.consumedCalories;
+        state.foodHistory.splice(index, 1);
+        saveState();
+        updateFoodHistory();
+        updateProgress();
+    }
+
+    // Clear all history
+    function clearFoodHistory() {
+        state.foodHistory = [];
+        state.consumedCalories = 0;
+        state.consumedProtein = 0;
+        state.consumedCarbs = 0;
+        state.remainingCalories = state.dailyGoal;
+        saveState();
+        updateFoodHistory();
+        updateProgress();
+    }
+
+    // Save state to localStorage
+    function saveState() {
+        localStorage.setItem('calorieTrackerState', JSON.stringify(state));
+    }
+
+    // Load state from localStorage
+    function loadState() {
+        const savedState = localStorage.getItem('calorieTrackerState');
+        if (savedState) {
+            state = JSON.parse(savedState);
+            updateProgress();
+            updateFoodHistory();
+        }
+    }
+
+    // Calculate daily needs
+    function calculateDailyNeeds(gender, age, weight, height, activityLevel) {
+        let bmr;
+        if (gender === 'male') {
+            bmr = 88.362 + (13.397 * weight) + (4.799 * height) - (5.677 * age);
+        } else {
+            bmr = 447.593 + (9.247 * weight) + (3.098 * height) - (4.330 * age);
+        }
+        
+        const dailyCalories = Math.round(bmr * activityLevel);
+        const proteinNeeds = Math.round(weight * 1.6); // 1.6 جرام بروتين لكل كيلوجرام من الوزن
+        const carbsNeeds = Math.round((dailyCalories * 0.5) / 4); // 50% من السعرات من الكربوهيدرات (كل جرام كارب = 4 سعرات)
+        
+        return { dailyCalories, proteinNeeds, carbsNeeds };
+    }
+
+    // Event Listeners
+    elements.foodCategory.addEventListener('change', () => {
+        updateFoodItems(elements.foodCategory.value);
+        calculateNutrients();
+    });
+
+    elements.foodItem.addEventListener('change', calculateNutrients);
+    elements.quantityType.addEventListener('change', calculateNutrients);
+    elements.quantity.addEventListener('input', calculateNutrients);
+    elements.customCalories.addEventListener('input', calculateNutrients);
+    elements.customProtein.addEventListener('input', calculateNutrients);
+    elements.customCarbs.addEventListener('input', calculateNutrients);
+
+    elements.goalType.addEventListener('change', (e) => {
+        if (e.target.value === 'custom') {
+            elements.customGoal.classList.remove('hidden');
+            state.dailyGoal = 0;
+        } else {
+            elements.customGoal.classList.add('hidden');
+            state.dailyGoal = parseInt(e.target.value);
+        }
+        state.remainingCalories = state.dailyGoal - state.consumedCalories;
+        updateProgress();
+        saveState();
+    });
+
+    elements.customGoal.addEventListener('input', (e) => {
+        state.dailyGoal = parseInt(e.target.value) || 0;
+        state.remainingCalories = state.dailyGoal - state.consumedCalories;
+        updateProgress();
+        saveState();
+    });
+
+    elements.addFood.addEventListener('click', () => {
+        if (state.dailyGoal === 0) {
+            alert('الرجاء تحديد الهدف اليومي أولاً');
+            return;
+        }
+        const category = elements.foodCategory.value;
+        let foodName, calories, protein, carbs;
+        
+        if (category === 'custom') {
+            if (!elements.customFoodName.value || !elements.customCalories.value || !elements.customProtein.value || !elements.customCarbs.value) {
+                alert('الرجاء إدخال جميع بيانات الطعام');
+                return;
+            }
+            foodName = elements.customFoodName.value;
+            const nutrients = calculateNutrients();
+            calories = Math.round(nutrients.calories);
+            protein = Math.round(nutrients.protein);
+            carbs = Math.round(nutrients.carbs);
+            
+            // Add custom food to user's custom foods
+            state.customFoods[foodName] = {
+                calories: parseFloat(elements.customCalories.value),
+                protein: parseFloat(elements.customProtein.value),
+                carbs: parseFloat(elements.customCarbs.value)
+            };
+            
+            // Add custom food to food categories
+            if (!foodCategories['الأطعمة المخصصة']) {
+                foodCategories['الأطعمة المخصصة'] = {};
+            }
+            foodCategories['الأطعمة المخصصة'][foodName] = {
+                calories: parseFloat(elements.customCalories.value),
+                protein: parseFloat(elements.customProtein.value),
+                carbs: parseFloat(elements.customCarbs.value)
+            };
+            
+            // Update food categories dropdown
+            if (!document.querySelector('option[value="الأطعمة المخصصة"]')) {
+                const option = document.createElement('option');
+                option.value = 'الأطعمة المخصصة';
+                option.textContent = 'الأطعمة المخصصة';
+                elements.foodCategory.appendChild(option);
+            }
+        } else {
+            foodName = elements.foodItem.value;
+            if (!foodName) {
+                alert('الرجاء اختيار طعام');
+                return;
+            }
+            const nutrients = calculateNutrients();
+            calories = Math.round(nutrients.calories);
+            protein = Math.round(nutrients.protein);
+            carbs = Math.round(nutrients.carbs);
+        }
+        
+        // Add to consumed calories, protein and carbs
+        state.consumedCalories += calories;
+        state.consumedProtein += protein;
+        state.consumedCarbs += carbs;
+        state.remainingCalories = state.dailyGoal - state.consumedCalories;
+        updateProgress();
+        
+        // Add to food history
+        state.foodHistory.unshift({
+            name: foodName,
+            calories: calories,
+            protein: protein,
+            carbs: carbs,
+            date: new Date().toLocaleString()
+        });
+        
+        // Save data
+        saveState();
+        updateFoodHistory();
+        
+        // Reset form
+        elements.foodCategory.value = '';
+        elements.foodItem.innerHTML = '<option value="">اختر الطعام</option>';
+        elements.customFoodEntry.classList.remove('active');
+        elements.customFoodName.value = '';
+        elements.customCalories.value = '';
+        elements.customProtein.value = '';
+        elements.customCarbs.value = '';
+        elements.quantity.value = '1';
+        elements.caloriesAmount.textContent = '0';
+        elements.proteinAmount.textContent = '0';
+        elements.carbsAmount.textContent = '0';
+    });
+
+    elements.resetDay.addEventListener('click', () => {
+        state.consumedCalories = 0;
+        state.consumedProtein = 0;
+        state.consumedCarbs = 0;
+        state.remainingCalories = state.dailyGoal;
+        updateProgress();
+        saveState();
+    });
+
+    elements.clearHistory.addEventListener('click', () => {
+        if (confirm('هل أنت متأكد من مسح سجل الأطعمة بالكامل؟')) {
+            clearFoodHistory();
+        }
+    });
+
+    // Tab switching
+    elements.tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const tabId = button.getAttribute('data-tab');
+            
+            // Update active tab button
+            elements.tabButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            
+            // Show corresponding tab content
+            elements.tabContents.forEach(content => content.classList.add('hidden'));
+            document.getElementById(`${tabId}Tab`).classList.remove('hidden');
+        });
+    });
+
+    // Initialize the application
+    initializeFoodCategories();
+    loadState();
+
+    // تسجيل الدخول وإنشاء حساب
+    let customers = JSON.parse(localStorage.getItem('customers')) || [];
+
+    // توليد كود مكون من 4 أرقام
+    function generateCustomerCode() {
+        return Math.floor(1000 + Math.random() * 9000);
+    }
+
+    // إضافة عميل جديد
+    function addCustomer(name, age) {
+        const existingCustomer = customers.find(c => c.name === name);
+        if (existingCustomer) {
+            alert('الاسم مسجل مسبقًا');
+            return null;
+        }
+        const code = generateCustomerCode();
+        const customer = { code, name, age };
+        customers.push(customer);
+        localStorage.setItem('customers', JSON.stringify(customers));
+        return customer;
+    }
+
+    // عرض المحتوى الرئيسي
+    function showMainContent() {
+        document.getElementById('loginContainer').classList.add('hidden');
+        document.getElementById('createAccountContainer').classList.add('hidden');
+        document.getElementById('resetPasswordContainer').classList.add('hidden');
+        document.getElementById('mainContent').classList.remove('hidden');
+        
+        // عرض معلومات المستخدم
+        const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+        if (loggedInUser) {
+            elements.profileInfo.innerHTML = `
+                <p><strong>الاسم:</strong> ${loggedInUser.name}</p>
+                <p><strong>العمر:</strong> ${loggedInUser.age}</p>
+                <p><strong>الكود:</strong> ${loggedInUser.code}</p>
+            `;
+        }
+        
+        // تحميل احتياجات المستخدم إذا كانت محفوظة
+        if (state.userNeeds) {
+            elements.caloriesNeedsResult.innerHTML = `
+                <h3>احتياجاتك اليومية:</h3>
+                <p>السعرات الحرارية: ${state.userNeeds.dailyCalories} سعرة</p>
+                <p>البروتين: ${state.userNeeds.proteinNeeds} جرام</p>
+                <p>الكربوهيدرات: ${state.userNeeds.carbsNeeds} جرام</p>
+            `;
+            
+            // تعيين الأهداف إذا لم تكن محددة من قبل
+            if (state.dailyGoal === 0) {
+                state.dailyGoal = state.userNeeds.dailyCalories;
+                state.proteinGoal = state.userNeeds.proteinNeeds;
+                state.carbsGoal = state.userNeeds.carbsNeeds;
+                state.remainingCalories = state.dailyGoal;
+                updateProgress();
+                saveState();
+            }
+        }
+    }
+
+    // تسجيل الدخول
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const code = document.getElementById('loginCode').value;
+        const customer = customers.find(c => c.code == code);
+        if (customer) {
+            alert(`مرحبًا ${customer.name}!`);
+            localStorage.setItem('loggedInUser', JSON.stringify(customer));
+            showMainContent();
+        } else {
+            alert('الكود غير صحيح');
+        }
+    });
+
+    // إنشاء حساب
+    document.getElementById('createAccountForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const name = document.getElementById('name').value;
+        const age = document.getElementById('age').value;
+        const customer = addCustomer(name, age);
+        if (customer) {
+            alert(`تم إنشاء حساب جديد بالكود: ${customer.code}`);
+            document.getElementById('createAccountForm').reset();
+            showLogin();
+        }
+    });
+
+    // إعادة تعيين الكود
+    document.getElementById('resetPasswordForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const name = document.getElementById('nameReset').value;
+        const customer = customers.find(c => c.name === name);
+        if (customer) {
+            const newCode = generateCustomerCode();
+            customer.code = newCode;
+            localStorage.setItem('customers', JSON.stringify(customers));
+            alert(`تم إرسال الكود الجديد: ${newCode}`);
+            showLogin();
+        } else {
+            alert('الاسم غير مسجل');
+        }
+    });
+
+    // إظهار إنشاء حساب
+    document.getElementById('showCreateAccount').addEventListener('click', function() {
+        document.getElementById('loginContainer').classList.add('hidden');
+        document.getElementById('createAccountContainer').classList.remove('hidden');
+    });
+
+    // إظهار تسجيل الدخول
+    document.getElementById('showLogin').addEventListener('click', function() {
+        document.getElementById('createAccountContainer').classList.add('hidden');
+        document.getElementById('loginContainer').classList.remove('hidden');
+    });
+
+    // إظهار إعادة تعيين الكود
+    document.getElementById('forgotPassword').addEventListener('click', function() {
+        document.getElementById('loginContainer').classList.add('hidden');
+        document.getElementById('resetPasswordContainer').classList.remove('hidden');
+    });
+
+    // العودة لتسجيل الدخول من إعادة تعيين الكود
+    document.getElementById('showLoginFromReset').addEventListener('click', function() {
+        document.getElementById('resetPasswordContainer').classList.add('hidden');
+        document.getElementById('loginContainer').classList.remove('hidden');
+    });
+
+    function showLogin() {
+        document.getElementById('createAccountContainer').classList.add('hidden');
+        document.getElementById('resetPasswordContainer').classList.add('hidden');
+        document.getElementById('loginContainer').classList.remove('hidden');
+    }
+
+    // حساب الاحتياجات اليومية من السعرات الحرارية والبروتين والكربوهيدرات
+    document.getElementById('caloriesNeedsForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const gender = elements.gender.value;
+        const age = parseFloat(elements.ageNeeds.value);
+        const weight = parseFloat(elements.weightNeeds.value);
+        const height = parseFloat(elements.heightNeeds.value);
+        const activityLevel = parseFloat(elements.activityLevel.value);
+        if (!gender || !age || !weight || !height || !activityLevel) {
+            alert('الرجاء إدخال جميع البيانات');
+            return;
+        }
+        
+        const needs = calculateDailyNeeds(gender, age, weight, height, activityLevel);
+        elements.caloriesNeedsResult.innerHTML = `
+            <h3>احتياجاتك اليومية:</h3>
+            <p>السعرات الحرارية: ${needs.dailyCalories} سعرة</p>
+            <p>البروتين: ${needs.proteinNeeds} جرام</p>
+            <p>الكربوهيدرات: ${needs.carbsNeeds} جرام</p>
+        `;
+        
+        // حفظ احتياجات المستخدم
+        state.userNeeds = needs;
+        state.dailyGoal = needs.dailyCalories;
+        state.proteinGoal = needs.proteinNeeds;
+        state.carbsGoal = needs.carbsNeeds;
+        state.remainingCalories = state.dailyGoal;
+        
+        // حفظ البيانات
+        saveState();
+        updateProgress();
+    });
+
+    // التحقق من تسجيل الدخول التلقائي
+    const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+    if (loggedInUser) {
+        showMainContent();
+    }
+
+    // تسجيل الخروج
+    document.getElementById('logoutButton').addEventListener('click', function() {
+        localStorage.removeItem('loggedInUser');
+        alert('تم تسجيل الخروج بنجاح');
+        showLogin();
+    });
+</script>

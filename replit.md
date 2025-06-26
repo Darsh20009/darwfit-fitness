@@ -103,6 +103,12 @@ Darwfit is a comprehensive fitness and nutrition platform built as a full-stack 
 4. Environment-specific configuration injection
 
 ## Recent Changes
+- June 26, 2025: Enhanced calorie calculator with comprehensive Arabic food database containing 200+ authentic food items
+- June 26, 2025: Implemented 10 food categories (Egyptian, Saudi/Gulf, Levantine, Turkish, Indian, Chinese, crepes, fatayer, desserts, beverages, snacks)
+- June 26, 2025: Added advanced food search functionality with real-time results and nutritional information display
+- June 26, 2025: Created smart food tracking system with daily goals, progress visualization, and localStorage persistence
+- June 26, 2025: Integrated quantity conversion system supporting multiple measurement types (grams, tablespoons, cups, servings)
+- June 26, 2025: Built tabbed interface for calculator, daily history, and personalized profile with BMR/TDEE calculations
 - June 26, 2025: Created comprehensive "أذكار اليوم" (AzkarPage) - Islamic daily remembrance tracking system with authentic azkar content
 - June 26, 2025: Implemented 7 azkar categories (morning, evening, sleep, waking, eating, daily, special) with 20+ authentic azkar from Quran and Sunnah
 - June 26, 2025: Added sophisticated counter system with progress tracking, localStorage persistence, and completion badges
