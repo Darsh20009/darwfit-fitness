@@ -52,13 +52,73 @@
 
 /* Enhanced gradients */
 .gradient-bg {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 25%, #0f0f23 50%, #16213e 75%, #1a1a2e 100%);
+  background-size: 300% 300%;
+  animation: gradientShift 12s ease infinite;
 }
 
-.glass-morphism {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+.luxury-background {
+  background: linear-gradient(135deg,
+    #0a0a0a 0%,
+    #1a1a1a 25%,
+    #0f0f0f 50%,
+    #1a1a1a 75%,
+    #0a0a0a 100%);
+  background-size: 300% 300%;
+  animation: gradientShift 15s ease infinite;
+  min-height: 100vh;
+  position: relative;
+}
+
+.luxury-background::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 30% 20%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
+              radial-gradient(circle at 70% 80%, rgba(64, 224, 208, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* Performance optimizations */
+* {
+  will-change: auto;
+}
+
+.animate-pulse, .animate-bounce, .animate-spin {
+  animation-duration: 2s;
+}
+
+/* Dark theme adjustments */
+.dark .luxury-background {
+  background: linear-gradient(135deg,
+    #000000 0%,
+    #111111 25%,
+    #000000 50%,
+    #111111 75%,
+    #000000 100%);
+}
+
+.dark .luxury-background::before {
+  background: radial-gradient(circle at 30% 20%, rgba(255, 215, 0, 0.05) 0%, transparent 50%),
+              radial-gradient(circle at 70% 80%, rgba(64, 224, 208, 0.05) 0%, transparent 50%);
 }
 
 /* شعار DARWFIT الفخم */
@@ -164,7 +224,7 @@
 }
 
 .gradient-bg {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 25%, #0f0f23 50%, #16213e 75%, #1a1a2e 100%);
   min-height: 100vh;
 }
 
@@ -415,42 +475,42 @@
     justify-content: center !important;
     border-radius: 12px !important;
   }
-  
+
   .btn-touch .relative {
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     gap: 4px !important;
   }
-  
+
   /* تحسين التباعد في الكروت */
   .card-mobile .flex.gap-2 {
     flex-direction: column !important;
     gap: 12px !important;
     width: 100% !important;
   }
-  
+
   /* تحسين عرض العناوين */
   .card-mobile .flex.justify-between {
     flex-direction: column !important;
     align-items: stretch !important;
     gap: 16px !important;
   }
-  
+
   /* تحسين أزرار التحميل المزدوجة */
   .download-buttons-mobile {
     display: flex !important;
     gap: 4px !important;
     width: 100% !important;
   }
-  
+
   .download-buttons-mobile .btn-touch {
     flex: 1 !important;
     min-width: 0 !important;
     font-size: 12px !important;
     padding: 8px 4px !important;
   }
-  
+
   /* تحسين النصوص للأزرار الصغيرة */
   .btn-touch .text-xs {
     font-size: 11px !important;
@@ -464,12 +524,12 @@
     font-size: 10px !important;
     padding: 6px 2px !important;
   }
-  
+
   .download-buttons-mobile .btn-touch .relative {
     flex-direction: column !important;
     gap: 2px !important;
   }
-  
+
   .download-buttons-mobile .btn-touch .text-xs {
     font-size: 9px !important;
   }
@@ -718,7 +778,7 @@
     min-height: 48px;
     min-width: 120px;
   }
-  
+
   .download-icon-creative {
     font-size: 16px;
   }
@@ -749,3 +809,4 @@
 .workout-download-btn:hover::after {
   opacity: 1;
 }
+/*The background gradients and performance optimizations are enhanced and dark theme adjusted*/

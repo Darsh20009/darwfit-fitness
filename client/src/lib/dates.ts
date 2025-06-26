@@ -100,10 +100,7 @@ export function calculateRemainingDays(endDateString: string): number {
     const diffTime = endDate.getTime() - today.getTime();
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     
-    return Math.max(0, diffDays);rs(0, 0, 0, 0);
-    
-    const timeDiff = endDate.getTime() - today.getTime();
-    const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+    return Math.max(0, diffDays);
     
     return Math.max(0, daysDiff);
   } catch (error) {
