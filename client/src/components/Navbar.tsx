@@ -165,9 +165,7 @@ export default function Navbar() {
               <button 
                 onClick={() => handleNavigation("/quit")}
                 className="block w-full text-right py-3 px-4 text-sm font-medium text-gray-300 hover:text-emerald-400 transition-all duration-300 btn-touch rounded-lg hover:bg-emerald-400/10 backdrop-blur-sm"
-              >
-                صفحة الإقلاع
-              </button>
+              > الإقلاع</button>
 
               <button 
                 onClick={() => handleNavigation("/azkar")}
