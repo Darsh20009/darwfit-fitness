@@ -854,7 +854,6 @@ export function downloadMealPlan(dayPlan: DayPlan) {
                                 <span class="value">${meal.calories}</span>
                                 <span class="label">سعرة</span>
                             </div>
-                            ```text
                             <div class="luxury-badge">
                                 <span class="value">${meal.protein}جم</span>
                                 <span class="label">بروتين</span>
