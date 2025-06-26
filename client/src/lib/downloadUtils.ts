@@ -1,3 +1,4 @@
+
 // Download utilities for creating beautiful HTML documents
 
 // دالة للتحقق من صحة البيانات قبل التحميل
@@ -67,21 +68,22 @@ function detectDevice(): 'mobile' | 'desktop' {
   return (isMobile || isSmallScreen) ? 'mobile' : 'desktop';
 }
 
-function getUltraCreativeStyles(): string {
+function getLuxuryMinimalistStyles(): string {
   return `
     :root {
-      --primary-dark: #0a0a0a;
-      --secondary-dark: #1a1a2e;
-      --accent-purple: #16213e;
-      --accent-blue: #0f3460;
-      --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-      --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-      --gradient-4: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-      --gradient-5: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-      --neon-pink: #ff006e;
-      --neon-blue: #8338ec;
-      --neon-green: #3a86ff;
+      --luxury-dark: #0a0a0a;
+      --luxury-charcoal: #1a1a1a;
+      --luxury-slate: #2a2a2a;
+      --luxury-silver: #f8f9fa;
+      --luxury-gold: #d4af37;
+      --luxury-gold-light: #e6c866;
+      --luxury-platinum: #e5e4e2;
+      --luxury-shadow: rgba(0, 0, 0, 0.25);
+      --luxury-glow: rgba(212, 175, 55, 0.15);
+      --soft-blue: #667eea;
+      --soft-purple: #764ba2;
+      --gentle-teal: #56ab2f;
+      --warm-orange: #ff8a56;
     }
 
     * {
@@ -91,15 +93,16 @@ function getUltraCreativeStyles(): string {
     }
 
     body {
-      font-family: 'Inter', 'Segoe UI', 'Roboto', sans-serif;
-      background: var(--primary-dark);
-      color: #ffffff;
-      line-height: 1.6;
+      font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, var(--luxury-dark) 0%, var(--luxury-charcoal) 100%);
+      color: var(--luxury-silver);
+      line-height: 1.7;
       overflow-x: hidden;
       position: relative;
+      min-height: 100vh;
     }
 
-    /* خلفية متحركة ثلاثية الأبعاد */
+    /* خلفية ديناميكية هادئة وفخمة */
     body::before {
       content: '';
       position: fixed;
@@ -108,16 +111,26 @@ function getUltraCreativeStyles(): string {
       width: 100%;
       height: 100%;
       background: 
-        radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
-        radial-gradient(circle at 40% 80%, rgba(120, 255, 198, 0.2) 0%, transparent 50%),
-        conic-gradient(from 0deg at 50% 50%, #667eea 0deg, #764ba2 120deg, #f093fb 240deg, #667eea 360deg);
-      background-size: 100% 100%, 100% 100%, 100% 100%, 400% 400%;
-      animation: ultraBackground 20s ease infinite;
+        radial-gradient(circle at 20% 20%, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(102, 126, 234, 0.02) 0%, transparent 50%),
+        radial-gradient(circle at 40% 60%, rgba(118, 75, 162, 0.02) 0%, transparent 50%);
+      animation: gentleFlow 40s ease-in-out infinite;
       pointer-events: none;
       z-index: -2;
     }
 
+    @keyframes gentleFlow {
+      0%, 100% { 
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+      }
+      50% { 
+        opacity: 0.8;
+        transform: scale(1.05) rotate(0.5deg);
+      }
+    }
+
+    /* نمط شبكة دقيق وأنيق */
     body::after {
       content: '';
       position: fixed;
@@ -126,456 +139,54 @@ function getUltraCreativeStyles(): string {
       width: 100%;
       height: 100%;
       background-image: 
-        linear-gradient(45deg, transparent 24%, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.03) 26%, transparent 27%),
-        linear-gradient(-45deg, transparent 24%, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.03) 26%, transparent 27%);
-      background-size: 30px 30px;
-      animation: patternMove 25s linear infinite;
+        linear-gradient(rgba(212, 175, 55, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(212, 175, 55, 0.02) 1px, transparent 1px);
+      background-size: 80px 80px;
+      animation: subtleGrid 60s linear infinite;
       pointer-events: none;
       z-index: -1;
     }
 
-    @keyframes ultraBackground {
-      0%, 100% { 
-        background-position: 0% 0%, 0% 0%, 0% 0%, 0% 50%; 
-        filter: hue-rotate(0deg) brightness(1);
-      }
-      25% { 
-        background-position: 100% 100%, 100% 0%, 50% 50%, 100% 0%; 
-        filter: hue-rotate(90deg) brightness(1.2);
-      }
-      50% { 
-        background-position: 0% 100%, 0% 100%, 100% 0%, 100% 100%; 
-        filter: hue-rotate(180deg) brightness(0.9);
-      }
-      75% { 
-        background-position: 100% 0%, 100% 100%, 0% 100%, 0% 100%; 
-        filter: hue-rotate(270deg) brightness(1.1);
-      }
+    @keyframes subtleGrid {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(80px, 80px); }
     }
 
-    @keyframes patternMove {
-      0% { transform: translate(0, 0) rotate(0deg); }
-      100% { transform: translate(30px, 30px) rotate(360deg); }
-    }
-
-    .ultra-container {
+    .luxury-container {
       max-width: 1000px;
-      margin: 20px auto;
-      background: rgba(10, 10, 10, 0.95);
-      border-radius: 30px;
+      margin: 40px auto;
+      background: rgba(26, 26, 26, 0.95);
+      border-radius: 24px;
       overflow: hidden;
       position: relative;
       backdrop-filter: blur(20px);
-      border: 2px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(212, 175, 55, 0.1);
       box-shadow: 
-        0 0 0 1px rgba(255, 255, 255, 0.05),
-        0 30px 80px rgba(0, 0, 0, 0.8),
-        0 0 100px rgba(102, 126, 234, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
-      animation: containerFloat 8s ease-in-out infinite;
+        0 40px 100px rgba(0, 0, 0, 0.5),
+        0 0 0 1px rgba(255, 255, 255, 0.02),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      animation: containerElevation 10s ease-in-out infinite;
     }
 
-    @keyframes containerFloat {
+    @keyframes containerElevation {
       0%, 100% { 
-        transform: translateY(0px) rotateX(0deg); 
+        transform: translateY(0px);
         box-shadow: 
-          0 30px 80px rgba(0, 0, 0, 0.8),
-          0 0 100px rgba(102, 126, 234, 0.3);
+          0 40px 100px rgba(0, 0, 0, 0.5),
+          0 0 0 1px rgba(255, 255, 255, 0.02),
+          inset 0 1px 0 rgba(255, 255, 255, 0.05);
       }
       50% { 
-        transform: translateY(-15px) rotateX(2deg); 
+        transform: translateY(-8px);
         box-shadow: 
-          0 45px 100px rgba(0, 0, 0, 0.9),
-          0 0 150px rgba(138, 43, 226, 0.5);
+          0 50px 120px rgba(0, 0, 0, 0.6),
+          0 0 0 1px rgba(212, 175, 55, 0.05),
+          inset 0 1px 0 rgba(255, 255, 255, 0.08);
       }
     }
 
-    .ultra-container::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, 
-        var(--neon-pink) 0%, 
-        var(--neon-blue) 25%, 
-        var(--neon-green) 50%, 
-        #ffd700 75%, 
-        var(--neon-pink) 100%);
-      animation: topBorderGlow 3s ease-in-out infinite;
-    }
-
-    @keyframes topBorderGlow {
-      0%, 100% { 
-        opacity: 1; 
-        filter: brightness(1) saturate(1);
-      }
-      50% { 
-        opacity: 0.7; 
-        filter: brightness(1.5) saturate(1.5);
-      }
-    }
-
-    .ultra-header {
-      background: linear-gradient(135deg, 
-        #0a0a0a 0%, 
-        #1a1a2e 25%, 
-        #16213e 50%, 
-        #0f3460 75%, 
-        #000000 100%);
-      background-size: 400% 400%;
-      animation: headerGradientUltra 12s ease infinite;
-      color: white;
-      padding: 50px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-      border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-    }
-
-    @keyframes headerGradientUltra {
-      0%, 100% { background-position: 0% 50%; }
-      25% { background-position: 100% 0%; }
-      50% { background-position: 100% 100%; }
-      75% { background-position: 0% 100%; }
-    }
-
-    .ultra-header::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: conic-gradient(from 0deg, 
-        transparent 0deg, 
-        rgba(255, 0, 110, 0.3) 60deg,
-        transparent 120deg,
-        rgba(131, 56, 236, 0.3) 180deg,
-        transparent 240deg,
-        rgba(58, 134, 255, 0.3) 300deg,
-        transparent 360deg);
-      animation: ultraRotate 20s linear infinite;
-    }
-
-    @keyframes ultraRotate {
-      0% { transform: rotate(0deg) scale(1); }
-      50% { transform: rotate(180deg) scale(1.2); }
-      100% { transform: rotate(360deg) scale(1); }
-    }
-
-    .ultra-header::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: 
-        radial-gradient(circle at 30% 20%, rgba(255, 0, 110, 0.4) 0%, transparent 50%),
-        radial-gradient(circle at 70% 80%, rgba(131, 56, 236, 0.4) 0%, transparent 50%),
-        radial-gradient(circle at 50% 50%, rgba(58, 134, 255, 0.3) 0%, transparent 70%);
-      animation: headerPulse 6s ease-in-out infinite;
-    }
-
-    @keyframes headerPulse {
-      0%, 100% { opacity: 0.8; transform: scale(1); }
-      50% { opacity: 1; transform: scale(1.05); }
-    }
-
-    .ultra-title {
-      font-size: 3.5em;
-      margin-bottom: 20px;
-      position: relative;
-      z-index: 2;
-      background: linear-gradient(45deg, 
-        #ffffff, 
-        #ff006e, 
-        #8338ec, 
-        #3a86ff, 
-        #ffffff);
-      background-size: 400% 400%;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      animation: ultraTextGlow 4s ease-in-out infinite;
-      text-shadow: 
-        0 0 20px rgba(255, 255, 255, 0.5),
-        0 0 40px rgba(255, 0, 110, 0.3),
-        0 0 60px rgba(131, 56, 236, 0.2);
-      font-weight: 900;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-    }
-
-    @keyframes ultraTextGlow {
-      0%, 100% { 
-        background-position: 0% 50%; 
-        filter: brightness(1) saturate(1);
-      }
-      25% { 
-        background-position: 100% 0%; 
-        filter: brightness(1.3) saturate(1.2);
-      }
-      50% { 
-        background-position: 100% 100%; 
-        filter: brightness(1.5) saturate(1.5);
-      }
-      75% { 
-        background-position: 0% 100%; 
-        filter: brightness(1.2) saturate(1.3);
-      }
-    }
-
-    .ultra-subtitle {
-      font-size: 1.4em;
-      position: relative;
-      z-index: 2;
-      color: rgba(255, 255, 255, 0.9);
-      text-shadow: 0 2px 15px rgba(0, 0, 0, 0.5);
-      font-weight: 600;
-      margin-bottom: 15px;
-      animation: subtitlePulse 3s ease-in-out infinite;
-    }
-
-    @keyframes subtitlePulse {
-      0%, 100% { opacity: 0.9; }
-      50% { opacity: 1; }
-    }
-
-    .ultra-content {
-      padding: 40px;
-      position: relative;
-    }
-
-    .ultra-section {
-      margin-bottom: 40px;
-      background: rgba(26, 26, 46, 0.9);
-      border-radius: 25px;
-      padding: 35px;
-      position: relative;
-      backdrop-filter: blur(15px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 
-        0 15px 40px rgba(0, 0, 0, 0.6),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      overflow: hidden;
-    }
-
-    .ultra-section::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, 
-        #ff006e 0%, 
-        #8338ec 25%, 
-        #3a86ff 50%, 
-        #06ffa5 75%, 
-        #ff006e 100%);
-      animation: sectionBorderFlow 4s ease-in-out infinite;
-    }
-
-    @keyframes sectionBorderFlow {
-      0%, 100% { 
-        opacity: 0.8; 
-        background-position: 0% 50%;
-      }
-      50% { 
-        opacity: 1; 
-        background-position: 100% 50%;
-      }
-    }
-
-    .ultra-section:hover {
-      transform: translateY(-8px) scale(1.02);
-      box-shadow: 
-        0 25px 60px rgba(0, 0, 0, 0.7),
-        0 0 50px rgba(255, 0, 110, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2);
-    }
-
-    .ultra-section-title {
-      color: #ffffff;
-      margin-bottom: 30px;
-      font-size: 2.2em;
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      font-weight: 800;
-      text-shadow: 0 3px 15px rgba(0, 0, 0, 0.7);
-      background: linear-gradient(45deg, #ffffff, #ff006e, #8338ec);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      animation: titleShimmer 5s ease-in-out infinite;
-    }
-
-    @keyframes titleShimmer {
-      0%, 100% { filter: brightness(1); }
-      50% { filter: brightness(1.3); }
-    }
-
-    .ultra-item {
-      background: rgba(15, 52, 96, 0.8);
-      margin: 25px 0;
-      padding: 30px;
-      border-radius: 20px;
-      position: relative;
-      transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      overflow: hidden;
-      box-shadow: 
-        0 10px 30px rgba(0, 0, 0, 0.4),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    }
-
-    .ultra-item::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, 
-        transparent, 
-        rgba(255, 255, 255, 0.1), 
-        transparent);
-      transition: left 0.5s ease;
-    }
-
-    .ultra-item:hover::before {
-      left: 100%;
-    }
-
-    .ultra-item::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      width: 4px;
-      background: linear-gradient(to bottom, 
-        #ff006e, 
-        #8338ec, 
-        #3a86ff, 
-        #06ffa5);
-      animation: itemBorderPulse 3s ease-in-out infinite;
-    }
-
-    @keyframes itemBorderPulse {
-      0%, 100% { 
-        opacity: 0.7; 
-        box-shadow: 0 0 10px rgba(255, 0, 110, 0.5);
-      }
-      50% { 
-        opacity: 1; 
-        box-shadow: 0 0 20px rgba(255, 0, 110, 0.8);
-      }
-    }
-
-    .ultra-item:hover {
-      transform: translateY(-10px) scale(1.03);
-      box-shadow: 
-        0 20px 50px rgba(0, 0, 0, 0.6),
-        0 0 40px rgba(255, 0, 110, 0.4),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2);
-    }
-
-    .ultra-item-title {
-      font-size: 1.6em;
-      font-weight: 800;
-      color: #ffffff;
-      margin-bottom: 15px;
-      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-      background: linear-gradient(45deg, #ffffff, #e2e8f0);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .ultra-description {
-      color: #cbd5e1;
-      margin-bottom: 20px;
-      line-height: 1.7;
-      font-size: 1.1em;
-      text-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
-    }
-
-    .ultra-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-      gap: 15px;
-      margin-top: 20px;
-    }
-
-    .ultra-badge {
-      background: linear-gradient(135deg, 
-        rgba(255, 0, 110, 0.2) 0%, 
-        rgba(131, 56, 236, 0.2) 100%);
-      border: 1px solid rgba(255, 0, 110, 0.3);
-      padding: 12px 15px;
-      border-radius: 15px;
-      text-align: center;
-      font-size: 0.9em;
-      color: #ffffff;
-      backdrop-filter: blur(10px);
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .ultra-badge::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, 
-        transparent, 
-        rgba(255, 255, 255, 0.2), 
-        transparent);
-      transition: left 0.3s ease;
-    }
-
-    .ultra-badge:hover::before {
-      left: 100%;
-    }
-
-    .ultra-badge:hover {
-      transform: scale(1.05);
-      border-color: rgba(255, 0, 110, 0.6);
-      box-shadow: 0 5px 15px rgba(255, 0, 110, 0.3);
-    }
-
-    .ultra-badge .value {
-      font-weight: bold;
-      color: #ffffff;
-      display: block;
-      font-size: 1.1em;
-    }
-
-    .ultra-badge .label {
-      color: rgba(255, 255, 255, 0.8);
-      font-size: 0.8em;
-    }
-
-    .ultra-footer {
-      text-align: center;
-      padding: 30px;
-      background: rgba(10, 10, 10, 0.9);
-      color: rgba(255, 255, 255, 0.7);
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      position: relative;
-    }
-
-    .ultra-footer::before {
+    /* خط ذهبي رفيع وأنيق في الأعلى */
+    .luxury-container::before {
       content: '';
       position: absolute;
       top: 0;
@@ -584,113 +195,524 @@ function getUltraCreativeStyles(): string {
       height: 2px;
       background: linear-gradient(90deg, 
         transparent 0%, 
-        #ff006e 25%, 
-        #8338ec 50%, 
-        #3a86ff 75%, 
+        var(--luxury-gold) 20%, 
+        var(--luxury-gold-light) 50%, 
+        var(--luxury-gold) 80%, 
         transparent 100%);
-      animation: footerGlow 4s ease-in-out infinite;
+      animation: luxuryGlow 8s ease-in-out infinite;
     }
 
-    @keyframes footerGlow {
-      0%, 100% { opacity: 0.5; }
-      50% { opacity: 1; }
+    @keyframes luxuryGlow {
+      0%, 100% { 
+        opacity: 0.6;
+        filter: brightness(1);
+      }
+      50% { 
+        opacity: 1;
+        filter: brightness(1.3);
+      }
     }
 
-    .ultra-brand {
-      font-weight: bold;
-      background: linear-gradient(45deg, #ff006e, #8338ec, #3a86ff);
+    .luxury-header {
+      background: linear-gradient(135deg, 
+        rgba(10, 10, 10, 0.98) 0%, 
+        rgba(26, 26, 26, 0.95) 50%, 
+        rgba(42, 42, 42, 0.92) 100%);
+      color: var(--luxury-silver);
+      padding: 60px 50px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* تأثير الضوء الخفيف */
+    .luxury-header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, 
+        rgba(212, 175, 55, 0.08) 0%, 
+        transparent 70%);
+      animation: gentleRotation 30s linear infinite;
+    }
+
+    @keyframes gentleRotation {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .luxury-title {
+      font-size: 3.2em;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 2;
+      background: linear-gradient(135deg, 
+        var(--luxury-silver) 0%, 
+        var(--luxury-gold) 30%, 
+        var(--luxury-platinum) 70%, 
+        var(--luxury-gold-light) 100%);
+      background-size: 200% 200%;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
+      animation: luxuryTextFlow 12s ease-in-out infinite;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+    }
+
+    @keyframes luxuryTextFlow {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .luxury-subtitle {
       font-size: 1.3em;
-      animation: brandPulse 2s ease-in-out infinite;
+      position: relative;
+      z-index: 2;
+      color: rgba(248, 249, 250, 0.85);
+      font-weight: 400;
+      margin-bottom: 15px;
+      animation: subtleGlow 6s ease-in-out infinite;
     }
 
-    @keyframes brandPulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.05); }
+    @keyframes subtleGlow {
+      0%, 100% { opacity: 0.85; }
+      50% { opacity: 1; }
     }
 
-    /* تأثيرات خاصة للموبايل */
+    .luxury-content {
+      padding: 50px;
+      position: relative;
+    }
+
+    .luxury-section {
+      margin-bottom: 50px;
+      background: rgba(42, 42, 42, 0.6);
+      border-radius: 20px;
+      padding: 40px;
+      position: relative;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      box-shadow: 
+        0 20px 50px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+      overflow: hidden;
+    }
+
+    .luxury-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, 
+        transparent 0%, 
+        rgba(212, 175, 55, 0.3) 50%, 
+        transparent 100%);
+      animation: sectionGlow 10s ease-in-out infinite;
+    }
+
+    @keyframes sectionGlow {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 0.8; }
+    }
+
+    .luxury-section:hover {
+      transform: translateY(-5px);
+      box-shadow: 
+        0 30px 70px rgba(0, 0, 0, 0.4),
+        0 0 30px rgba(212, 175, 55, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+
+    .luxury-section-title {
+      color: var(--luxury-silver);
+      margin-bottom: 35px;
+      font-size: 2em;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      font-weight: 600;
+      background: linear-gradient(135deg, 
+        var(--luxury-silver), 
+        var(--luxury-gold-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: titleShimmer 8s ease-in-out infinite;
+    }
+
+    @keyframes titleShimmer {
+      0%, 100% { filter: brightness(1); }
+      50% { filter: brightness(1.2); }
+    }
+
+    .luxury-item {
+      background: rgba(10, 10, 10, 0.4);
+      margin: 30px 0;
+      padding: 35px;
+      border-radius: 16px;
+      position: relative;
+      transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.03);
+      overflow: hidden;
+      box-shadow: 
+        0 15px 40px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.03);
+    }
+
+    .luxury-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, 
+        transparent, 
+        rgba(212, 175, 55, 0.05), 
+        transparent);
+      transition: left 0.8s ease;
+    }
+
+    .luxury-item:hover::before {
+      left: 100%;
+    }
+
+    .luxury-item::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, 
+        transparent 0%, 
+        var(--luxury-gold) 50%, 
+        transparent 100%);
+      animation: itemBorderFlow 6s ease-in-out infinite;
+    }
+
+    @keyframes itemBorderFlow {
+      0%, 100% { 
+        opacity: 0.4;
+        transform: scaleY(0.8);
+      }
+      50% { 
+        opacity: 0.8;
+        transform: scaleY(1);
+      }
+    }
+
+    .luxury-item:hover {
+      transform: translateY(-6px);
+      box-shadow: 
+        0 25px 60px rgba(0, 0, 0, 0.3),
+        0 0 30px rgba(212, 175, 55, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    .luxury-item-title {
+      font-size: 1.5em;
+      font-weight: 600;
+      color: var(--luxury-silver);
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, 
+        var(--luxury-silver), 
+        var(--luxury-platinum));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .luxury-description {
+      color: rgba(248, 249, 250, 0.75);
+      margin-bottom: 25px;
+      line-height: 1.6;
+      font-size: 1.05em;
+    }
+
+    .luxury-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 20px;
+      margin-top: 25px;
+    }
+
+    .luxury-badge {
+      background: rgba(212, 175, 55, 0.08);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      padding: 16px 20px;
+      border-radius: 12px;
+      text-align: center;
+      font-size: 0.95em;
+      color: var(--luxury-silver);
+      backdrop-filter: blur(8px);
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .luxury-badge::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, 
+        transparent, 
+        rgba(212, 175, 55, 0.1), 
+        transparent);
+      transition: left 0.6s ease;
+    }
+
+    .luxury-badge:hover::before {
+      left: 100%;
+    }
+
+    .luxury-badge:hover {
+      transform: translateY(-2px);
+      border-color: rgba(212, 175, 55, 0.4);
+      box-shadow: 0 8px 25px rgba(212, 175, 55, 0.15);
+      background: rgba(212, 175, 55, 0.12);
+    }
+
+    .luxury-badge .value {
+      font-weight: 600;
+      color: var(--luxury-gold-light);
+      display: block;
+      font-size: 1.1em;
+      margin-bottom: 4px;
+    }
+
+    .luxury-badge .label {
+      color: rgba(248, 249, 250, 0.7);
+      font-size: 0.85em;
+      font-weight: 400;
+    }
+
+    .luxury-footer {
+      text-align: center;
+      padding: 40px;
+      background: rgba(10, 10, 10, 0.9);
+      color: rgba(248, 249, 250, 0.6);
+      border-top: 1px solid rgba(212, 175, 55, 0.1);
+      position: relative;
+    }
+
+    .luxury-footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 20%;
+      right: 20%;
+      height: 1px;
+      background: linear-gradient(90deg, 
+        transparent 0%, 
+        var(--luxury-gold) 50%, 
+        transparent 100%);
+      animation: footerGlow 8s ease-in-out infinite;
+    }
+
+    @keyframes footerGlow {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 0.8; }
+    }
+
+    .luxury-brand {
+      font-weight: 700;
+      background: linear-gradient(135deg, 
+        var(--luxury-gold), 
+        var(--luxury-gold-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-size: 1.2em;
+      animation: brandGlow 4s ease-in-out infinite;
+    }
+
+    @keyframes brandGlow {
+      0%, 100% { filter: brightness(1); }
+      50% { filter: brightness(1.3); }
+    }
+
+    /* تحسينات للجوال */
     @media (max-width: 768px) {
-      .ultra-container {
-        margin: 10px;
-        border-radius: 20px;
+      .luxury-container {
+        margin: 20px;
+        border-radius: 16px;
       }
 
-      .ultra-header {
-        padding: 30px 20px;
+      .luxury-header {
+        padding: 40px 30px;
       }
 
-      .ultra-title {
-        font-size: 2.2em;
-        letter-spacing: 1px;
+      .luxury-title {
+        font-size: 2.4em;
+        letter-spacing: 0.5px;
       }
 
-      .ultra-content {
-        padding: 25px;
+      .luxury-content {
+        padding: 30px;
       }
 
-      .ultra-section {
-        padding: 25px;
+      .luxury-section {
+        padding: 30px;
       }
 
-      .ultra-grid {
+      .luxury-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
+        gap: 15px;
       }
 
-      .ultra-badge {
-        padding: 8px 12px;
-        font-size: 0.8em;
+      .luxury-badge {
+        padding: 12px 16px;
+        font-size: 0.85em;
       }
     }
 
     @media (max-width: 480px) {
-      .ultra-title {
-        font-size: 1.8em;
+      .luxury-title {
+        font-size: 2em;
       }
 
-      .ultra-subtitle {
+      .luxury-subtitle {
         font-size: 1.1em;
       }
 
-      .ultra-section-title {
+      .luxury-section-title {
         font-size: 1.6em;
       }
 
-      .ultra-grid {
+      .luxury-grid {
         grid-template-columns: 1fr;
       }
     }
 
-    /* تأثيرات إضافية للطباعة */
+    /* تحسينات للطباعة */
     @media print {
       body {
         background: white;
         color: black;
       }
 
-      .ultra-container {
+      .luxury-container {
         background: white;
         box-shadow: none;
-        border: 1px solid #ccc;
-      }
-
-      .ultra-header {
-        background: #333;
-        color: white;
-      }
-
-      .ultra-section {
-        background: #f9f9f9;
         border: 1px solid #ddd;
       }
 
-      .ultra-item {
+      .luxury-header {
+        background: #f8f9fa;
+        color: #333;
+      }
+
+      .luxury-section {
+        background: #fafafa;
+        border: 1px solid #eee;
+      }
+
+      .luxury-item {
         background: white;
         border: 1px solid #ddd;
       }
+    }
+
+    /* تأثيرات إضافية للراحة والاستراحة */
+    .rest-day {
+      text-align: center;
+      padding: 80px 40px;
+      background: rgba(86, 171, 47, 0.08);
+      border-radius: 20px;
+      border: 2px dashed rgba(86, 171, 47, 0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .rest-day::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at center, 
+        rgba(86, 171, 47, 0.05) 0%, 
+        transparent 70%);
+      animation: restGlow 8s ease-in-out infinite;
+    }
+
+    @keyframes restGlow {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+
+    .rest-day-icon {
+      font-size: 4em;
+      margin-bottom: 30px;
+      animation: gentleFloat 4s ease-in-out infinite;
+    }
+
+    @keyframes gentleFloat {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .rest-day h2 {
+      color: var(--gentle-teal);
+      font-size: 2.2em;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    .motivational-quote {
+      background: rgba(212, 175, 55, 0.08);
+      padding: 35px;
+      border-radius: 16px;
+      margin: 40px 0;
+      text-align: center;
+      font-size: 1.2em;
+      font-weight: 500;
+      color: var(--luxury-silver);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .motivational-quote::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, 
+        transparent, 
+        rgba(212, 175, 55, 0.1), 
+        transparent);
+      animation: quoteFlow 10s ease-in-out infinite;
+    }
+
+    @keyframes quoteFlow {
+      0% { left: -100%; }
+      50% { left: 0%; }
+      100% { left: 100%; }
+    }
+
+    /* تفاصيل التمارين */
+    .exercise-details {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 20px;
+      margin-top: 25px;
     }
   `;
 }
@@ -709,57 +731,57 @@ export function downloadMealPlan(dayPlan: DayPlan) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>💫 النظام الغذائي الإبداعي - اليوم ${dayPlan.dayNumber}</title>
+    <title>✨ النظام الغذائي الفخم - اليوم ${dayPlan.dayNumber}</title>
     <style>
-        ${getUltraCreativeStyles()}
+        ${getLuxuryMinimalistStyles()}
     </style>
 </head>
 <body>
-    <div class="ultra-container">
-        <div class="ultra-header">
-            <h1 class="ultra-title">🍽️ النظام الغذائي</h1>
-            <p class="ultra-subtitle">📅 اليوم ${dayPlan.dayNumber} - ${dayPlan.date}</p>
-            <div class="ultra-grid" style="margin-top: 25px;">
-                <div class="ultra-badge">
+    <div class="luxury-container">
+        <div class="luxury-header">
+            <h1 class="luxury-title">🍽️ النظام الغذائي</h1>
+            <p class="luxury-subtitle">📅 اليوم ${dayPlan.dayNumber} - ${dayPlan.date}</p>
+            <div class="luxury-grid" style="margin-top: 35px;">
+                <div class="luxury-badge">
                     <span class="value">${dayPlan.totalCalories}</span>
                     <span class="label">سعرة حرارية</span>
                 </div>
-                <div class="ultra-badge">
+                <div class="luxury-badge">
                     <span class="value">${dayPlan.totalProtein}جم</span>
                     <span class="label">بروتين</span>
                 </div>
-                <div class="ultra-badge">
+                <div class="luxury-badge">
                     <span class="value">${dayPlan.totalCarbs}جم</span>
                     <span class="label">كربوهيدرات</span>
                 </div>
-                <div class="ultra-badge">
+                <div class="luxury-badge">
                     <span class="value">${dayPlan.totalFats}جم</span>
                     <span class="label">دهون</span>
                 </div>
             </div>
         </div>
 
-        <div class="ultra-content">
-            <div class="ultra-section">
-                <h2 class="ultra-section-title">🌅 الإفطار</h2>
+        <div class="luxury-content">
+            <div class="luxury-section">
+                <h2 class="luxury-section-title">🌅 الإفطار</h2>
                 ${dayPlan.meals.breakfast.map(meal => `
-                    <div class="ultra-item">
-                        <div class="ultra-item-title">${meal.name}</div>
-                        <div class="ultra-description">${meal.description}</div>
-                        <div class="ultra-grid">
-                            <div class="ultra-badge">
+                    <div class="luxury-item">
+                        <div class="luxury-item-title">${meal.name}</div>
+                        <div class="luxury-description">${meal.description}</div>
+                        <div class="luxury-grid">
+                            <div class="luxury-badge">
                                 <span class="value">${meal.calories}</span>
                                 <span class="label">سعرة</span>
                             </div>
-                            <div class="ultra-badge">
+                            <div class="luxury-badge">
                                 <span class="value">${meal.protein}جم</span>
                                 <span class="label">بروتين</span>
                             </div>
-                            <div class="ultra-badge">
+                            <div class="luxury-badge">
                                 <span class="value">${meal.carbs}جم</span>
                                 <span class="label">كربوهيدرات</span>
                             </div>
-                            <div class="ultra-badge">
+                            <div class="luxury-badge">
                                 <span class="value">${meal.fats}جم</span>
                                 <span class="label">دهون</span>
                             </div>
@@ -768,24 +790,26 @@ export function downloadMealPlan(dayPlan: DayPlan) {
                 `).join('')}
             </div>
 
-            <div class="ultra-section">
-                <h2 class="ultra-section-title">☀️ الغداء</h2>
+            <div class="luxury-section">
+                <h2 class="luxury-section-title">☀️ الغداء</h2>
                 ${dayPlan.meals.lunch.map(meal => `
-                    <div class="ultra-item">
-                        <div class="ultra-item-title">${meal.name}</div>
-                        <div class="ultra-description">${meal.description}</div>
-                        <div class="ultra-grid">
-                            <div class="ultra-badge">
+                    <div class="luxury-item">
+                        <div class="luxury-item-title">${meal.name}</div>
+                        <div class="luxury-description">${meal.description}</div>
+                        <div class="luxury-grid">
+                            <div class="luxury-badge">
                                 <span class="value">${meal.calories}</span>
                                 <span class="label">سعرة</span>
                             </div>
-                            <div class="ultra-badge">
+                            <div class="luxury-badge">
                                 <span class="value">${meal.protein}جم</span>
                                 <span class="label">بروتين</span>
                             </div>
-                            <div class="ultra-badge">                                <span class="value">${meal.carbs}جم</span>                                <span class="label">كربوهيدرات</span>
+                            <div class="luxury-badge">
+                                <span class="value">${meal.carbs}جم</span>
+                                <span class="label">كربوهيدرات</span>
                             </div>
-                            <div class="ultra-badge">
+                            <div class="luxury-badge">
                                 <span class="value">${meal.fats}جم</span>
                                 <span class="label">دهون</span>
                             </div>
@@ -794,26 +818,26 @@ export function downloadMealPlan(dayPlan: DayPlan) {
                 `).join('')}
             </div>
 
-            <div class="ultra-section">
-                <h2 class="ultra-section-title">🌙 العشاء</h2>
+            <div class="luxury-section">
+                <h2 class="luxury-section-title">🌙 العشاء</h2>
                 ${dayPlan.meals.dinner.map(meal => `
-                    <div class="ultra-item">
-                        <div class="ultra-item-title">${meal.name}</div>
-                        <div class="ultra-description">${meal.description}</div>
-                        <div class="ultra-grid">
-                            <div class="ultra-badge">
+                    <div class="luxury-item">
+                        <div class="luxury-item-title">${meal.name}</div>
+                        <div class="luxury-description">${meal.description}</div>
+                        <div class="luxury-grid">
+                            <div class="luxury-badge">
                                 <span class="value">${meal.calories}</span>
                                 <span class="label">سعرة</span>
                             </div>
-                            <div class="ultra-badge">
+                            <div class="luxury-badge">
                                 <span class="value">${meal.protein}جم</span>
                                 <span class="label">بروتين</span>
                             </div>
-                            <div class="ultra-badge">
+                            <div class="luxury-badge">
                                 <span class="value">${meal.carbs}جم</span>
                                 <span class="label">كربوهيدرات</span>
                             </div>
-                            <div class="ultra-badge">
+                            <div class="luxury-badge">
                                 <span class="value">${meal.fats}جم</span>
                                 <span class="label">دهون</span>
                             </div>
@@ -823,26 +847,26 @@ export function downloadMealPlan(dayPlan: DayPlan) {
             </div>
 
             ${dayPlan.meals.snacks && dayPlan.meals.snacks.length > 0 ? `
-            <div class="ultra-section">
-                <h2 class="ultra-section-title">🍎 الوجبات الخفيفة</h2>
+            <div class="luxury-section">
+                <h2 class="luxury-section-title">🍎 الوجبات الخفيفة</h2>
                 ${dayPlan.meals.snacks.map(meal => `
-                    <div class="ultra-item">
-                        <div class="ultra-item-title">${meal.name}</div>
-                        <div class="ultra-description">${meal.description}</div>
-                        <div class="ultra-grid">
-                            <div class="ultra-badge">
+                    <div class="luxury-item">
+                        <div class="luxury-item-title">${meal.name}</div>
+                        <div class="luxury-description">${meal.description}</div>
+                        <div class="luxury-grid">
+                            <div class="luxury-badge">
                                 <span class="value">${meal.calories}</span>
                                 <span class="label">سعرة</span>
                             </div>
-                            <div class="ultra-badge">
+                            <div class="luxury-badge">
                                 <span class="value">${meal.protein}جم</span>
                                 <span class="label">بروتين</span>
                             </div>
-                            <div class="ultra-badge">
+                            <div class="luxury-badge">
                                 <span class="value">${meal.carbs}جم</span>
                                 <span class="label">كربوهيدرات</span>
                             </div>
-                            <div class="ultra-badge">
+                            <div class="luxury-badge">
                                 <span class="value">${meal.fats}جم</span>
                                 <span class="label">دهون</span>
                             </div>
@@ -851,19 +875,23 @@ export function downloadMealPlan(dayPlan: DayPlan) {
                 `).join('')}
             </div>
             ` : ''}
+
+            <div class="motivational-quote">
+                ✨ "التغذية السليمة أساس الصحة والعافية، كل وجبة خطوة نحو هدفك" ✨
+            </div>
         </div>
 
-        <div class="ultra-footer">
-            <p>💫 تم إنشاؤه بواسطة <span class="ultra-brand">داروفت</span></p>
-            <p>🥗 تناول طعامك بانتظام واشرب الماء كثيراً!</p>
-            <p>🎯 ${isDesktop ? 'نسخة كمبيوتر محسّنة' : 'نسخة جوال محسّنة'}</p>
-            <p>📞 للاستفسارات تواصل معنا عبر واتساب</p>
+        <div class="luxury-footer">
+            <p>✨ تم إنشاؤه بواسطة <span class="luxury-brand">داروفت</span></p>
+            <p>🥗 تناول طعامك بانتظام واشرب الماء كثيراً</p>
+            <p>🎯 ${isDesktop ? 'نسخة كمبيوتر فخمة' : 'نسخة جوال أنيقة'}</p>
+            <p>📞 للاستفسارات تواصل معنا</p>
         </div>
     </div>
 </body>
 </html>`;
 
-  downloadHTML(htmlContent, `ultra-meal-plan-${device}-day-${dayPlan.dayNumber}-${dayPlan.date}.html`);
+  downloadHTML(htmlContent, `luxury-meal-plan-${device}-day-${dayPlan.dayNumber}-${dayPlan.date}.html`);
 }
 
 export function downloadWorkoutPlan(dayPlan: DayPlan) {
@@ -880,149 +908,81 @@ export function downloadWorkoutPlan(dayPlan: DayPlan) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>💪 برنامج التمارين الإبداعي - اليوم ${dayPlan.dayNumber}</title>
+    <title>💪 برنامج التمارين الفخم - اليوم ${dayPlan.dayNumber}</title>
     <style>
-        ${getUltraCreativeStyles()}
-
-        .exercise-details {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-          gap: 15px;
-          margin-top: 20px;
-        }
-
-        .rest-day {
-          text-align: center;
-          padding: 60px 40px;
-          background: rgba(16, 185, 129, 0.1);
-          border-radius: 20px;
-          border: 2px dashed rgba(16, 185, 129, 0.3);
-        }
-
-        .rest-day-icon {
-          font-size: 64px;
-          margin-bottom: 20px;
-          animation: floatIcon 3s ease-in-out infinite;
-        }
-
-        @keyframes floatIcon {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-10px); }
-        }
-
-        .rest-day h2 {
-          color: #10b981;
-          font-size: 2.5em;
-          margin-bottom: 15px;
-          text-shadow: 0 2px 10px rgba(16, 185, 129, 0.5);
-        }
-
-        .motivational-quote {
-          background: linear-gradient(135deg, 
-            rgba(255, 0, 110, 0.2) 0%, 
-            rgba(131, 56, 236, 0.2) 100%);
-          padding: 30px;
-          border-radius: 20px;
-          margin: 30px 0;
-          text-align: center;
-          font-size: 1.3em;
-          font-weight: 600;
-          color: #ffffff;
-          border: 2px solid rgba(255, 0, 110, 0.3);
-          position: relative;
-          overflow: hidden;
-        }
-
-        .motivational-quote::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: -100%;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(90deg, 
-            transparent, 
-            rgba(255, 255, 255, 0.1), 
-            transparent);
-          animation: quoteShine 3s ease-in-out infinite;
-        }
-
-        @keyframes quoteShine {
-          0% { left: -100%; }
-          100% { left: 100%; }
-        }
+        ${getLuxuryMinimalistStyles()}
     </style>
 </head>
 <body>
-    <div class="ultra-container">
-        <div class="ultra-header">
-            <h1 class="ultra-title">💪 برنامج التمارين</h1>
-            <p class="ultra-subtitle">📅 اليوم ${dayPlan.dayNumber} - ${dayPlan.date}</p>
-            <p class="ultra-subtitle">⏱️ المدة المتوقعة: ${dayPlan.workout.duration}</p>
+    <div class="luxury-container">
+        <div class="luxury-header">
+            <h1 class="luxury-title">💪 برنامج التمارين</h1>
+            <p class="luxury-subtitle">📅 اليوم ${dayPlan.dayNumber} - ${dayPlan.date}</p>
+            <p class="luxury-subtitle">⏱️ المدة المتوقعة: ${dayPlan.workout.duration}</p>
         </div>
 
-        <div class="ultra-content">
+        <div class="luxury-content">
             ${dayPlan.workout.exercises.length === 0 ? `
                 <div class="rest-day">
                     <div class="rest-day-icon">🛌</div>
                     <h2>يوم راحة مستحق</h2>
-                    <p style="color: #cbd5e1; font-size: 1.2em; margin-top: 15px;">
+                    <p style="color: var(--luxury-silver); font-size: 1.2em; margin-top: 20px; opacity: 0.8;">
                         استمتع بيوم راحتك! يمكنك ممارسة إطالات خفيفة أو المشي في الطبيعة
                     </p>
-                    <div class="motivational-quote" style="margin-top: 30px;">
+                    <div class="motivational-quote" style="margin-top: 40px;">
                         🌟 "الراحة جزء مهم من التدريب - اعطِ جسمك الوقت للتعافي والنمو" 🌟
                     </div>
                 </div>
             ` : `
-                <div class="ultra-section">
-                    <h2 class="ultra-section-title">🏋️ ${dayPlan.workout.title}</h2>
+                <div class="luxury-section">
+                    <h2 class="luxury-section-title">🏋️ ${dayPlan.workout.title}</h2>
 
-                    <div class="ultra-grid" style="margin-bottom: 30px;">
-                        <div class="ultra-badge">
+                    <div class="luxury-grid" style="margin-bottom: 40px;">
+                        <div class="luxury-badge">
                             <span class="value">${dayPlan.workout.exercises.length}</span>
                             <span class="label">تمارين</span>
                         </div>
-                        <div class="ultra-badge">
+                        <div class="luxury-badge">
                             <span class="value">${dayPlan.workout.duration}</span>
                             <span class="label">المدة</span>
                         </div>
-                        <div class="ultra-badge">
+                        <div class="luxury-badge">
                             <span class="value">${dayPlan.totalCalories || 'متغير'}</span>
                             <span class="label">سعرة محروقة</span>
                         </div>
-                        <div class="ultra-badge">
+                        <div class="luxury-badge">
                             <span class="value">${isDesktop ? 'كمبيوتر' : 'جوال'}</span>
                             <span class="label">النسخة</span>
                         </div>
                     </div>
 
                     ${dayPlan.workout.exercises.map((exercise, index) => `
-                        <div class="ultra-item">
-                            <div class="ultra-item-title">
+                        <div class="luxury-item">
+                            <div class="luxury-item-title">
                                 ${index + 1}. ${exercise.name}
                             </div>
                             <div class="exercise-details">
-                                <div class="ultra-badge">
+                                <div class="luxury-badge">
                                     <span class="value">${exercise.sets}</span>
                                     <span class="label">مجموعات</span>
                                 </div>
-                                <div class="ultra-badge">
+                                <div class="luxury-badge">
                                     <span class="value">${exercise.reps}</span>
                                     <span class="label">تكرارات</span>
                                 </div>
-                                <div class="ultra-badge">
+                                <div class="luxury-badge">
                                     <span class="value">${exercise.rest}</span>
                                     <span class="label">راحة</span>
                                 </div>
                                 ${exercise.weight ? `
-                                <div class="ultra-badge" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(29, 78, 216, 0.3)); border-color: rgba(59, 130, 246, 0.5);">
+                                <div class="luxury-badge" style="background: rgba(102, 126, 234, 0.08); border-color: rgba(102, 126, 234, 0.3);">
                                     <span class="value">🏋️ ${exercise.weight} كجم</span>
                                     <span class="label">الوزن</span>
                                 </div>
                                 ` : ''}
                             </div>
                             ${exercise.notes ? `
-                                <div class="ultra-description" style="margin-top: 15px; padding: 15px; background: rgba(255, 0, 110, 0.1); border-radius: 10px; border-right: 3px solid #ff006e;">
+                                <div class="luxury-description" style="margin-top: 20px; padding: 20px; background: rgba(212, 175, 55, 0.08); border-radius: 12px; border-right: 3px solid var(--luxury-gold);">
                                     💡 <strong>ملاحظات:</strong> ${exercise.notes}
                                 </div>
                             ` : ''}
@@ -1036,17 +996,17 @@ export function downloadWorkoutPlan(dayPlan: DayPlan) {
             `}
         </div>
 
-        <div class="ultra-footer">
-            <p>💪 تم إنشاؤه بواسطة <span class="ultra-brand">داروفت</span></p>
-            <p>🏃‍♂️ مارس تمارينك بانتظام واشرب الماء!</p>
-            <p>🎯 ${isDesktop ? 'نسخة كمبيوتر محسّنة' : 'نسخة جوال محسّنة'}</p>
-            <p>📱 للاستفسارات تواصل معنا عبر واتساب</p>
+        <div class="luxury-footer">
+            <p>💪 تم إنشاؤه بواسطة <span class="luxury-brand">داروفت</span></p>
+            <p>🏃‍♂️ مارس تمارينك بانتظام واشرب الماء</p>
+            <p>🎯 ${isDesktop ? 'نسخة كمبيوتر فخمة' : 'نسخة جوال أنيقة'}</p>
+            <p>📱 للاستفسارات تواصل معنا</p>
         </div>
     </div>
 </body>
 </html>`;
 
-  downloadHTML(htmlContent, `ultra-workout-${device}-day-${dayPlan.dayNumber}-${dayPlan.date}.html`);
+  downloadHTML(htmlContent, `luxury-workout-${device}-day-${dayPlan.dayNumber}-${dayPlan.date}.html`);
 }
 
 export function generateWorkoutHTML(dayPlan: DayPlan): string {
