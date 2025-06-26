@@ -54,9 +54,7 @@ export default function Navbar() {
             <button 
               onClick={() => setLocation("/quit")}
               className="text-sm font-medium text-gray-300 hover:text-emerald-400 transition-all duration-300 btn-touch hover:scale-105"
-            >
-              صفحة الإقلاع
-            </button>
+            >الإقلاع</button>
 
             <button 
               onClick={() => setLocation("/azkar")}
