@@ -1,4 +1,3 @@
-
 // Download utilities for creating beautiful HTML documents
 
 // دالة للتحقق من صحة البيانات قبل التحميل
@@ -733,6 +732,32 @@ export function downloadMealPlan(dayPlan: DayPlan) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>✨ النظام الغذائي الفخم - اليوم ${dayPlan.dayNumber}</title>
     <style>
+    body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                line-height: 1.6;
+                margin: 0;
+                padding: 40px;
+                background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+                min-height: 100vh;
+                color: white !important;
+            }
+
+            h1, h2 {
+                color: #ffd700 !important;
+                text-align: center;
+                margin-bottom: 30px;
+                text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+                letter-spacing: 2px;
+            }
+
+            h3, h4, h5, h6 {
+                color: #ffd700 !important;
+                margin-bottom: 15px;
+            }
+
+            p, span, div, li {
+                color: white !important;
+            }
         ${getLuxuryMinimalistStyles()}
     </style>
 </head>
@@ -829,6 +854,7 @@ export function downloadMealPlan(dayPlan: DayPlan) {
                                 <span class="value">${meal.calories}</span>
                                 <span class="label">سعرة</span>
                             </div>
+                            ```text
                             <div class="luxury-badge">
                                 <span class="value">${meal.protein}جم</span>
                                 <span class="label">بروتين</span>
@@ -910,6 +936,32 @@ export function downloadWorkoutPlan(dayPlan: DayPlan) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>💪 برنامج التمارين الفخم - اليوم ${dayPlan.dayNumber}</title>
     <style>
+    body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                line-height: 1.6;
+                margin: 0;
+                padding: 40px;
+                background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+                min-height: 100vh;
+                color: white !important;
+            }
+
+            h1, h2 {
+                color: #ffd700 !important;
+                text-align: center;
+                margin-bottom: 30px;
+                text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+                letter-spacing: 2px;
+            }
+
+            h3, h4, h5, h6 {
+                color: #ffd700 !important;
+                margin-bottom: 15px;
+            }
+
+            p, span, div, li {
+                color: white !important;
+            }
         ${getLuxuryMinimalistStyles()}
     </style>
 </head>

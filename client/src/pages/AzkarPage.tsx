@@ -551,7 +551,7 @@ export default function AzkarPage() {
     if (currentCount < zekr.repetitions) {
       const newProgress = { ...zekrProgress, [zekrId]: currentCount + 1 };
       saveProgress(newProgress);
-      
+
       // Auto-hide when completed
       if (currentCount + 1 >= zekr.repetitions) {
         setHideCompleted(true);
@@ -729,7 +729,7 @@ export default function AzkarPage() {
                           const bCount = zekrProgress[b.id] || 0;
                           const aCompleted = aCount >= a.repetitions;
                           const bCompleted = bCount >= b.repetitions;
-                          
+
                           // Incomplete items first
                           if (aCompleted && !bCompleted) return 1;
                           if (!aCompleted && bCompleted) return -1;
@@ -754,21 +754,21 @@ export default function AzkarPage() {
                                   }`}>
                                     {zekr.text}
                                   </div>
-                                  
+
                                   {zekr.source && (
                                     <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                                       <BookOpen className="h-4 w-4" />
                                       <span>المصدر: {zekr.source}</span>
                                     </div>
                                   )}
-                                  
+
                                   {zekr.benefit && (
                                     <div className="flex items-center gap-2 text-sm text-emerald-600 dark:text-emerald-400">
                                       <Zap className="h-4 w-4" />
                                       <span>الفائدة: {zekr.benefit}</span>
                                     </div>
                                   )}
-                                  
+
                                   <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-600">
                                     <div className="flex items-center gap-3">
                                       <Button
@@ -780,7 +780,7 @@ export default function AzkarPage() {
                                       >
                                         <Minus className="h-4 w-4" />
                                       </Button>
-                                      
+
                                       <div className={`px-4 py-2 rounded-lg font-bold text-lg min-w-[80px] text-center ${
                                         isCompleted 
                                           ? `bg-${category.color}-500 text-white` 
@@ -788,7 +788,7 @@ export default function AzkarPage() {
                                       }`}>
                                         {currentCount}/{zekr.repetitions}
                                       </div>
-                                      
+
                                       <Button
                                         size="sm"
                                         onClick={() => incrementCount(zekr.id)}
@@ -798,14 +798,14 @@ export default function AzkarPage() {
                                         <Plus className="h-4 w-4" />
                                       </Button>
                                     </div>
-                                    
+
                                     <div className="flex items-center gap-2">
                                       {isCompleted && (
                                         <Badge className={`bg-${category.color}-500 text-white`}>
                                           ✅ مكتمل
                                         </Badge>
                                       )}
-                                      
+
                                       <Button
                                         size="sm"
                                         variant="ghost"
