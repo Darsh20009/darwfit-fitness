@@ -40,6 +40,12 @@ export default function HomePage() {
                   🚀 الخطة المدفوعة
                 </Button>
                 <Button 
+                  onClick={() => setLocation("/quit")}
+                  className="bg-gradient-to-r from-emerald-600 via-green-600 to-teal-600 hover:from-emerald-700 hover:via-green-700 hover:to-teal-700 text-white font-bold py-4 px-10 rounded-2xl transition-all duration-300 text-xl transform hover:scale-110 hover:shadow-2xl"
+                >
+                  🌟 صفحة الإقلاع
+                </Button>
+                <Button 
                   variant="outline"
                   onClick={() => setLocation("/calories")}
                   className="border-2 border-purple-500 text-purple-600 hover:bg-purple-500 hover:text-white py-4 px-10 rounded-2xl transition-all duration-300 text-xl transform hover:scale-110 glass-morphism"
