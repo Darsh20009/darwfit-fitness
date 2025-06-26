@@ -654,7 +654,7 @@ export default function AzkarPage() {
           {/* Azkar Categories */}
           <Tabs defaultValue="morning" className="w-full">
             <div className="mb-8 overflow-x-auto">
-              <TabsList className="grid w-full grid-cols-7 min-w-fit bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm h-auto p-2 rounded-xl border-2 border-emerald-200 dark:border-emerald-700">
+              <TabsList className="flex lg:grid lg:grid-cols-7 w-full min-w-fit bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm h-auto p-2 rounded-xl border-2 border-emerald-200 dark:border-emerald-700 gap-2">
                 {categories.map((category) => {
                   const IconComponent = category.icon;
                   const completed = getCompletedCount(category.id);
@@ -663,13 +663,13 @@ export default function AzkarPage() {
                     <TabsTrigger 
                       key={category.id} 
                       value={category.id} 
-                      className="flex flex-col items-center p-4 min-w-[120px] h-24 rounded-lg transition-all duration-300 data-[state=active]:bg-emerald-500 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:scale-105 hover:bg-emerald-100 dark:hover:bg-emerald-900/30"
+                      className="flex flex-col items-center p-3 min-w-[90px] lg:min-w-[120px] h-20 lg:h-24 rounded-lg transition-all duration-300 data-[state=active]:bg-emerald-500 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:scale-105 hover:bg-emerald-100 dark:hover:bg-emerald-900/30 whitespace-nowrap"
                     >
-                      <IconComponent className="h-6 w-6 mb-2" />
-                      <span className="text-center leading-tight font-medium text-xs sm:text-sm">
+                      <IconComponent className="h-4 w-4 lg:h-6 lg:w-6 mb-1 lg:mb-2" />
+                      <span className="text-center leading-tight font-medium text-[10px] lg:text-sm">
                         {category.name}
                       </span>
-                      <Badge className="mt-1 bg-emerald-100 text-emerald-700 dark:bg-emerald-800 dark:text-emerald-200 text-xs border-0 data-[state=active]:bg-white data-[state=active]:text-emerald-600">
+                      <Badge className="mt-1 bg-emerald-100 text-emerald-700 dark:bg-emerald-800 dark:text-emerald-200 text-[9px] lg:text-xs border-0 px-1 py-0 data-[state=active]:bg-white data-[state=active]:text-emerald-600">
                         {completed}/{total}
                       </Badge>
                     </TabsTrigger>
