@@ -25,29 +25,29 @@ export default function DailyPlan({ date, formattedDate, workoutType, dayIndex }
   const [completedMeals, setCompletedMeals] = useState<Set<string>>(new Set());
   const [completedWorkouts, setCompletedWorkouts] = useState<Set<string>>(new Set());
   const [exerciseWeights, setExerciseWeights] = useState<Map<string, number>>(new Map());
-  
+
   const { username } = useAuthContext();
   const isKhaled = username === "خالد عمر";
   const isRestDay = dayIndex === 6; // Sunday is rest day
 
   // Get the appropriate meal and workout plans based on user
   let mealSummary, workoutSummary;
-  
+
   if (isKhaled) {
     // For Khaled Omar, get current month and use his muscle-building meal plans
     const currentMonth = new Date().getMonth() + 1; // 1-12
     const khaledMealPlan = getKhaledOmarMealPlanByMonth(currentMonth);
-    
+
     // Convert Khaled's meal plan to match the expected format
     mealSummary = [
       { meal: khaledMealPlan.breakfast.title, description: khaledMealPlan.breakfast.items.join(", ") },
       { meal: khaledMealPlan.morningSnack.title, description: khaledMealPlan.morningSnack.items.join(", ") },
       { meal: khaledMealPlan.lunch.title, description: khaledMealPlan.lunch.items.join(", ") },
-      { meal: khaledMealPlan.afternoonSnack.title, description: khaledMealPlan.afternoonSnack.items.join(", ") },
+      { meal: khaledMealPlan.afternoonSnack.title, description: khaledMealPlan.items.join(", ") },
       { meal: khaledMealPlan.dinner.title, description: khaledMealPlan.dinner.items.join(", ") },
       { meal: khaledMealPlan.beforeSleep.title, description: khaledMealPlan.beforeSleep.items.join(", ") }
     ];
-    
+
     // Use the same workouts as other users
     workoutSummary = isRestDay ? [] : getWorkoutSummary(dayIndex);
   } else {
@@ -202,7 +202,7 @@ export default function DailyPlan({ date, formattedDate, workoutType, dayIndex }
         totalCarbs: 140,
         totalFats: 48
       };
-      
+
       // استيراد الدوال المناسبة بناءً على النوع
       import("../../lib/downloadUtils").then(({ downloadWorkoutPlan, downloadWorkoutPlanMobile }) => {
         if (isMobile) {
@@ -281,7 +281,7 @@ export default function DailyPlan({ date, formattedDate, workoutType, dayIndex }
         totalCarbs: 140,
         totalFats: 48
       };
-      
+
       // استيراد الدوال المناسبة بناءً على النوع
       import("../../lib/downloadUtils").then(({ downloadMealPlan, downloadMealPlanMobile }) => {
         if (isMobile) {

@@ -23,7 +23,7 @@ export default function Navbar() {
     setIsMobileMenuOpen(false);
   };
 
-  
+
 
   const handleNavigation = (path: string) => {
     if (path === "/") {
@@ -39,13 +39,12 @@ export default function Navbar() {
       <div className="container mx-auto px-4 py-3">
         <div className="flex justify-between items-center">
           {/* Logo */}
-          <h1 
-            className="text-xl md:text-2xl font-bold cursor-pointer btn-touch"
-            onClick={() => handleNavigation("/")}
-          >
-            <span className="text-secondary">Darw</span>
-            <span className="text-primary">fit</span>
-          </h1>
+          <div className="relative">
+              <h1 className="text-3xl font-black luxury-darwfit-logo relative z-10">
+                DARWFIT
+              </h1>
+              <div className="absolute inset-0 luxury-darwfit-glow animate-pulse"></div>
+            </div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-4 space-x-reverse">
@@ -98,7 +97,7 @@ export default function Navbar() {
                       واتساب
                     </Button>
 
-                    
+
                   </div>
                 )}
 
@@ -154,7 +153,7 @@ export default function Navbar() {
               >
                 حاسبة السعرات
               </button>
-              
+
               <button 
                 onClick={() => setLocation("/subscription")}
                 className="block w-full text-right py-3 px-4 text-sm font-medium text-neutral-700 hover:text-primary dark:text-neutral-300 dark:hover:text-primary transition-colors btn-touch rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700"
@@ -188,7 +187,7 @@ export default function Navbar() {
                         تواصل واتساب
                       </Button>
 
-                      
+
                     </div>
                   )}
 

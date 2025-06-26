@@ -43,7 +43,7 @@ export default function DashboardPage() {
       return <User className="h-8 w-8 text-green-600 mx-auto mb-2" />;
     }
   };
-  
+
   // Calculate remaining subscription days
   const remainingDays = calculateRemainingDays(subscriptionEndDate || "");
 
@@ -52,7 +52,8 @@ export default function DashboardPage() {
   }, [selectedDate]);
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="luxury-background min-h-screen">
+      <div className="container mx-auto px-4 py-8">
       {/* Dashboard Header with Stats */}
       <div className="bg-gradient-to-r from-primary/20 to-secondary/20 p-4 md:p-6 rounded-lg mb-8 shadow-sm">
         <div className="flex flex-col md:flex-row justify-between items-center mb-4">
@@ -226,7 +227,7 @@ export default function DashboardPage() {
                 <h2 className="text-2xl font-bold text-amber-800 dark:text-amber-300 mb-2">نصائح ذكية للياقة البدنية</h2>
                 <p className="text-amber-600 dark:text-amber-400">نصائح عملية لتحقيق أفضل النتائج بأقل التكاليف</p>
               </div>
-              
+
               <div className="grid md:grid-cols-2 gap-4">
                 {[
                   "اشرب الماء قبل كل وجبة بـ30 دقيقة لتحسين الهضم وزيادة الشبع",
@@ -256,20 +257,20 @@ export default function DashboardPage() {
                 <h2 className="text-2xl font-bold text-purple-800 dark:text-purple-300 mb-2">متابعة التقدم</h2>
                 <p className="text-purple-600 dark:text-purple-400">تتبع إنجازاتك والتقدم المحقق</p>
               </div>
-              
+
               <div className="grid md:grid-cols-3 gap-4">
                 <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-purple-200 text-center">
                   <Trophy className="h-8 w-8 text-yellow-500 mx-auto mb-2" />
                   <h3 className="font-bold text-purple-800 dark:text-purple-300">الأهداف المحققة</h3>
                   <p className="text-2xl font-bold text-purple-600">{Math.floor(progress)}%</p>
                 </div>
-                
+
                 <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-purple-200 text-center">
                   <Calendar className="h-8 w-8 text-blue-500 mx-auto mb-2" />
                   <h3 className="font-bold text-purple-800 dark:text-purple-300">أيام التمرين</h3>
                   <p className="text-2xl font-bold text-purple-600">12</p>
                 </div>
-                
+
                 <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-purple-200 text-center">
                   <TrendingUp className="h-8 w-8 text-green-500 mx-auto mb-2" />
                   <h3 className="font-bold text-purple-800 dark:text-purple-300">النشاط الأسبوعي</h3>
