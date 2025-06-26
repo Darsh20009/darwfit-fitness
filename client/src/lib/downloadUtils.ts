@@ -59,637 +59,1016 @@ export interface DayPlan {
   totalFats: number;
 }
 
-export function generateWorkoutHTML(dayPlan: DayPlan): string {
-  const { workout, date, dayNumber } = dayPlan;
+function detectDevice(): 'mobile' | 'desktop' {
+  const userAgent = navigator.userAgent.toLowerCase();
+  const isMobile = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini|mobile/.test(userAgent);
+  const isSmallScreen = window.innerWidth < 768;
 
-  if (!workout || !workout.exercises) return '';
+  return (isMobile || isSmallScreen) ? 'mobile' : 'desktop';
+}
 
+function getUltraCreativeStyles(): string {
   return `
-<!DOCTYPE html>
+    :root {
+      --primary-dark: #0a0a0a;
+      --secondary-dark: #1a1a2e;
+      --accent-purple: #16213e;
+      --accent-blue: #0f3460;
+      --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      --gradient-4: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+      --gradient-5: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+      --neon-pink: #ff006e;
+      --neon-blue: #8338ec;
+      --neon-green: #3a86ff;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', 'Segoe UI', 'Roboto', sans-serif;
+      background: var(--primary-dark);
+      color: #ffffff;
+      line-height: 1.6;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* خلفية متحركة ثلاثية الأبعاد */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 40% 80%, rgba(120, 255, 198, 0.2) 0%, transparent 50%),
+        conic-gradient(from 0deg at 50% 50%, #667eea 0deg, #764ba2 120deg, #f093fb 240deg, #667eea 360deg);
+      background-size: 100% 100%, 100% 100%, 100% 100%, 400% 400%;
+      animation: ultraBackground 20s ease infinite;
+      pointer-events: none;
+      z-index: -2;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(45deg, transparent 24%, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.03) 26%, transparent 27%),
+        linear-gradient(-45deg, transparent 24%, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.03) 26%, transparent 27%);
+      background-size: 30px 30px;
+      animation: patternMove 25s linear infinite;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    @keyframes ultraBackground {
+      0%, 100% { 
+        background-position: 0% 0%, 0% 0%, 0% 0%, 0% 50%; 
+        filter: hue-rotate(0deg) brightness(1);
+      }
+      25% { 
+        background-position: 100% 100%, 100% 0%, 50% 50%, 100% 0%; 
+        filter: hue-rotate(90deg) brightness(1.2);
+      }
+      50% { 
+        background-position: 0% 100%, 0% 100%, 100% 0%, 100% 100%; 
+        filter: hue-rotate(180deg) brightness(0.9);
+      }
+      75% { 
+        background-position: 100% 0%, 100% 100%, 0% 100%, 0% 100%; 
+        filter: hue-rotate(270deg) brightness(1.1);
+      }
+    }
+
+    @keyframes patternMove {
+      0% { transform: translate(0, 0) rotate(0deg); }
+      100% { transform: translate(30px, 30px) rotate(360deg); }
+    }
+
+    .ultra-container {
+      max-width: 1000px;
+      margin: 20px auto;
+      background: rgba(10, 10, 10, 0.95);
+      border-radius: 30px;
+      overflow: hidden;
+      position: relative;
+      backdrop-filter: blur(20px);
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 
+        0 0 0 1px rgba(255, 255, 255, 0.05),
+        0 30px 80px rgba(0, 0, 0, 0.8),
+        0 0 100px rgba(102, 126, 234, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      animation: containerFloat 8s ease-in-out infinite;
+    }
+
+    @keyframes containerFloat {
+      0%, 100% { 
+        transform: translateY(0px) rotateX(0deg); 
+        box-shadow: 
+          0 30px 80px rgba(0, 0, 0, 0.8),
+          0 0 100px rgba(102, 126, 234, 0.3);
+      }
+      50% { 
+        transform: translateY(-15px) rotateX(2deg); 
+        box-shadow: 
+          0 45px 100px rgba(0, 0, 0, 0.9),
+          0 0 150px rgba(138, 43, 226, 0.5);
+      }
+    }
+
+    .ultra-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, 
+        var(--neon-pink) 0%, 
+        var(--neon-blue) 25%, 
+        var(--neon-green) 50%, 
+        #ffd700 75%, 
+        var(--neon-pink) 100%);
+      animation: topBorderGlow 3s ease-in-out infinite;
+    }
+
+    @keyframes topBorderGlow {
+      0%, 100% { 
+        opacity: 1; 
+        filter: brightness(1) saturate(1);
+      }
+      50% { 
+        opacity: 0.7; 
+        filter: brightness(1.5) saturate(1.5);
+      }
+    }
+
+    .ultra-header {
+      background: linear-gradient(135deg, 
+        #0a0a0a 0%, 
+        #1a1a2e 25%, 
+        #16213e 50%, 
+        #0f3460 75%, 
+        #000000 100%);
+      background-size: 400% 400%;
+      animation: headerGradientUltra 12s ease infinite;
+      color: white;
+      padding: 50px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    }
+
+    @keyframes headerGradientUltra {
+      0%, 100% { background-position: 0% 50%; }
+      25% { background-position: 100% 0%; }
+      50% { background-position: 100% 100%; }
+      75% { background-position: 0% 100%; }
+    }
+
+    .ultra-header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: conic-gradient(from 0deg, 
+        transparent 0deg, 
+        rgba(255, 0, 110, 0.3) 60deg,
+        transparent 120deg,
+        rgba(131, 56, 236, 0.3) 180deg,
+        transparent 240deg,
+        rgba(58, 134, 255, 0.3) 300deg,
+        transparent 360deg);
+      animation: ultraRotate 20s linear infinite;
+    }
+
+    @keyframes ultraRotate {
+      0% { transform: rotate(0deg) scale(1); }
+      50% { transform: rotate(180deg) scale(1.2); }
+      100% { transform: rotate(360deg) scale(1); }
+    }
+
+    .ultra-header::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        radial-gradient(circle at 30% 20%, rgba(255, 0, 110, 0.4) 0%, transparent 50%),
+        radial-gradient(circle at 70% 80%, rgba(131, 56, 236, 0.4) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(58, 134, 255, 0.3) 0%, transparent 70%);
+      animation: headerPulse 6s ease-in-out infinite;
+    }
+
+    @keyframes headerPulse {
+      0%, 100% { opacity: 0.8; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.05); }
+    }
+
+    .ultra-title {
+      font-size: 3.5em;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 2;
+      background: linear-gradient(45deg, 
+        #ffffff, 
+        #ff006e, 
+        #8338ec, 
+        #3a86ff, 
+        #ffffff);
+      background-size: 400% 400%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: ultraTextGlow 4s ease-in-out infinite;
+      text-shadow: 
+        0 0 20px rgba(255, 255, 255, 0.5),
+        0 0 40px rgba(255, 0, 110, 0.3),
+        0 0 60px rgba(131, 56, 236, 0.2);
+      font-weight: 900;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    @keyframes ultraTextGlow {
+      0%, 100% { 
+        background-position: 0% 50%; 
+        filter: brightness(1) saturate(1);
+      }
+      25% { 
+        background-position: 100% 0%; 
+        filter: brightness(1.3) saturate(1.2);
+      }
+      50% { 
+        background-position: 100% 100%; 
+        filter: brightness(1.5) saturate(1.5);
+      }
+      75% { 
+        background-position: 0% 100%; 
+        filter: brightness(1.2) saturate(1.3);
+      }
+    }
+
+    .ultra-subtitle {
+      font-size: 1.4em;
+      position: relative;
+      z-index: 2;
+      color: rgba(255, 255, 255, 0.9);
+      text-shadow: 0 2px 15px rgba(0, 0, 0, 0.5);
+      font-weight: 600;
+      margin-bottom: 15px;
+      animation: subtitlePulse 3s ease-in-out infinite;
+    }
+
+    @keyframes subtitlePulse {
+      0%, 100% { opacity: 0.9; }
+      50% { opacity: 1; }
+    }
+
+    .ultra-content {
+      padding: 40px;
+      position: relative;
+    }
+
+    .ultra-section {
+      margin-bottom: 40px;
+      background: rgba(26, 26, 46, 0.9);
+      border-radius: 25px;
+      padding: 35px;
+      position: relative;
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 
+        0 15px 40px rgba(0, 0, 0, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      overflow: hidden;
+    }
+
+    .ultra-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, 
+        #ff006e 0%, 
+        #8338ec 25%, 
+        #3a86ff 50%, 
+        #06ffa5 75%, 
+        #ff006e 100%);
+      animation: sectionBorderFlow 4s ease-in-out infinite;
+    }
+
+    @keyframes sectionBorderFlow {
+      0%, 100% { 
+        opacity: 0.8; 
+        background-position: 0% 50%;
+      }
+      50% { 
+        opacity: 1; 
+        background-position: 100% 50%;
+      }
+    }
+
+    .ultra-section:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 
+        0 25px 60px rgba(0, 0, 0, 0.7),
+        0 0 50px rgba(255, 0, 110, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+
+    .ultra-section-title {
+      color: #ffffff;
+      margin-bottom: 30px;
+      font-size: 2.2em;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      font-weight: 800;
+      text-shadow: 0 3px 15px rgba(0, 0, 0, 0.7);
+      background: linear-gradient(45deg, #ffffff, #ff006e, #8338ec);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: titleShimmer 5s ease-in-out infinite;
+    }
+
+    @keyframes titleShimmer {
+      0%, 100% { filter: brightness(1); }
+      50% { filter: brightness(1.3); }
+    }
+
+    .ultra-item {
+      background: rgba(15, 52, 96, 0.8);
+      margin: 25px 0;
+      padding: 30px;
+      border-radius: 20px;
+      position: relative;
+      transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      overflow: hidden;
+      box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+
+    .ultra-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.1), 
+        transparent);
+      transition: left 0.5s ease;
+    }
+
+    .ultra-item:hover::before {
+      left: 100%;
+    }
+
+    .ultra-item::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 4px;
+      background: linear-gradient(to bottom, 
+        #ff006e, 
+        #8338ec, 
+        #3a86ff, 
+        #06ffa5);
+      animation: itemBorderPulse 3s ease-in-out infinite;
+    }
+
+    @keyframes itemBorderPulse {
+      0%, 100% { 
+        opacity: 0.7; 
+        box-shadow: 0 0 10px rgba(255, 0, 110, 0.5);
+      }
+      50% { 
+        opacity: 1; 
+        box-shadow: 0 0 20px rgba(255, 0, 110, 0.8);
+      }
+    }
+
+    .ultra-item:hover {
+      transform: translateY(-10px) scale(1.03);
+      box-shadow: 
+        0 20px 50px rgba(0, 0, 0, 0.6),
+        0 0 40px rgba(255, 0, 110, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+
+    .ultra-item-title {
+      font-size: 1.6em;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 15px;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+      background: linear-gradient(45deg, #ffffff, #e2e8f0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .ultra-description {
+      color: #cbd5e1;
+      margin-bottom: 20px;
+      line-height: 1.7;
+      font-size: 1.1em;
+      text-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+    }
+
+    .ultra-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .ultra-badge {
+      background: linear-gradient(135deg, 
+        rgba(255, 0, 110, 0.2) 0%, 
+        rgba(131, 56, 236, 0.2) 100%);
+      border: 1px solid rgba(255, 0, 110, 0.3);
+      padding: 12px 15px;
+      border-radius: 15px;
+      text-align: center;
+      font-size: 0.9em;
+      color: #ffffff;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ultra-badge::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.2), 
+        transparent);
+      transition: left 0.3s ease;
+    }
+
+    .ultra-badge:hover::before {
+      left: 100%;
+    }
+
+    .ultra-badge:hover {
+      transform: scale(1.05);
+      border-color: rgba(255, 0, 110, 0.6);
+      box-shadow: 0 5px 15px rgba(255, 0, 110, 0.3);
+    }
+
+    .ultra-badge .value {
+      font-weight: bold;
+      color: #ffffff;
+      display: block;
+      font-size: 1.1em;
+    }
+
+    .ultra-badge .label {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 0.8em;
+    }
+
+    .ultra-footer {
+      text-align: center;
+      padding: 30px;
+      background: rgba(10, 10, 10, 0.9);
+      color: rgba(255, 255, 255, 0.7);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+    }
+
+    .ultra-footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, 
+        transparent 0%, 
+        #ff006e 25%, 
+        #8338ec 50%, 
+        #3a86ff 75%, 
+        transparent 100%);
+      animation: footerGlow 4s ease-in-out infinite;
+    }
+
+    @keyframes footerGlow {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+
+    .ultra-brand {
+      font-weight: bold;
+      background: linear-gradient(45deg, #ff006e, #8338ec, #3a86ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-size: 1.3em;
+      animation: brandPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes brandPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    /* تأثيرات خاصة للموبايل */
+    @media (max-width: 768px) {
+      .ultra-container {
+        margin: 10px;
+        border-radius: 20px;
+      }
+
+      .ultra-header {
+        padding: 30px 20px;
+      }
+
+      .ultra-title {
+        font-size: 2.2em;
+        letter-spacing: 1px;
+      }
+
+      .ultra-content {
+        padding: 25px;
+      }
+
+      .ultra-section {
+        padding: 25px;
+      }
+
+      .ultra-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
+
+      .ultra-badge {
+        padding: 8px 12px;
+        font-size: 0.8em;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .ultra-title {
+        font-size: 1.8em;
+      }
+
+      .ultra-subtitle {
+        font-size: 1.1em;
+      }
+
+      .ultra-section-title {
+        font-size: 1.6em;
+      }
+
+      .ultra-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* تأثيرات إضافية للطباعة */
+    @media print {
+      body {
+        background: white;
+        color: black;
+      }
+
+      .ultra-container {
+        background: white;
+        box-shadow: none;
+        border: 1px solid #ccc;
+      }
+
+      .ultra-header {
+        background: #333;
+        color: white;
+      }
+
+      .ultra-section {
+        background: #f9f9f9;
+        border: 1px solid #ddd;
+      }
+
+      .ultra-item {
+        background: white;
+        border: 1px solid #ddd;
+      }
+    }
+  `;
+}
+
+export function downloadMealPlan(dayPlan: DayPlan) {
+  if (!validateDayPlan(dayPlan) || !dayPlan.meals) {
+    console.error('بيانات الوجبات غير متوفرة');
+    return;
+  }
+
+  const device = detectDevice();
+  const isDesktop = device === 'desktop';
+
+  const htmlContent = `<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>برنامج التمرين - اليوم ${dayNumber}</title>
+    <title>💫 النظام الغذائي الإبداعي - اليوم ${dayPlan.dayNumber}</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            color: #333;
-            direction: rtl;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .header {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 30px;
-            text-align: center;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
-            backdrop-filter: blur(10px);
-        }
-
-        .logo {
-            font-size: 2.5em;
-            font-weight: bold;
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
-        }
-
-        .workout-title {
-            font-size: 1.8em;
-            color: #333;
-            margin-bottom: 10px;
-        }
-
-        .workout-info {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-top: 20px;
-            flex-wrap: wrap;
-        }
-
-        .info-item {
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 25px;
-            font-weight: bold;
-        }
-
-        .exercises-container {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(10px);
-        }
-
-        .exercises-title {
-            font-size: 1.5em;
-            text-align: center;
-            margin-bottom: 30px;
-            color: #333;
-            position: relative;
-        }
-
-        .exercises-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 3px;
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            border-radius: 2px;
-        }
-
-        .exercise-card {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 20px;
-            border-left: 5px solid #667eea;
-            transition: transform 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .exercise-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 100px;
-            height: 100px;
-            background: linear-gradient(45deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
-            border-radius: 50%;
-            transform: translate(30px, -30px);
-        }
-
-        .exercise-name {
-            font-size: 1.3em;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 15px;
-        }
-
-        .exercise-details {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-
-        .detail-item {
-            background: rgba(255, 255, 255, 0.8);
-            padding: 10px 15px;
-            border-radius: 10px;
-            text-align: center;
-            border: 2px solid rgba(102, 126, 234, 0.2);
-        }
-
-        .detail-label {
-            font-size: 0.9em;
-            color: #666;
-            margin-bottom: 5px;
-        }
-
-        .detail-value {
-            font-weight: bold;
-            color: #333;
-            font-size: 1.1em;
-        }
-
-        .exercise-notes {
-            background: rgba(102, 126, 234, 0.1);
-            padding: 15px;
-            border-radius: 10px;
-            color: #333;
-            font-style: italic;
-            border-right: 3px solid #667eea;
-        }
-
-        .footer {
-            text-align: center;
-            margin-top: 30px;
-            color: rgba(255, 255, 255, 0.8);
-        }
-
-        .download-info {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 15px;
-            margin-top: 20px;
-            backdrop-filter: blur(10px);
-        }
-
-        @media print {
-            body {
-                background: white;
-                color: black;
-            }
-
-            .header, .exercises-container {
-                background: white;
-                box-shadow: none;
-            }
-        }
-
-        @media (max-width: 600px) {
-            .container {
-                padding: 10px;
-            }
-
-            .header, .exercises-container {
-                padding: 20px;
-            }
-
-            .workout-info {
-                flex-direction: column;
-                gap: 10px;
-            }
-
-            .exercise-details {
-                grid-template-columns: 1fr;
-            }
-        }
+        ${getUltraCreativeStyles()}
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <div class="logo">💪 DARWFIT</div>
-            <h1 class="workout-title">${workout.title}</h1>
-            <div class="workout-info">
-                <div class="info-item">📅 ${date}</div>
-                <div class="info-item">🗓️ اليوم ${dayNumber}</div>
-                <div class="info-item">⏱️ ${workout.duration}</div>
-                <div class="info-item">🏋️ ${workout.exercises.length} تمارين</div>
-            </div>
-        </div>
-
-        <div class="exercises-container">
-            <h2 class="exercises-title">🎯 التمارين اليومية</h2>
-
-            ${workout.exercises.map((exercise, index) => `
-                <div class="exercise-card">
-                    <h3 class="exercise-name">${index + 1}. ${exercise.name}</h3>
-                    <div class="exercise-details">
-                        <div class="detail-item">
-                            <div class="detail-label">عدد المجموعات</div>
-                            <div class="detail-value">${exercise.sets}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">التكرار</div>
-                            <div class="detail-value">${exercise.reps}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">الراحة</div>
-                            <div class="detail-value">${exercise.rest}</div>
-                        </div>
-                        ${exercise.weight ? `
-                        <div class="detail-item" style="background: linear-gradient(45deg, #3b82f6, #1d4ed8); color: white;">
-                            <div class="detail-label" style="color: rgba(255,255,255,0.9);">الوزن</div>
-                            <div class="detail-value" style="color: white; font-size: 1.2em;">🏋️ ${exercise.weight} كجم</div>
-                        </div>
-                        ` : ''}
-                    </div>
-                    ${exercise.notes ? `
-                        <div class="exercise-notes">
-                            💡 <strong>ملاحظات:</strong> ${exercise.notes}
-                        </div>
-                    ` : ''}
+    <div class="ultra-container">
+        <div class="ultra-header">
+            <h1 class="ultra-title">🍽️ النظام الغذائي</h1>
+            <p class="ultra-subtitle">📅 اليوم ${dayPlan.dayNumber} - ${dayPlan.date}</p>
+            <div class="ultra-grid" style="margin-top: 25px;">
+                <div class="ultra-badge">
+                    <span class="value">${dayPlan.totalCalories}</span>
+                    <span class="label">سعرة حرارية</span>
                 </div>
-            `).join('')}
+                <div class="ultra-badge">
+                    <span class="value">${dayPlan.totalProtein}جم</span>
+                    <span class="label">بروتين</span>
+                </div>
+                <div class="ultra-badge">
+                    <span class="value">${dayPlan.totalCarbs}جم</span>
+                    <span class="label">كربوهيدرات</span>
+                </div>
+                <div class="ultra-badge">
+                    <span class="value">${dayPlan.totalFats}جم</span>
+                    <span class="label">دهون</span>
+                </div>
+            </div>
         </div>
 
-        <div class="footer">
-            <div class="download-info">
-                <p>📱 تم إنشاء هذا البرنامج بواسطة تطبيق داروفت</p>
-                <p>💪 استمر في التمرين وحقق أهدافك!</p>
-                <p>📞 للاستفسارات: WhatsApp</p>
+        <div class="ultra-content">
+            <div class="ultra-section">
+                <h2 class="ultra-section-title">🌅 الإفطار</h2>
+                ${dayPlan.meals.breakfast.map(meal => `
+                    <div class="ultra-item">
+                        <div class="ultra-item-title">${meal.name}</div>
+                        <div class="ultra-description">${meal.description}</div>
+                        <div class="ultra-grid">
+                            <div class="ultra-badge">
+                                <span class="value">${meal.calories}</span>
+                                <span class="label">سعرة</span>
+                            </div>
+                            <div class="ultra-badge">
+                                <span class="value">${meal.protein}جم</span>
+                                <span class="label">بروتين</span>
+                            </div>
+                            <div class="ultra-badge">
+                                <span class="value">${meal.carbs}جم</span>
+                                <span class="label">كربوهيدرات</span>
+                            </div>
+                            <div class="ultra-badge">
+                                <span class="value">${meal.fats}جم</span>
+                                <span class="label">دهون</span>
+                            </div>
+                        </div>
+                    </div>
+                `).join('')}
             </div>
+
+            <div class="ultra-section">
+                <h2 class="ultra-section-title">☀️ الغداء</h2>
+                ${dayPlan.meals.lunch.map(meal => `
+                    <div class="ultra-item">
+                        <div class="ultra-item-title">${meal.name}</div>
+                        <div class="ultra-description">${meal.description}</div>
+                        <div class="ultra-grid">
+                            <div class="ultra-badge">
+                                <span class="value">${meal.calories}</span>
+                                <span class="label">سعرة</span>
+                            </div>
+                            <div class="ultra-badge">
+                                <span class="value">${meal.protein}جم</span>
+                                <span class="label">بروتين</span>
+                            </div>
+                            <div class="ultra-badge">                                <span class="value">${meal.carbs}جم</span>
+                                <span class="label">كربوهيدرات</span>
+                            </div>
+                            <div class="ultra-badge">
+                                <span class="value">${meal.fats}جم</span>
+                                <span class="label">دهون</span>
+                            </div>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+
+            <div class="ultra-section">
+                <h2 class="ultra-section-title">🌙 العشاء</h2>
+                ${dayPlan.meals.dinner.map(meal => `
+                    <div class="ultra-item">
+                        <div class="ultra-item-title">${meal.name}</div>
+                        <div class="ultra-description">${meal.description}</div>
+                        <div class="ultra-grid">
+                            <div class="ultra-badge">
+                                <span class="value">${meal.calories}</span>
+                                <span class="label">سعرة</span>
+                            </div>
+                            <div class="ultra-badge">
+                                <span class="value">${meal.protein}جم</span>
+                                <span class="label">بروتين</span>
+                            </div>
+                            <div class="ultra-badge">
+                                <span class="value">${meal.carbs}جم</span>
+                                <span class="label">كربوهيدرات</span>
+                            </div>
+                            <div class="ultra-badge">
+                                <span class="value">${meal.fats}جم</span>
+                                <span class="label">دهون</span>
+                            </div>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+
+            ${dayPlan.meals.snacks && dayPlan.meals.snacks.length > 0 ? `
+            <div class="ultra-section">
+                <h2 class="ultra-section-title">🍎 الوجبات الخفيفة</h2>
+                ${dayPlan.meals.snacks.map(meal => `
+                    <div class="ultra-item">
+                        <div class="ultra-item-title">${meal.name}</div>
+                        <div class="ultra-description">${meal.description}</div>
+                        <div class="ultra-grid">
+                            <div class="ultra-badge">
+                                <span class="value">${meal.calories}</span>
+                                <span class="label">سعرة</span>
+                            </div>
+                            <div class="ultra-badge">
+                                <span class="value">${meal.protein}جم</span>
+                                <span class="label">بروتين</span>
+                            </div>
+                            <div class="ultra-badge">
+                                <span class="value">${meal.carbs}جم</span>
+                                <span class="label">كربوهيدرات</span>
+                            </div>
+                            <div class="ultra-badge">
+                                <span class="value">${meal.fats}جم</span>
+                                <span class="label">دهون</span>
+                            </div>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+            ` : ''}
+        </div>
+
+        <div class="ultra-footer">
+            <p>💫 تم إنشاؤه بواسطة <span class="ultra-brand">داروفت</span></p>
+            <p>🥗 تناول طعامك بانتظام واشرب الماء كثيراً!</p>
+            <p>🎯 ${isDesktop ? 'نسخة كمبيوتر محسّنة' : 'نسخة جوال محسّنة'}</p>
+            <p>📞 للاستفسارات تواصل معنا عبر واتساب</p>
         </div>
     </div>
 </body>
 </html>`;
+
+  downloadHTML(htmlContent, `ultra-meal-plan-${device}-day-${dayPlan.dayNumber}-${dayPlan.date}.html`);
+}
+
+export function downloadWorkoutPlan(dayPlan: DayPlan) {
+  if (!validateDayPlan(dayPlan)) {
+    console.error('بيانات التمرين غير متوفرة');
+    return;
+  }
+
+  const device = detectDevice();
+  const isDesktop = device === 'desktop';
+
+  const htmlContent = `<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💪 برنامج التمارين الإبداعي - اليوم ${dayPlan.dayNumber}</title>
+    <style>
+        ${getUltraCreativeStyles()}
+
+        .exercise-details {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+          gap: 15px;
+          margin-top: 20px;
+        }
+
+        .rest-day {
+          text-align: center;
+          padding: 60px 40px;
+          background: rgba(16, 185, 129, 0.1);
+          border-radius: 20px;
+          border: 2px dashed rgba(16, 185, 129, 0.3);
+        }
+
+        .rest-day-icon {
+          font-size: 64px;
+          margin-bottom: 20px;
+          animation: floatIcon 3s ease-in-out infinite;
+        }
+
+        @keyframes floatIcon {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-10px); }
+        }
+
+        .rest-day h2 {
+          color: #10b981;
+          font-size: 2.5em;
+          margin-bottom: 15px;
+          text-shadow: 0 2px 10px rgba(16, 185, 129, 0.5);
+        }
+
+        .motivational-quote {
+          background: linear-gradient(135deg, 
+            rgba(255, 0, 110, 0.2) 0%, 
+            rgba(131, 56, 236, 0.2) 100%);
+          padding: 30px;
+          border-radius: 20px;
+          margin: 30px 0;
+          text-align: center;
+          font-size: 1.3em;
+          font-weight: 600;
+          color: #ffffff;
+          border: 2px solid rgba(255, 0, 110, 0.3);
+          position: relative;
+          overflow: hidden;
+        }
+
+        .motivational-quote::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, 
+            transparent, 
+            rgba(255, 255, 255, 0.1), 
+            transparent);
+          animation: quoteShine 3s ease-in-out infinite;
+        }
+
+        @keyframes quoteShine {
+          0% { left: -100%; }
+          100% { left: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="ultra-container">
+        <div class="ultra-header">
+            <h1 class="ultra-title">💪 برنامج التمارين</h1>
+            <p class="ultra-subtitle">📅 اليوم ${dayPlan.dayNumber} - ${dayPlan.date}</p>
+            <p class="ultra-subtitle">⏱️ المدة المتوقعة: ${dayPlan.workout.duration}</p>
+        </div>
+
+        <div class="ultra-content">
+            ${dayPlan.workout.exercises.length === 0 ? `
+                <div class="rest-day">
+                    <div class="rest-day-icon">🛌</div>
+                    <h2>يوم راحة مستحق</h2>
+                    <p style="color: #cbd5e1; font-size: 1.2em; margin-top: 15px;">
+                        استمتع بيوم راحتك! يمكنك ممارسة إطالات خفيفة أو المشي في الطبيعة
+                    </p>
+                    <div class="motivational-quote" style="margin-top: 30px;">
+                        🌟 "الراحة جزء مهم من التدريب - اعطِ جسمك الوقت للتعافي والنمو" 🌟
+                    </div>
+                </div>
+            ` : `
+                <div class="ultra-section">
+                    <h2 class="ultra-section-title">🏋️ ${dayPlan.workout.title}</h2>
+
+                    <div class="ultra-grid" style="margin-bottom: 30px;">
+                        <div class="ultra-badge">
+                            <span class="value">${dayPlan.workout.exercises.length}</span>
+                            <span class="label">تمارين</span>
+                        </div>
+                        <div class="ultra-badge">
+                            <span class="value">${dayPlan.workout.duration}</span>
+                            <span class="label">المدة</span>
+                        </div>
+                        <div class="ultra-badge">
+                            <span class="value">${dayPlan.totalCalories || 'متغير'}</span>
+                            <span class="label">سعرة محروقة</span>
+                        </div>
+                        <div class="ultra-badge">
+                            <span class="value">${isDesktop ? 'كمبيوتر' : 'جوال'}</span>
+                            <span class="label">النسخة</span>
+                        </div>
+                    </div>
+
+                    ${dayPlan.workout.exercises.map((exercise, index) => `
+                        <div class="ultra-item">
+                            <div class="ultra-item-title">
+                                ${index + 1}. ${exercise.name}
+                            </div>
+                            <div class="exercise-details">
+                                <div class="ultra-badge">
+                                    <span class="value">${exercise.sets}</span>
+                                    <span class="label">مجموعات</span>
+                                </div>
+                                <div class="ultra-badge">
+                                    <span class="value">${exercise.reps}</span>
+                                    <span class="label">تكرارات</span>
+                                </div>
+                                <div class="ultra-badge">
+                                    <span class="value">${exercise.rest}</span>
+                                    <span class="label">راحة</span>
+                                </div>
+                                ${exercise.weight ? `
+                                <div class="ultra-badge" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(29, 78, 216, 0.3)); border-color: rgba(59, 130, 246, 0.5);">
+                                    <span class="value">🏋️ ${exercise.weight} كجم</span>
+                                    <span class="label">الوزن</span>
+                                </div>
+                                ` : ''}
+                            </div>
+                            ${exercise.notes ? `
+                                <div class="ultra-description" style="margin-top: 15px; padding: 15px; background: rgba(255, 0, 110, 0.1); border-radius: 10px; border-right: 3px solid #ff006e;">
+                                    💡 <strong>ملاحظات:</strong> ${exercise.notes}
+                                </div>
+                            ` : ''}
+                        </div>
+                    `).join('')}
+                </div>
+
+                <div class="motivational-quote">
+                    🔥 "النجاح يبدأ بخطوة واحدة، والتفوق يحتاج للاستمرار" 🔥
+                </div>
+            `}
+        </div>
+
+        <div class="ultra-footer">
+            <p>💪 تم إنشاؤه بواسطة <span class="ultra-brand">داروفت</span></p>
+            <p>🏃‍♂️ مارس تمارينك بانتظام واشرب الماء!</p>
+            <p>🎯 ${isDesktop ? 'نسخة كمبيوتر محسّنة' : 'نسخة جوال محسّنة'}</p>
+            <p>📱 للاستفسارات تواصل معنا عبر واتساب</p>
+        </div>
+    </div>
+</body>
+</html>`;
+
+  downloadHTML(htmlContent, `ultra-workout-${device}-day-${dayPlan.dayNumber}-${dayPlan.date}.html`);
+}
+
+export function generateWorkoutHTML(dayPlan: DayPlan): string {
+  return downloadWorkoutPlan(dayPlan) || '';
 }
 
 export function generateMealPlanHTML(dayPlan: DayPlan): string {
-  const { meals, date, dayNumber, totalCalories, totalProtein, totalCarbs, totalFats } = dayPlan;
-
-  if (!meals) return '';
-
-  const renderMeal = (mealName: string, mealItems: any[], emoji: string) => {
-    if (!mealItems || mealItems.length === 0) return '';
-
-    const mealCalories = mealItems.reduce((sum, item) => sum + (item.calories || 0), 0);
-    const mealProtein = mealItems.reduce((sum, item) => sum + (item.protein || 0), 0);
-    const mealCarbs = mealItems.reduce((sum, item) => sum + (item.carbs || 0), 0);
-    const mealFats = mealItems.reduce((sum, item) => sum + (item.fats || 0), 0);
-
-    return `
-      <div class="meal-section">
-        <h3 class="meal-title">${emoji} ${mealName}</h3>
-        <div class="meal-summary">
-          <span class="calorie-badge">${mealCalories} سعرة</span>
-          <span class="macro-info">بروتين: ${mealProtein.toFixed(1)}جم | كربوهيدرات: ${mealCarbs.toFixed(1)}جم | دهون: ${mealFats.toFixed(1)}جم</span>
-        </div>
-        <div class="meal-items">
-          ${mealItems.map(item => `
-            <div class="meal-item">
-              <div class="item-info">
-                <h4 class="item-name">${item.name || 'وجبة'}</h4>
-                <p class="item-amount">${item.description || item.amount || 'غير محدد'}</p>
-              </div>
-              <div class="item-nutrition">
-                <div class="nutrition-grid">
-                  <div class="nutrition-item">
-                    <span class="nutrition-label">سعرات</span>
-                    <span class="nutrition-value">${item.calories || 0}</span>
-                  </div>
-                  <div class="nutrition-item">
-                    <span class="nutrition-label">بروتين</span>
-                    <span class="nutrition-value">${item.protein || 0}جم</span>
-                  </div>
-                  <div class="nutrition-item">
-                    <span class="nutrition-label">كربوهيدرات</span>
-                    <span class="nutrition-value">${item.carbs || 0}جم</span>
-                  </div>
-                  <div class="nutrition-item">
-                    <span class="nutrition-label">دهون</span>
-                    <span class="nutrition-value">${item.fats || 0}جم</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          `).join('')}
-        </div>
-      </div>
-    `;
-  };
-
-  return `
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>النظام الغذائي - اليوم ${dayNumber}</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #43cea2 0%, #185a9d 100%);
-            min-height: 100vh;
-            color: #333;
-            direction: rtl;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .header {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 30px;
-            text-align: center;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
-            backdrop-filter: blur(10px);
-        }
-
-        .logo {
-            font-size: 2.5em;
-            font-weight: bold;
-            background: linear-gradient(45deg, #43cea2, #185a9d);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
-        }
-
-        .plan-title {
-            font-size: 1.8em;
-            color: #333;
-            margin-bottom: 20px;
-        }
-
-        .daily-summary {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .summary-item {
-            background: linear-gradient(45deg, #43cea2, #185a9d);
-            color: white;
-            padding: 15px;
-            border-radius: 15px;
-            text-align: center;
-        }
-
-        .summary-value {
-            font-size: 1.5em;
-            font-weight: bold;
-            display: block;
-        }
-
-        .summary-label {
-            font-size: 0.9em;
-            opacity: 0.9;
-        }
-
-        .meals-container {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(10px);
-        }
-
-        .meal-section {
-            margin-bottom: 40px;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        .meal-title {
-            background: linear-gradient(135deg, #43cea2, #185a9d);
-            color: white;
-            padding: 20px;
-            margin: 0;
-            font-size: 1.3em;
-            text-align: center;
-        }
-
-        .meal-summary {
-            background: rgba(67, 206, 162, 0.1);
-            padding: 15px;
-            text-align: center;
-            border-bottom: 2px solid rgba(67, 206, 162, 0.2);
-        }
-
-        .calorie-badge {
-            background: linear-gradient(45deg, #43cea2, #185a9d);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-weight: bold;
-            margin-left: 10px;
-        }
-
-        .macro-info {
-            color: #666;
-            font-size: 0.9em;
-        }
-
-        .meal-items {
-            background: white;
-            padding: 20px;
-        }
-
-        .meal-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px;
-            margin-bottom: 15px;
-            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-            border-radius: 12px;
-            border-right: 4px solid #43cea2;
-        }
-
-        .item-info {
-            flex: 1;
-        }
-
-        .item-name {
-            font-size: 1.1em;
-            color: #333;
-            margin-bottom: 5px;
-        }
-
-        .item-amount {
-            color: #666;
-            font-size: 0.9em;
-        }
-
-        .item-nutrition {
-            flex: 1;
-            max-width: 300px;
-        }
-
-        .nutrition-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
-        }
-
-        .nutrition-item {
-            background: rgba(67, 206, 162, 0.1);
-            padding: 8px;
-            border-radius: 8px;
-            text-align: center;
-        }
-
-        .nutrition-label {
-            display: block;
-            font-size: 0.8em;
-            color: #666;
-            margin-bottom: 2px;
-        }
-
-        .nutrition-value {
-            display: block;
-            font-weight: bold;
-            color: #333;
-        }
-
-        .footer {
-            text-align: center;
-            margin-top: 30px;
-            color: rgba(255, 255, 255, 0.8);
-        }
-
-        .download-info {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 15px;
-            margin-top: 20px;
-            backdrop-filter: blur(10px);
-        }
-
-        @media print {
-            body {
-                background: white;
-                color: black;
-            }
-
-            .header, .meals-container {
-                background: white;
-                box-shadow: none;
-            }
-        }
-
-        @media (max-width: 600px) {
-            .container {
-                padding: 10px;
-            }
-
-            .header, .meals-container {
-                padding: 20px;
-            }
-
-            .daily-summary {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .meal-item {
-                flex-direction: column;
-                gap: 15px;
-                align-items: stretch;
-            }
-
-            .nutrition-grid {
-                grid-template-columns: repeat(4, 1fr);
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <div class="logo">🍽️ DARWFIT</div>
-            <h1 class="plan-title">النظام الغذائي اليومي</h1>
-            <div class="daily-summary">
-                <div class="summary-item">
-                    <span class="summary-value">📅</span>
-                    <span class="summary-label">${date}</span>
-                </div>
-                <div class="summary-item">
-                    <span class="summary-value">${dayNumber}</span>
-                    <span class="summary-label">رقم اليوم</span>
-                </div>
-                <div class="summary-item">
-                    <span class="summary-value">${totalCalories}</span>
-                    <span class="summary-label">إجمالي السعرات</span>
-                </div>
-                <div class="summary-item">
-                    <span class="summary-value">${totalProtein.toFixed(1)}جم</span>
-                    <span class="summary-label">البروتين</span>
-                </div>
-                <div class="summary-item">
-                    <span class="summary-value">${totalCarbs.toFixed(1)}جم</span>
-                    <span class="summary-label">الكربوهيدرات</span>
-                </div>
-                <div class="summary-item">
-                    <span class="summary-value">${totalFats.toFixed(1)}جم</span>
-                    <span class="summary-label">الدهون</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="meals-container">
-            ${renderMeal('الإفطار', meals.breakfast || [], '🌅')}
-            ${renderMeal('الغداء', meals.lunch || [], '☀️')}
-            ${renderMeal('العشاء', meals.dinner || [], '🌙')}
-            ${meals.snacks && meals.snacks.length > 0 ? renderMeal('الوجبات الخفيفة', meals.snacks, '🍎') : ''}
-        </div>
-
-        <div class="footer">
-            <div class="download-info">
-                <p>🍽️ تم إنشاء هذا النظام الغذائي بواسطة تطبيق داروفت</p>
-                <p>💚 تناول طعامك بانتظام واشرب الماء!</p>
-                <p>📞 للاستفسارات: WhatsApp</p>
-            </div>
-        </div>
-    </div>
-</body>
-</html>`;
+  return downloadMealPlan(dayPlan) || '';
 }
 
 export function downloadHTML(htmlContent: string, filename: string) {
-  // التحقق من وجود المحتوى
   if (!htmlContent || htmlContent.trim().length === 0) {
     console.error('محتوى HTML فارغ');
     return;
   }
 
   try {
-    // إنشاء blob مع تحديد النوع بوضوح
     const blob = new Blob([htmlContent], { 
       type: 'text/html;charset=utf-8' 
     });
 
-    // التحقق من حجم الملف
     if (blob.size === 0) {
       console.error('حجم الملف صفر');
       return;
@@ -704,7 +1083,6 @@ export function downloadHTML(htmlContent: string, filename: string) {
     document.body.appendChild(link);
     link.click();
 
-    // تنظيف بعد التحميل
     setTimeout(() => {
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
@@ -715,1626 +1093,11 @@ export function downloadHTML(htmlContent: string, filename: string) {
   }
 }
 
-export function downloadMealPlan(dayPlan: DayPlan) {
-  // التحقق من وجود البيانات
-  if (!validateDayPlan(dayPlan) || !dayPlan.meals) {
-    console.error('بيانات الوجبات غير متوفرة');
-    return;
-  }
-
-  const htmlContent = `<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>النظام الغذائي الإبداعي - اليوم ${dayPlan.dayNumber}</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Tajawal', 'Arial', sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 25%, #312e81 50%, #1e293b 75%, #0f172a 100%);
-            background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
-            min-height: 100vh;
-            padding: 20px;
-            direction: rtl;
-            position: relative;
-            overflow-x: hidden;
-        }
-
-        @keyframes gradientShift {
-            0%, 100% { background-position: 0% 50%; }
-            25% { background-position: 100% 50%; }
-            50% { background-position: 100% 100%; }
-            75% { background-position: 0% 100%; }
-        }
-
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(120, 255, 198, 0.2) 0%, transparent 50%);
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        body::after {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                linear-gradient(45deg, transparent 24%, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.05) 26%, transparent 27%, transparent 74%, rgba(255,255,255,0.05) 75%, rgba(255,255,255,0.05) 76%, transparent 77%);
-            background-size: 50px 50px;
-            animation: movePattern 20s linear infinite;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        @keyframes movePattern {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(50px, 50px); }
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            background: rgba(15, 23, 42, 0.95);
-            border-radius: 25px;
-            overflow: hidden;
-            box-shadow: 
-                0 0 0 1px rgba(148, 163, 184, 0.3),
-                0 25px 80px rgba(0,0,0,0.6),
-                0 0 100px rgba(168, 85, 247, 0.4),
-                inset 0 1px 0 rgba(255,255,255,0.1);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(148, 163, 184, 0.2);
-            position: relative;
-            animation: containerFloat 6s ease-in-out infinite;
-        }
-
-        @keyframes containerFloat {
-            0%, 100% { transform: translateY(0px) rotateX(0deg); }
-            50% { transform: translateY(-10px) rotateX(2deg); }
-        }
-
-        .container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, 
-                #8b5cf6 0%, 
-                #06b6d4 25%, 
-                #10b981 50%, 
-                #f59e0b 75%, 
-                #ef4444 100%);
-            animation: shimmer 3s ease-in-out infinite;
-        }
-
-        @keyframes shimmer {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-
-        .header {
-            background: linear-gradient(135deg, 
-                #1e1b4b 0%, 
-                #3730a3 25%, 
-                #7c3aed 50%, 
-                #c026d3 75%, 
-                #e11d48 100%);
-            background-size: 300% 300%;
-            animation: headerGradient 8s ease infinite;
-            color: white;
-            padding: 40px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        @keyframes headerGradient {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-
-        .header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: conic-gradient(from 0deg, 
-                transparent, 
-                rgba(255,255,255,0.3), 
-                transparent, 
-                rgba(255,255,255,0.1), 
-                transparent);
-            animation: rotateComplex 15s linear infinite;
-        }
-
-        @keyframes rotateComplex {
-            0% { transform: rotate(0deg) scale(1); }
-            50% { transform: rotate(180deg) scale(1.1); }
-            100% { transform: rotate(360deg) scale(1); }
-        }
-
-        .header::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                radial-gradient(circle at 30% 20%, rgba(168, 85, 247, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 70% 80%, rgba(59, 130, 246, 0.3) 0%, transparent 50%);
-            animation: pulse 4s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 0.7; }
-            50% { opacity: 1; }
-        }
-
-        .header h1 {
-            font-size: 2.8em;
-            margin-bottom: 15px;
-            position: relative;
-            z-index: 2;
-            background: linear-gradient(45deg, #ffffff, #e2e8f0, #ffffff, #cbd5e1);
-            background-size: 300% 300%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: textShine 3s ease-in-out infinite;
-            text-shadow: 0 0 30px rgba(255,255,255,0.5);
-            font-weight: 900;
-            letter-spacing: 2px;
-        }
-
-        @keyframes textShine {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-
-        .header p {
-            font-size: 1.3em;
-            position: relative;
-            z-index: 2;
-            color: rgba(255,255,255,0.95);
-            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .nutrition-summary {
-            background: rgba(255,255,255,0.2);
-            padding: 20px;
-            margin-top: 20px;
-            border-radius: 15px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .nutrition-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
-        }
-
-        .nutrition-item {
-            text-align: center;
-            background: rgba(255,255,255,0.2);
-            padding: 10px;
-            border-radius: 10px;
-        }
-
-        .nutrition-value {
-            font-size: 1.3em;
-            font-weight: bold;
-            display: block;
-        }
-
-        .nutrition-label {
-            font-size: 0.9em;
-            opacity: 0.9;
-        }
-
-        .content {
-            padding: 30px;
-        }
-
-        .meal-section {
-            margin-bottom: 35px;
-            background: rgba(30, 41, 59, 0.9);
-            border-radius: 20px;
-            padding: 30px;
-            border-right: 4px solid transparent;
-            background-clip: padding-box;
-            position: relative;
-            box-shadow: 
-                0 8px 32px rgba(0,0,0,0.4),
-                inset 0 1px 0 rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-        }
-
-        .meal-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            width: 4px;
-            background: linear-gradient(to bottom, #8b5cf6, #06b6d4, #10b981, #f59e0b);
-            border-radius: 0 20px 20px 0;
-            animation: borderGlow 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes borderGlow {
-            0% { box-shadow: 0 0 10px rgba(139, 92, 246, 0.6); }
-            100% { box-shadow: 0 0 20px rgba(139, 92, 246, 1), 0 0 30px rgba(139, 92, 246, 0.8); }
-        }
-
-        .meal-section:hover {
-            transform: translateY(-5px);
-            box-shadow: 
-                0 15px 40px rgba(0,0,0,0.6),
-                0 0 30px rgba(139, 92, 246, 0.3),
-                inset 0 1px 0 rgba(255,255,255,0.2);
-        }
-
-        .meal-section h2 {
-            color: #e2e8f0;
-            margin-bottom: 25px;
-            font-size: 1.8em;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            font-weight: 800;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-            background: linear-gradient(45deg, #ffffff, #cbd5e1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .meal-item {
-            background: rgba(51, 65, 85, 0.8);
-            margin: 20px 0;
-            padding: 25px;
-            border-radius: 16px;
-            box-shadow: 
-                0 8px 25px rgba(0,0,0,0.3),
-                inset 0 1px 0 rgba(255,255,255,0.1);
-            border-right: 4px solid transparent;
-            position: relative;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            backdrop-filter: blur(10px);
-            overflow: hidden;
-        }
-
-        .meal-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            width: 4px;
-            background: linear-gradient(to bottom, #f59e0b, #ef4444, #ec4899);
-            animation: itemBorderPulse 3s ease-in-out infinite;
-        }
-
-        @keyframes itemBorderPulse {
-            0%, 100% { opacity: 0.7; }
-            50% { opacity: 1; }
-        }
-
-        .meal-item::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: conic-gradient(from 0deg, transparent, rgba(245, 158, 11, 0.1), transparent);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            animation: rotate 8s linear infinite;
-        }
-
-        .meal-item:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 
-                0 15px 40px rgba(0,0,0,0.4),
-                0 0 30px rgba(245, 158, 11, 0.3),
-                inset 0 1px 0 rgba(255,255,255,0.2);
-        }
-
-        .meal-item:hover::after {
-            opacity: 1;
-        }
-
-        .meal-name {
-            font-size: 1.4em;
-            font-weight: 800;
-            color: #f1f5f9;
-            margin-bottom: 12px;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.3);
-            background: linear-gradient(45deg, #ffffff, #e2e8f0);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .meal-description {
-            color: #cbd5e1;
-            margin-bottom: 15px;
-            line-height: 1.6;
-            font-size: 1.05em;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
-        }
-
-        .meal-nutrition {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-            gap: 8px;
-            margin-top: 10px;
-        }
-
-        .nutrition-badge {
-            background: rgba(16, 185, 129, 0.1);
-            padding: 5px 8px;
-            border-radius: 6px;
-            text-align: center;
-            font-size: 0.8em;
-        }
-
-        .nutrition-badge .value {
-            font-weight: bold;
-            color: #059669;
-            display: block;
-        }
-
-        .nutrition-badge .label {
-            color: #6b7280;
-            font-size: 0.8em;
-        }
-
-        .footer {
-            text-align: center;
-            padding: 20px;
-            background: rgba(107, 114, 128, 0.1);
-            color: #6b7280;
-        }
-
-        .brand {
-            font-weight: bold;
-            color: #10b981;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                margin: 10px;
-                border-radius: 15px;
-            }
-
-            .header {
-                padding: 20px;
-            }
-
-            .header h1 {
-                font-size: 1.8em;
-            }
-
-            .content {
-                padding: 20px;
-            }
-
-            .nutrition-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .meal-nutrition {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>🍽️ النظام الغذائي</h1>
-            <p>📅 اليوم ${dayPlan.dayNumber} - ${dayPlan.date}</p>
-            <div class="nutrition-summary">
-                <h3>📊 الملخص الغذائي اليومي</h3>
-                <div class="nutrition-grid">
-                    <div class="nutrition-item">
-                        <span class="nutrition-value">${dayPlan.totalCalories}</span>
-                        <span class="nutrition-label">سعرة حرارية</span>
-                    </div>
-                    <div class="nutrition-item">
-                        <span class="nutrition-value">${dayPlan.totalProtein}جم</span>
-                        <span class="nutrition-label">بروتين</span>
-                    </div>
-                    <div class="nutrition-item">
-                        <span class="nutrition-value">${dayPlan.totalCarbs}جم</span>
-                        <span class="nutrition-label">كربوهيدرات</span>
-                    </div>
-                    <div class="nutrition-item">
-                        <span class="nutrition-value">${dayPlan.totalFats}جم</span>
-                        <span class="nutrition-label">دهون</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="content">
-            <div class="meal-section">
-                <h2>🌅 الإفطار</h2>
-                ${dayPlan.meals.breakfast.map(meal => `
-                    <div class="meal-item">
-                        <div class="meal-name">${meal.name}</div>
-                        <div class="meal-description">${meal.description}</div>
-                        <div class="meal-nutrition">
-                            <div class="nutrition-badge">
-                                <span class="value">${meal.calories}</span>
-                                <span class="label">سعرة</span>
-                            </div>
-                            <div class="nutrition-badge">
-                                <span class="value">${meal.protein}جم</span>
-                                <span class="label">بروتين</span>
-                            </div>
-                            <div class="nutrition-badge">
-                                <span class="value">${meal.carbs}جم</span>
-                                <span class="label">كربوهيدرات</span>
-                            </div>
-                            <div class="nutrition-badge">
-                                <span class="value">${meal.fats}جم</span>
-                                <span class="label">دهون</span>
-                            </div>
-                        </div>
-                    </div>
-                `).join('')}
-            </div>
-
-            <div class="meal-section">
-                <h2>☀️ الغداء</h2>
-                ${dayPlan.meals.lunch.map(meal => `
-                    <div class="meal-item">
-                        <div class="meal-name">${meal.name}</div>
-                        <div class="meal-description">${meal.description}</div>
-                        <div class="meal-nutrition">
-                            <div class="nutrition-badge">
-                                <span class="value">${meal.calories}</span>
-                                <span class="label">سعرة</span>
-                            </div>
-                            <div class="nutrition-badge">
-                                <span class="value">${meal.protein}جم</span>
-                                <span class="label">بروتين</span>
-                            </div>
-                            <div class="nutrition-badge">
-                                <span class="value">${meal.carbs}جم</span>
-                                <span class="label">كربوهيدرات</span>
-                            </div>
-                            <div class="nutrition-badge">
-                                <span class="value">${meal.fats}جم</span>
-                                <span class="label">دهون</span>
-                            </div>
-                        </div>
-                    </div>
-                `).join('')}
-            </div>
-
-            <div class="meal-section">
-                <h2>🌙 العشاء</h2>
-                ${dayPlan.meals.dinner.map(meal => `
-                    <div class="meal-item">
-                        <div class="meal-name">${meal.name}</div>
-                        <div class="meal-description">${meal.description}</div>
-                        <div class="meal-nutrition">
-                            <div class="nutrition-badge">
-                                <span class="value">${meal.calories}</span>
-                                <span class="label">سعرة</span>
-                            </div>
-                            <div class="nutrition-badge">
-                                <span class="value">${meal.protein}جم</span>
-                                <span class="label">بروتين</span>
-                            </div>
-                            <div class="nutrition-badge">
-                                <span class="value">${meal.carbs}جم</span>
-                                <span class="label">كربوهيدرات</span>
-                            </div>
-                            <div class="nutrition-badge">
-                                <span class="value">${meal.fats}جم</span>
-                                <span class="label">دهون</span>
-                            </div>
-                        </div>
-                    </div>
-                `).join('')}
-            </div>
-
-            ${dayPlan.meals.snacks && dayPlan.meals.snacks.length > 0 ? `
-            <div class="meal-section">
-                <h2>🍎 الوجبات الخفيفة</h2>
-                ${dayPlan.meals.snacks.map(meal => `
-                    <div class="meal-item">
-                        <div class="meal-name">${meal.name}</div>
-                        <div class="meal-description">${meal.description}</div>
-                        <div class="meal-nutrition">
-                            <div class="nutrition-badge">
-                                <span class="value">${meal.calories}</span>
-                                <span class="label">سعرة</span>
-                            </div>
-                            <div class="nutrition-badge">
-                                <span class="value">${meal.protein}جم</span>
-                                <span class="label">بروتين</span>
-                            </div>
-                            <div class="nutrition-badge">
-                                <span class="value">${meal.carbs}جم</span>
-                                <span class="label">كربوهيدرات</span>
-                            </div>
-                            <div class="nutrition-badge">
-                                <span class="value">${meal.fats}جم</span>
-                                <span class="label">دهون</span>
-                            </div>
-                        </div>
-                    </div>
-                `).join('')}
-            </div>
-            ` : ''}
-        </div>
-
-        <div class="footer">
-            <p>💚 تم إنشاؤه بواسطة <span class="brand">داروفت</span></p>
-            <p>🥗 تناول طعامك بانتظام واشرب الماء كثيراً!</p>
-            <p>📞 للاستفسارات تواصل معنا عبر واتساب</p>
-        </div>
-    </div>
-</body>
-</html>`;
-
-  downloadHTML(htmlContent, `meal-plan-day-${dayPlan.dayNumber}-${dayPlan.date}.html`);
-}
-
+// الدوال القديمة للتوافق مع الكود السابق
 export function downloadWorkoutPlanMobile(dayPlan: DayPlan) {
-  const htmlContent = `<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>برنامج التمارين - اليوم ${dayPlan.dayNumber}</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Arial', sans-serif;
-            background: #f8fafc;
-            color: #1a202c;
-            line-height: 1.6;
-            font-size: 16px;
-            padding: 10px;
-        }
-
-        .container {
-            max-width: 100%;
-            margin: 0 auto;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
-
-        .header {
-            background: linear-gradient(135deg, #4f46e5, #7c3aed);
-            color: white;
-            padding: 20px 15px;
-            text-align: center;
-        }
-
-        .header h1 {
-            font-size: 22px;
-            margin-bottom: 8px;
-            font-weight: bold;
-        }
-
-        .header p {
-            font-size: 14px;
-            opacity: 0.9;
-        }
-
-        .content {
-            padding: 20px 15px;
-        }
-
-        .workout-info {
-            background: #f0f9ff;
-            border-left: 4px solid #3b82f6;
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 0 8px 8px 0;
-        }
-
-        .workout-info h2 {
-            color: #1e40af;
-            font-size: 18px;
-            margin-bottom: 8px;
-        }
-
-        .workout-info p {
-            color: #374151;
-            font-size: 14px;
-        }
-
-        .exercise {
-            background: #ffffff;
-            border: 2px solid #e5e7eb;
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 15px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        .exercise-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .exercise-icon {
-            font-size: 20px;
-            margin-left: 8px;
-        }
-
-        .exercise-name {
-            font-size: 16px;
-            font-weight: bold;
-            color: #1f2937;
-            flex: 1;
-        }
-
-        .exercise-details {
-            background: #f9fafb;
-            padding: 12px;
-            border-radius: 8px;
-            margin-top: 10px;
-        }
-
-        .detail-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
-            padding: 8px 0;
-            border-bottom: 1px solid #e5e7eb;
-        }
-
-        .detail-row:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-        }
-
-        .detail-label {
-            font-weight: 600;
-            color: #4b5563;
-            font-size: 14px;
-        }
-
-        .detail-value {
-            color: #1f2937;
-            font-weight: bold;
-            font-size: 14px;
-        }
-
-        .weight-highlight {
-            background: linear-gradient(45deg, #f59e0b, #d97706);
-            color: white;
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-size: 12px;
-        }
-
-        .rest-day {
-            text-align: center;
-            padding: 40px 20px;
-        }
-
-        .rest-day-icon {
-            font-size: 48px;
-            margin-bottom: 15px;
-        }
-
-        .rest-day h2 {
-            color: #059669;
-            font-size: 20px;
-            margin-bottom: 10px;
-        }
-
-        .rest-day p {
-            color: #6b7280;
-            font-size: 14px;
-        }
-
-        .footer {
-            background: #f8fafc;
-            padding: 20px 15px;
-            text-align: center;
-            border-top: 1px solid #e5e7eb;
-        }
-
-        .footer p {
-            color: #6b7280;
-            font-size: 12px;
-            margin-bottom: 5px;
-        }
-
-        .brand {
-            color: #4f46e5;
-            font-weight: bold;
-        }
-
-        .print-friendly {
-            background: white !important;
-            color: black !important;
-        }
-
-        @media print {
-            body { background: white; }
-            .container { box-shadow: none; }
-        }
-
-        /* تحسينات خاصة للجوالات الصغيرة */
-        @media (max-width: 360px) {
-            .header h1 { font-size: 20px; }
-            .exercise-name { font-size: 15px; }
-            .detail-label, .detail-value { font-size: 13px; }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>💪 برنامج التمارين</h1>
-            <p>📅 ${dayPlan.date} - اليوم ${dayPlan.dayNumber}</p>
-        </div>
-
-        <div class="content">
-            ${dayPlan.workout.exercises.length === 0 ? `
-                <div class="rest-day">
-                    <div class="rest-day-icon">🛌</div>
-                    <h2>يوم راحة</h2>
-                    <p>استمتع بيوم راحتك! يمكنك ممارسة إطالات خفيفة أو المشي</p>
-                </div>
-            ` : `
-                <div class="workout-info">
-                    <h2>🏋️ ${dayPlan.workout.title}</h2>
-                    <p><strong>⏱️ المدة:</strong> ${dayPlan.workout.duration}</p>
-                </div>
-
-                <div class="exercises-list">
-                    ${dayPlan.workout.exercises.map((exercise, index) => `
-                        <div class="exercise">
-                            <div class="exercise-header">
-                                <span class="exercise-icon">🏋️</span>
-                                <span class="exercise-name">${exercise.name}</span>
-                            </div>
-
-                            <div class="exercise-details">
-                                <div class="detail-row">
-                                    <span class="detail-label">📊 المجموعات</span>
-                                    <span class="detail-value">${exercise.sets} مجموعات</span>
-                                </div>
-                                <div class="detail-row">
-                                    <span class="detail-label">🔢 التكرارات</span>
-                                    <span class="detail-value">${exercise.reps} تكرار</span>
-                                </div>
-                                <div class="detail-row">
-                                    <span class="detail-label">⏰ الراحة</span>
-                                    <span class="detail-value">${exercise.rest}</span>
-                                </div>
-                                ${exercise.weight && exercise.weight > 0 ? `
-                                <div class="detail-row">
-                                    <span class="detail-label">🏋️ الوزن</span>
-                                    <span class="detail-value">
-                                        <span class="weight-highlight">${exercise.weight} كجم</span>
-                                    </span>
-                                </div>
-                                ` : ''}
-                                ${exercise.notes ? `
-                                <div class="detail-row">
-                                    <span class="detail-label">📝 ملاحظات</span>
-                                    <span class="detail-value">${exercise.notes}</span>
-                                </div>
-                                ` : ''}
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
-            `}
-        </div>
-
-        <div class="footer">
-            <p>💪 تم إنشاؤه بواسطة <span class="brand">داروفت</span></p>
-            <p>🏃‍♂️ مارس تمارينك بانتظام واشرب الماء!</p>
-            <p>📱 تطبيق محسّن للجوال</p>
-        </div>
-    </div>
-
-    <script>
-        // تحسين العرض للجوال
-        document.addEventListener('DOMContentLoaded', function() {
-            // منع التكبير العشوائي على iOS
-            document.addEventListener('gesturestart', function (e) {
-                e.preventDefault();
-            });
-
-            // تحسين الأداء للجوال
-            if (window.innerWidth < 768) {
-                document.body.style.fontSize = '16px';
-            }
-        });
-    </script>
-</body>
-</html>`;
-
-  downloadHTML(htmlContent, `mobile-workout-day-${dayPlan.dayNumber}-${dayPlan.date}.html`);
+  downloadWorkoutPlan(dayPlan);
 }
 
 export function downloadMealPlanMobile(dayPlan: DayPlan) {
-  const htmlContent = `<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>النظام الغذائي - اليوم ${dayPlan.dayNumber}</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Arial', sans-serif;
-            background: #f8fafc;
-            color: #1a202c;
-            line-height: 1.6;
-            font-size: 16px;
-            padding: 10px;
-        }
-
-        .container {
-            max-width: 100%;
-            margin: 0 auto;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
-
-        .header {
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: white;
-            padding: 20px 15px;
-            text-align: center;
-        }
-
-        .header h1 {
-            font-size: 22px;
-            margin-bottom: 8px;
-            font-weight: bold;
-        }
-
-        .header p {
-            font-size: 14px;
-            opacity: 0.9;
-        }
-
-        .nutrition-summary {
-            background: #ecfdf5;
-            padding: 15px;
-            margin: 15px;
-            border-radius: 12px;
-            border: 2px solid #10b981;
-        }
-
-        .nutrition-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .nutrition-item {
-            text-align: center;
-            padding: 8px;
-            background: white;
-            border-radius: 8px;
-            border: 1px solid #d1fae5;
-        }
-
-        .nutrition-value {
-            font-size: 18px;
-            font-weight: bold;
-            color: #059669;
-        }
-
-        .nutrition-label {
-            font-size: 12px;
-            color: #6b7280;
-            margin-top: 2px;
-        }
-
-        .meal-section {
-            margin: 20px 15px;
-        }
-
-        .meal-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-            padding: 12px;
-            background: #f0f9ff;
-            border-radius: 10px;
-            border-right: 4px solid #3b82f6;
-        }
-
-        .meal-icon {
-            font-size: 24px;
-            margin-left: 10px;
-        }
-
-        .meal-title {
-            font-size: 18px;
-            font-weight: bold;
-            color: #1e40af;
-        }
-
-        .meal-item {
-            background: #ffffff;
-            border: 1px solid #e5e7eb;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 10px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        .meal-name {
-            font-size: 16px;
-            font-weight: bold;
-            color: #1f2937;
-            margin-bottom: 8px;
-        }
-
-        .meal-description {
-            color: #6b7280;
-            font-size: 14px;
-            margin-bottom: 10px;
-        }
-
-        .meal-nutrition {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
-            margin-top: 10px;
-        }
-
-        .nutrition-badge {
-            background: #f3f4f6;
-            padding: 6px 8px;
-            border-radius: 6px;
-            text-align: center;
-            font-size: 12px;
-        }
-
-        .nutrition-badge .value {
-            font-weight: bold;
-            color: #1f2937;
-            display: block;
-        }
-
-        .nutrition-badge .label {
-            color: #6b7280;
-            font-size: 10px;
-        }
-
-        .footer {
-            background: #f8fafc;
-            padding: 20px 15px;
-            text-align: center;
-            border-top: 1px solid #e5e7eb;
-        }
-
-        .footer p {
-            color: #6b7280;
-            font-size: 12px;
-            margin-bottom: 5px;
-        }
-
-        .brand {
-            color: #10b981;
-            font-weight: bold;
-        }
-
-        @media print {
-            body { background: white; }
-            .container { box-shadow: none; }
-        }
-
-        @media (max-width: 360px) {
-            .header h1 { font-size: 20px; }
-            .meal-title { font-size: 16px; }
-            .nutrition-grid { grid-template-columns: 1fr; }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>🍽️ النظام الغذائي</h1>
-            <p>📅 ${dayPlan.date} - اليوم ${dayPlan.dayNumber}</p>
-        </div>
-
-        <div class="nutrition-summary">
-            <h3 style="text-align: center; color: #059669; margin-bottom: 10px;">📊 الملخص الغذائي اليومي</h3>
-            <div class="nutrition-grid">
-                <div class="nutrition-item">
-                    <div class="nutrition-value">${dayPlan.totalCalories}</div>
-                    <div class="nutrition-label">سعرة حرارية</div>
-                </div>
-                <div class="nutrition-item">
-                    <div class="nutrition-value">${dayPlan.totalProtein}جم</div>
-                    <div class="nutrition-label">بروتين</div>
-                </div>
-                <div class="nutrition-item">
-                    <div class="nutrition-value">${dayPlan.totalCarbs}جم</div>
-                    <div class="nutrition-label">كربوهيدرات</div>
-                </div>
-                <div class="nutrition-item">
-                    <div class="nutrition-value">${dayPlan.totalFats}جم</div>
-                    <div class="nutrition-label">دهون</div>
-                </div>
-            </div>
-        </div>
-
-        ${Object.entries({
-            'الإفطار': { meals: dayPlan.meals.breakfast, icon: '🌅' },
-            'الغداء': { meals: dayPlan.meals.lunch, icon: '☀️' },
-            'العشاء': { meals: dayPlan.meals.dinner, icon: '🌙' },
-            'الوجبات الخفيفة': { meals: dayPlan.meals.snacks, icon: '🍎' }
-        }).map(([mealType, data]) => `
-            <div class="meal-section">
-                <div class="meal-header">
-                    <span class="meal-icon">${data.icon}</span>
-                    <span class="meal-title">${mealType}</span>
-                </div>
-
-                ${data.meals.map(meal => `
-                    <div class="meal-item">
-                        <div class="meal-name">${meal.name}</div>
-                        <div class="meal-description">${meal.description}</div>
-                        <div class="meal-nutrition">
-                            <div class="nutrition-badge">
-                                <span class="value">${meal.calories}</span>
-                                <span class="label">سعرة</span>
-                            </div>
-                            <div class="nutrition-badge">
-                                <span class="value">${meal.protein}جم</span>
-                                <span class="label">بروتين</span>
-                            </div>
-                            <div class="nutrition-badge">
-                                <span class="value">${meal.carbs}</span>
-                                <span class="label">كربوهيدرات</span>
-                            </div>
-                            <div class="nutrition-badge">
-                                <span class="value">${meal.fats}</span>
-                                <span class="label">دهون</span>
-                            </div>
-                        </div>
-                    </div>
-                `).join('')}
-            </div>
-        `).join('')}
-
-        <div class="footer">
-            <p>🍽️ تم إنشاؤه بواسطة <span class="brand">داروفت</span></p>
-            <p>💚 تناول طعامك بانتظام واشرب الماء!</p>
-            <p>📱 تطبيق محسّن للجوال</p>
-        </div>
-    </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // منع التكبير العشوائي على iOS
-            document.addEventListener('gesturestart', function (e) {
-                e.preventDefault();
-            });
-        });
-    </script>
-</body>
-</html>`;
-
-  downloadHTML(htmlContent, `mobile-meal-plan-day-${dayPlan.dayNumber}-${dayPlan.date}.html`);
-}
-
-export function downloadWorkoutPlan(dayPlan: DayPlan) {
-  try {
-    const htmlContent = `<!DOCTYPE html>
-<html dir="rtl" lang="ar">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>برنامج التمارين - اليوم ${dayPlan.dayNumber}</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 25px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
-            overflow: hidden;
-            animation: slideIn 0.8s ease-out;
-        }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .header {
-            background: linear-gradient(135deg, #ff6b6b, #ee5a24, #ff9ff3);
-            color: white;
-            padding: 40px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-            animation: rotate 10s linear infinite;
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        .header h1 {
-            font-size: 3em;
-            margin-bottom: 15px;
-            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
-            position: relative;
-            z-index: 2;
-        }
-
-        .header p {
-            font-size: 1.2em;
-            margin-bottom: 10px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .content {
-            padding: 40px;
-        }
-
-        .exercise-section {
-            margin-bottom: 35px;
-            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-            border-radius: 20px;
-            padding: 30px;
-            border-left: 6px solid #ff6b6b;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
-        }
-
-        .exercise-section h2 {
-            color: #ff6b6b;
-            margin-bottom: 25px;
-            font-size: 2.2em;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-        }
-
-        .exercise-item {
-            background: white;
-            padding: 25px;
-            margin-bottom: 20px;
-            border-radius: 15px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-            border-right: 5px solid #ff6b6b;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .exercise-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, #ff6b6b, #ee5a24, #ff9ff3);
-        }
-
-        .exercise-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-        }
-
-        .exercise-name {
-            font-weight: bold;
-            font-size: 1.4em;
-            color: #2c3e50;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .exercise-name::before {
-            content: '💪';
-            font-size: 1.2em;
-        }
-
-        .exercise-details {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
-        }
-
-        .detail-badge {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            padding: 12px 16px;
-            border-radius: 25px;
-            text-align: center;
-            font-size: 1em;
-            font-weight: 600;
-            box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
-            transition: transform 0.2s ease;
-        }
-
-        .detail-badge:hover {
-            transform: scale(1.05);
-        }
-
-        .detail-badge div:first-child {
-            font-size: 0.85em;
-            opacity: 0.9;
-            margin-bottom: 3px;
-        }
-
-        .detail-badge div:last-child {
-            font-size: 1.1em;
-            font-weight: bold;
-        }
-
-        .notes {
-            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
-            padding: 15px;
-            border-radius: 12px;
-            margin-top: 15px;
-            font-style: italic;
-            color: #1565c0;
-            border-right: 4px solid #2196f3;
-            position: relative;
-        }
-
-        .notes::before {
-            content: '💡';
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            font-size: 1.2em;
-        }
-
-        .workout-summary {
-            background: linear-gradient(135deg, #4facfe, #00f2fe);
-            color: white;
-            padding: 25px;
-            border-radius: 20px;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-
-        .workout-summary h3 {
-            font-size: 1.8em;
-            margin-bottom: 15px;
-        }
-
-        .summary-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .stat-item {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 15px;
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
-        }
-
-        .stat-value {
-            font-size: 1.5em;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .stat-label {
-            font-size: 0.9em;
-            opacity: 0.9;
-        }
-
-        .footer {
-            text-align: center;
-            padding: 30px;
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
-            color: #666;
-        }
-
-        .brand {
-            font-weight: bold;
-            color: #667eea;
-            font-size: 1.2em;
-        }
-
-        .motivational-quote {
-            background: linear-gradient(135deg, #ffecd2, #fcb69f);
-            padding: 20px;
-            border-radius: 15px;
-            margin: 20px 0;
-            text-align: center;
-            font-size: 1.1em;
-            font-weight: 500;
-            color: #8b4513;
-            border: 2px dashed #ff6b6b;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                margin: 10px;
-                border-radius: 20px;
-            }
-
-            .header {
-                padding: 25px;
-            }
-
-            .header h1 {
-                font-size: 2em;
-            }
-
-            .content {
-                padding: 25px;
-            }
-
-            .exercise-details {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .summary-stats {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>💪 برنامج التمارين المخصص</h1>
-            <p>📅 اليوم ${dayPlan.dayNumber} - ${dayPlan.date}</p>
-            <p>⏱️ المدة المتوقعة: ${dayPlan.workout.duration}</p>
-        </div>
-
-        <div class="content">
-            <div class="workout-summary">
-                <h3>📊 ملخص التمرين</h3>
-                <div class="summary-stats">
-                    <div class="stat-item">
-                        <div class="stat-value">${dayPlan.workout.exercises.length}</div>
-                        <div class="stat-label">تمارين</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">${dayPlan.workout.duration}</div>
-                        <div class="stat-label">المدة</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">${dayPlan.totalCalories}</div>
-                        <div class="stat-label">سعرة حرارية</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="exercise-section">
-                <h2>🏋️‍♂️ ${dayPlan.workout.title}</h2>
-                ${dayPlan.workout.exercises.length > 0
-                  ? dayPlan.workout.exercises.map((exercise, index) => `
-                    <div class="exercise-item">
-                        <div class="exercise-name">تمرين ${index + 1}: ${exercise.name}</div>
-                        <div class="exercise-details">
-                            <div class="detail-badge">
-                                <div>المجموعات</div>
-                                <div>${exercise.sets}</div>
-                            </div>
-                            <div class="detail-badge">
-                                <div>التكرارات</div>
-                                <div>${exercise.reps}</div>
-                            </div>
-                            <div class="detail-badge">
-                                <div>الراحة</div>
-                                <div>${exercise.rest}</div>
-                            </div>
-                        </div>
-                        ${exercise.notes ? `<div class="notes">💡 ملاحظة: ${exercise.notes}</div>` : ''}
-                    </div>
-                  `).join('')
-                  : `<div class="exercise-item">
-                      <div class="exercise-name">تمرين شامل للجسم</div>
-                      <div class="notes">💡 يرجى مراجعة خطة التمارين الكاملة في التطبيق</div>
-                    </div>`
-                }
-            </div>
-
-            <div class="motivational-quote">
-                🔥 "النجاح يبدأ بخطوة واحدة، والتفوق يحتاج للاستمرار" 🔥
-            </div>
-        </div>
-
-        <div class="footer">
-            <p>تم إنشاؤه بواسطة <span class="brand">DarwFit</span> - تطبيق اللياقة الذكي</p>
-            <p>💪 استمر في التقدم نحو هدفك!</p>
-            <p style="margin-top: 10px; font-size: 0.9em; color: #999;">
-                📱 حمل التطبيق للحصول على المزيد من الخطط المخصصة
-            </p>
-        </div>
-    </div>
-</body>
-</html>`;
-
-    const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `تمارين-DarwFit-اليوم-${dayPlan.dayNumber}-${new Date().toLocaleDateString('ar-SA')}.html`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-
-    // إظهار رسالة نجاح
-    console.log(`تم تحميل برنامج التمارين لليوم ${dayPlan.dayNumber} بنجاح!`);
-  } catch (error) {
-    console.error('خطأ في تحميل برنامج التمارين:', error);
-    alert('حدث خطأ أثناء تحميل برنامج التمارين. يرجى المحاولة مرة أخرى.');
-  }
-}
-
-function generateMealPlanContent(dayPlan: DayPlan): string {
-  let content = `🍽️ الجدول الغذائي - ${dayPlan.date}\n`;
-  content += `📅 اليوم ${dayPlan.dayNumber}\n\n`;
-
-  content += `📊 ملخص العناصر الغذائية اليومية:\n`;
-  content += `• إجمالي السعرات: ${dayPlan.totalCalories} سعرة\n`;
-  content += `• البروتين: ${dayPlan.totalProtein} جرام\n`;
-  content += `• الكربوهيدرات: ${dayPlan.totalCarbs} جرام\n`;
-  content += `• الدهون: ${dayPlan.totalFats} جرام\n\n`;
-
-  content += `🌅 الإفطار:\n`;
-  dayPlan.meals.breakfast.forEach(meal => {
-    content += `• ${meal.name}\n`;
-    content += `  ${meal.description}\n`;
-    if (meal.calories) content += `  السعرات: ${meal.calories}\n`;
-    content += `\n`;
-  });
-
-  content += `🌞 الغداء:\n`;
-  dayPlan.meals.lunch.forEach(meal => {
-    content += `• ${meal.name}\n`;
-    content += `  ${meal.description}\n`;
-    if (meal.calories) content += `  السعرات: ${meal.calories}\n`;
-    content += `\n`;
-  });
-
-  content += `🌙 العشاء:\n`;
-  dayPlan.meals.dinner.forEach(meal => {
-    content += `• ${meal.name}\n`;
-    content += `  ${meal.description}\n`;
-    if (meal.calories) content += `  السعرات: ${meal.calories}\n`;
-    content += `\n`;
-  });
-
-  if (dayPlan.meals.snacks && dayPlan.meals.snacks.length > 0) {
-    content += `🍎 الوجبات الخفيفة:\n`;
-    dayPlan.meals.snacks.forEach(snack => {
-      content += `• ${snack.name}\n`;
-      content += `  ${snack.description}\n`;
-      if (snack.calories) content += `  السعرات: ${snack.calories}\n`;
-      content += `\n`;
-    });
-  }
-
-  content += `\n💧 تذكير: اشرب 2-3 لتر من الماء يومياً\n`;
-  content += `🚫 تجنب السكريات والأطعمة المصنعة\n`;
-
-  return content;
-}
-
-function generateWorkoutPlanContent(dayPlan: DayPlan): string {
-  let content = `💪 خطة التمارين - ${dayPlan.date}\n`;
-  content += `📅 اليوم ${dayPlan.dayNumber}\n\n`;
-
-  content += `🏋️ ${dayPlan.workout.title}\n`;
-  content += `⏱️ المدة: ${dayPlan.workout.duration}\n\n`;
-
-  if (dayPlan.workout.exercises.length === 0) {
-    content += `🛌 يوم راحة\n`;
-    content += `يمكنك ممارسة المشي الخفيف أو تمارين الإطالة\n\n`;
-  } else {
-    content += `📋 التمارين:\n\n`;
-    dayPlan.workout.exercises.forEach((exercise, index) => {
-      content += `${index + 1}. ${exercise.name}\n`;
-      content += `   • المجموعات: ${exercise.sets}\n`;
-      content += `   • التكرار: ${exercise.reps}\n`;
-      content += `   • الراحة: ${exercise.rest}\n`;
-      if (exercise.notes) content += `   • ملاحظات: ${exercise.notes}\n`;
-      content += `\n`;
-    });
-  }
-
-  content += `⚠️ نصائح مهمة:\n`;
-  content += `• ابدأ بالإحماء لمدة 5-10 دقائق\n`;
-  content += `• حافظ على الشكل الصحيح للتمرين\n`;
-  content += `• لا تنس شرب الماء أثناء التمرين\n`;
-  content += `• انتهي بتمارين الإطالة\n`;
-
-  return content;
+  downloadMealPlan(dayPlan);
 }

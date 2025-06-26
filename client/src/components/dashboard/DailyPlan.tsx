@@ -204,9 +204,8 @@ export default function DailyPlan({ date, formattedDate, workoutType, dayIndex }
       };
       
       // استيراد الدوال المناسبة بناءً على النوع
-      import("../../lib/downloadUtils").then(({ downloadWorkoutPlan, downloadWorkoutPlanMobile }) => {
-        if (isMobile) {
-          downloadWorkoutPlanMobile(dayPlan);
+      import("../../lib/downloadUtils").then(({ downloadWorkoutPlan }) => {
+        downloadWorkoutPlanMobile(dayPlan);
         } else {
           downloadWorkoutPlan(dayPlan);
         }
