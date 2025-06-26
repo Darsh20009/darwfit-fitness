@@ -46,6 +46,12 @@ export default function HomePage() {
                   🌟 صفحة الإقلاع
                 </Button>
                 <Button 
+                  onClick={() => setLocation("/azkar")}
+                  className="bg-gradient-to-r from-teal-600 via-emerald-600 to-green-600 hover:from-teal-700 hover:via-emerald-700 hover:to-green-700 text-white font-bold py-4 px-10 rounded-2xl transition-all duration-300 text-xl transform hover:scale-110 hover:shadow-2xl"
+                >
+                  🕌 أذكار اليوم
+                </Button>
+                <Button 
                   variant="outline"
                   onClick={() => setLocation("/calories")}
                   className="border-2 border-purple-500 text-purple-600 hover:bg-purple-500 hover:text-white py-4 px-10 rounded-2xl transition-all duration-300 text-xl transform hover:scale-110 glass-morphism"

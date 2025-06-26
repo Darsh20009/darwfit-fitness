@@ -54,7 +54,16 @@ export default function Navbar() {
             <button 
               onClick={() => setLocation("/quit")}
               className="text-sm font-medium text-gray-300 hover:text-emerald-400 transition-all duration-300 btn-touch hover:scale-105"
-            > الإقلاع</button>
+            >
+              صفحة الإقلاع
+            </button>
+
+            <button 
+              onClick={() => setLocation("/azkar")}
+              className="text-sm font-medium text-gray-300 hover:text-emerald-400 transition-all duration-300 btn-touch hover:scale-105"
+            >
+              أذكار اليوم
+            </button>
 
             <button 
               onClick={() => setLocation("/subscription")}
@@ -160,6 +169,13 @@ export default function Navbar() {
                 className="block w-full text-right py-3 px-4 text-sm font-medium text-gray-300 hover:text-emerald-400 transition-all duration-300 btn-touch rounded-lg hover:bg-emerald-400/10 backdrop-blur-sm"
               >
                 صفحة الإقلاع
+              </button>
+
+              <button 
+                onClick={() => handleNavigation("/azkar")}
+                className="block w-full text-right py-3 px-4 text-sm font-medium text-gray-300 hover:text-emerald-400 transition-all duration-300 btn-touch rounded-lg hover:bg-emerald-400/10 backdrop-blur-sm"
+              >
+                أذكار اليوم
               </button>
 
               <button 

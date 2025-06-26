@@ -18,6 +18,7 @@ import EnhancedFreePlanPage from "./pages/EnhancedFreePlanPage";
 import FreePlanViewPage from "./pages/FreePlanViewPage";
 import FreeLoginPage from "./pages/FreeLoginPage";
 import QuitPage from "./pages/QuitPage";
+import AzkarPage from "./pages/AzkarPage";
 import NotFound from "@/pages/not-found";
 import SuccessModal from "./components/SuccessModal";
 
@@ -41,6 +42,7 @@ function ProtectedRoutes() {
       <Route path="/free-plan-view" component={FreePlanViewPage} />
       <Route path="/free-login" component={FreeLoginPage} />
       <Route path="/quit" component={QuitPage} />
+      <Route path="/azkar" component={AzkarPage} />
       <Route path="/dashboard">
         {isLoggedIn ? <DashboardPage /> : <LoginPage />}
       </Route>
