@@ -36,7 +36,10 @@ export default function Navbar() {
         <div className="flex justify-between items-center">
           {/* Logo */}
           <div className="relative">
-              <h1 className="text-3xl font-black bg-gradient-to-r from-emerald-400 via-emerald-300 to-emerald-500 bg-clip-text text-transparent relative z-10">
+              <h1 
+                onClick={() => setLocation("/")}
+                className="text-3xl font-black bg-gradient-to-r from-emerald-400 via-emerald-300 to-emerald-500 bg-clip-text text-transparent relative z-10 cursor-pointer hover:scale-105 transition-all duration-300 btn-touch"
+              >
                 DARWFIT
               </h1>
               <div className="absolute inset-0 blur-sm bg-gradient-to-r from-emerald-400/20 to-emerald-600/20 animate-pulse"></div>
