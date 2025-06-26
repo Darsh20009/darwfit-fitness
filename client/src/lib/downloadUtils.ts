@@ -71,19 +71,19 @@ function detectDevice(): 'mobile' | 'desktop' {
 function getLuxuryMinimalistStyles(): string {
   return `
     :root {
-      --luxury-dark: #0a0a0a;
-      --luxury-charcoal: #1a1a1a;
-      --luxury-slate: #2a2a2a;
-      --luxury-silver: #f8f9fa;
-      --luxury-gold: #d4af37;
-      --luxury-gold-light: #e6c866;
-      --luxury-platinum: #e5e4e2;
-      --luxury-shadow: rgba(0, 0, 0, 0.25);
-      --luxury-glow: rgba(212, 175, 55, 0.15);
-      --soft-blue: #667eea;
-      --soft-purple: #764ba2;
-      --gentle-teal: #56ab2f;
-      --warm-orange: #ff8a56;
+      --luxury-dark: #0f172a;
+      --luxury-charcoal: #1e293b;
+      --luxury-slate: #334155;
+      --luxury-silver: #f1f5f9;
+      --emerald-primary: #10b981;
+      --emerald-light: #34d399;
+      --emerald-dark: #047857;
+      --emerald-glow: rgba(16, 185, 129, 0.2);
+      --luxury-shadow: rgba(0, 0, 0, 0.3);
+      --emerald-accent: #6ee7b7;
+      --soft-emerald: #a7f3d0;
+      --dark-emerald: #064e3b;
+      --emerald-bg: rgba(16, 185, 129, 0.1);
     }
 
     * {
@@ -102,7 +102,7 @@ function getLuxuryMinimalistStyles(): string {
       min-height: 100vh;
     }
 
-    /* خلفية ديناميكية هادئة وفخمة */
+    /* خلفية ديناميكية زمردية إبداعية */
     body::before {
       content: '';
       position: fixed;
@@ -111,9 +111,9 @@ function getLuxuryMinimalistStyles(): string {
       width: 100%;
       height: 100%;
       background: 
-        radial-gradient(circle at 20% 20%, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(102, 126, 234, 0.02) 0%, transparent 50%),
-        radial-gradient(circle at 40% 60%, rgba(118, 75, 162, 0.02) 0%, transparent 50%);
+        radial-gradient(circle at 20% 20%, var(--emerald-glow) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 40% 60%, rgba(52, 211, 153, 0.03) 0%, transparent 50%);
       animation: gentleFlow 40s ease-in-out infinite;
       pointer-events: none;
       z-index: -2;
@@ -130,7 +130,7 @@ function getLuxuryMinimalistStyles(): string {
       }
     }
 
-    /* نمط شبكة دقيق وأنيق */
+    /* نمط شبكة زمردي دقيق وأنيق */
     body::after {
       content: '';
       position: fixed;
@@ -139,8 +139,8 @@ function getLuxuryMinimalistStyles(): string {
       width: 100%;
       height: 100%;
       background-image: 
-        linear-gradient(rgba(212, 175, 55, 0.02) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(212, 175, 55, 0.02) 1px, transparent 1px);
+        linear-gradient(rgba(16, 185, 129, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(16, 185, 129, 0.03) 1px, transparent 1px);
       background-size: 80px 80px;
       animation: subtleGrid 60s linear infinite;
       pointer-events: none;
@@ -155,16 +155,16 @@ function getLuxuryMinimalistStyles(): string {
     .luxury-container {
       max-width: 1000px;
       margin: 40px auto;
-      background: rgba(26, 26, 26, 0.95);
+      background: rgba(30, 41, 59, 0.95);
       border-radius: 24px;
       overflow: hidden;
       position: relative;
       backdrop-filter: blur(20px);
-      border: 1px solid rgba(212, 175, 55, 0.1);
+      border: 1px solid var(--emerald-glow);
       box-shadow: 
         0 40px 100px rgba(0, 0, 0, 0.5),
-        0 0 0 1px rgba(255, 255, 255, 0.02),
-        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        0 0 0 1px rgba(16, 185, 129, 0.1),
+        inset 0 1px 0 rgba(16, 185, 129, 0.05);
       animation: containerElevation 10s ease-in-out infinite;
     }
 
@@ -180,7 +180,7 @@ function getLuxuryMinimalistStyles(): string {
         transform: translateY(-8px);
         box-shadow: 
           0 50px 120px rgba(0, 0, 0, 0.6),
-          0 0 0 1px rgba(212, 175, 55, 0.05),
+          0 0 0 1px rgba(16, 185, 129, 0.05),
           inset 0 1px 0 rgba(255, 255, 255, 0.08);
       }
     }
@@ -195,9 +195,9 @@ function getLuxuryMinimalistStyles(): string {
       height: 2px;
       background: linear-gradient(90deg, 
         transparent 0%, 
-        var(--luxury-gold) 20%, 
-        var(--luxury-gold-light) 50%, 
-        var(--luxury-gold) 80%, 
+        var(--emerald-primary) 20%, 
+        var(--emerald-light) 50%, 
+        var(--emerald-primary) 80%, 
         transparent 100%);
       animation: luxuryGlow 8s ease-in-out infinite;
     }
@@ -215,9 +215,9 @@ function getLuxuryMinimalistStyles(): string {
 
     .luxury-header {
       background: linear-gradient(135deg, 
-        rgba(10, 10, 10, 0.98) 0%, 
-        rgba(26, 26, 26, 0.95) 50%, 
-        rgba(42, 42, 42, 0.92) 100%);
+        rgba(15, 23, 42, 0.98) 0%, 
+        rgba(30, 41, 59, 0.95) 50%, 
+        rgba(51, 65, 85, 0.92) 100%);
       color: var(--luxury-silver);
       padding: 60px 50px;
       text-align: center;
@@ -234,7 +234,7 @@ function getLuxuryMinimalistStyles(): string {
       width: 200%;
       height: 200%;
       background: radial-gradient(circle, 
-        rgba(212, 175, 55, 0.08) 0%, 
+        rgba(16, 185, 129, 0.08) 0%, 
         transparent 70%);
       animation: gentleRotation 30s linear infinite;
     }
@@ -251,9 +251,9 @@ function getLuxuryMinimalistStyles(): string {
       z-index: 2;
       background: linear-gradient(135deg, 
         var(--luxury-silver) 0%, 
-        var(--luxury-gold) 30%, 
-        var(--luxury-platinum) 70%, 
-        var(--luxury-gold-light) 100%);
+        var(--emerald-primary) 30%, 
+        var(--emerald-light) 70%, 
+        var(--emerald-accent) 100%);
       background-size: 200% 200%;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -261,7 +261,7 @@ function getLuxuryMinimalistStyles(): string {
       animation: luxuryTextFlow 12s ease-in-out infinite;
       font-weight: 700;
       letter-spacing: 1px;
-      text-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+      text-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);
     }
 
     @keyframes luxuryTextFlow {
@@ -291,12 +291,12 @@ function getLuxuryMinimalistStyles(): string {
 
     .luxury-section {
       margin-bottom: 50px;
-      background: rgba(42, 42, 42, 0.6);
+      background: rgba(51, 65, 85, 0.6);
       border-radius: 20px;
       padding: 40px;
       position: relative;
       backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(16, 185, 129, 0.1);
       box-shadow: 
         0 20px 50px rgba(0, 0, 0, 0.3),
         inset 0 1px 0 rgba(255, 255, 255, 0.05);
@@ -313,7 +313,7 @@ function getLuxuryMinimalistStyles(): string {
       height: 1px;
       background: linear-gradient(90deg, 
         transparent 0%, 
-        rgba(212, 175, 55, 0.3) 50%, 
+        rgba(16, 185, 129, 0.3) 50%, 
         transparent 100%);
       animation: sectionGlow 10s ease-in-out infinite;
     }
@@ -327,7 +327,7 @@ function getLuxuryMinimalistStyles(): string {
       transform: translateY(-5px);
       box-shadow: 
         0 30px 70px rgba(0, 0, 0, 0.4),
-        0 0 30px rgba(212, 175, 55, 0.1),
+        0 0 30px rgba(16, 185, 129, 0.1),
         inset 0 1px 0 rgba(255, 255, 255, 0.08);
     }
 
@@ -341,7 +341,7 @@ function getLuxuryMinimalistStyles(): string {
       font-weight: 600;
       background: linear-gradient(135deg, 
         var(--luxury-silver), 
-        var(--luxury-gold-light));
+        var(--emerald-light));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -354,18 +354,18 @@ function getLuxuryMinimalistStyles(): string {
     }
 
     .luxury-item {
-      background: rgba(10, 10, 10, 0.4);
+      background: rgba(30, 41, 59, 0.4);
       margin: 30px 0;
       padding: 35px;
       border-radius: 16px;
       position: relative;
       transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
       backdrop-filter: blur(8px);
-      border: 1px solid rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(16, 185, 129, 0.1);
       overflow: hidden;
       box-shadow: 
         0 15px 40px rgba(0, 0, 0, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.03);
+        inset 0 1px 0 rgba(16, 185, 129, 0.03);
     }
 
     .luxury-item::before {
@@ -377,7 +377,7 @@ function getLuxuryMinimalistStyles(): string {
       height: 100%;
       background: linear-gradient(90deg, 
         transparent, 
-        rgba(212, 175, 55, 0.05), 
+        rgba(16, 185, 129, 0.05), 
         transparent);
       transition: left 0.8s ease;
     }
@@ -395,7 +395,7 @@ function getLuxuryMinimalistStyles(): string {
       width: 2px;
       background: linear-gradient(to bottom, 
         transparent 0%, 
-        var(--luxury-gold) 50%, 
+        var(--emerald-primary) 50%, 
         transparent 100%);
       animation: itemBorderFlow 6s ease-in-out infinite;
     }
@@ -415,7 +415,7 @@ function getLuxuryMinimalistStyles(): string {
       transform: translateY(-6px);
       box-shadow: 
         0 25px 60px rgba(0, 0, 0, 0.3),
-        0 0 30px rgba(212, 175, 55, 0.08),
+        0 0 30px rgba(16, 185, 129, 0.08),
         inset 0 1px 0 rgba(255, 255, 255, 0.05);
     }
 
@@ -447,8 +447,8 @@ function getLuxuryMinimalistStyles(): string {
     }
 
     .luxury-badge {
-      background: rgba(212, 175, 55, 0.08);
-      border: 1px solid rgba(212, 175, 55, 0.2);
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.2);
       padding: 16px 20px;
       border-radius: 12px;
       text-align: center;
@@ -469,7 +469,7 @@ function getLuxuryMinimalistStyles(): string {
       height: 100%;
       background: linear-gradient(90deg, 
         transparent, 
-        rgba(212, 175, 55, 0.1), 
+        rgba(16, 185, 129, 0.1), 
         transparent);
       transition: left 0.6s ease;
     }
@@ -480,9 +480,9 @@ function getLuxuryMinimalistStyles(): string {
 
     .luxury-badge:hover {
       transform: translateY(-2px);
-      border-color: rgba(212, 175, 55, 0.4);
-      box-shadow: 0 8px 25px rgba(212, 175, 55, 0.15);
-      background: rgba(212, 175, 55, 0.12);
+      border-color: rgba(16, 185, 129, 0.4);
+      box-shadow: 0 8px 25px rgba(16, 185, 129, 0.15);
+      background: rgba(16, 185, 129, 0.12);
     }
 
     .luxury-badge .value {
@@ -504,7 +504,7 @@ function getLuxuryMinimalistStyles(): string {
       padding: 40px;
       background: rgba(10, 10, 10, 0.9);
       color: rgba(248, 249, 250, 0.6);
-      border-top: 1px solid rgba(212, 175, 55, 0.1);
+      border-top: 1px solid rgba(16, 185, 129, 0.1);
       position: relative;
     }
 
@@ -674,7 +674,7 @@ function getLuxuryMinimalistStyles(): string {
     }
 
     .motivational-quote {
-      background: rgba(212, 175, 55, 0.08);
+      background: rgba(16, 185, 129, 0.08);
       padding: 35px;
       border-radius: 16px;
       margin: 40px 0;
@@ -682,7 +682,7 @@ function getLuxuryMinimalistStyles(): string {
       font-size: 1.2em;
       font-weight: 500;
       color: var(--luxury-silver);
-      border: 1px solid rgba(212, 175, 55, 0.2);
+      border: 1px solid rgba(16, 185, 129, 0.2);
       position: relative;
       overflow: hidden;
     }
@@ -696,7 +696,7 @@ function getLuxuryMinimalistStyles(): string {
       height: 100%;
       background: linear-gradient(90deg, 
         transparent, 
-        rgba(212, 175, 55, 0.1), 
+        rgba(16, 185, 129, 0.1), 
         transparent);
       animation: quoteFlow 10s ease-in-out infinite;
     }
@@ -982,7 +982,7 @@ export function downloadWorkoutPlan(dayPlan: DayPlan) {
                                 ` : ''}
                             </div>
                             ${exercise.notes ? `
-                                <div class="luxury-description" style="margin-top: 20px; padding: 20px; background: rgba(212, 175, 55, 0.08); border-radius: 12px; border-right: 3px solid var(--luxury-gold);">
+                                <div class="luxury-description" style="margin-top: 20px; padding: 20px; background: rgba(16, 185, 129, 0.08); border-radius: 12px; border-right: 3px solid var(--emerald-primary);">
                                     💡 <strong>ملاحظات:</strong> ${exercise.notes}
                                 </div>
                             ` : ''}
