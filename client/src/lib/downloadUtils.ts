@@ -755,7 +755,16 @@ export function downloadMealPlan(dayPlan: DayPlan) {
                 margin-bottom: 15px;
             }
 
-            p, span, div, li {
+            p, span, div, li, .value, .label {
+                color: white !important;
+            }
+
+            .luxury-badge .value,
+            .luxury-badge .label,
+            .exercise-item .exercise-name,
+            .exercise-item .exercise-details,
+            .meal-item .meal-name,
+            .meal-item .meal-description {
                 color: white !important;
             }
         ${getLuxuryMinimalistStyles()}
@@ -958,7 +967,16 @@ export function downloadWorkoutPlan(dayPlan: DayPlan) {
                 margin-bottom: 15px;
             }
 
-            p, span, div, li {
+            p, span, div, li, .value, .label {
+                color: white !important;
+            }
+
+            .luxury-badge .value,
+            .luxury-badge .label,
+            .exercise-item .exercise-name,
+            .exercise-item .exercise-details,
+            .meal-item .meal-name,
+            .meal-item .meal-description {
                 color: white !important;
             }
         ${getLuxuryMinimalistStyles()}
@@ -1008,37 +1026,21 @@ export function downloadWorkoutPlan(dayPlan: DayPlan) {
                     </div>
 
                     ${dayPlan.workout.exercises.map((exercise, index) => `
-                        <div class="luxury-item">
-                            <div class="luxury-item-title">
-                                ${index + 1}. ${exercise.name}
+                            <div class="exercise-item">
+                                <div class="exercise-header">
+                                    <h4 style="color: white !important;">${exercise.name}</h4>
+                                    ${exercise.weight > 0 ? `<div class="weight-badge" style="color: white !important;">🏋️ ${exercise.weight} كجم</div>` : ''}
+                                </div>
+                                <div class="exercise-details">
+                                    <div class="exercise-stats">
+                                        <span style="color: white !important;">🔢 ${exercise.sets} مجموعات</span>
+                                        <span style="color: white !important;">🔁 ${exercise.reps} تكرار</span>
+                                        <span style="color: white !important;">⏱️ ${exercise.rest} راحة</span>
+                                    </div>
+                                    ${exercise.notes ? `<div class="exercise-notes" style="color: white !important;">💡 ${exercise.notes}</div>` : ''}
+                                </div>
                             </div>
-                            <div class="exercise-details">
-                                <div class="luxury-badge">
-                                    <span class="value">${exercise.sets}</span>
-                                    <span class="label">مجموعات</span>
-                                </div>
-                                <div class="luxury-badge">
-                                    <span class="value">${exercise.reps}</span>
-                                    <span class="label">تكرارات</span>
-                                </div>
-                                <div class="luxury-badge">
-                                    <span class="value">${exercise.rest}</span>
-                                    <span class="label">راحة</span>
-                                </div>
-                                ${exercise.weight ? `
-                                <div class="luxury-badge" style="background: rgba(102, 126, 234, 0.08); border-color: rgba(102, 126, 234, 0.3);">
-                                    <span class="value">🏋️ ${exercise.weight} كجم</span>
-                                    <span class="label">الوزن</span>
-                                </div>
-                                ` : ''}
-                            </div>
-                            ${exercise.notes ? `
-                                <div class="luxury-description" style="margin-top: 20px; padding: 20px; background: rgba(16, 185, 129, 0.08); border-radius: 12px; border-right: 3px solid var(--emerald-primary);">
-                                    💡 <strong>ملاحظات:</strong> ${exercise.notes}
-                                </div>
-                            ` : ''}
-                        </div>
-                    `).join('')}
+                        `).join('')}
                 </div>
 
                 <div class="motivational-quote">
