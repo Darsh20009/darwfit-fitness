@@ -18,7 +18,9 @@ import {
   RotateCcw,
   ChevronUp,
   Heart,
-  Zap
+  Zap,
+  Eye,
+  EyeOff
 } from "lucide-react";
 
 interface Zekr {
@@ -38,6 +40,7 @@ export default function AzkarPage() {
   const [, setLocation] = useLocation();
   const [zekrProgress, setZekrProgress] = useState<ZekrProgress>({});
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [hideCompleted, setHideCompleted] = useState(false);
 
   const azkarData: Zekr[] = [
     // أذكار الصباح
@@ -548,6 +551,11 @@ export default function AzkarPage() {
     if (currentCount < zekr.repetitions) {
       const newProgress = { ...zekrProgress, [zekrId]: currentCount + 1 };
       saveProgress(newProgress);
+      
+      // Auto-hide when completed
+      if (currentCount + 1 >= zekr.repetitions) {
+        setHideCompleted(true);
+      }
     }
   };
 
@@ -638,7 +646,7 @@ export default function AzkarPage() {
                   <p className="text-emerald-100">أقسام مكتملة</p>
                 </div>
               </div>
-              <div className="flex justify-center">
+              <div className="flex justify-center gap-4">
                 <Button
                   onClick={resetAllCounts}
                   variant="outline"
@@ -646,6 +654,23 @@ export default function AzkarPage() {
                 >
                   <RotateCcw className="h-4 w-4 ml-2" />
                   إعادة تعيين الكل
+                </Button>
+                <Button
+                  onClick={() => setHideCompleted(!hideCompleted)}
+                  variant="outline"
+                  className="border-white text-white hover:bg-white/20"
+                >
+                  {hideCompleted ? (
+                    <>
+                      <Eye className="h-4 w-4 ml-2" />
+                      إظهار المكتملة
+                    </>
+                  ) : (
+                    <>
+                      <EyeOff className="h-4 w-4 ml-2" />
+                      إخفاء المكتملة
+                    </>
+                  )}
                 </Button>
               </div>
             </CardContent>
@@ -694,6 +719,22 @@ export default function AzkarPage() {
                     <div className="grid lg:grid-cols-1 gap-6">
                       {azkarData
                         .filter(zekr => zekr.category === category.id)
+                        .filter(zekr => {
+                          const currentCount = zekrProgress[zekr.id] || 0;
+                          const isCompleted = currentCount >= zekr.repetitions;
+                          return !hideCompleted || !isCompleted;
+                        })
+                        .sort((a, b) => {
+                          const aCount = zekrProgress[a.id] || 0;
+                          const bCount = zekrProgress[b.id] || 0;
+                          const aCompleted = aCount >= a.repetitions;
+                          const bCompleted = bCount >= b.repetitions;
+                          
+                          // Incomplete items first
+                          if (aCompleted && !bCompleted) return 1;
+                          if (!aCompleted && bCompleted) return -1;
+                          return 0;
+                        })
                         .map((zekr) => {
                           const currentCount = zekrProgress[zekr.id] || 0;
                           const isCompleted = currentCount >= zekr.repetitions;
