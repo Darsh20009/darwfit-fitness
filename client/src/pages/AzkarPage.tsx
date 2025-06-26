@@ -653,23 +653,30 @@ export default function AzkarPage() {
 
           {/* Azkar Categories */}
           <Tabs defaultValue="morning" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 lg:grid-cols-7 mb-8">
-              {categories.map((category) => {
-                const IconComponent = category.icon;
-                const completed = getCompletedCount(category.id);
-                const total = getTotalCount(category.id);
-                return (
-                  <TabsTrigger key={category.id} value={category.id} className="flex flex-col items-center text-xs p-2">
-                    <IconComponent className="h-4 w-4 mb-1" />
-                    <span className="hidden lg:block">{category.name}</span>
-                    <span className="lg:hidden">{category.name.split(' ')[1]}</span>
-                    <Badge className={`mt-1 bg-${category.color}-100 text-${category.color}-700 text-xs`}>
-                      {completed}/{total}
-                    </Badge>
-                  </TabsTrigger>
-                );
-              })}
-            </TabsList>
+            <div className="mb-8 overflow-x-auto">
+              <TabsList className="grid w-full grid-cols-7 min-w-fit bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm">
+                {categories.map((category) => {
+                  const IconComponent = category.icon;
+                  const completed = getCompletedCount(category.id);
+                  const total = getTotalCount(category.id);
+                  return (
+                    <TabsTrigger 
+                      key={category.id} 
+                      value={category.id} 
+                      className="flex flex-col items-center text-xs p-2 min-w-[100px] data-[state=active]:bg-emerald-100 data-[state=active]:text-emerald-700 dark:data-[state=active]:bg-emerald-800 dark:data-[state=active]:text-emerald-200"
+                    >
+                      <IconComponent className="h-4 w-4 mb-1" />
+                      <span className="text-center leading-tight whitespace-nowrap text-[10px] sm:text-xs">
+                        {category.name}
+                      </span>
+                      <Badge className="mt-1 bg-emerald-100 text-emerald-700 dark:bg-emerald-800 dark:text-emerald-200 text-xs border-0">
+                        {completed}/{total}
+                      </Badge>
+                    </TabsTrigger>
+                  );
+                })}
+              </TabsList>
+            </div>
 
             {categories.map((category) => (
               <TabsContent key={category.id} value={category.id}>
