@@ -365,12 +365,12 @@ export default function FreePlanViewPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-blue-900 dark:to-purple-900">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50 dark:from-gray-900 dark:via-emerald-900 dark:to-green-900">
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-6xl mx-auto">
           {/* Header */}
           <div className="text-center mb-8">
-            <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
+            <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-emerald-600 via-green-600 to-teal-600 bg-clip-text text-transparent mb-4">
               🎯 خطتك المجانية النشطة
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-300">
@@ -380,13 +380,13 @@ export default function FreePlanViewPage() {
 
           {/* Progress Overview */}
           <div className="grid md:grid-cols-4 gap-6 mb-8">
-            <Card className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-2 border-blue-200 dark:border-blue-700">
+            <Card className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-2 border-emerald-200 dark:border-emerald-700">
               <CardHeader className="text-center">
-                <Calendar className="h-8 w-8 mx-auto text-blue-600 mb-2" />
-                <CardTitle className="text-blue-600">الأيام المكتملة</CardTitle>
+                <Calendar className="h-8 w-8 mx-auto text-emerald-600 mb-2" />
+                <CardTitle className="text-emerald-600">الأيام المكتملة</CardTitle>
               </CardHeader>
               <CardContent className="text-center">
-                <div className="text-3xl font-bold text-blue-700 dark:text-blue-400">
+                <div className="text-3xl font-bold text-emerald-700 dark:text-emerald-400">
                   {completedDays.length}/15
                 </div>
                 <Progress value={calculateProgress()} className="mt-2" />
@@ -406,26 +406,26 @@ export default function FreePlanViewPage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-2 border-purple-200 dark:border-purple-700">
+            <Card className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-2 border-teal-200 dark:border-teal-700">
               <CardHeader className="text-center">
-                <Target className="h-8 w-8 mx-auto text-purple-600 mb-2" />
-                <CardTitle className="text-purple-600">السعرات اليومية</CardTitle>
+                <Target className="h-8 w-8 mx-auto text-teal-600 mb-2" />
+                <CardTitle className="text-teal-600">السعرات اليومية</CardTitle>
               </CardHeader>
               <CardContent className="text-center">
-                <div className="text-3xl font-bold text-purple-700 dark:text-purple-400">
+                <div className="text-3xl font-bold text-teal-700 dark:text-teal-400">
                   {freePlan.dailyCalories}
                 </div>
                 <p className="text-sm text-gray-600 dark:text-gray-400">سعرة</p>
               </CardContent>
             </Card>
 
-            <Card className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-2 border-orange-200 dark:border-orange-700">
+            <Card className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-2 border-emerald-200 dark:border-emerald-700">
               <CardHeader className="text-center">
-                <Award className="h-8 w-8 mx-auto text-orange-600 mb-2" />
-                <CardTitle className="text-orange-600">معدل النجاح</CardTitle>
+                <Award className="h-8 w-8 mx-auto text-emerald-600 mb-2" />
+                <CardTitle className="text-emerald-600">معدل النجاح</CardTitle>
               </CardHeader>
               <CardContent className="text-center">
-                <div className="text-3xl font-bold text-orange-700 dark:text-orange-400">
+                <div className="text-3xl font-bold text-emerald-700 dark:text-emerald-400">
                   {Math.round(calculateProgress())}%
                 </div>
                 <p className="text-sm text-gray-600 dark:text-gray-400">إنجاز</p>
@@ -434,14 +434,14 @@ export default function FreePlanViewPage() {
           </div>
 
           {/* Current Day Highlight */}
-          <Card className="mb-8 bg-gradient-to-r from-blue-500 to-purple-600 text-white">
+          <Card className="mb-8 bg-gradient-to-r from-emerald-500 to-green-600 text-white">
             <CardHeader>
               <div className="flex justify-between items-center">
                 <div>
                   <CardTitle className="text-2xl">🌟 اليوم {currentDay}</CardTitle>
-                  <p className="text-blue-100">خطة اليوم الحالي</p>
+                  <p className="text-emerald-100">خطة اليوم الحالي</p>
                 </div>
-                <Badge className="bg-white text-blue-600 px-4 py-2 text-lg">
+                <Badge className="bg-white text-emerald-600 px-4 py-2 text-lg">
                   {freePlan.planType}
                 </Badge>
               </div>
@@ -486,9 +486,9 @@ export default function FreePlanViewPage() {
                   };
 
                   return (
-                    <Card key={mealKey} className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border-2 border-orange-200 dark:border-orange-700">
+                    <Card key={mealKey} className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border-2 border-emerald-200 dark:border-emerald-700">
                       <CardHeader>
-                        <CardTitle className="flex items-center text-orange-600">
+                        <CardTitle className="flex items-center text-emerald-600">
                           <span className="text-2xl ml-3">{mealIcons[mealKey]}</span>
                           {meal.title}
                         </CardTitle>
@@ -499,16 +499,16 @@ export default function FreePlanViewPage() {
                       <CardContent>
                         <div className="space-y-3">
                           <div className="grid grid-cols-2 gap-4 text-sm">
-                            <div className="bg-orange-50 dark:bg-orange-900/20 p-2 rounded">
+                            <div className="bg-emerald-50 dark:bg-emerald-900/20 p-2 rounded">
                               <span className="font-medium">السعرات:</span> {meal.calories}
                             </div>
-                            <div className="bg-orange-50 dark:bg-orange-900/20 p-2 rounded">
+                            <div className="bg-emerald-50 dark:bg-emerald-900/20 p-2 rounded">
                               <span className="font-medium">بروتين:</span> {meal.protein}جم
                             </div>
                           </div>
                           
                           <div className="space-y-2">
-                            <h5 className="font-medium text-orange-600">المكونات:</h5>
+                            <h5 className="font-medium text-emerald-600">المكونات:</h5>
                             <ul className="space-y-1">
                               {meal.items.map((item: string, index: number) => (
                                 <li key={index} className="flex items-start">
@@ -579,18 +579,18 @@ export default function FreePlanViewPage() {
             <TabsContent value="workout">
               <div className="space-y-6">
                 {freePlan.workoutPlan.map((workout: any, index: number) => (
-                  <Card key={index} className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border-2 border-red-200 dark:border-red-700">
+                  <Card key={index} className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border-2 border-emerald-200 dark:border-emerald-700">
                     <CardHeader>
                       <div className="flex justify-between items-center">
                         <div>
-                          <CardTitle className="text-red-600 text-xl">
+                          <CardTitle className="text-emerald-600 text-xl">
                             💪 {workout.title}
                           </CardTitle>
                           <p className="text-gray-600 dark:text-gray-400">
                             النوع: {workout.type} | المدة: {workout.duration}
                           </p>
                         </div>
-                        <Badge className="bg-red-100 text-red-700 border-red-300">
+                        <Badge className="bg-emerald-100 text-emerald-700 border-emerald-300">
                           اليوم {workout.day}
                         </Badge>
                       </div>
@@ -610,9 +610,9 @@ export default function FreePlanViewPage() {
 
                         {/* Main Exercises */}
                         <div className="space-y-3">
-                          <h4 className="font-bold text-red-600">💪 التمارين الأساسية</h4>
+                          <h4 className="font-bold text-emerald-600">💪 التمارين الأساسية</h4>
                           {workout.exercises.main.map((exercise: any, exerciseIndex: number) => (
-                            <div key={exerciseIndex} className="bg-red-50 dark:bg-red-900/20 p-3 rounded border border-red-200">
+                            <div key={exerciseIndex} className="bg-emerald-50 dark:bg-emerald-900/20 p-3 rounded border border-emerald-200">
                               <div className="font-medium">{exercise.name}</div>
                               <div className="text-sm text-gray-600 dark:text-gray-400">
                                 {exercise.sets} مجموعات × {exercise.reps}
@@ -670,7 +670,7 @@ export default function FreePlanViewPage() {
             <TabsContent value="calendar">
               <Card className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm">
                 <CardHeader>
-                  <CardTitle className="text-2xl text-center text-blue-600">
+                  <CardTitle className="text-2xl text-center text-emerald-600">
                     📅 جدول الـ 15 يوماً
                   </CardTitle>
                 </CardHeader>
@@ -690,10 +690,10 @@ export default function FreePlanViewPage() {
                             ${isCompleted 
                               ? 'bg-green-500 text-white border-green-600 shadow-lg transform scale-105' 
                               : isCurrent 
-                                ? 'bg-blue-500 text-white border-blue-600 animate-pulse' 
+                                ? 'bg-emerald-500 text-white border-emerald-600 animate-pulse' 
                                 : isPast 
                                   ? 'bg-gray-200 text-gray-500 border-gray-300' 
-                                  : 'bg-gray-50 text-gray-700 border-gray-200 hover:border-blue-300'
+                                  : 'bg-gray-50 text-gray-700 border-gray-200 hover:border-emerald-300'
                             }
                           `}
                           onClick={() => {
@@ -714,7 +714,7 @@ export default function FreePlanViewPage() {
                       <span>مكتمل</span>
                     </div>
                     <div className="flex items-center">
-                      <div className="w-4 h-4 bg-blue-500 rounded ml-2"></div>
+                      <div className="w-4 h-4 bg-emerald-500 rounded ml-2"></div>
                       <span>اليوم الحالي</span>
                     </div>
                     <div className="flex items-center">
@@ -727,7 +727,7 @@ export default function FreePlanViewPage() {
                     <div className="mt-6 text-center">
                       <Button 
                         onClick={() => markDayCompleted(currentDay)}
-                        className="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white font-bold py-3 px-8 rounded-xl text-lg"
+                        className="bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white font-bold py-3 px-8 rounded-xl text-lg"
                       >
                         ✅ إكمال اليوم {currentDay}
                       </Button>

@@ -1,0 +1,1564 @@
+<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DarwFit GetUp - التعافي من الإدمان</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&amp;display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #5D8BF4;
+            --primary-dark: #3a56c8;
+            --secondary-color: #2D31FA;
+            --accent-color: #4C6793;
+            --dark-color: #2c3e50;
+            --light-color: #f8f9fa;
+            --recovery-color: #FF6B6B;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
+            --gray-color: #95a5a6;
+            --light-gray: #ecf0f1;
+            --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        body {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            line-height: 1.6;
+            padding-top: 80px;
+        }
+
+        /* شريط التنقل */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 40px;
+            margin-left: 10px;
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        .logo span {
+            color: var(--secondary-color);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-right: 1.5rem;
+        }
+
+        .nav-links a {
+            color: var(--dark-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 0.5rem 0;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+            left: 0;
+        }
+
+        .login-btn {
+            background-color: var(--primary-color);
+            color: white !important;
+            padding: 0.5rem 1.5rem !important;
+            border-radius: 50px;
+            transition: var(--transition);
+        }
+
+        .login-btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .login-btn::after {
+            display: none;
+        }
+
+        .burger {
+            display: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+
+        /* أقسام الموقع */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 5%;
+        }
+
+        .section {
+            padding: 5rem 0;
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--dark-color);
+            position: relative;
+            font-weight: 700;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background-color: var(--primary-color);
+            margin: 1rem auto 0;
+        }
+
+        /* قسم الرئيسية */
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+
+        .hero-content {
+            flex: 1;
+        }
+
+        .hero-content h2 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            color: var(--dark-color);
+            line-height: 1.2;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: var(--accent-color);
+        }
+
+        .hero-image {
+            flex: 1;
+            text-align: center;
+        }
+
+        .hero-image img {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: var(--box-shadow);
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            box-shadow: 0 4px 10px rgba(93, 139, 244, 0.3);
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(93, 139, 244, 0.4);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            margin-right: 1rem;
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        /* قسم اختيار نوع الإدمان */
+        .addiction-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .addiction-card {
+            background-color: white;
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+            cursor: pointer;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .addiction-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 0;
+            background-color: var(--recovery-color);
+            transition: var(--transition);
+        }
+
+        .addiction-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary-color);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .addiction-card:hover::before {
+            height: 100%;
+        }
+
+        .addiction-card i {
+            font-size: 3rem;
+            color: var(--recovery-color);
+            margin-bottom: 1.5rem;
+            transition: var(--transition);
+        }
+
+        .addiction-card:hover i {
+            transform: scale(1.1);
+        }
+
+        .addiction-card h4 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--dark-color);
+        }
+
+        .addiction-card p {
+            color: var(--gray-color);
+            font-size: 0.9rem;
+        }
+
+        /* قسم التتبع اليومي */
+        .recovery-tracker {
+            background-color: white;
+            border-radius: 15px;
+            padding: 2.5rem;
+            box-shadow: var(--box-shadow);
+            margin-top: 2rem;
+        }
+
+        .progress-container {
+            margin: 2rem 0;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .progress-header h4 {
+            font-size: 1.2rem;
+            color: var(--dark-color);
+        }
+
+        .progress-days {
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        .progress-bar {
+            height: 20px;
+            background-color: var(--light-gray);
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            width: 0%;
+            transition: width 0.5s ease;
+            border-radius: 10px;
+        }
+
+        .progress-text {
+            text-align: center;
+            font-weight: 500;
+            color: var(--accent-color);
+        }
+
+        .daily-tasks-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 2rem 0 1rem;
+        }
+
+        .daily-tasks-header h4 {
+            font-size: 1.2rem;
+            color: var(--dark-color);
+        }
+
+        .current-day {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.3rem 1rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+        }
+
+        .daily-task {
+            background-color: var(--light-gray);
+            padding: 1.2rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+        }
+
+        .task-complete {
+            background-color: #e8f5e9;
+            border-left: 4px solid var(--success-color);
+        }
+
+        .task-btn {
+            background-color: var(--success-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .task-btn.completed {
+            background-color: var(--gray-color);
+        }
+
+        .task-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(46, 204, 113, 0.3);
+        }
+
+        /* الملف الشخصي */
+        .profile-container {
+            background-color: white;
+            border-radius: 15px;
+            padding: 2.5rem;
+            box-shadow: var(--box-shadow);
+            margin-top: 2rem;
+        }
+
+        .profile-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .profile-item {
+            margin-bottom: 1.5rem;
+        }
+
+        .profile-item label {
+            display: block;
+            font-weight: 500;
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-item p {
+            background-color: var(--light-gray);
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .stat-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: var(--box-shadow);
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card i {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .stat-card h4 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark-color);
+        }
+
+        .stat-card p {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+        }
+
+        /* نماذج التسجيل */
+        .auth-container {
+            max-width: 500px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 15px;
+            padding: 2.5rem;
+            box-shadow: var(--box-shadow);
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .auth-header h2 {
+            font-size: 2rem;
+            color: var(--dark-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .auth-header p {
+            color: var(--gray-color);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(93, 139, 244, 0.2);
+        }
+
+        .auth-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .auth-footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .auth-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .form-actions {
+            margin-top: 2rem;
+        }
+
+        /* التنبيهات */
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border-left: 4px solid var(--success-color);
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border-left: 4px solid var(--danger-color);
+        }
+
+        .alert-warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border-left: 4px solid var(--warning-color);
+        }
+
+        .alert i {
+            font-size: 1.5rem;
+        }
+
+        /* القائمة الجانبية للهاتف */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 300px;
+            height: 100vh;
+            background-color: white;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            z-index: 2000;
+            transition: var(--transition);
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .mobile-menu.active {
+            right: 0;
+        }
+
+        .mobile-menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .mobile-menu-header .close-menu {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray-color);
+        }
+
+        .mobile-nav-links {
+            list-style: none;
+        }
+
+        .mobile-nav-links li {
+            margin-bottom: 1.5rem;
+        }
+
+        .mobile-nav-links a {
+            color: var(--dark-color);
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 500;
+            display: block;
+            padding: 0.5rem 0;
+            transition: var(--transition);
+        }
+
+        .mobile-nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .mobile-login-btn {
+            display: block;
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 0.8rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1500;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* رسوم متحركة */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        /* وسائط متجاوبة */
+        @media (max-width: 992px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .hero-image {
+                margin-top: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .burger {
+                display: block;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .hero-content h2 {
+                font-size: 2.2rem;
+            }
+
+            .addiction-types {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero-content h2 {
+                font-size: 1.8rem;
+            }
+
+            .btn {
+                padding: 0.7rem 1.5rem;
+                font-size: 0.9rem;
+            }
+
+            .auth-container {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+
+
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="https://via.placeholder.com/40" alt="DarwFit GetUp Logo" loading="lazy">
+                <h1>DarwFit <span>GetUp</span></h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#" data-section="home">الرئيسية</a></li>
+                <li><a href="#" data-section="recovery">برنامج التعافي</a></li>
+                <li><a href="#" data-section="progress">تقدمي</a></li>
+                <li><a href="#" data-section="community" class="logged-in">المجتمع</a></li>
+                <li><a href="#" data-section="profile" class="logged-in">الملف الشخصي</a></li>
+                <li class="logged-out"><a href="#" data-section="login" class="login-btn">تسجيل الدخول</a></li>
+                <li class="logged-in"><a href="#" id="logout-btn" class="login-btn">تسجيل الخروج</a></li>
+            </ul>
+            <div class="burger">
+                <i class="fas fa-bars"></i>
+            </div>
+        </nav>
+    </header>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-header">
+            <div class="logo">
+                <img src="https://via.placeholder.com/30" alt="DarwFit GetUp Logo" loading="lazy">
+                <h1>DarwFit <span>GetUp</span></h1>
+            </div>
+            <div class="close-menu" id="closeMenu">
+                <i class="fas fa-times"></i>
+            </div>
+        </div>
+        <ul class="mobile-nav-links">
+            <li><a href="#" data-section="home">الرئيسية</a></li>
+            <li><a href="#" data-section="recovery">برنامج التعافي</a></li>
+            <li><a href="#" data-section="progress">تقدمي</a></li>
+            <li class="logged-in"><a href="#" data-section="community">المجتمع</a></li>
+            <li class="logged-in"><a href="#" data-section="profile">الملف الشخصي</a></li>
+            <li class="logged-out"><a href="#" data-section="login" class="mobile-login-btn">تسجيل الدخول</a></li>
+            <li class="logged-in"><a href="#" id="mobile-logout-btn">تسجيل الخروج</a></li>
+        </ul>
+    </div>
+    <div class="overlay" id="overlay"></div>
+
+    <section id="home" class="section active">
+        <div class="container">
+            <div class="hero">
+                <div class="hero-content">
+                    <h2>رحلة التعافي مع DarwFit GetUp</h2>
+                    <p>برنامج متكامل لمساعدتك في التغلب على الإدمان خطوة بخطوة مع دعم مجتمعي وتقنيات حديثة</p>
+                    <div class="logged-out">
+                        <a href="#" data-section="login" class="btn pulse">ابدأ رحلتك الآن</a>
+                        <a href="#" data-section="register" class="btn btn-outline">إنشاء حساب جديد</a>
+                    </div>
+                    <div class="logged-in">
+                        <a href="#" data-section="recovery" class="btn pulse">استكمل رحلتك</a>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <img src="https://via.placeholder.com/600x400" alt="رحلة التعافي" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="recovery" class="section">
+        <div class="container">
+            <h2 class="section-title">برنامج التعافي</h2>
+            <div class="recovery-container">
+                <h3 style="text-align: center; margin-bottom: 1rem; color: var(--accent-color);">اختر نوع الإدمان الذي تريد التعافي منه</h3>
+                <p style="text-align: center; margin-bottom: 2rem; max-width: 800px; margin-left: auto; margin-right: auto;">
+                    كل برنامج مصمم خصيصًا لمساعدتك في التغلب على الإدمان بخطوات عملية يومية ودعم مستمر
+                </p>
+                <div class="addiction-types">
+                    <div class="addiction-card" data-type="porn">
+                        <i class="fas fa-eye-slash"></i>
+                        <h4>الإدمان على الأفلام الإباحية</h4>
+                        <p>برنامج 90 يومًا للتعافي مع خطوات يومية ودروس تعليمية</p>
+                    </div>
+                    <div class="addiction-card" data-type="masturbation">
+                        <i class="fas fa-hand-paper"></i>
+                        <h4>العادة السرية</h4>
+                        <p>برنامج 60 يومًا للتعافي مع تمارين سلوكية</p>
+                    </div>
+                    <div class="addiction-card" data-type="smoking">
+                        <i class="fas fa-smoking"></i>
+                        <h4>إدمان السجائر</h4>
+                        <p>برنامج 30 يومًا للتعافي مع بدائل صحية</p>
+                    </div>
+                    <div class="addiction-card" data-type="drugs">
+                        <i class="fas fa-pills"></i>
+                        <h4>إدمان المخدرات</h4>
+                        <p>برنامج 120 يومًا مع دعم متخصص</p>
+                    </div>
+                    <div class="addiction-card" data-type="gaming">
+                        <i class="fas fa-gamepad"></i>
+                        <h4>إدمان الألعاب الإلكترونية</h4>
+                        <p>برنامج 45 يومًا لإدارة الوقت</p>
+                    </div>
+                    <div class="addiction-card" data-type="other">
+                        <i class="fas fa-question-circle"></i>
+                        <h4>إدمان آخر</h4>
+                        <p>برنامج مخصص حسب الحاجة مع خيارات متعددة</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="progress" class="section">
+        <div class="container">
+            <h2 class="section-title">تقدمك اليومي</h2>
+            <div class="recovery-tracker">
+                <div class="progress-container">
+                    <div class="progress-header">
+                        <h4>إنجازك في البرنامج</h4>
+                        <span class="progress-days" id="progress-days-text">0 من 0 يوم</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" id="recovery-progress"></div>
+                    </div>
+                    <p class="progress-text" id="progress-text">0% مكتمل</p>
+                </div>
+
+                <div class="daily-tasks-header">
+                    <h4>مهام اليوم</h4>
+                    <span class="current-day" id="current-day-text">اليوم 1</span>
+                </div>
+                <div id="daily-tasks">
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="community" class="section">
+        <div class="container">
+            <h2 class="section-title">مجتمع الدعم</h2>
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <p>تواصل مع آخرين في رحلة التعافي وشارك تجربتك واحصل على الدعم</p>
+            </div>
+            <div class="recovery-tracker">
+                <div id="community-content">
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <div>
+                            <strong>يجب تسجيل الدخول</strong>
+                            <p>للدخول إلى مجتمع الدعم، يرجى تسجيل الدخول أولاً</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="profile" class="section">
+        <div class="container">
+            <h2 class="section-title">الملف الشخصي</h2>
+            <div class="profile-container">
+                <div class="profile-info">
+                    <div>
+                        <div class="profile-item">
+                            <label>الاسم الكامل:</label>
+                            <p id="profile-name">غير متوفر</p>
+                        </div>
+                        <div class="profile-item">
+                            <label>البريد الإلكتروني:</label>
+                            <p id="profile-email">غير متوفر</p>
+                        </div>
+                        <div class="profile-item">
+                            <label>تاريخ الميلاد:</label>
+                            <p id="profile-birthdate">غير متوفر</p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="profile-item">
+                            <label>تاريخ التسجيل:</label>
+                            <p id="profile-date">غير متوفر</p>
+                        </div>
+                        <div class="profile-item">
+                            <label>نوع الإدمان:</label>
+                            <p id="addiction-type">غير محدد</p>
+                        </div>
+                        <div class="profile-item">
+                            <label>حالة البرنامج:</label>
+                            <p id="program-status">غير نشط</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stats-cards">
+                    <div class="stat-card">
+                        <i class="fas fa-calendar-check"></i>
+                        <h4>الأيام المكتملة</h4>
+                        <p id="completed-days">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-fire"></i>
+                        <h4>أيام متتالية</h4>
+                        <p id="streak-days">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-trophy"></i>
+                        <h4>الإنجازات</h4>
+                        <p id="achievements">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-heart"></i>
+                        <h4>نسبة النجاح</h4>
+                        <p id="success-rate">0%</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="login" class="section">
+        <div class="container">
+            <div class="auth-container">
+                <div class="auth-header">
+                    <h2>تسجيل الدخول</h2>
+                    <p>أدخل بياناتك للوصول إلى حسابك</p>
+                </div>
+                <div id="login-alert"></div>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="login-email">البريد الإلكتروني</label>
+                        <input type="email" id="login-email" class="form-control" required="">
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">كلمة المرور</label>
+                        <input type="password" id="login-password" class="form-control" required="">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn" style="width: 100%;">تسجيل الدخول</button>
+                    </div>
+                </form>
+                <div class="auth-footer">
+                    <p>ليس لديك حساب؟ <a href="#" data-section="register">إنشاء حساب جديد</a></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="register" class="section">
+        <div class="container">
+            <div class="auth-container">
+                <div class="auth-header">
+                    <h2>إنشاء حساب جديد</h2>
+                    <p>املأ النموذج لبدء رحلة التعافي</p>
+                </div>
+                <div id="register-alert"></div>
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label for="register-name">الاسم الكامل</label>
+                        <input type="text" id="register-name" class="form-control" required="">
+                    </div>
+                    <div class="form-group">
+                        <label for="register-email">البريد الإلكتروني</label>
+                        <input type="email" id="register-email" class="form-control" required="">
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password">كلمة المرور</label>
+                        <input type="password" id="register-password" class="form-control" required="" minlength="6">
+                    </div>
+                    <div class="form-group">
+                        <label for="register-confirm">تأكيد كلمة المرور</label>
+                        <input type="password" id="register-confirm" class="form-control" required="">
+                    </div>
+                    <div class="form-group">
+                        <label for="register-birthdate">تاريخ الميلاد</label>
+                        <input type="date" id="register-birthdate" class="form-control" required="">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn" style="width: 100%;">إنشاء حساب</button>
+                    </div>
+                </form>
+                <div class="auth-footer">
+                    <p>لديك حساب بالفعل؟ <a href="#" data-section="login">تسجيل الدخول</a></p>
+                </div>
+            </div>
+        </div>
+    </section><script>
+    // بيانات التطبيق
+    let currentUser = null;
+    let users = JSON.parse(localStorage.getItem('users')) || [];
+    let recoveryData = JSON.parse(localStorage.getItem('recoveryData')) || [];
+    let dailyTasksData = JSON.parse(localStorage.getItem('dailyTasks')) || [];
+
+    // بيانات البرامج العلاجية
+    const recoveryPrograms = {
+        porn: {
+            name: "الإدمان على الأفلام الإباحية",
+            duration: 90,
+            dailyTasks: [
+                "قراءة مقال عن أضرار الإباحية",
+                "ممارسة 10 دقائق تأمل",
+                "تجنب المحفزات",
+                "كتابة اليوميات",
+                "ممارسة الرياضة لمدة 20 دقيقة"
+            ],
+            description: "برنامج متكامل للتعافي من الإدمان على المواد الإباحية عبر إعادة برمجة العقل وتجنب المحفزات"
+        },
+        masturbation: {
+            name: "العادة السرية",
+            duration: 60,
+            dailyTasks: [
+                "ممارسة الرياضة 20 دقيقة",
+                "شرب 2 لتر ماء",
+                "تجنب المواقف المحفزة",
+                "النوم مبكرًا",
+                "قراءة كتاب تطوير ذات"
+            ],
+            description: "برنامج تدريجي للسيطرة على الرغبات وإعادة توجيه الطاقة بشكل إيجابي"
+        },
+        smoking: {
+            name: "إدمان السجائر",
+            duration: 30,
+            dailyTasks: [
+                "استبدال السجائر بالعلكة",
+                "ممارسة التنفس العميق",
+                "تجنب الأماكن التي يدخن فيها الآخرون",
+                "شرب شاي الأعشاب",
+                "تسجيل عدد السجائر المستهلكة"
+            ],
+            description: "برنامج للإقلاع عن التدخين عبر تقليل الاعتماد على النيكوتين وإيجاد بدائل صحية"
+        },
+        drugs: {
+            name: "إدمان المخدرات",
+            duration: 120,
+            dailyTasks: [
+                "حضور جلسة دعم",
+                "تناول الأدوية الموصوفة",
+                "تجنب رفاق السوء",
+                "ممارسة التأمل",
+                "كتابة اليوميات"
+            ],
+            description: "برنامج مكثف للتعافي من إدمان المخدرات مع دعم متخصص"
+        },
+        gaming: {
+            name: "إدمان الألعاب الإلكترونية",
+            duration: 45,
+            dailyTasks: [
+                "تحديد وقت اللعب",
+                "ممارسة نشاط بديل",
+                "قضاء وقت مع العائلة",
+                "تطوير مهارة جديدة",
+                "تسجيل ساعات اللعب"
+            ],
+            description: "برنامج لإدارة الوقت والتخلص من الإدمان على الألعاب الإلكترونية"
+        },
+        other: {
+            name: "إدمان آخر",
+            duration: 30,
+            dailyTasks: [
+                "تحديد المحفزات وتجنبها",
+                "ممارسة النشاط البدني",
+                "البحث عن بدائل صحية",
+                "طلب الدعم من المقربين",
+                "تسجيل التقدم اليومي"
+            ],
+            description: "برنامج مخصص حسب نوع الإدمان مع خطوات عامة للتعافي"
+        }
+    };
+
+    // DOM جاهز
+    document.addEventListener('DOMContentLoaded', function() {
+        // إذا كان هناك مستخدم مسجل دخوله
+        if (localStorage.getItem('currentUser')) {
+            currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            updateLoginState(true);
+            loadRecoveryData();
+            updateProfile();
+        }
+
+        // إظهار القسم الرئيسي أولاً
+        showSection('home');
+
+        // إعداد القائمة الجانبية للهاتف
+        setupMobileMenu();
+    });
+
+    // تسجيل الدخول
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const email = document.getElementById('login-email').value;
+        const password = document.getElementById('login-password').value;
+        
+        const user = users.find(u => u.email === email && u.password === password);
+        
+        if (user) {
+            currentUser = user;
+            localStorage.setItem('currentUser', JSON.stringify(user));
+            updateLoginState(true);
+            loadRecoveryData();
+            updateProfile();
+            showSection('home');
+            
+            showAlert('login-alert', `مرحباً بعودتك، ${user.name}`, 'success');
+        } else {
+            showAlert('login-alert', 'البريد الإلكتروني أو كلمة المرور غير صحيحة', 'danger');
+        }
+    });
+
+    // تسجيل حساب جديد
+    document.getElementById('registerForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const name = document.getElementById('register-name').value;
+        const email = document.getElementById('register-email').value;
+        const password = document.getElementById('register-password').value;
+        const confirmPassword = document.getElementById('register-confirm').value;
+        const birthdate = document.getElementById('register-birthdate').value;
+        
+        if (password !== confirmPassword) {
+            showAlert('register-alert', 'كلمتا المرور غير متطابقتين', 'danger');
+            return;
+        }
+        
+        if (users.some(u => u.email === email)) {
+            showAlert('register-alert', 'هذا البريد الإلكتروني مسجل بالفعل', 'danger');
+            return;
+        }
+        
+        const newUser = {
+            id: generateId(),
+            name: name,
+            email: email,
+            password: password,
+            birthdate: birthdate,
+            joinDate: new Date().toISOString()
+        };
+        
+        users.push(newUser);
+        localStorage.setItem('users', JSON.stringify(users));
+        
+        showAlert('register-alert', 'تم إنشاء الحساب بنجاح! يرجى تسجيل الدخول', 'success');
+        document.getElementById('registerForm').reset();
+        
+        setTimeout(() => {
+            showSection('login');
+        }, 2000);
+    });    // تسجيل الخروج
+        document.getElementById('logout-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            logout();
+        });
+
+        document.getElementById('mobile-logout-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            logout();
+            closeMobileMenu();
+        });
+
+        function logout() {
+            if (confirm('هل أنت متأكد من تسجيل الخروج؟')) {
+                localStorage.removeItem('currentUser');
+                currentUser = null;
+                updateLoginState(false);
+                showSection('home');
+            }
+        }
+
+        // اختيار نوع الإدمان
+        document.querySelectorAll('.addiction-card').forEach(card => {
+            card.addEventListener('click', function() {
+                if (!currentUser) {
+                    showAlert('login-alert', 'يجب تسجيل الدخول أولاً', 'warning');
+                    showSection('login');
+                    return;
+                }
+
+                const addictionType = this.getAttribute('data-type');
+                startRecoveryProgram(addictionType);
+            });
+        });
+
+        // بدء برنامج التعافي
+        function startRecoveryProgram(type) {
+            const existingProgram = recoveryData.find(program => program.userId === currentUser.id);
+
+            if (existingProgram) {
+                if (confirm(`لديك برنامج تعافي بالفعل (${recoveryPrograms[existingProgram.type].name})، هل تريد استبداله ببرنامج جديد؟ سيتم حذف جميع تقدمك الحالي.`)) {
+                    recoveryData = recoveryData.filter(program => program.userId !== currentUser.id);
+                } else {
+                    return;
+                }
+            }
+
+            const newProgram = {
+                id: generateId(),
+                userId: currentUser.id,
+                type: type,
+                startDate: new Date().toISOString(),
+                currentDay: 1,
+                completedDays: [],
+                streak: 0,
+                achievements: [],
+                dailyTasks: {}
+            };
+
+            recoveryData.push(newProgram);
+            localStorage.setItem('recoveryData', JSON.stringify(recoveryData));
+
+            showAlert('progress', `تم بدء برنامج التعافي من ${recoveryPrograms[type].name}`, 'success');
+            loadRecoveryData();
+            showSection('progress');
+        }
+
+        // تحميل بيانات التعافي
+        function loadRecoveryData() {
+            if (!currentUser) return;
+
+            const userProgram = recoveryData.find(program => program.userId === currentUser.id);
+
+            if (userProgram) {
+                const programInfo = recoveryPrograms[userProgram.type];
+                const daysCompleted = userProgram.completedDays.length;
+                const percentage = Math.floor((daysCompleted / programInfo.duration) * 100);
+
+                // تحديث شريط التقدم
+                document.getElementById('recovery-progress').style.width = `${percentage}%`;
+                document.getElementById('progress-text').textContent = `${percentage}% مكتمل`;
+                document.getElementById('progress-days-text').textContent = `${daysCompleted} من ${programInfo.duration} يوم`;
+                document.getElementById('current-day-text').textContent = `اليوم ${userProgram.currentDay}`;
+
+                // تحديث الملف الشخصي
+                document.getElementById('addiction-type').textContent = programInfo.name;
+                document.getElementById('program-status').textContent = `نشط (اليوم ${userProgram.currentDay})`;
+                document.getElementById('completed-days').textContent = daysCompleted;
+                document.getElementById('streak-days').textContent = userProgram.streak || 0;
+                document.getElementById('achievements').textContent = userProgram.achievements.length || 0;
+                document.getElementById('success-rate').textContent = `${percentage}%`;
+
+                // عرض المهام اليومية
+                const tasksContainer = document.getElementById('daily-tasks');
+                tasksContainer.innerHTML = '';
+
+                programInfo.dailyTasks.forEach((task, index) => {
+                    const isCompleted = userProgram.dailyTasks[`day-${userProgram.currentDay}`]?.includes(index) || false;
+
+                    const taskElement = document.createElement('div');
+                    taskElement.className = `daily-task ${isCompleted ? 'task-complete' : ''}`;
+
+                    const taskBtn = document.createElement('button');
+                    taskBtn.className = `task-btn ${isCompleted ? 'completed' : ''}`;
+                    taskBtn.setAttribute('data-task', index);
+                    taskBtn.innerHTML = isCompleted ? '<i class="fas fa-check"></i> مكتمل' : 'إكمال المهمة';
+
+                    taskBtn.addEventListener('click', function() {
+                        completeTask(userProgram, index);
+                    });
+
+                    taskElement.innerHTML = `<span>${task}</span>`;
+                    taskElement.appendChild(taskBtn);
+
+                    tasksContainer.appendChild(taskElement);
+                });
+            } else {
+                // لا يوجد برنامج تعافي
+                document.getElementById('addiction-type').textContent = 'غير محدد';
+                document.getElementById('program-status').textContent = 'غير نشط';
+            }
+        }        // إكمال المهمة
+        function completeTask(program, taskIndex) {
+            const dayKey = `day-${program.currentDay}`;
+
+            if (!program.dailyTasks[dayKey]) {
+                program.dailyTasks[dayKey] = [];
+            }
+
+            if (!program.dailyTasks[dayKey].includes(taskIndex)) {
+                program.dailyTasks[dayKey].push(taskIndex);
+
+                // تحديث البيانات المحلية
+                const programIndex = recoveryData.findIndex(p => p.id === program.id);
+                recoveryData[programIndex] = program;
+                localStorage.setItem('recoveryData', JSON.stringify(recoveryData));
+
+                // إعادة تحميل البيانات
+                loadRecoveryData();
+
+                // التحقق من إكمال جميع المهام
+                checkAllTasksCompleted(program);
+            }
+        }
+
+        // التحقق من إكمال جميع مهام اليوم
+        function checkAllTasksCompleted(program) {
+            const programInfo = recoveryPrograms[program.type];
+            const dayKey = `day-${program.currentDay}`;
+            const completedTasks = program.dailyTasks[dayKey]?.length || 0;
+
+            if (completedTasks === programInfo.dailyTasks.length) {
+                // إضافة اليوم إلى الأيام المكتملة إذا لم يكن مضافًا بالفعل
+                if (!program.completedDays.includes(program.currentDay)) {
+                    program.completedDays.push(program.currentDay);
+
+                    // زيادة المتتالية
+                    program.streak = (program.streak || 0) + 1;
+
+                    // الانتقال إلى اليوم التالي
+                    if (program.currentDay < programInfo.duration) {
+                        program.currentDay += 1;
+                    }
+
+                    // تحديث البيانات المحلية
+                    const programIndex = recoveryData.findIndex(p => p.id === program.id);
+                    recoveryData[programIndex] = program;
+                    localStorage.setItem('recoveryData', JSON.stringify(recoveryData));
+
+                    showAlert('progress', `تهانينا! لقد أكملت يوم ${program.currentDay - 1} بنجاح`, 'success');
+
+                    // إعادة تحميل البيانات
+                    loadRecoveryData();
+
+                    // التحقق من الإنجازات
+                    checkAchievements(program);
+                }
+            }
+        }
+
+        // التحقق من الإنجازات
+        function checkAchievements(program) {
+            const achievements = [];
+            const completedDays = program.completedDays.length;
+            const programInfo = recoveryPrograms[program.type];
+
+            // إنجاز الأسبوع الأول
+            if (completedDays >= 7 && !program.achievements.includes('first_week')) {
+                achievements.push('first_week');
+            }
+
+            // إنجاز الشهر الأول
+            if (completedDays >= 30 && !program.achievements.includes('first_month')) {
+                achievements.push('first_month');
+            }
+
+            // إنجاز 50%
+            if (completedDays >= programInfo.duration / 2 && !program.achievements.includes('half_way')) {
+                achievements.push('half_way');
+            }
+
+            // إنجاز 100%
+            if (completedDays >= programInfo.duration && !program.achievements.includes('program_complete')) {
+                achievements.push('program_complete');
+            }
+
+            if (achievements.length > 0) {
+                program.achievements = [...program.achievements, ...achievements];
+
+                // تحديث البيانات المحلية
+                const programIndex = recoveryData.findIndex(p => p.id === program.id);
+                recoveryData[programIndex] = program;
+                localStorage.setItem('recoveryData', JSON.stringify(recoveryData));
+
+                // عرض الإنجازات
+                achievements.forEach(achievement => {
+                    let message = '';
+                    switch(achievement) {
+                        case 'first_week':
+                            message = 'إنجاز رائع! لقد أكملت أسبوعك الأول بنجاح';
+                            break;
+                        case 'first_month':
+                            message = 'مذهل! لقد أكملت شهرك الأول في البرنامج';
+                            break;
+                        case 'half_way':
+                            message = 'تهانينا! لقد وصلت إلى منتصف الطريق في برنامجك';
+                            break;
+                        case 'program_complete':
+                            message = 'إنجاز مذهل! لقد أكملت برنامج التعافي بنجاح';
+                            break;
+                    }
+
+                    showAlert('progress', message, 'success');
+                });
+
+                // إعادة تحميل البيانات
+                loadRecoveryData();
+            }
+        }
+
+        // تحديث حالة الملف الشخصي
+        function updateProfile() {
+            if (!currentUser) return;
+
+            document.getElementById('profile-name').textContent = currentUser.name;
+            document.getElementById('profile-email').textContent = currentUser.email;
+            document.getElementById('profile-birthdate').textContent = formatDate(currentUser.birthdate);
+            document.getElementById('profile-date').textContent = formatDate(currentUser.joinDate);
+        }
+
+        // تحديث حالة تسجيل الدخول
+        function updateLoginState(isLoggedIn) {
+            const loggedInElements = document.querySelectorAll('.logged-in');
+            const loggedOutElements = document.querySelectorAll('.logged-out');
+
+            if (isLoggedIn) {
+                loggedInElements.forEach(el => el.style.display = 'block');
+                loggedOutElements.forEach(el => el.style.display = 'none');
+                document.body.classList.add('logged-in');
+                document.body.classList.remove('logged-out');
+            } else {
+                loggedInElements.forEach(el => el.style.display = 'none');
+                loggedOutElements.forEach(el => el.style.display = 'block');
+                document.body.classList.add('logged-out');
+                document.body.classList.remove('logged-in');
+            }
+        }
+
+        // إظهار القسم المحدد
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            document.getElementById(sectionId).classList.add('active');
+
+            // إغلاق القائمة الجانبية إذا كانت مفتوحة
+            closeMobileMenu();
+
+            // التمرير إلى أعلى الصفحة
+            window.scrollTo(0, 0);
+        }
+
+        // إعداد القائمة الجانبية للهاتف
+        function setupMobileMenu() {
+            const burger = document.querySelector('.burger');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const overlay = document.getElementById('overlay');
+
+            burger.addEventListener('click', openMobileMenu);
+
+            overlay.addEventListener('click', closeMobileMenu);
+
+            document.getElementById('closeMenu').addEventListener('click', closeMobileMenu);
+
+            // إضافة أحداث للنقر على روابط القائمة الجانبية
+            document.querySelectorAll('.mobile-nav-links a').forEach(link => {
+                if (link.getAttribute('data-section')) {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const section = this.getAttribute('data-section');
+                        showSection(section);
+                    });
+                }
+            });
+        }
+
+        function openMobileMenu() {
+            document.getElementById('mobileMenu').classList.add('active');
+            document.getElementById('overlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMobileMenu() {
+            document.getElementById('mobileMenu').classList.remove('active');
+            document.getElementById('overlay').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // إظهار التنبيهات
+        function showAlert(containerId, message, type) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+
+            let icon = '';
+            switch(type) {
+                case 'success':
+                    icon = '<i class="fas fa-check-circle"></i>';
+                    break;
+                case 'danger':
+                    icon = '<i class="fas fa-exclamation-circle"></i>';
+                    break;
+                case 'warning':
+                    icon = '<i class="fas fa-exclamation-triangle"></i>';
+                    break;
+            }
+
+            alert.innerHTML = `
+                ${icon}
+                <div>
+                    <strong>${message}</strong>
+                </div>
+            `;
+
+            container.innerHTML = '';
+            container.appendChild(alert);
+
+            // إزالة التنبيه بعد 5 ثواني
+            setTimeout(() => {
+                alert.remove();
+            }, 5000);
+        }
+
+        // تنسيق التاريخ
+        function formatDate(dateString) {
+            if (!dateString) return 'غير متوفر';
+
+            const date = new Date(dateString);
+            return date.toLocaleDateString('ar-EG');
+        }
+
+        // توليد معرف فريد
+        function generateId() {
+            return Date.now().toString(36) + Math.random().toString(36).substr(2);
+        }
+
+        // إضافة أحداث للنقر على روابط التنقل
+        document.querySelectorAll('[data-section]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const section = this.getAttribute('data-section');
+                showSection(section);
+            });
+        });
+        </script>
