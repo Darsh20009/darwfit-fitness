@@ -97,6 +97,11 @@ export function calculateRemainingDays(endDateString: string): number {
     endDate.setHours(23, 59, 59, 999);
     today.setHours(0, 0, 0, 0);
     
+    const diffTime = endDate.getTime() - today.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    
+    return Math.max(0, diffDays);rs(0, 0, 0, 0);
+    
     const timeDiff = endDate.getTime() - today.getTime();
     const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
     

@@ -108,7 +108,7 @@ export default function DashboardPage() {
               <div>
                 <h3 className="text-xs text-neutral-500 dark:text-neutral-400">متبقي من الاشتراك</h3>
                 <p className="text-xl font-bold text-amber-500">
-                  {remainingDays > 0 ? `${remainingDays} يوم` : "انتهى الاشتراك"}
+                  {remainingDays > 0 ? `${remainingDays} ${remainingDays === 1 ? 'يوم' : 'يوم'}` : "انتهى الاشتراك"}
                 </p>
               </div>
               <div className={`p-2 rounded-full ${
