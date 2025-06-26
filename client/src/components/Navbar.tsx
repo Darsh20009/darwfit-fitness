@@ -52,6 +52,13 @@ export default function Navbar() {
             </button>
 
             <button 
+              onClick={() => setLocation("/quit")}
+              className="text-sm font-medium text-gray-300 hover:text-emerald-400 transition-all duration-300 btn-touch hover:scale-105"
+            >
+              صفحة الإقلاع
+            </button>
+
+            <button 
               onClick={() => setLocation("/subscription")}
               className="text-sm font-medium text-gray-300 hover:text-emerald-400 transition-all duration-300 btn-touch hover:scale-105"
             >
@@ -144,14 +151,21 @@ export default function Navbar() {
           <div className="md:hidden absolute top-full left-0 right-0 bg-gradient-to-b from-gray-900 to-black shadow-2xl z-50 border-t border-emerald-400/20 backdrop-blur-md">
             <div className="p-4 space-y-3">
               <button 
-                onClick={() => setLocation("/calories")}
+                onClick={() => handleNavigation("/calories")}
                 className="block w-full text-right py-3 px-4 text-sm font-medium text-gray-300 hover:text-emerald-400 transition-all duration-300 btn-touch rounded-lg hover:bg-emerald-400/10 backdrop-blur-sm"
               >
                 حاسبة السعرات
               </button>
 
               <button 
-                onClick={() => setLocation("/subscription")}
+                onClick={() => handleNavigation("/quit")}
+                className="block w-full text-right py-3 px-4 text-sm font-medium text-gray-300 hover:text-emerald-400 transition-all duration-300 btn-touch rounded-lg hover:bg-emerald-400/10 backdrop-blur-sm"
+              >
+                صفحة الإقلاع
+              </button>
+
+              <button 
+                onClick={() => handleNavigation("/subscription")}
                 className="block w-full text-right py-3 px-4 text-sm font-medium text-gray-300 hover:text-emerald-400 transition-all duration-300 btn-touch rounded-lg hover:bg-emerald-400/10 backdrop-blur-sm"
               >
                 الاشتراكات
