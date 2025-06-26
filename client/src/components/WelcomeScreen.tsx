@@ -162,11 +162,19 @@ export default function WelcomeScreen({ onComplete }: WelcomeScreenProps) {
               initial={{ y: 50, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.5, duration: 0.8 }}
-              className="mb-4"
+              className="mb-4 text-center"
             >
               <h1 className="text-6xl md:text-7xl font-bold bg-gradient-to-r from-emerald-400 via-emerald-300 to-emerald-500 bg-clip-text text-transparent mb-2">
                 DARWFIT
               </h1>
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1.2, duration: 0.6 }}
+                className="text-xs text-gray-500 font-light tracking-wider uppercase"
+              >
+                powered by procourse
+              </motion.p>
             </motion.div>
 
             {/* Subtitle Animation */}
