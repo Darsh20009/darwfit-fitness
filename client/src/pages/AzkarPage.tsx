@@ -654,7 +654,7 @@ export default function AzkarPage() {
           {/* Azkar Categories */}
           <Tabs defaultValue="morning" className="w-full">
             <div className="mb-8 overflow-x-auto">
-              <TabsList className="grid w-full grid-cols-7 min-w-fit bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm">
+              <TabsList className="grid w-full grid-cols-7 min-w-fit bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm h-auto p-2 rounded-xl border-2 border-emerald-200 dark:border-emerald-700">
                 {categories.map((category) => {
                   const IconComponent = category.icon;
                   const completed = getCompletedCount(category.id);
@@ -663,13 +663,13 @@ export default function AzkarPage() {
                     <TabsTrigger 
                       key={category.id} 
                       value={category.id} 
-                      className="flex flex-col items-center text-xs p-2 min-w-[100px] data-[state=active]:bg-emerald-100 data-[state=active]:text-emerald-700 dark:data-[state=active]:bg-emerald-800 dark:data-[state=active]:text-emerald-200"
+                      className="flex flex-col items-center p-4 min-w-[120px] h-24 rounded-lg transition-all duration-300 data-[state=active]:bg-emerald-500 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:scale-105 hover:bg-emerald-100 dark:hover:bg-emerald-900/30"
                     >
-                      <IconComponent className="h-4 w-4 mb-1" />
-                      <span className="text-center leading-tight whitespace-nowrap text-[10px] sm:text-xs">
+                      <IconComponent className="h-6 w-6 mb-2" />
+                      <span className="text-center leading-tight font-medium text-xs sm:text-sm">
                         {category.name}
                       </span>
-                      <Badge className="mt-1 bg-emerald-100 text-emerald-700 dark:bg-emerald-800 dark:text-emerald-200 text-xs border-0">
+                      <Badge className="mt-1 bg-emerald-100 text-emerald-700 dark:bg-emerald-800 dark:text-emerald-200 text-xs border-0 data-[state=active]:bg-white data-[state=active]:text-emerald-600">
                         {completed}/{total}
                       </Badge>
                     </TabsTrigger>
