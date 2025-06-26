@@ -401,9 +401,9 @@ export default function DailyPlan({ date, formattedDate, workoutType, dayIndex }
                         <Download className="h-5 w-5 text-emerald-300 group-hover:text-emerald-100 group-hover:animate-pulse transition-colors duration-300" />
                       </div>
                       <div className="flex flex-col items-center">
-                        <span className="font-semibold text-sm tracking-wide">🍽️ تحميل فخم</span>
+                        <span className="font-semibold text-sm tracking-wide">🍽️ تحميل خطة الوجبات اليوم</span>
                         <div className="bg-gradient-to-r from-emerald-700 to-emerald-600 text-emerald-200 text-xs px-3 py-0.5 rounded-full mt-1 group-hover:from-emerald-600 group-hover:to-emerald-500 group-hover:text-emerald-100 transition-all duration-500 border border-emerald-600/30">
-                          {window.innerWidth < 768 ? '📱 جوال أنيق' : '💻 ديسكتوب فاخر'}
+                          {window.innerWidth < 768 ? '📱 تصميم إبداعي للجوال' : '💻 تصميم فاخر للديسكتوب'}
                         </div>
                       </div>
                     </div>
@@ -496,9 +496,9 @@ export default function DailyPlan({ date, formattedDate, workoutType, dayIndex }
                           <Download className="h-5 w-5 text-emerald-300 group-hover:text-emerald-100 group-hover:animate-pulse transition-colors duration-300" />
                         </div>
                         <div className="flex flex-col items-center">
-                          <span className="font-semibold text-sm tracking-wide">💪 تحميل فخم</span>
+                          <span className="font-semibold text-sm tracking-wide">💪 تحميل خطة التمارين اليوم</span>
                           <div className="bg-gradient-to-r from-emerald-700 to-emerald-600 text-emerald-200 text-xs px-3 py-0.5 rounded-full mt-1 group-hover:from-emerald-600 group-hover:to-emerald-500 group-hover:text-emerald-100 transition-all duration-500 border border-emerald-600/30">
-                            {window.innerWidth < 768 ? '📱 جوال رياضي' : '💻 ديسكتوب قوي'}
+                            {window.innerWidth < 768 ? '📱 تصميم إبداعي للجوال' : '💻 تصميم فاخر للديسكتوب'}
                           </div>
                         </div>
                       </div>

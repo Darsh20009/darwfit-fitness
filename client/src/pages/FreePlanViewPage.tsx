@@ -523,10 +523,27 @@ export default function FreePlanViewPage() {
                         <div className="mt-4 text-center">
                           <Button 
                             onClick={() => handleDownloadMeal(currentDay)}
-                            className="bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-bold py-2 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl shadow-emerald-500/30"
+                            className="btn-touch group relative overflow-hidden bg-gradient-to-br from-emerald-800 via-emerald-900 to-emerald-800 border border-emerald-700/50 text-emerald-200 hover:from-emerald-700 hover:via-emerald-800 hover:to-emerald-700 hover:border-emerald-600 hover:text-emerald-100 transform hover:scale-[1.02] hover:-translate-y-0.5 transition-all duration-700 shadow-2xl hover:shadow-emerald-800/40 min-h-[52px] px-6 py-3 backdrop-blur-sm"
                           >
-                            <Download className="h-4 w-4 ml-2 animate-bounce" />
-                            📥 تحميل النظام الغذائي
+                            <div className="absolute inset-0 bg-gradient-to-br from-emerald-600/20 via-emerald-500/10 to-emerald-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                            <div className="absolute inset-0">
+                              <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-emerald-400/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                              <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-emerald-400/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                            </div>
+                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/8 to-transparent -skew-x-12 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1200 ease-out"></div>
+                            <div className="relative flex items-center justify-center gap-3">
+                              <div className="bg-emerald-800 rounded-xl p-2 group-hover:bg-emerald-700 transition-all duration-500 shadow-inner border border-emerald-700/50">
+                                <Download className="h-5 w-5 text-emerald-300 group-hover:text-emerald-100 group-hover:animate-pulse transition-colors duration-300" />
+                              </div>
+                              <div className="flex flex-col items-center">
+                                <span className="font-semibold text-sm tracking-wide">🍽️ تحميل خطة الوجبات اليوم</span>
+                                <div className="bg-gradient-to-r from-emerald-700 to-emerald-600 text-emerald-200 text-xs px-3 py-0.5 rounded-full mt-1 group-hover:from-emerald-600 group-hover:to-emerald-500 group-hover:text-emerald-100 transition-all duration-500 border border-emerald-600/30">
+                                  ✨ تصميم إبداعي فاخر
+                                </div>
+                              </div>
+                            </div>
+                            <div className="absolute top-2 right-2 text-xs opacity-0 group-hover:opacity-70 transition-all duration-500 text-emerald-400 animate-pulse">💎</div>
+                            <div className="absolute bottom-2 left-2 text-xs opacity-0 group-hover:opacity-50 transition-all duration-700 text-emerald-500">⭐</div>
                           </Button>
                         </div>
                       </CardContent>
@@ -620,10 +637,27 @@ export default function FreePlanViewPage() {
                       <div className="mt-6 text-center">
                         <Button 
                           onClick={() => handleDownloadWorkout(workout.day)}
-                          className="bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-bold py-2 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl shadow-emerald-500/30"
+                          className="btn-touch group relative overflow-hidden bg-gradient-to-br from-emerald-800 via-emerald-900 to-emerald-800 border border-emerald-700/50 text-emerald-200 hover:from-emerald-700 hover:via-emerald-800 hover:to-emerald-700 hover:border-emerald-600 hover:text-emerald-100 transform hover:scale-[1.02] hover:-translate-y-0.5 transition-all duration-700 shadow-2xl hover:shadow-emerald-800/40 min-h-[52px] px-6 py-3 backdrop-blur-sm"
                         >
-                          <Download className="h-4 w-4 ml-2 animate-bounce" />
-                          💪 تحميل تمرين اليوم {workout.day}
+                          <div className="absolute inset-0 bg-gradient-to-br from-emerald-600/20 via-emerald-500/10 to-emerald-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                          <div className="absolute inset-0">
+                            <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-emerald-400/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-emerald-400/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                          </div>
+                          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/8 to-transparent -skew-x-12 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1200 ease-out"></div>
+                          <div className="relative flex items-center justify-center gap-3">
+                            <div className="bg-emerald-800 rounded-xl p-2 group-hover:bg-emerald-700 transition-all duration-500 shadow-inner border border-emerald-700/50">
+                              <Download className="h-5 w-5 text-emerald-300 group-hover:text-emerald-100 group-hover:animate-pulse transition-colors duration-300" />
+                            </div>
+                            <div className="flex flex-col items-center">
+                              <span className="font-semibold text-sm tracking-wide">💪 تحميل خطة التمارين اليوم {workout.day}</span>
+                              <div className="bg-gradient-to-r from-emerald-700 to-emerald-600 text-emerald-200 text-xs px-3 py-0.5 rounded-full mt-1 group-hover:from-emerald-600 group-hover:to-emerald-500 group-hover:text-emerald-100 transition-all duration-500 border border-emerald-600/30">
+                                ✨ تصميم إبداعي فاخر
+                              </div>
+                            </div>
+                          </div>
+                          <div className="absolute top-2 right-2 text-xs opacity-0 group-hover:opacity-70 transition-all duration-500 text-emerald-400 animate-pulse">🏆</div>
+                          <div className="absolute bottom-2 left-2 text-xs opacity-0 group-hover:opacity-50 transition-all duration-700 text-emerald-500">🔥</div>
                         </Button>
                       </div>
                     </CardContent>
