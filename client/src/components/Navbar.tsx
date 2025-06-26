@@ -35,35 +35,35 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="bg-white dark:bg-neutral-800 shadow-md relative">
+    <nav className="bg-gradient-to-r from-gray-900 via-black to-gray-800 shadow-2xl relative border-b border-emerald-400/20">
       <div className="container mx-auto px-4 py-3">
-        <div className="flex justify-between items-center bg-[#262626]">
+        <div className="flex justify-between items-center">
           {/* Logo */}
           <div className="relative">
-              <h1 className="text-3xl font-black luxury-darwfit-logo relative z-10 bg-[#262626]">
+              <h1 className="text-3xl font-black bg-gradient-to-r from-emerald-400 via-emerald-300 to-emerald-500 bg-clip-text text-transparent relative z-10">
                 DARWFIT
               </h1>
-              <div className="absolute inset-0 luxury-darwfit-glow animate-pulse bg-[#262626]"></div>
+              <div className="absolute inset-0 blur-sm bg-gradient-to-r from-emerald-400/20 to-emerald-600/20 animate-pulse"></div>
             </div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-4 space-x-reverse">
             <button 
               onClick={() => setLocation("/calories")}
-              className="text-sm font-medium text-neutral-700 hover:text-primary dark:text-neutral-300 dark:hover:text-primary transition-colors btn-touch"
+              className="text-sm font-medium text-gray-300 hover:text-emerald-400 transition-all duration-300 btn-touch hover:scale-105"
             >
               حاسبة السعرات
             </button>
 
             <button 
               onClick={() => setLocation("/subscription")}
-              className="text-sm font-medium text-neutral-700 hover:text-primary dark:text-neutral-300 dark:hover:text-primary transition-colors btn-touch"
+              className="text-sm font-medium text-gray-300 hover:text-emerald-400 transition-all duration-300 btn-touch hover:scale-105"
             >
               الاشتراكات
             </button>
 
             {isLoggedIn && subscriptionId && (
-              <Badge variant="outline" className="bg-primary/10 text-primary border-primary px-2 py-1">
+              <Badge variant="outline" className="bg-emerald-400/10 text-emerald-400 border-emerald-400/30 px-2 py-1 backdrop-blur-sm">
                 رقم الاشتراك: {subscriptionId}
               </Badge>
             )}
@@ -75,14 +75,14 @@ export default function Navbar() {
               variant="ghost"
               size="icon"
               onClick={toggleTheme}
-              className="rounded-full w-9 h-9 btn-touch"
+              className="rounded-full w-9 h-9 btn-touch text-gray-300 hover:text-emerald-400 hover:bg-emerald-400/10 transition-all duration-300"
             >
               {theme === "light" ? <Moon size={18} /> : <Sun size={18} />}
             </Button>
 
             {isLoggedIn ? (
               <div className="flex items-center space-x-3 space-x-reverse">
-                <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
+                <span className="text-sm font-medium text-gray-300">
                   أهلاً، {username}
                 </span>
 
@@ -92,7 +92,7 @@ export default function Navbar() {
                       variant="outline"
                       size="sm"
                       onClick={handleWhatsAppClick}
-                      className="text-green-600 border-green-600 hover:bg-green-50 dark:hover:bg-green-900/20 btn-touch"
+                      className="text-emerald-400 border-emerald-400/30 hover:bg-emerald-400/10 backdrop-blur-sm btn-touch transition-all duration-300"
                     >
                       واتساب
                     </Button>
@@ -105,7 +105,7 @@ export default function Navbar() {
                   variant="outline" 
                   size="sm" 
                   onClick={logout}
-                  className="text-red-600 border-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 btn-touch"
+                  className="text-red-400 border-red-400/30 hover:bg-red-400/10 backdrop-blur-sm btn-touch transition-all duration-300"
                 >
                   تسجيل خروج
                 </Button>
@@ -114,7 +114,7 @@ export default function Navbar() {
               <Button 
                 onClick={() => setLocation("/login")}
                 size="sm"
-                className="btn-touch"
+                className="btn-touch bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white transition-all duration-300 hover:scale-105"
               >
                 تسجيل دخول
               </Button>
@@ -127,7 +127,7 @@ export default function Navbar() {
               variant="ghost"
               size="icon"
               onClick={toggleTheme}
-              className="rounded-full w-9 h-9 btn-touch"
+              className="rounded-full w-9 h-9 btn-touch text-gray-300 hover:text-emerald-400 hover:bg-emerald-400/10 transition-all duration-300"
             >
               {theme === "light" ? <Moon size={18} /> : <Sun size={18} />}
             </Button>
@@ -136,7 +136,7 @@ export default function Navbar() {
               variant="ghost"
               size="icon"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="btn-touch"
+              className="btn-touch text-gray-300 hover:text-emerald-400 hover:bg-emerald-400/10 transition-all duration-300"
             >
               {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
             </Button>
@@ -145,34 +145,34 @@ export default function Navbar() {
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden absolute top-full left-0 right-0 bg-white dark:bg-neutral-800 shadow-lg z-50 border-t border-neutral-200 dark:border-neutral-700">
+          <div className="md:hidden absolute top-full left-0 right-0 bg-gradient-to-b from-gray-900 to-black shadow-2xl z-50 border-t border-emerald-400/20 backdrop-blur-md">
             <div className="p-4 space-y-3">
               <button 
                 onClick={() => setLocation("/calories")}
-                className="block w-full text-right py-3 px-4 text-sm font-medium text-neutral-700 hover:text-primary dark:text-neutral-300 dark:hover:text-primary transition-colors btn-touch rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700"
+                className="block w-full text-right py-3 px-4 text-sm font-medium text-gray-300 hover:text-emerald-400 transition-all duration-300 btn-touch rounded-lg hover:bg-emerald-400/10 backdrop-blur-sm"
               >
                 حاسبة السعرات
               </button>
 
               <button 
                 onClick={() => setLocation("/subscription")}
-                className="block w-full text-right py-3 px-4 text-sm font-medium text-neutral-700 hover:text-primary dark:text-neutral-300 dark:hover:text-primary transition-colors btn-touch rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700"
+                className="block w-full text-right py-3 px-4 text-sm font-medium text-gray-300 hover:text-emerald-400 transition-all duration-300 btn-touch rounded-lg hover:bg-emerald-400/10 backdrop-blur-sm"
               >
                 الاشتراكات
               </button>
 
               {isLoggedIn && subscriptionId && (
                 <div className="px-4 py-2">
-                  <Badge variant="outline" className="bg-primary/10 text-primary border-primary px-2 py-1">
+                  <Badge variant="outline" className="bg-emerald-400/10 text-emerald-400 border-emerald-400/30 px-2 py-1 backdrop-blur-sm">
                     رقم الاشتراك: {subscriptionId}
                   </Badge>
                 </div>
               )}
 
               {isLoggedIn ? (
-                <div className="space-y-3 pt-3 border-t border-neutral-200 dark:border-neutral-700">
+                <div className="space-y-3 pt-3 border-t border-emerald-400/20">
                   <div className="px-4">
-                    <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
+                    <span className="text-sm font-medium text-gray-300">
                       أهلاً، {username}
                     </span>
                   </div>
@@ -182,19 +182,17 @@ export default function Navbar() {
                       <Button
                         variant="outline"
                         onClick={handleWhatsAppClick}
-                        className="w-full text-green-600 border-green-600 hover:bg-green-50 dark:hover:bg-green-900/20 btn-touch"
+                        className="w-full text-emerald-400 border-emerald-400/30 hover:bg-emerald-400/10 backdrop-blur-sm btn-touch transition-all duration-300"
                       >
                         تواصل واتساب
                       </Button>
-
-
                     </div>
                   )}
 
                   <Button 
                     variant="outline" 
                     onClick={logout}
-                    className="w-full text-red-600 border-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 btn-touch"
+                    className="w-full text-red-400 border-red-400/30 hover:bg-red-400/10 backdrop-blur-sm btn-touch transition-all duration-300"
                   >
                     تسجيل خروج
                   </Button>

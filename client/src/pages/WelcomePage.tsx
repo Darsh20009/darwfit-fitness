@@ -30,25 +30,25 @@ export default function WelcomePage() {
       icon: "🤖",
       title: "ذكاء اصطناعي متطور",
       description: "خطط مخصصة تماماً لجسمك وأهدافك",
-      color: "from-blue-500 to-cyan-500"
+      color: "from-emerald-500 to-emerald-600"
     },
     {
       icon: "🍽️",
       title: "تغذية متوازنة",
       description: "وجبات لذيذة ومتنوعة تناسب ذوقك",
-      color: "from-green-500 to-emerald-500"
+      color: "from-emerald-400 to-emerald-500"
     },
     {
       icon: "💪",
       title: "تمارين فعالة",
       description: "برامج تدريبية تناسب مستواك ووقتك",
-      color: "from-red-500 to-pink-500"
+      color: "from-emerald-600 to-emerald-700"
     },
     {
       icon: "📊",
       title: "تتبع شامل",
       description: "راقب تقدمك وحقق أهدافك بسهولة",
-      color: "from-purple-500 to-indigo-500"
+      color: "from-emerald-300 to-emerald-400"
     }
   ];
 
@@ -74,7 +74,7 @@ export default function WelcomePage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 relative overflow-hidden">
       {/* Animated Background Elements */}
       <div className="absolute inset-0">
         {/* Dynamic floating elements */}
@@ -92,8 +92,8 @@ export default function WelcomePage() {
         ))}
         
         {/* Pulsing rings */}
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 border border-yellow-400/20 rounded-full animate-ping"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-48 h-48 border border-purple-400/20 rounded-full animate-pulse"></div>
+        <div className="absolute top-1/4 left-1/4 w-64 h-64 border border-emerald-400/20 rounded-full animate-ping"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-48 h-48 border border-emerald-300/20 rounded-full animate-pulse"></div>
         
         {/* Floating fitness icons */}
         <div className="absolute top-20 left-10 text-4xl animate-bounce opacity-30">🏋️‍♂️</div>
@@ -110,25 +110,25 @@ export default function WelcomePage() {
             <div className="flex justify-center items-center mb-6">
               <div className="relative group">
                 {/* Outer glow ring */}
-                <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 rounded-full blur-2xl opacity-75 group-hover:opacity-100 transition-opacity animate-pulse"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 via-emerald-500 to-emerald-600 rounded-full blur-2xl opacity-75 group-hover:opacity-100 transition-opacity animate-pulse"></div>
                 
                 {/* Main logo container */}
-                <div className="relative bg-gradient-to-br from-gray-800 to-black p-12 rounded-full border-4 border-yellow-400 shadow-2xl transform group-hover:scale-110 transition-all duration-500">
-                  <Dumbbell className={`h-20 w-20 text-yellow-400 transition-all duration-500 ${animationStep % 2 === 0 ? 'animate-bounce' : 'animate-pulse'}`} />
+                <div className="relative bg-gradient-to-br from-gray-800 to-black p-12 rounded-full border-4 border-emerald-400 shadow-2xl transform group-hover:scale-110 transition-all duration-500">
+                  <Dumbbell className={`h-20 w-20 text-emerald-400 transition-all duration-500 ${animationStep % 2 === 0 ? 'animate-bounce' : 'animate-pulse'}`} />
                   
                   {/* Orbiting elements */}
                   <div className="absolute inset-0 animate-spin" style={{animationDuration: '8s'}}>
                     <div className="absolute -top-2 left-1/2 transform -translate-x-1/2">
-                      <Star className="h-6 w-6 text-yellow-300" />
+                      <Star className="h-6 w-6 text-emerald-300" />
                     </div>
                     <div className="absolute top-1/2 -right-2 transform -translate-y-1/2">
-                      <Target className="h-6 w-6 text-blue-300" />
+                      <Target className="h-6 w-6 text-emerald-400" />
                     </div>
                     <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2">
-                      <Zap className="h-6 w-6 text-purple-300" />
+                      <Zap className="h-6 w-6 text-emerald-500" />
                     </div>
                     <div className="absolute top-1/2 -left-2 transform -translate-y-1/2">
-                      <Heart className="h-6 w-6 text-red-300" />
+                      <Heart className="h-6 w-6 text-emerald-300" />
                     </div>
                   </div>
                 </div>
@@ -137,10 +137,10 @@ export default function WelcomePage() {
             
             {/* Brand name with typewriter effect */}
             <h1 className="text-6xl md:text-8xl font-bold mb-4 relative">
-              <span className="bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-emerald-400 via-emerald-300 to-emerald-500 bg-clip-text text-transparent">
                 DARWFIT
               </span>
-              <div className="absolute -inset-1 bg-gradient-to-r from-yellow-400/20 via-orange-500/20 to-red-500/20 blur-2xl -z-10 animate-pulse"></div>
+              <div className="absolute -inset-1 bg-gradient-to-r from-emerald-400/20 via-emerald-300/20 to-emerald-500/20 blur-2xl -z-10 animate-pulse"></div>
             </h1>
             
             {/* Dynamic badges */}
@@ -149,11 +149,11 @@ export default function WelcomePage() {
                 <Crown className="h-5 w-5 ml-2" />
                 {features[currentFeature].icon} قوة وإبداع
               </Badge>
-              <Badge className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-6 py-3 text-lg font-bold animate-bounce">
+              <Badge className="bg-gradient-to-r from-emerald-500 to-emerald-600 text-white px-6 py-3 text-lg font-bold animate-bounce">
                 <Sparkles className="h-5 w-5 ml-2" />
                 مجاني
               </Badge>
-              <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 text-lg font-bold animate-pulse">
+              <Badge className="bg-gradient-to-r from-emerald-400 to-emerald-500 text-white px-6 py-3 text-lg font-bold animate-pulse">
                 <Trophy className="h-5 w-5 ml-2" />
                 #1 في السعودية
               </Badge>
@@ -163,9 +163,9 @@ export default function WelcomePage() {
           {/* Main tagline */}
           <div className="max-w-4xl mx-auto mb-12">
             <p className="text-3xl md:text-4xl text-gray-200 mb-6 leading-relaxed font-bold">
-              <span className="text-yellow-400">🔥 حوّل جسمك</span> •{' '}
-              <span className="text-blue-400">⚡ حقق أحلامك</span> •{' '}
-              <span className="text-green-400">🚀 كن الأفضل</span>
+              <span className="text-emerald-400">🔥 حوّل جسمك</span> •{' '}
+              <span className="text-emerald-300">⚡ حقق أحلامك</span> •{' '}
+              <span className="text-emerald-500">🚀 كن الأفضل</span>
             </p>
             <p className="text-xl text-gray-300 leading-relaxed">
               رحلتك نحو اللياقة المثالية والصحة الدائمة تبدأ من هنا
@@ -195,7 +195,7 @@ export default function WelcomePage() {
                       key={index}
                       className={`w-3 h-3 rounded-full transition-all duration-300 ${
                         index === currentFeature 
-                          ? 'bg-yellow-400 scale-125' 
+                          ? 'bg-emerald-400 scale-125' 
                           : 'bg-gray-600 hover:bg-gray-500'
                       }`}
                     />
@@ -209,7 +209,7 @@ export default function WelcomePage() {
           <div className="flex flex-col md:flex-row gap-6 justify-center items-center mb-16">
             <Button 
               onClick={() => setLocation("/free-login")}
-              className="bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 hover:from-green-600 hover:via-emerald-600 hover:to-teal-600 text-white font-bold py-6 px-12 rounded-2xl transition-all duration-300 text-xl transform hover:scale-110 hover:shadow-2xl shadow-green-500/50 border-0"
+              className="bg-gradient-to-r from-emerald-500 via-emerald-400 to-emerald-600 hover:from-emerald-600 hover:via-emerald-500 hover:to-emerald-700 text-white font-bold py-6 px-12 rounded-2xl transition-all duration-300 text-xl transform hover:scale-110 hover:shadow-2xl shadow-emerald-500/50 border-0"
             >
               <Play className="h-6 w-6 ml-3" />
               🆓 ابدأ مجاناً الآن
@@ -217,7 +217,7 @@ export default function WelcomePage() {
             
             <Button 
               onClick={() => setLocation("/subscription")}
-              className="bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500 hover:from-yellow-600 hover:via-orange-600 hover:to-red-600 text-white font-bold py-6 px-12 rounded-2xl transition-all duration-300 text-xl transform hover:scale-110 hover:shadow-2xl shadow-orange-500/50 border-0"
+              className="bg-gradient-to-r from-emerald-400 via-emerald-500 to-emerald-600 hover:from-emerald-500 hover:via-emerald-600 hover:to-emerald-700 text-white font-bold py-6 px-12 rounded-2xl transition-all duration-300 text-xl transform hover:scale-110 hover:shadow-2xl shadow-emerald-500/50 border-0"
             >
               <Crown className="h-6 w-6 ml-3" />
               👑 الخطة المميزة
@@ -226,7 +226,7 @@ export default function WelcomePage() {
             <Button 
               variant="outline"
               onClick={() => setLocation("/calories")}
-              className="border-2 border-white/50 text-white hover:bg-white/10 backdrop-blur-sm py-6 px-12 rounded-2xl transition-all duration-300 text-xl transform hover:scale-110 bg-transparent"
+              className="border-2 border-emerald-400/50 text-emerald-300 hover:bg-emerald-400/10 backdrop-blur-sm py-6 px-12 rounded-2xl transition-all duration-300 text-xl transform hover:scale-110 bg-transparent hover:text-emerald-400"
             >
               <Target className="h-6 w-6 ml-3" />
               🔥 حاسبة السعرات
@@ -238,7 +238,7 @@ export default function WelcomePage() {
             <Card className="bg-white/5 backdrop-blur-lg border border-white/20 shadow-2xl max-w-md mx-auto">
               <CardContent className="p-8 text-center">
                 <div className="mb-6">
-                  <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-4 rounded-full inline-block mb-4">
+                  <div className="bg-gradient-to-r from-emerald-500 to-emerald-600 p-4 rounded-full inline-block mb-4">
                     <Users className="h-12 w-12 text-white" />
                   </div>
                   <h3 className="text-2xl font-bold text-white mb-2">عضو مدفوع؟</h3>
@@ -247,7 +247,7 @@ export default function WelcomePage() {
                 
                 <Button 
                   onClick={() => setLocation("/login")}
-                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 text-lg transform hover:scale-105 shadow-lg"
+                  className="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 text-lg transform hover:scale-105 shadow-lg"
                 >
                   <CheckCircle className="h-5 w-5 ml-2" />
                   تسجيل دخول الأعضاء
