@@ -783,8 +783,7 @@ export function downloadMealPlan(dayPlan: DayPlan) {
                                 <span class="value">${meal.protein}جم</span>
                                 <span class="label">بروتين</span>
                             </div>
-                            <div class="ultra-badge">                                <span class="value">${meal.carbs}جم</span>
-                                <span class="label">كربوهيدرات</span>
+                            <div class="ultra-badge">                                <span class="value">${meal.carbs}جم</span>                                <span class="label">كربوهيدرات</span>
                             </div>
                             <div class="ultra-badge">
                                 <span class="value">${meal.fats}جم</span>
