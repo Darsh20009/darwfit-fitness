@@ -1,9 +1,11 @@
+import { useState } from "react";
 import { Switch, Route } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Navbar from "./components/Navbar";
+import WelcomeScreen from "./components/WelcomeScreen";
 import HomePage from "./pages/HomePage";
 import WelcomePage from "./pages/WelcomePage";
 import SubscriptionPage from "./pages/SubscriptionPage";
@@ -46,13 +48,22 @@ function ProtectedRoutes() {
 }
 
 function AppContent() {
+  const [showWelcome, setShowWelcome] = useState(true);
+
+  const handleWelcomeComplete = () => {
+    setShowWelcome(false);
+  };
+
+  if (showWelcome) {
+    return <WelcomeScreen onComplete={handleWelcomeComplete} />;
+  }
+
   return (
     <div className="min-h-screen gradient-bg">
       <Navbar />
       <Toaster />
       <ProtectedRoutes />
       <SuccessModal />
-
     </div>
   );
 }
