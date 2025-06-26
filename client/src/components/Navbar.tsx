@@ -37,7 +37,7 @@ export default function Navbar() {
   return (
     <nav className="bg-white dark:bg-neutral-800 shadow-md relative">
       <div className="container mx-auto px-4 py-3">
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center bg-[#262626]">
           {/* Logo */}
           <div className="relative">
               <h1 className="text-3xl font-black luxury-darwfit-logo relative z-10 bg-[#262626]">
