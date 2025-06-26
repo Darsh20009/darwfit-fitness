@@ -26,11 +26,7 @@ export default function Navbar() {
 
 
   const handleNavigation = (path: string) => {
-    if (path === "/") {
-      setLocation(isLoggedIn ? "/dashboard" : "/");
-    } else {
-      setLocation(path);
-    }
+    setLocation(path);
     setIsMobileMenuOpen(false);
   };
 

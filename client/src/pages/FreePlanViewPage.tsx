@@ -523,7 +523,7 @@ export default function FreePlanViewPage() {
                         <div className="mt-4 text-center">
                           <Button 
                             onClick={() => handleDownloadMeal(currentDay)}
-                            className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold py-2 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                            className="bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-bold py-2 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl shadow-emerald-500/30"
                           >
                             <Download className="h-4 w-4 ml-2 animate-bounce" />
                             📥 تحميل النظام الغذائي
@@ -620,7 +620,7 @@ export default function FreePlanViewPage() {
                       <div className="mt-6 text-center">
                         <Button 
                           onClick={() => handleDownloadWorkout(workout.day)}
-                          className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-2 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                          className="bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-bold py-2 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl shadow-emerald-500/30"
                         >
                           <Download className="h-4 w-4 ml-2 animate-bounce" />
                           💪 تحميل تمرين اليوم {workout.day}

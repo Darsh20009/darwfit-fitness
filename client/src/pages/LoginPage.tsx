@@ -73,7 +73,10 @@ export default function LoginPage() {
           title: "تم تسجيل الدخول بنجاح! 🎉",
           description: `مرحباً ${username}، يمكنك الآن الوصول لخطتك المخصصة`,
         });
-        setLocation("/dashboard");
+        // تأخير قصير للتأكد من حفظ البيانات
+        setTimeout(() => {
+          setLocation("/dashboard");
+        }, 500);
       } else {
         toast({
           title: "خطأ في تسجيل الدخول",
