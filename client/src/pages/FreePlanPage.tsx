@@ -298,33 +298,33 @@ export default function FreePlanPage() {
 
   if (isGenerating) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-blue-900 dark:to-purple-900 flex items-center justify-center overflow-hidden">
+      <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50 dark:from-gray-900 dark:via-emerald-900 dark:to-green-900 flex items-center justify-center overflow-hidden">
         <div className="text-center space-y-8 relative">
           {/* خلفية متحركة */}
           <div className="absolute inset-0 -z-10">
-            <div className="absolute top-20 left-10 w-20 h-20 bg-blue-400/20 rounded-full animate-bounce"></div>
-            <div className="absolute top-40 right-16 w-16 h-16 bg-purple-400/20 rounded-full animate-bounce" style={{animationDelay: '0.5s'}}></div>
-            <div className="absolute bottom-20 left-20 w-24 h-24 bg-pink-400/20 rounded-full animate-bounce" style={{animationDelay: '1s'}}></div>
-            <div className="absolute bottom-40 right-10 w-18 h-18 bg-green-400/20 rounded-full animate-bounce" style={{animationDelay: '1.5s'}}></div>
+            <div className="absolute top-20 left-10 w-20 h-20 bg-emerald-400/20 rounded-full animate-bounce"></div>
+            <div className="absolute top-40 right-16 w-16 h-16 bg-green-400/20 rounded-full animate-bounce" style={{animationDelay: '0.5s'}}></div>
+            <div className="absolute bottom-20 left-20 w-24 h-24 bg-teal-400/20 rounded-full animate-bounce" style={{animationDelay: '1s'}}></div>
+            <div className="absolute bottom-40 right-10 w-18 h-18 bg-emerald-500/20 rounded-full animate-bounce" style={{animationDelay: '1.5s'}}></div>
           </div>
           
           {/* اللودر الرئيسي */}
           <div className="relative">
             <div className="w-40 h-40 mx-auto relative">
               {/* الحلقات الدوارة */}
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full animate-spin opacity-75"></div>
-              <div className="absolute inset-2 bg-gradient-to-r from-green-500 via-yellow-500 to-red-500 rounded-full animate-spin opacity-60" style={{animationDirection: 'reverse', animationDuration: '3s'}}></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 via-green-500 to-teal-500 rounded-full animate-spin opacity-75"></div>
+              <div className="absolute inset-2 bg-gradient-to-r from-emerald-600 via-green-600 to-teal-600 rounded-full animate-spin opacity-60" style={{animationDirection: 'reverse', animationDuration: '3s'}}></div>
               <div className="absolute inset-4 bg-white dark:bg-gray-900 rounded-full flex items-center justify-center shadow-2xl">
                 <div className="text-center">
-                  <Sparkles className="h-12 w-12 text-purple-600 animate-pulse mx-auto mb-2" />
-                  <div className="text-xs font-bold text-purple-600">AI</div>
+                  <Sparkles className="h-12 w-12 text-emerald-600 animate-pulse mx-auto mb-2" />
+                  <div className="text-xs font-bold text-emerald-600">AI</div>
                 </div>
               </div>
             </div>
           </div>
           
           <div className="space-y-6">
-            <h2 className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+            <h2 className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-emerald-600 via-green-600 to-teal-600 bg-clip-text text-transparent">
               🧠 الذكاء الاصطناعي يحضر خطتك المثالية
             </h2>
             
@@ -332,11 +332,11 @@ export default function FreePlanPage() {
             <div className="space-y-4 max-w-2xl mx-auto">
               <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl p-4 transform transition-all duration-500 hover:scale-105 animate-pulse">
                 <div className="flex items-center space-x-4 space-x-reverse">
-                  <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center animate-spin">
+                  <div className="w-12 h-12 bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-full flex items-center justify-center animate-spin">
                     <span className="text-white font-bold text-lg">🔍</span>
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-blue-600">تحليل بياناتك الشخصية</h3>
+                    <h3 className="text-lg font-bold text-emerald-600">تحليل بياناتك الشخصية</h3>
                     <p className="text-sm text-gray-600 dark:text-gray-300">حساب السعرات والماكروز المناسبة لهدفك</p>
                   </div>
                 </div>
@@ -356,11 +356,11 @@ export default function FreePlanPage() {
               
               <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl p-4 transform transition-all duration-500 hover:scale-105 animate-pulse" style={{animationDelay: '1s'}}>
                 <div className="flex items-center space-x-4 space-x-reverse">
-                  <div className="w-12 h-12 bg-gradient-to-r from-red-500 to-red-600 rounded-full flex items-center justify-center animate-pulse">
+                  <div className="w-12 h-12 bg-gradient-to-r from-teal-500 to-teal-600 rounded-full flex items-center justify-center animate-pulse">
                     <span className="text-white font-bold text-lg">💪</span>
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-red-600">إنشاء برنامج تمريني مناسب</h3>
+                    <h3 className="text-lg font-bold text-teal-600">إنشاء برنامج تمريني مناسب</h3>
                     <p className="text-sm text-gray-600 dark:text-gray-300">تمارين تناسب مستواك ومكان التدريب</p>
                   </div>
                 </div>
@@ -368,11 +368,11 @@ export default function FreePlanPage() {
               
               <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl p-4 transform transition-all duration-500 hover:scale-105 animate-pulse" style={{animationDelay: '1.5s'}}>
                 <div className="flex items-center space-x-4 space-x-reverse">
-                  <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-purple-600 rounded-full flex items-center justify-center animate-spin">
+                  <div className="w-12 h-12 bg-gradient-to-r from-emerald-500 to-green-600 rounded-full flex items-center justify-center animate-spin">
                     <span className="text-white font-bold text-lg">✨</span>
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-purple-600">إضافة اللمسات الأخيرة</h3>
+                    <h3 className="text-lg font-bold text-emerald-600">إضافة اللمسات الأخيرة</h3>
                     <p className="text-sm text-gray-600 dark:text-gray-300">تحسين وتخصيص خطتك للحصول على أفضل النتائج</p>
                   </div>
                 </div>
@@ -381,26 +381,26 @@ export default function FreePlanPage() {
           </div>
           
           {/* شريط التقدم المحسن */}
-          <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl p-6 max-w-lg mx-auto border-2 border-purple-200 dark:border-purple-700 shadow-2xl">
+          <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl p-6 max-w-lg mx-auto border-2 border-emerald-200 dark:border-emerald-700 shadow-2xl">
             <div className="flex items-center justify-center mb-4">
               <div className="animate-pulse">
                 <span className="text-2xl">🚀</span>
               </div>
-              <p className="text-purple-600 dark:text-purple-400 font-bold text-lg mr-3">
+              <p className="text-emerald-600 dark:text-emerald-400 font-bold text-lg mr-3">
                 جاري إنشاء خطتك الشخصية...
               </p>
             </div>
             
             <div className="relative w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4 overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full animate-pulse transform origin-left">
-                <div className="h-full bg-gradient-to-r from-blue-400 to-purple-400 rounded-full animate-pulse" style={{width: '85%'}}></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 via-green-500 to-teal-500 rounded-full animate-pulse transform origin-left">
+                <div className="h-full bg-gradient-to-r from-emerald-400 to-green-400 rounded-full animate-pulse" style={{width: '85%'}}></div>
               </div>
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-ping"></div>
             </div>
             
             <div className="mt-4 text-center">
               <p className="text-sm text-gray-600 dark:text-gray-400">
-                🎯 تخصيص الخطة حسب هدفك: <span className="font-bold text-purple-600">جاري المعالجة...</span>
+                🎯 تخصيص الخطة حسب هدفك: <span className="font-bold text-emerald-600">جاري المعالجة...</span>
               </p>
             </div>
           </div>
