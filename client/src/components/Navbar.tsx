@@ -43,7 +43,7 @@ export default function Navbar() {
               <h1 className="text-3xl font-black luxury-darwfit-logo relative z-10">
                 DARWFIT
               </h1>
-              <div className="absolute inset-0 luxury-darwfit-glow animate-pulse"></div>
+              <div className="absolute inset-0 luxury-darwfit-glow animate-pulse bg-[#262626]"></div>
             </div>
 
           {/* Desktop Navigation */}
