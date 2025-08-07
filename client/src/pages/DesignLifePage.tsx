@@ -59,7 +59,7 @@ interface UserAnswers {
   weight: string;
   height: string;
   bodyType: string;
-  
+
   // Goals & Motivation
   primaryGoal: string;
   secondaryGoals: string[];
@@ -67,7 +67,7 @@ interface UserAnswers {
   motivationLevel: string;
   pastFailures: string[];
   successFactors: string[];
-  
+
   // Lifestyle & Social
   socialClass: string;
   occupation: string;
@@ -77,7 +77,7 @@ interface UserAnswers {
   lifestyle: string;
   familyStatus: string;
   supportSystem: string;
-  
+
   // Exercise Preferences
   activityLevel: string;
   exerciseType: string;
@@ -88,7 +88,7 @@ interface UserAnswers {
   injuries: string[];
   limitations: string[];
   favoriteActivities: string[];
-  
+
   // Nutrition Details
   currentDiet: string;
   mealTiming: string;
@@ -101,7 +101,7 @@ interface UserAnswers {
   allergies: string[];
   culturalDiet: string;
   religiousRestrictions: string[];
-  
+
   // Health & Medical
   healthConditions: string[];
   medications: string[];
@@ -109,21 +109,21 @@ interface UserAnswers {
   medicalHistory: string;
   lastCheckup: string;
   bloodWork: string;
-  
+
   // Financial & Resources
   monthlyBudget: string;
   foodBudget: string;
   gymBudget: string;
   supplementBudget: string;
   priorityBudget: string;
-  
+
   // Technology & Tracking
   trackingPreference: string;
   appUsage: string[];
   deviceOwnership: string[];
   techComfort: string;
   notificationStyle: string;
-  
+
   // Cultural & Regional
   region: string;
   climate: string;
@@ -131,7 +131,7 @@ interface UserAnswers {
   culturalBackground: string;
   languagePreference: string;
   localResources: string[];
-  
+
   // Psychological Profile
   personalityType: string;
   learningStyle: string;
@@ -184,7 +184,7 @@ const QUESTION_DATA = {
   weightRanges: ["أقل من 45", "45-55", "56-65", "66-75", "76-85", "86-95", "96-105", "106-120", "أكثر من 120"],
   heightRanges: ["أقل من 145", "145-155", "156-165", "166-175", "176-185", "186-195", "أكثر من 195"],
   bodyTypes: ["نحيف جداً", "نحيف", "متوسط", "ممتلئ", "بدين", "بدين جداً"],
-  
+
   // Goals & Motivation
   primaryGoals: [
     "فقدان الوزن السريع", "فقدان الوزن التدريجي", "زيادة الكتلة العضلية", 
@@ -197,7 +197,7 @@ const QUESTION_DATA = {
   ],
   timeFrames: ["شهر واحد", "3 أشهر", "6 أشهر", "سنة واحدة", "2-3 سنوات", "أسلوب حياة دائم"],
   motivationLevels: ["منخفض جداً", "منخفض", "متوسط", "عالي", "عالي جداً"],
-  
+
   // Lifestyle
   occupations: [
     "طالب", "موظف مكتب", "عامل يدوي", "مدرس", "طبيب/ممرض", 
@@ -207,7 +207,7 @@ const QUESTION_DATA = {
   stressLevels: ["منخفض جداً", "منخفض", "متوسط", "عالي", "عالي جداً"],
   sleepHours: ["أقل من 5 ساعات", "5-6 ساعات", "7-8 ساعات", "9-10 ساعات", "أكثر من 10 ساعات"],
   lifestyles: ["نشط جداً", "نشط", "متوسط النشاط", "قليل النشاط", "خامل"],
-  
+
   // Exercise Preferences
   activityLevels: ["مبتدئ تماماً", "مبتدئ", "متوسط", "متقدم", "محترف"],
   exerciseTypes: [
@@ -217,7 +217,7 @@ const QUESTION_DATA = {
   exerciseLocations: ["المنزل فقط", "النادي فقط", "في الهواء الطلق", "مختلط"],
   preferredTimes: ["الفجر (5-7 ص)", "الصباح (7-10 ص)", "الضحى (10-12 ظ)", "بعد الظهر (1-4 ع)", "المساء (4-7 م)", "الليل (7-10 م)"],
   dailyHours: ["15-30 دقيقة", "30-45 دقيقة", "45-60 دقيقة", "60-90 دقيقة", "90-120 دقيقة", "أكثر من ساعتين"],
-  
+
   // Nutrition
   currentDiets: [
     "لا يوجد نظام محدد", "نظام البحر المتوسط", "نظام الكيتو", "نظام قليل الكربوهيدرات",
@@ -226,11 +226,11 @@ const QUESTION_DATA = {
   mealTimings: ["وجبتان يومياً", "3 وجبات رئيسية", "4-5 وجبات صغيرة", "6 وجبات صغيرة", "صيام متقطع 16:8", "صيام متقطع 18:6"],
   cookingSkills: ["لا أطبخ إطلاقاً", "مبتدئ", "متوسط", "جيد", "ممتاز", "شيف محترف"],
   cookingTimes: ["لا وقت للطبخ", "أقل من 15 دقيقة", "15-30 دقيقة", "30-60 دقيقة", "أكثر من ساعة"],
-  
+
   // Financial
   monthlyBudgets: ["أقل من 500 ريال", "500-1000 ريال", "1000-2000 ريال", "2000-3000 ريال", "3000-5000 ريال", "أكثر من 5000 ريال"],
   foodBudgets: ["أقل من 300 ريال", "300-500 ريال", "500-800 ريال", "800-1200 ريال", "أكثر من 1200 ريال"],
-  
+
   // Cultural & Regional
   regions: [
     "الرياض", "جدة", "الدمام", "مكة", "المدينة", "الطائف", "تبوك", "أبها", 
@@ -238,12 +238,12 @@ const QUESTION_DATA = {
   ],
   climates: ["صحراوي حار", "معتدل", "بارد", "رطب", "جبلي"],
   culturalBackgrounds: ["سعودي", "مصري", "سوري", "لبناني", "أردني", "عراقي", "يمني", "مغربي", "تونسي", "آخر"],
-  
+
   // Technology & Tracking
   trackingPreferences: ["لا أحب التتبع", "تتبع بسيط", "تتبع متوسط", "تتبع مفصل", "تتبع احترافي"],
   appUsage: ["لا أستخدم تطبيقات", "تطبيقات بسيطة", "عدة تطبيقات", "تطبيقات متقدمة"],
   deviceOwnership: ["هاتف ذكي فقط", "هاتف + ساعة ذكية", "هاتف + ميزان ذكي", "أجهزة متعددة"],
-  
+
   // Psychology
   personalityTypes: ["انطوائي", "منفتح", "مختلط", "قيادي", "تابع", "منظم", "عفوي"],
   learningStyles: ["بصري", "سمعي", "حركي", "قرائي", "مختلط"],
@@ -257,31 +257,31 @@ const FOOD_OPTIONS = {
     "بيض", "دجاج (فخذ)", "تونة معلبة", "سردين", "عدس أحمر", "عدس أسود", 
     "حمص", "فول", "فاصوليا بيضاء", "لوبيا", "جبن قريش", "لبن زبادي"
   ],
-  
+
   // Affordable Carbs
   cheapCarbs: [
     "أرز أبيض", "أرز بني", "مكرونة", "شعيرية", "برغل", "شوفان", 
     "خبز أسمر", "بطاطس", "بطاطا حلوة", "كسكس"
   ],
-  
+
   // Budget Vegetables
   cheapVegetables: [
     "طماطم", "خيار", "جزر", "بصل", "ثوم", "فلفل أخضر", "ملفوف", 
     "كوسا", "باذنجان", "سبانخ", "خس", "فجل", "لفت"
   ],
-  
+
   // Affordable Fruits
   cheapFruits: [
     "موز", "تفاح", "برتقال", "ليمون", "تمر", "عنب", "بطيخ", 
     "شمام", "مشمش", "خوخ", "إجاص", "رمان"
   ],
-  
+
   // Regional Specialties
   saudiFood: ["كبسة", "مندي", "مرقوق", "هريس", "جريش", "قرصان"],
   egyptianFood: ["ملوخية", "فول مدمس", "طعمية", "كشري", "رقاق"],
   levantineFood: ["تبولة", "فتوش", "حمص بالطحينة", "كبة", "منسف"],
   gulfFood: ["مجبوس", "لقيمات", "خنفروش", "هريس", "ثريد"],
-  
+
   // Cultural Restrictions
   forbiddenOptions: [
     "لحم خنزير", "كحول", "جيلاتين حيواني", "منتجات غير حلال",
@@ -289,7 +289,7 @@ const FOOD_OPTIONS = {
     "طعام حار", "طعام مقلي", "حلويات", "مشروبات غازية", "كافيين",
     "طعام نيء", "طعام معالج", "مواد حافظة", "ألوان صناعية"
   ],
-  
+
   // Health Conditions
   diabeticFriendly: ["خضروات ورقية", "بروكلي", "قرنبيط", "سمك", "دجاج", "بيض"],
   heartHealthy: ["سلمون", "أفوكادو", "لوز", "زيت زيتون", "شوفان", "توت"],
@@ -309,7 +309,7 @@ export default function DesignLifePage() {
     weight: "",
     height: "",
     bodyType: "",
-    
+
     // Goals & Motivation
     primaryGoal: "",
     secondaryGoals: [],
@@ -317,7 +317,7 @@ export default function DesignLifePage() {
     motivationLevel: "",
     pastFailures: [],
     successFactors: [],
-    
+
     // Lifestyle & Social
     socialClass: "",
     occupation: "",
@@ -327,7 +327,7 @@ export default function DesignLifePage() {
     lifestyle: "",
     familyStatus: "",
     supportSystem: "",
-    
+
     // Exercise Preferences
     activityLevel: "",
     exerciseType: "",
@@ -338,7 +338,7 @@ export default function DesignLifePage() {
     injuries: [],
     limitations: [],
     favoriteActivities: [],
-    
+
     // Nutrition Details
     currentDiet: "",
     mealTiming: "",
@@ -351,7 +351,7 @@ export default function DesignLifePage() {
     allergies: [],
     culturalDiet: "",
     religiousRestrictions: [],
-    
+
     // Health & Medical
     healthConditions: [],
     medications: [],
@@ -359,21 +359,21 @@ export default function DesignLifePage() {
     medicalHistory: "",
     lastCheckup: "",
     bloodWork: "",
-    
+
     // Financial & Resources
     monthlyBudget: "",
     foodBudget: "",
     gymBudget: "",
     supplementBudget: "",
     priorityBudget: "",
-    
+
     // Technology & Tracking
     trackingPreference: "",
     appUsage: [],
     deviceOwnership: [],
     techComfort: "",
     notificationStyle: "",
-    
+
     // Cultural & Regional
     region: "",
     climate: "",
@@ -381,7 +381,7 @@ export default function DesignLifePage() {
     culturalBackground: "",
     languagePreference: "",
     localResources: [],
-    
+
     // Psychological Profile
     personalityType: "",
     learningStyle: "",
@@ -406,10 +406,10 @@ export default function DesignLifePage() {
 
   const generatePlan = async () => {
     setIsGenerating(true);
-    
+
     // Simulate AI generation with realistic delay
     await new Promise(resolve => setTimeout(resolve, 3000));
-    
+
     // Generate comprehensive plan based on answers
     const plan = generateComprehensivePlan(answers);
     setGeneratedPlan(plan);
@@ -419,7 +419,7 @@ export default function DesignLifePage() {
   const generateComprehensivePlan = (userAnswers: UserAnswers): GeneratedPlan => {
     // Smart plan generation algorithm
     const planId = `PLAN_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     // Generate 180-day nutrition plan
     const nutritionPlan = generateNutritionPlan(userAnswers);
     const exercisePlan = generateExercisePlan(userAnswers);
@@ -441,35 +441,35 @@ export default function DesignLifePage() {
     const plan: DayPlan[] = [];
     const budgetMultiplier = userAnswers.socialClass === "منخفضة الدخل" ? 0.7 : 
                            userAnswers.socialClass === "متوسطة الدخل" ? 1 : 1.5;
-    
+
     for (let day = 1; day <= 180; day++) {
       const dayPlan = generateDayMeal(userAnswers, day, budgetMultiplier);
       plan.push(dayPlan);
     }
-    
+
     return plan;
   };
 
   const generateDayMeal = (userAnswers: UserAnswers, day: number, budgetMultiplier: number): DayPlan => {
     const goalCalories = calculateCalories(userAnswers);
-    
+
     // Breakfast options based on budget
     const budgetBreakfasts = budgetMultiplier < 1 ? 
       ["بيض مسلوق + خبز أسمر + شاي", "شوفان + موز + حليب", "فول + طحينة + خبز"] :
       ["عجة + جبن + خبز محمص", "شوفان + مكسرات + عسل", "لبنة + زيت زيتون + خضار"];
-    
+
     const budgetLunches = budgetMultiplier < 1 ?
       ["أرز + عدس + سلطة", "مكرونة + تونة + خضار", "دجاج مسلوق + خضار + أرز"] :
       ["دجاج مشوي + أرز + سلطة", "سمك + خضار + بطاطس", "لحم + أرز + خضار"];
-    
+
     const budgetDinners = budgetMultiplier < 1 ?
       ["شوربة عدس + خبز", "بيض + خضار + خبز", "تونة + سلطة + خبز"] :
       ["سمك مشوي + أرز", "دجاج + خضار + بطاطس", "لحم + سلطة + خبز"];
-    
+
     const randomBreakfast = budgetBreakfasts[day % budgetBreakfasts.length];
     const randomLunch = budgetLunches[day % budgetLunches.length];
     const randomDinner = budgetDinners[day % budgetDinners.length];
-    
+
     return {
       day,
       breakfast: randomBreakfast,
@@ -484,10 +484,10 @@ export default function DesignLifePage() {
   const generateExercisePlan = (userAnswers: UserAnswers): ExercisePlan[] => {
     const plan: ExercisePlan[] = [];
     const isHome = userAnswers.exerciseLocation === "المنزل فقط";
-    
+
     for (let day = 1; day <= 180; day++) {
       if (day % 7 === 0) continue; // Rest day
-      
+
       const exercises = isHome ? 
         [
           { name: "ضغط", sets: 3, reps: "8-12", rest: "60 ثانية", description: "تمرين الصدر والذراعين" },
@@ -499,7 +499,7 @@ export default function DesignLifePage() {
           { name: "سكوات بالبار", sets: 3, reps: "6-8", rest: "120 ثانية", description: "تمرين الأرجل بالبار" },
           { name: "سحب علوي", sets: 3, reps: "8-10", rest: "90 ثانية", description: "تمرين عضلات الظهر" }
         ];
-      
+
       plan.push({
         day,
         exercises,
@@ -507,13 +507,13 @@ export default function DesignLifePage() {
         difficulty: userAnswers.activityLevel
       });
     }
-    
+
     return plan;
   };
 
   const generateSupplementPlan = (userAnswers: UserAnswers): string[] => {
     const supplements = [];
-    
+
     if (userAnswers.supplements.includes("بروتين")) {
       supplements.push("واي بروتين: 30 جرام بعد التمرين");
     }
@@ -526,7 +526,7 @@ export default function DesignLifePage() {
     if (userAnswers.supplements.includes("فيتامينات")) {
       supplements.push("فيتامينات متعددة: قرص واحد صباحاً");
     }
-    
+
     return supplements;
   };
 
@@ -535,7 +535,7 @@ export default function DesignLifePage() {
     const monthlyCost = dailyCost * 30;
     const gymCost = userAnswers.exerciseLocation !== "المنزل فقط" ? 150 : 0;
     const supplementCost = userAnswers.supplements.length * 50;
-    
+
     return monthlyCost + gymCost + supplementCost;
   };
 
@@ -543,12 +543,12 @@ export default function DesignLifePage() {
     const weight = parseInt(userAnswers.weight.split('-')[0]) || 70;
     const height = parseInt(userAnswers.height.split('-')[0]) || 170;
     const age = parseInt(userAnswers.age.split('-')[0]) || 25;
-    
+
     // BMR calculation
     let bmr = userAnswers.gender === "ذكر" ? 
       88.362 + (13.397 * weight) + (4.799 * height) - (5.677 * age) :
       447.593 + (9.247 * weight) + (3.098 * height) - (4.330 * age);
-    
+
     // Activity factor
     const activityMultiplier = {
       "مبتدئ تماماً": 1.2,
@@ -557,7 +557,7 @@ export default function DesignLifePage() {
       "متقدم": 1.725,
       "محترف": 1.9
     }[userAnswers.activityLevel] || 1.4;
-    
+
     return Math.round(bmr * activityMultiplier);
   };
 
@@ -569,7 +569,7 @@ export default function DesignLifePage() {
       supplementPlan: plan.supplementPlan,
       estimatedBudget: plan.estimatedBudget
     };
-    
+
     const dataStr = JSON.stringify(planData, null, 2);
     const dataBlob = new Blob([dataStr], { type: 'application/json' });
     const url = URL.createObjectURL(dataBlob);
@@ -657,13 +657,13 @@ export default function DesignLifePage() {
     const StepIcon = step.icon;
 
     return (
-      <Card className="w-full max-w-4xl mx-auto">
+      <Card className="w-full max-w-4xl mx-auto dark:bg-gray-800 dark:border-gray-700">
         <CardHeader className="text-center">
-          <div className={`inline-flex items-center justify-center w-16 h-16 rounded-full bg-${step.color}-100 mb-4`}>
-            <StepIcon className={`w-8 h-8 text-${step.color}-600`} />
+          <div className={`inline-flex items-center justify-center w-16 h-16 rounded-full bg-${step.color}-100 dark:bg-${step.color}-900 mb-4`}>
+            <StepIcon className={`w-8 h-8 text-${step.color}-600 dark:text-${step.color}-400`} />
           </div>
-          <CardTitle className="text-2xl text-right">{step.title}</CardTitle>
-          <p className="text-gray-600 text-right">
+          <CardTitle className="text-2xl text-right dark:text-gray-200">{step.title}</CardTitle>
+          <p className="text-gray-600 dark:text-gray-400 text-right">
             الخطوة {currentStep + 1} من {QUESTIONNAIRE_STEPS.length}
           </p>
         </CardHeader>
@@ -680,107 +680,107 @@ export default function DesignLifePage() {
         return (
           <div className="space-y-6 text-right">
             <div className="space-y-2">
-              <Label htmlFor="name">الاسم الكامل</Label>
+              <Label htmlFor="name" className="dark:text-gray-300">الاسم الكامل</Label>
               <Input
                 id="name"
                 value={answers.name}
                 onChange={(e) => handleAnswerChange('name', e.target.value)}
                 placeholder="أدخل اسمك الكامل"
-                className="text-right"
+                className="text-right dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
               />
             </div>
-            
+
             <div className="space-y-2">
-              <Label>الجنس</Label>
+              <Label className="dark:text-gray-300">الجنس</Label>
               <Select onValueChange={(value) => handleAnswerChange('gender', value)}>
-                <SelectTrigger className="text-right">
+                <SelectTrigger className="text-right dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200">
                   <SelectValue placeholder="اختر الجنس" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="dark:bg-gray-700 dark:border-gray-600">
                   {QUESTION_DATA.genderOptions.map(option => (
-                    <SelectItem key={option} value={option}>{option}</SelectItem>
+                    <SelectItem key={option} value={option} className="dark:hover:bg-gray-600 dark:focus:bg-gray-600">{option}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
-            
+
             <div className="space-y-2">
-              <Label>العمر</Label>
+              <Label className="dark:text-gray-300">العمر</Label>
               <Select onValueChange={(value) => handleAnswerChange('age', value)}>
-                <SelectTrigger className="text-right">
+                <SelectTrigger className="text-right dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200">
                   <SelectValue placeholder="اختر الفئة العمرية" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="dark:bg-gray-700 dark:border-gray-600">
                   {QUESTION_DATA.ageRanges.map(range => (
-                    <SelectItem key={range} value={range}>{range} سنة</SelectItem>
+                    <SelectItem key={range} value={range} className="dark:hover:bg-gray-600 dark:focus:bg-gray-600">{range} سنة</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
-            
+
             <div className="space-y-2">
-              <Label>الوزن</Label>
+              <Label className="dark:text-gray-300">الوزن</Label>
               <Select onValueChange={(value) => handleAnswerChange('weight', value)}>
-                <SelectTrigger className="text-right">
+                <SelectTrigger className="text-right dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200">
                   <SelectValue placeholder="اختر الوزن" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="dark:bg-gray-700 dark:border-gray-600">
                   {QUESTION_DATA.weightRanges.map(range => (
-                    <SelectItem key={range} value={range}>{range} كيلو</SelectItem>
+                    <SelectItem key={range} value={range} className="dark:hover:bg-gray-600 dark:focus:bg-gray-600">{range} كيلو</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
-            
+
             <div className="space-y-2">
-              <Label>الطول</Label>
+              <Label className="dark:text-gray-300">الطول</Label>
               <Select onValueChange={(value) => handleAnswerChange('height', value)}>
-                <SelectTrigger className="text-right">
+                <SelectTrigger className="text-right dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200">
                   <SelectValue placeholder="اختر الطول" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="dark:bg-gray-700 dark:border-gray-600">
                   {QUESTION_DATA.heightRanges.map(range => (
-                    <SelectItem key={range} value={range}>{range} سم</SelectItem>
+                    <SelectItem key={range} value={range} className="dark:hover:bg-gray-600 dark:focus:bg-gray-600">{range} سم</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
-            
+
             <div className="space-y-2">
-              <Label>نوع الجسم</Label>
+              <Label className="dark:text-gray-300">نوع الجسم</Label>
               <Select onValueChange={(value) => handleAnswerChange('bodyType', value)}>
-                <SelectTrigger className="text-right">
+                <SelectTrigger className="text-right dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200">
                   <SelectValue placeholder="اختر نوع الجسم" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="dark:bg-gray-700 dark:border-gray-600">
                   {QUESTION_DATA.bodyTypes.map(type => (
-                    <SelectItem key={type} value={type}>{type}</SelectItem>
+                    <SelectItem key={type} value={type} className="dark:hover:bg-gray-600 dark:focus:bg-gray-600">{type}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
           </div>
         );
-        
+
       case 1: // Goals & Motivation
         return (
           <div className="space-y-6 text-right">
             <div className="space-y-2">
-              <Label>الهدف الأساسي</Label>
+              <Label className="dark:text-gray-300">الهدف الأساسي</Label>
               <Select onValueChange={(value) => handleAnswerChange('primaryGoal', value)}>
-                <SelectTrigger className="text-right">
+                <SelectTrigger className="text-right dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200">
                   <SelectValue placeholder="اختر هدفك الأساسي" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="dark:bg-gray-700 dark:border-gray-600">
                   {QUESTION_DATA.primaryGoals.map(goal => (
-                    <SelectItem key={goal} value={goal}>{goal}</SelectItem>
+                    <SelectItem key={goal} value={goal} className="dark:hover:bg-gray-600 dark:focus:bg-gray-600">{goal}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
-            
+
             <div className="space-y-2">
-              <Label>الأهداف الثانوية (يمكن اختيار أكثر من واحد)</Label>
+              <Label className="dark:text-gray-300">الأهداف الثانوية (يمكن اختيار أكثر من واحد)</Label>
               <div className="grid grid-cols-2 gap-2">
                 {QUESTION_DATA.secondaryGoals.map(goal => (
                   <div key={goal} className="flex items-center space-x-2 space-x-reverse">
@@ -794,36 +794,37 @@ export default function DesignLifePage() {
                           handleAnswerChange('secondaryGoals', answers.secondaryGoals.filter(g => g !== goal));
                         }
                       }}
+                      className="data-[state=checked]:bg-emerald-600 data-[state=checked]:border-emerald-600"
                     />
-                    <Label htmlFor={goal} className="text-sm">{goal}</Label>
+                    <Label htmlFor={goal} className="text-sm dark:text-gray-300">{goal}</Label>
                   </div>
                 ))}
               </div>
             </div>
-            
+
             <div className="space-y-2">
-              <Label>الإطار الزمني</Label>
+              <Label className="dark:text-gray-300">الإطار الزمني</Label>
               <Select onValueChange={(value) => handleAnswerChange('timeFrame', value)}>
-                <SelectTrigger className="text-right">
+                <SelectTrigger className="text-right dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200">
                   <SelectValue placeholder="كم من الوقت تريد للوصول لهدفك؟" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="dark:bg-gray-700 dark:border-gray-600">
                   {QUESTION_DATA.timeFrames.map(frame => (
-                    <SelectItem key={frame} value={frame}>{frame}</SelectItem>
+                    <SelectItem key={frame} value={frame} className="dark:hover:bg-gray-600 dark:focus:bg-gray-600">{frame}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
-            
+
             <div className="space-y-2">
-              <Label>مستوى الدافعية</Label>
+              <Label className="dark:text-gray-300">مستوى الدافعية</Label>
               <Select onValueChange={(value) => handleAnswerChange('motivationLevel', value)}>
-                <SelectTrigger className="text-right">
+                <SelectTrigger className="text-right dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200">
                   <SelectValue placeholder="ما مستوى دافعيتك؟" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="dark:bg-gray-700 dark:border-gray-600">
                   {QUESTION_DATA.motivationLevels.map(level => (
-                    <SelectItem key={level} value={level}>{level}</SelectItem>
+                    <SelectItem key={level} value={level} className="dark:hover:bg-gray-600 dark:focus:bg-gray-600">{level}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -835,70 +836,70 @@ export default function DesignLifePage() {
         return (
           <div className="space-y-6 text-right">
             <div className="space-y-2">
-              <Label>المهنة</Label>
+              <Label className="dark:text-gray-300">المهنة</Label>
               <Select onValueChange={(value) => handleAnswerChange('occupation', value)}>
-                <SelectTrigger className="text-right">
+                <SelectTrigger className="text-right dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200">
                   <SelectValue placeholder="ما هي مهنتك؟" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="dark:bg-gray-700 dark:border-gray-600">
                   {QUESTION_DATA.occupations.map(occupation => (
-                    <SelectItem key={occupation} value={occupation}>{occupation}</SelectItem>
+                    <SelectItem key={occupation} value={occupation} className="dark:hover:bg-gray-600 dark:focus:bg-gray-600">{occupation}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
-            
+
             <div className="space-y-2">
-              <Label>جدول العمل</Label>
+              <Label className="dark:text-gray-300">جدول العمل</Label>
               <Select onValueChange={(value) => handleAnswerChange('workSchedule', value)}>
-                <SelectTrigger className="text-right">
+                <SelectTrigger className="text-right dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200">
                   <SelectValue placeholder="ما هو جدول عملك؟" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="dark:bg-gray-700 dark:border-gray-600">
                   {QUESTION_DATA.workSchedules.map(schedule => (
-                    <SelectItem key={schedule} value={schedule}>{schedule}</SelectItem>
+                    <SelectItem key={schedule} value={schedule} className="dark:hover:bg-gray-600 dark:focus:bg-gray-600">{schedule}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
-            
+
             <div className="space-y-2">
-              <Label>مستوى التوتر</Label>
+              <Label className="dark:text-gray-300">مستوى التوتر</Label>
               <Select onValueChange={(value) => handleAnswerChange('stressLevel', value)}>
-                <SelectTrigger className="text-right">
+                <SelectTrigger className="text-right dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200">
                   <SelectValue placeholder="ما مستوى التوتر في حياتك؟" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="dark:bg-gray-700 dark:border-gray-600">
                   {QUESTION_DATA.stressLevels.map(level => (
-                    <SelectItem key={level} value={level}>{level}</SelectItem>
+                    <SelectItem key={level} value={level} className="dark:hover:bg-gray-600 dark:focus:bg-gray-600">{level}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
-            
+
             <div className="space-y-2">
-              <Label>ساعات النوم</Label>
+              <Label className="dark:text-gray-300">ساعات النوم</Label>
               <Select onValueChange={(value) => handleAnswerChange('sleepHours', value)}>
-                <SelectTrigger className="text-right">
+                <SelectTrigger className="text-right dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200">
                   <SelectValue placeholder="كم ساعة تنام يومياً؟" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="dark:bg-gray-700 dark:border-gray-600">
                   {QUESTION_DATA.sleepHours.map(hours => (
-                    <SelectItem key={hours} value={hours}>{hours}</SelectItem>
+                    <SelectItem key={hours} value={hours} className="dark:hover:bg-gray-600 dark:focus:bg-gray-600">{hours}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
-            
+
             <div className="space-y-2">
-              <Label>نمط الحياة</Label>
+              <Label className="dark:text-gray-300">نمط الحياة</Label>
               <Select onValueChange={(value) => handleAnswerChange('lifestyle', value)}>
-                <SelectTrigger className="text-right">
+                <SelectTrigger className="text-right dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200">
                   <SelectValue placeholder="كيف تصف نمط حياتك؟" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="dark:bg-gray-700 dark:border-gray-600">
                   {QUESTION_DATA.lifestyles.map(lifestyle => (
-                    <SelectItem key={lifestyle} value={lifestyle}>{lifestyle}</SelectItem>
+                    <SelectItem key={lifestyle} value={lifestyle} className="dark:hover:bg-gray-600 dark:focus:bg-gray-600">{lifestyle}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -908,33 +909,33 @@ export default function DesignLifePage() {
 
       // Continue with other cases...
       default:
-        return <div className="text-center py-8">المحتوى قيد التطوير...</div>;
+        return <div className="text-center py-8 dark:text-gray-300">المحتوى قيد التطوير...</div>;
     }
   };
 
   if (generatedPlan) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-blue-50 p-4">
+      <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-blue-50 dark:from-gray-900 dark:to-gray-800 p-4">
         <div className="max-w-6xl mx-auto">
-          <Card className="mb-6">
+          <Card className="mb-6 dark:bg-gray-800 dark:border-gray-700">
             <CardHeader className="text-center">
               <div className="flex items-center justify-center mb-4">
-                <Trophy className="w-12 h-12 text-emerald-600 mr-3" />
+                <Trophy className="w-12 h-12 text-emerald-600 dark:text-emerald-400 mr-3" />
                 <div>
-                  <CardTitle className="text-3xl text-emerald-800">
+                  <CardTitle className="text-3xl text-emerald-800 dark:text-emerald-400">
                     🎉 خطتك الشخصية جاهزة!
                   </CardTitle>
-                  <p className="text-emerald-600 mt-2">
+                  <p className="text-emerald-600 dark:text-emerald-400 mt-2">
                     خطة صحية شاملة لمدة 6 أشهر مصممة خصيصاً لك
                   </p>
                 </div>
               </div>
               <div className="flex justify-center gap-4">
-                <Button onClick={() => downloadPlan(generatedPlan)} className="bg-emerald-600 hover:bg-emerald-700">
+                <Button onClick={() => downloadPlan(generatedPlan)} className="bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600">
                   <Download className="w-4 h-4 mr-2" />
                   تحميل الخطة الكاملة
                 </Button>
-                <Button variant="outline" onClick={() => setGeneratedPlan(null)}>
+                <Button variant="outline" onClick={() => setGeneratedPlan(null)} className="dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700">
                   إنشاء خطة جديدة
                 </Button>
               </div>
@@ -943,81 +944,81 @@ export default function DesignLifePage() {
 
           <Tabs defaultValue="overview" className="space-y-6">
             <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="overview">نظرة عامة</TabsTrigger>
-              <TabsTrigger value="nutrition">التغذية</TabsTrigger>
-              <TabsTrigger value="exercise">التمارين</TabsTrigger>
-              <TabsTrigger value="tracking">التتبع</TabsTrigger>
+              <TabsTrigger value="overview" className="dark:text-gray-300 dark:data-[state=active]:bg-gray-700 dark:data-[state=active]:text-gray-100">نظرة عامة</TabsTrigger>
+              <TabsTrigger value="nutrition" className="dark:text-gray-300 dark:data-[state=active]:bg-gray-700 dark:data-[state=active]:text-gray-100">التغذية</TabsTrigger>
+              <TabsTrigger value="exercise" className="dark:text-gray-300 dark:data-[state=active]:bg-gray-700 dark:data-[state=active]:text-gray-100">التمارين</TabsTrigger>
+              <TabsTrigger value="tracking" className="dark:text-gray-300 dark:data-[state=active]:bg-gray-700 dark:data-[state=active]:text-gray-100">التتبع</TabsTrigger>
             </TabsList>
 
             <TabsContent value="overview" className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <Card>
+                <Card className="dark:bg-gray-800 dark:border-gray-700">
                   <CardHeader>
-                    <CardTitle className="flex items-center text-right">
-                      <Target className="w-5 h-5 ml-2" />
+                    <CardTitle className="flex items-center text-right dark:text-gray-200">
+                      <Target className="w-5 h-5 ml-2 text-blue-600 dark:text-blue-400" />
                       الهدف الأساسي
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-lg text-right">{generatedPlan.userProfile.primaryGoal}</p>
-                    <p className="text-sm text-gray-600 text-right">
+                    <p className="text-lg text-right dark:text-gray-300">{generatedPlan.userProfile.primaryGoal}</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 text-right">
                       المدة: {generatedPlan.userProfile.timeFrame}
                     </p>
                   </CardContent>
                 </Card>
 
-                <Card>
+                <Card className="dark:bg-gray-800 dark:border-gray-700">
                   <CardHeader>
-                    <CardTitle className="flex items-center text-right">
-                      <DollarSign className="w-5 h-5 ml-2" />
+                    <CardTitle className="flex items-center text-right dark:text-gray-200">
+                      <DollarSign className="w-5 h-5 ml-2 text-yellow-600 dark:text-yellow-400" />
                       التكلفة المتوقعة
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-2xl font-bold text-emerald-600 text-right">
+                    <p className="text-2xl font-bold text-emerald-600 dark:text-emerald-400 text-right">
                       {generatedPlan.estimatedBudget} ريال
                     </p>
-                    <p className="text-sm text-gray-600 text-right">شهرياً</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 text-right">شهرياً</p>
                   </CardContent>
                 </Card>
 
-                <Card>
+                <Card className="dark:bg-gray-800 dark:border-gray-700">
                   <CardHeader>
-                    <CardTitle className="flex items-center text-right">
-                      <Calendar className="w-5 h-5 ml-2" />
+                    <CardTitle className="flex items-center text-right dark:text-gray-200">
+                      <Calendar className="w-5 h-5 ml-2 text-purple-600 dark:text-purple-400" />
                       مدة البرنامج
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-2xl font-bold text-blue-600 text-right">
+                    <p className="text-2xl font-bold text-blue-600 dark:text-blue-400 text-right">
                       {generatedPlan.planDuration} يوم
                     </p>
-                    <p className="text-sm text-gray-600 text-right">6 أشهر كاملة</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 text-right">6 أشهر كاملة</p>
                   </CardContent>
                 </Card>
               </div>
 
-              <Card>
+              <Card className="dark:bg-gray-800 dark:border-gray-700">
                 <CardHeader>
-                  <CardTitle className="text-right">معلومات المستخدم</CardTitle>
+                  <CardTitle className="text-right dark:text-gray-200">معلومات المستخدم</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-right">
                     <div>
-                      <p className="text-sm text-gray-600">الاسم</p>
-                      <p className="font-semibold">{generatedPlan.userProfile.name}</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">الاسم</p>
+                      <p className="font-semibold dark:text-gray-300">{generatedPlan.userProfile.name}</p>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-600">العمر</p>
-                      <p className="font-semibold">{generatedPlan.userProfile.age}</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">العمر</p>
+                      <p className="font-semibold dark:text-gray-300">{generatedPlan.userProfile.age}</p>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-600">مستوى النشاط</p>
-                      <p className="font-semibold">{generatedPlan.userProfile.activityLevel}</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">مستوى النشاط</p>
+                      <p className="font-semibold dark:text-gray-300">{generatedPlan.userProfile.activityLevel}</p>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-600">نوع التمرين</p>
-                      <p className="font-semibold">{generatedPlan.userProfile.exerciseType}</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">نوع التمرين</p>
+                      <p className="font-semibold dark:text-gray-300">{generatedPlan.userProfile.exerciseType}</p>
                     </div>
                   </div>
                 </CardContent>
@@ -1025,30 +1026,30 @@ export default function DesignLifePage() {
             </TabsContent>
 
             <TabsContent value="nutrition" className="space-y-6">
-              <Card>
+              <Card className="dark:bg-gray-800 dark:border-gray-700">
                 <CardHeader>
-                  <CardTitle className="text-right">خطة التغذية - أول 7 أيام</CardTitle>
+                  <CardTitle className="text-right dark:text-gray-200">خطة التغذية - أول 7 أيام</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
                     {generatedPlan.nutritionPlan.slice(0, 7).map((day) => (
-                      <div key={day.day} className="border rounded-lg p-4">
-                        <h4 className="font-semibold text-right mb-2">اليوم {day.day}</h4>
+                      <div key={day.day} className="border rounded-lg p-4 dark:border-gray-600 dark:bg-gray-700">
+                        <h4 className="font-semibold text-right mb-2 dark:text-gray-200">اليوم {day.day}</h4>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-right">
                           <div>
-                            <p className="text-sm text-gray-600">الإفطار</p>
-                            <p className="font-medium">{day.breakfast}</p>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">الإفطار</p>
+                            <p className="font-medium dark:text-gray-300">{day.breakfast}</p>
                           </div>
                           <div>
-                            <p className="text-sm text-gray-600">الغداء</p>
-                            <p className="font-medium">{day.lunch}</p>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">الغداء</p>
+                            <p className="font-medium dark:text-gray-300">{day.lunch}</p>
                           </div>
                           <div>
-                            <p className="text-sm text-gray-600">العشاء</p>
-                            <p className="font-medium">{day.dinner}</p>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">العشاء</p>
+                            <p className="font-medium dark:text-gray-300">{day.dinner}</p>
                           </div>
                         </div>
-                        <div className="mt-2 flex justify-between text-sm text-gray-600">
+                        <div className="mt-2 flex justify-between text-sm text-gray-600 dark:text-gray-400">
                           <span>التكلفة: {day.cost} ريال</span>
                           <span>السعرات: {day.calories}</span>
                         </div>
@@ -1060,28 +1061,28 @@ export default function DesignLifePage() {
             </TabsContent>
 
             <TabsContent value="exercise" className="space-y-6">
-              <Card>
+              <Card className="dark:bg-gray-800 dark:border-gray-700">
                 <CardHeader>
-                  <CardTitle className="text-right">برنامج التمارين - أول أسبوع</CardTitle>
+                  <CardTitle className="text-right dark:text-gray-200">برنامج التمارين - أول أسبوع</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
                     {generatedPlan.exercisePlan.slice(0, 6).map((day) => (
-                      <div key={day.day} className="border rounded-lg p-4">
-                        <h4 className="font-semibold text-right mb-2">اليوم {day.day}</h4>
-                        <p className="text-sm text-gray-600 text-right mb-2">
+                      <div key={day.day} className="border rounded-lg p-4 dark:border-gray-600 dark:bg-gray-700">
+                        <h4 className="font-semibold text-right mb-2 dark:text-gray-200">اليوم {day.day}</h4>
+                        <p className="text-sm text-gray-600 dark:text-gray-400 text-right mb-2">
                           المدة: {day.duration} دقيقة | المستوى: {day.difficulty}
                         </p>
                         <div className="space-y-2">
                           {day.exercises.map((exercise, index) => (
                             <div key={index} className="flex justify-between items-center">
                               <div className="text-right">
-                                <p className="font-medium">{exercise.name}</p>
-                                <p className="text-sm text-gray-600">{exercise.description}</p>
+                                <p className="font-medium dark:text-gray-300">{exercise.name}</p>
+                                <p className="text-sm text-gray-600 dark:text-gray-400">{exercise.description}</p>
                               </div>
                               <div className="text-left">
-                                <p className="text-sm">{exercise.sets} مجموعات</p>
-                                <p className="text-sm">{exercise.reps}</p>
+                                <p className="text-sm dark:text-gray-300">{exercise.sets} مجموعات</p>
+                                <p className="text-sm dark:text-gray-300">{exercise.reps}</p>
                               </div>
                             </div>
                           ))}
@@ -1094,34 +1095,34 @@ export default function DesignLifePage() {
             </TabsContent>
 
             <TabsContent value="tracking" className="space-y-6">
-              <Card>
+              <Card className="dark:bg-gray-800 dark:border-gray-700">
                 <CardHeader>
-                  <CardTitle className="text-right">نظام التتبع والمراقبة</CardTitle>
+                  <CardTitle className="text-right dark:text-gray-200">نظام التتبع والمراقبة</CardTitle>
                 </CardHeader>
                 <CardContent className="text-right">
                   <div className="space-y-4">
                     <div>
-                      <h4 className="font-semibold mb-2">المكملات الغذائية</h4>
+                      <h4 className="font-semibold mb-2 dark:text-gray-200">المكملات الغذائية</h4>
                       {generatedPlan.supplementPlan.length > 0 ? (
                         <ul className="list-disc list-inside space-y-1">
                           {generatedPlan.supplementPlan.map((supplement, index) => (
-                            <li key={index}>{supplement}</li>
+                            <li key={index} className="dark:text-gray-300">{supplement}</li>
                           ))}
                         </ul>
                       ) : (
-                        <p className="text-gray-600">لا توجد مكملات مطلوبة</p>
+                        <p className="text-gray-600 dark:text-gray-400">لا توجد مكملات مطلوبة</p>
                       )}
                     </div>
-                    
+
                     <div>
-                      <h4 className="font-semibold mb-2">نصائح للمتابعة</h4>
+                      <h4 className="font-semibold mb-2 dark:text-gray-200">نصائح للمتابعة</h4>
                       <ul className="list-disc list-inside space-y-1 text-sm">
-                        <li>قم بوزن نفسك أسبوعياً في نفس التوقيت</li>
-                        <li>احتفظ بمذكرة طعام يومية</li>
-                        <li>صور تقدمك كل أسبوعين</li>
-                        <li>استمع لجسدك وخذ أيام راحة عند الحاجة</li>
-                        <li>اشرب الماء بكميات كافية يومياً</li>
-                        <li>احصل على نوم كافي (7-8 ساعات)</li>
+                        <li className="dark:text-gray-300">قم بوزن نفسك أسبوعياً في نفس التوقيت</li>
+                        <li className="dark:text-gray-300">احتفظ بمذكرة طعام يومية</li>
+                        <li className="dark:text-gray-300">صور تقدمك كل أسبوعين</li>
+                        <li className="dark:text-gray-300">استمع لجسدك وخذ أيام راحة عند الحاجة</li>
+                        <li className="dark:text-gray-300">اشرب الماء بكميات كافية يومياً</li>
+                        <li className="dark:text-gray-300">احصل على نوم كافي (7-8 ساعات)</li>
                       </ul>
                     </div>
                   </div>
@@ -1136,19 +1137,19 @@ export default function DesignLifePage() {
 
   if (isGenerating) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-blue-50 flex items-center justify-center">
-        <Card className="w-full max-w-2xl mx-auto">
+      <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-blue-50 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
+        <Card className="w-full max-w-2xl mx-auto dark:bg-gray-800 dark:border-gray-700">
           <CardContent className="text-center py-12">
             <div className="flex justify-center mb-6">
               <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-emerald-600"></div>
             </div>
-            <h2 className="text-2xl font-bold text-emerald-800 mb-4">
+            <h2 className="text-2xl font-bold text-emerald-800 dark:text-emerald-400 mb-4">
               🤖 الذكاء الاصطناعي يحلل بياناتك
             </h2>
-            <p className="text-emerald-600 mb-6">
+            <p className="text-emerald-600 dark:text-emerald-400 mb-6">
               جارٍ إنشاء خطة صحية مخصصة لك من قاعدة بيانات تحتوي على أكثر من 100,000 خطة...
             </p>
-            <div className="space-y-2 text-sm text-gray-600">
+            <div className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
               <p>⚡ تحليل أهدافك ومتطلباتك الشخصية</p>
               <p>🍎 اختيار الأطعمة المناسبة لميزانيتك ومنطقتك</p>
               <p>💪 تصميم برنامج تمارين متدرج ومتوازن</p>
@@ -1162,19 +1163,19 @@ export default function DesignLifePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-blue-50 p-4">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-blue-50 dark:from-gray-900 dark:to-gray-800 p-4">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-center mb-4">
             <Sparkles className="w-12 h-12 text-emerald-600 mr-3" />
             <div>
-              <h1 className="text-4xl font-bold text-emerald-800">صمم حياتك</h1>
-              <p className="text-emerald-600 text-lg">نظام ثوري لتصميم خطط صحية مخصصة من 100,000+ خطة</p>
+              <h1 className="text-4xl font-bold text-emerald-800 dark:text-emerald-400">صمم حياتك</h1>
+              <p className="text-emerald-600 dark:text-emerald-400 text-lg">نظام ثوري لتصميم خطط صحية مخصصة من 100,000+ خطة</p>
             </div>
           </div>
-          
-          <div className="flex items-center justify-center space-x-6 space-x-reverse text-sm text-gray-600 mb-6">
+
+          <div className="flex items-center justify-center space-x-6 space-x-reverse text-sm text-gray-600 dark:text-gray-400 mb-6">
             <div className="flex items-center">
               <Star className="w-4 h-4 text-yellow-500 mr-1" />
               <span>أكثر من 100,000 خطة</span>
@@ -1188,9 +1189,9 @@ export default function DesignLifePage() {
               <span>ذكاء اصطناعي متطور</span>
             </div>
           </div>
-          
+
           <Progress value={progress} className="w-full max-w-2xl mx-auto mb-4" />
-          <p className="text-gray-600">
+          <p className="text-gray-600 dark:text-gray-400">
             تقدم الاستبيان: {Math.round(progress)}%
           </p>
         </div>
@@ -1204,14 +1205,15 @@ export default function DesignLifePage() {
             variant="outline" 
             onClick={() => setCurrentStep(Math.max(0, currentStep - 1))}
             disabled={currentStep === 0}
+            className="dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
           >
             السابق
           </Button>
-          
+
           {currentStep < QUESTIONNAIRE_STEPS.length - 1 ? (
             <Button 
               onClick={() => setCurrentStep(Math.min(QUESTIONNAIRE_STEPS.length - 1, currentStep + 1))}
-              className="bg-emerald-600 hover:bg-emerald-700"
+              className="bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600"
             >
               التالي
               <ChevronRight className="w-4 h-4 ml-2" />
@@ -1219,7 +1221,7 @@ export default function DesignLifePage() {
           ) : (
             <Button 
               onClick={generatePlan}
-              className="bg-gradient-to-r from-emerald-600 to-blue-600 hover:from-emerald-700 hover:to-blue-700"
+              className="bg-gradient-to-r from-emerald-600 to-blue-600 hover:from-emerald-700 hover:to-blue-700 dark:from-emerald-500 dark:to-blue-500 dark:hover:from-emerald-600 dark:hover:to-blue-600"
             >
               <Zap className="w-4 h-4 mr-2" />
               إنشاء خطتي الشخصية
@@ -1232,7 +1234,7 @@ export default function DesignLifePage() {
           <Button 
             variant="ghost" 
             onClick={() => setLocation("/")}
-            className="text-emerald-600 hover:text-emerald-700"
+            className="text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300"
           >
             العودة للصفحة الرئيسية
           </Button>
