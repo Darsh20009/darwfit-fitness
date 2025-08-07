@@ -55,6 +55,13 @@ export default function Navbar() {
             </button>
 
             <button 
+              onClick={() => setLocation("/design-life")}
+              className="text-sm font-medium text-gray-300 hover:text-emerald-400 transition-all duration-300 btn-touch hover:scale-105"
+            >
+              🎯 صمم حياتك
+            </button>
+
+            <button 
               onClick={() => setLocation("/quit")}
               className="text-sm font-medium text-gray-300 hover:text-emerald-400 transition-all duration-300 btn-touch hover:scale-105"
             >الإقلاع</button>
@@ -163,6 +170,13 @@ export default function Navbar() {
                 className="block w-full text-right py-3 px-4 text-sm font-medium text-gray-300 hover:text-emerald-400 transition-all duration-300 btn-touch rounded-lg hover:bg-emerald-400/10 backdrop-blur-sm"
               >
                 حاسبة السعرات
+              </button>
+
+              <button 
+                onClick={() => handleNavigation("/design-life")}
+                className="block w-full text-right py-3 px-4 text-sm font-medium text-gray-300 hover:text-emerald-400 transition-all duration-300 btn-touch rounded-lg hover:bg-emerald-400/10 backdrop-blur-sm"
+              >
+                🎯 صمم حياتك
               </button>
 
               <button 
