@@ -20,7 +20,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowLeft, Calculator, Target, TrendingUp, Activity, Search, Plus, Trash2, Utensils, RotateCcw } from "lucide-react";
+import { ArrowLeft, Calculator, Target, TrendingUp, Activity, Search, Plus, Trash2, Utensils, RotateCcw, Heart } from "lucide-react";
 import { useLocation } from "wouter";
 import { 
   arabicFoodDatabase, 
@@ -32,6 +32,7 @@ import {
   calculateNutrition,
   type FoodItem 
 } from "@/data/foodDatabase";
+import DesignYourLife from "./DesignYourLife";
 
 type ActivityLevel = "sedentary" | "light" | "moderate" | "active" | "very_active";
 type Goal = "lose" | "maintain" | "gain";
@@ -255,7 +256,7 @@ export default function EnhancedCalorieCalculator({
           </div>
 
           <Tabs defaultValue="calculator" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 mb-8 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm">
+            <TabsList className="grid w-full grid-cols-4 mb-8 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm">
               <TabsTrigger value="calculator" className="flex items-center gap-2">
                 <Utensils className="h-4 w-4" />
                 الحاسبة
@@ -267,6 +268,10 @@ export default function EnhancedCalorieCalculator({
               <TabsTrigger value="profile" className="flex items-center gap-2">
                 <Target className="h-4 w-4" />
                 الملف الشخصي
+              </TabsTrigger>
+              <TabsTrigger value="design" className="flex items-center gap-2">
+                <Heart className="h-4 w-4" />
+                صمم حياتك
               </TabsTrigger>
             </TabsList>
 
@@ -636,6 +641,11 @@ export default function EnhancedCalorieCalculator({
                   </Card>
                 </CardContent>
               </Card>
+            </TabsContent>
+
+            {/* Design Your Life Tab */}
+            <TabsContent value="design">
+              <DesignYourLife />
             </TabsContent>
           </Tabs>
 
