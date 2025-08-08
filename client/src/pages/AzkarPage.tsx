@@ -41,6 +41,7 @@ export default function AzkarPage() {
   const [zekrProgress, setZekrProgress] = useState<ZekrProgress>({});
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [hideCompleted, setHideCompleted] = useState(false);
+  const [counterMode, setCounterMode] = useState<{ zekrId: string; target: number; color: string; text: string } | null>(null);
 
   const azkarData: Zekr[] = [
     // أذكار الصباح
@@ -595,8 +596,74 @@ export default function AzkarPage() {
     return Math.round((completedAzkar / totalAzkar) * 100);
   };
 
+  const openCounter = (zekrId: string, target: number, color: string, text: string) => {
+    setCounterMode({ zekrId, target, color, text });
+  };
+
+  const closeCounter = () => {
+    setCounterMode(null);
+  };
+
+  const handleCounterClick = () => {
+    if (counterMode) {
+      incrementCount(counterMode.zekrId);
+      const currentCount = (zekrProgress[counterMode.zekrId] || 0) + 1;
+      if (currentCount >= counterMode.target) {
+        setTimeout(() => {
+          closeCounter();
+        }, 500);
+      }
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50 dark:from-gray-900 dark:via-emerald-900 dark:to-green-900">
+      {/* العداد الملون الإبداعي */}
+      {counterMode && (
+        <div 
+          className={`fixed inset-0 z-50 bg-gradient-to-br from-${counterMode.color}-100 via-${counterMode.color}-200 to-${counterMode.color}-300 dark:from-${counterMode.color}-900 dark:via-${counterMode.color}-800 dark:to-${counterMode.color}-700 flex items-center justify-center cursor-pointer transition-all duration-500 backdrop-blur-sm`}
+          onClick={handleCounterClick}
+        >
+          <div className="text-center animate-pulse hover:scale-105 transition-transform duration-300">
+            {/* النص */}
+            <div className={`text-2xl md:text-4xl font-bold text-${counterMode.color}-800 dark:text-${counterMode.color}-100 mb-8 max-w-4xl px-6 leading-relaxed`}>
+              {counterMode.text}
+            </div>
+            
+            {/* العداد الكبير */}
+            <div className={`text-8xl md:text-9xl font-black text-${counterMode.color}-600 dark:text-${counterMode.color}-300 mb-6 drop-shadow-2xl`}>
+              {(zekrProgress[counterMode.zekrId] || 0)}/{counterMode.target}
+            </div>
+            
+            {/* رسالة التشجيع */}
+            <div className={`text-xl md:text-2xl text-${counterMode.color}-700 dark:text-${counterMode.color}-200 mb-4 font-semibold`}>
+              اضغط في أي مكان للتسبيح
+            </div>
+            
+            {/* شريط التقدم */}
+            <div className="max-w-md mx-auto bg-white/30 rounded-full h-4 overflow-hidden shadow-lg">
+              <div 
+                className={`h-full bg-${counterMode.color}-500 transition-all duration-500 ease-out rounded-full`}
+                style={{ 
+                  width: `${((zekrProgress[counterMode.zekrId] || 0) / counterMode.target) * 100}%` 
+                }}
+              ></div>
+            </div>
+            
+            {/* زر الإغلاق */}
+            <button 
+              onClick={(e) => {
+                e.stopPropagation();
+                closeCounter();
+              }}
+              className={`mt-8 px-6 py-3 bg-${counterMode.color}-500 hover:bg-${counterMode.color}-600 text-white rounded-full font-semibold transition-all duration-300 hover:scale-110 shadow-lg`}
+            >
+              إغلاق العداد
+            </button>
+          </div>
+        </div>
+      )}
+
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-6xl mx-auto">
           {/* Header */}
@@ -781,12 +848,20 @@ export default function AzkarPage() {
                                         <Minus className="h-4 w-4" />
                                       </Button>
 
-                                      <div className={`px-4 py-2 rounded-lg font-bold text-lg min-w-[80px] text-center ${
-                                        isCompleted 
-                                          ? `bg-${category.color}-500 text-white` 
-                                          : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
-                                      }`}>
+                                      {/* العداد الإبداعي - يفتح صفحة ملونة عند الضغط */}
+                                      <div 
+                                        className={`px-4 py-2 rounded-lg font-bold text-lg min-w-[80px] text-center cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-lg ${
+                                          isCompleted 
+                                            ? `bg-${category.color}-500 text-white` 
+                                            : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-emerald-100 dark:hover:bg-emerald-900'
+                                        }`}
+                                        onClick={() => zekr.repetitions > 1 && openCounter(zekr.id, zekr.repetitions, category.color, zekr.text)}
+                                        title={zekr.repetitions > 1 ? "اضغط لفتح العداد" : ""}
+                                      >
                                         {currentCount}/{zekr.repetitions}
+                                        {zekr.repetitions > 1 && (
+                                          <div className="text-xs text-emerald-600 dark:text-emerald-400 mt-1">العداد</div>
+                                        )}
                                       </div>
 
                                       <Button
