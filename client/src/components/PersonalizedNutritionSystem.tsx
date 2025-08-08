@@ -426,7 +426,7 @@ export default function PersonalizedNutritionSystem({ onBack }: PersonalizedNutr
                   </div>
                 </div>
 
-                <div className="mt-6 p-4 bg-emerald-50 rounded-lg">
+                <div className="mt-6 p-4 rounded-lg bg-[#030912]">
                   <h3 className="font-bold text-emerald-800 mb-2">نصائح شخصية لك:</h3>
                   <ul className="space-y-1 text-sm text-emerald-700">
                     {username === "محمد السهلي" && (
