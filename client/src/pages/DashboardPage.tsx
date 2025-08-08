@@ -55,10 +55,10 @@ export default function DashboardPage() {
   }, [selectedDate]);
 
   return (
-    <div className="luxury-background min-h-screen">
+    <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8">
       {/* Dashboard Header with Stats */}
-      <div className="bg-gradient-to-r from-primary/20 to-secondary/20 p-4 md:p-6 rounded-lg mb-8 shadow-sm">
+      <div className="bg-gradient-to-r from-primary/20 to-secondary/20 p-4 md:p-6 rounded-lg mb-8 shadow-sm border border-border dark:border-gray-700">
         <div className="flex flex-col md:flex-row justify-between items-center mb-4">
           <div>
             <h2 className="text-2xl md:text-3xl font-bold text-center md:text-right">

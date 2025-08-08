@@ -72,9 +72,9 @@ const WorkoutTimer: React.FC<WorkoutTimerProps> = ({ exercise, isActive, onCompl
   if (timeLeft === 0) return null;
 
   return (
-    <div className="flex items-center gap-2 bg-gray-100 dark:bg-gray-700 p-2 rounded-lg">
-      <Timer className="h-4 w-4 text-blue-500" />
-      <span className="font-mono text-lg font-bold text-blue-600">
+    <div className="flex items-center gap-2 bg-gray-100 dark:bg-gray-700 p-2 rounded-lg border border-gray-200 dark:border-gray-600">
+      <Timer className="h-4 w-4 text-blue-500 dark:text-blue-400" />
+      <span className="font-mono text-lg font-bold text-blue-600 dark:text-blue-400">
         {formatTime(timeLeft)}
       </span>
       <Button
@@ -120,10 +120,10 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({
 }) => {
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
-      case 'مبتدئ': return 'bg-green-100 text-green-800 border-green-200';
-      case 'متوسط': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-      case 'متقدم': return 'bg-red-100 text-red-800 border-red-200';
-      default: return 'bg-gray-100 text-gray-800 border-gray-200';
+      case 'مبتدئ': return 'bg-green-100 text-green-800 border-green-200 dark:bg-green-900/30 dark:text-green-300 dark:border-green-700';
+      case 'متوسط': return 'bg-yellow-100 text-yellow-800 border-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-300 dark:border-yellow-700';
+      case 'متقدم': return 'bg-red-100 text-red-800 border-red-200 dark:bg-red-900/30 dark:text-red-300 dark:border-red-700';
+      default: return 'bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600';
     }
   };
 
@@ -199,13 +199,13 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({
           
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
-              <Target className="h-4 w-4 text-orange-500" />
-              <span className="text-sm font-bold text-orange-600">{exercise.reps}</span>
+              <Target className="h-4 w-4 text-orange-500 dark:text-orange-400" />
+              <span className="text-sm font-bold text-orange-600 dark:text-orange-400">{exercise.reps}</span>
             </div>
             {exercise.sets && (
               <div className="flex items-center gap-2">
-                <Zap className="h-4 w-4 text-blue-500" />
-                <span className="text-sm font-bold text-blue-600">{exercise.sets} مجموعات</span>
+                <Zap className="h-4 w-4 text-blue-500 dark:text-blue-400" />
+                <span className="text-sm font-bold text-blue-600 dark:text-blue-400">{exercise.sets} مجموعات</span>
               </div>
             )}
           </div>
@@ -224,7 +224,7 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({
             </h4>
             <div className="flex flex-wrap gap-1">
               {exercise.targetMuscles.map((muscle, i) => (
-                <Badge key={i} variant="secondary" className="text-xs">
+                <Badge key={i} variant="secondary" className="text-xs bg-secondary dark:bg-gray-700 text-secondary-foreground dark:text-gray-300">
                   {muscle}
                 </Badge>
               ))}
@@ -237,8 +237,8 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({
             </h4>
             <div className="flex flex-wrap gap-1">
               {exercise.benefits.map((benefit, i) => (
-                <Badge key={i} variant="outline" className="text-xs">
-                  <Star className="h-3 w-3 mr-1" />
+                <Badge key={i} variant="outline" className="text-xs border-border dark:border-gray-600 text-foreground dark:text-gray-300">
+                  <Star className="h-3 w-3 mr-1 text-yellow-500 dark:text-yellow-400" />
                   {benefit}
                 </Badge>
               ))}
@@ -276,7 +276,7 @@ export default function YousefWorkoutComponent() {
   return (
     <div className="space-y-6">
       {/* Header Section */}
-      <Card className="bg-gradient-to-r from-red-500 to-orange-500 text-white">
+      <Card className="bg-gradient-to-r from-red-500 to-orange-500 text-white dark:from-red-600 dark:to-orange-600">
         <CardHeader>
           <div className="text-center">
             <div className="flex justify-center mb-4">
@@ -308,13 +308,13 @@ export default function YousefWorkoutComponent() {
       </Card>
 
       {/* Progress Bar */}
-      <Card>
+      <Card className="bg-card dark:bg-gray-800 border border-border dark:border-gray-700">
         <CardContent className="p-4">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium">تقدم اليوم</span>
-            <span className="text-sm text-gray-500">{completedExercises.size} من {currentExercises.length}</span>
+            <span className="text-sm font-medium text-foreground">تقدم اليوم</span>
+            <span className="text-sm text-gray-500 dark:text-gray-400">{completedExercises.size} من {currentExercises.length}</span>
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-3">
+          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
             <div 
               className="bg-gradient-to-r from-green-500 to-blue-500 h-3 rounded-full transition-all duration-500"
               style={{ width: `${completionPercentage}%` }}
@@ -357,9 +357,9 @@ export default function YousefWorkoutComponent() {
       </div>
 
       {/* Stats Section */}
-      <Card>
+      <Card className="bg-card dark:bg-gray-800 border border-border dark:border-gray-700">
         <CardHeader>
-          <CardTitle className="flex items-center justify-between">
+          <CardTitle className="flex items-center justify-between text-foreground">
             <span>إحصائيات البرنامج</span>
             <Button
               variant="outline"
@@ -393,7 +393,7 @@ export default function YousefWorkoutComponent() {
       </Card>
 
       {/* Tips Section */}
-      <Card className="bg-gradient-to-br from-yellow-50 to-orange-100 dark:from-yellow-900/20 dark:to-orange-800/20">
+      <Card className="bg-gradient-to-br from-yellow-50 to-orange-100 dark:from-yellow-900/20 dark:to-orange-800/20 border border-border dark:border-gray-700">
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-orange-800 dark:text-orange-300">
             <Zap className="h-5 w-5" />
@@ -403,9 +403,9 @@ export default function YousefWorkoutComponent() {
         <CardContent>
           <div className="grid gap-3">
             {tips.map((tip, index) => (
-              <div key={index} className="flex items-start gap-3 p-3 bg-white/50 dark:bg-gray-800/50 rounded-lg">
-                <div className="p-1 bg-orange-200 rounded-full mt-1">
-                  <Zap className="h-3 w-3 text-orange-600" />
+              <div key={index} className="flex items-start gap-3 p-3 bg-white/50 dark:bg-gray-800/50 rounded-lg border border-orange-200/50 dark:border-gray-700">
+                <div className="p-1 bg-orange-200 dark:bg-orange-900/50 rounded-full mt-1">
+                  <Zap className="h-3 w-3 text-orange-600 dark:text-orange-400" />
                 </div>
                 <p className="text-sm text-gray-700 dark:text-gray-300">{tip}</p>
               </div>
