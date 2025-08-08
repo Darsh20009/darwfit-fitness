@@ -264,7 +264,7 @@ export default function PersonalizedNutritionSystem({ onBack }: PersonalizedNutr
                 <CardTitle>مقولتك التحفيزية</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-lg text-center p-4 bg-emerald-50 rounded-lg italic">
+                <div className="text-lg text-center p-4 rounded-lg italic bg-[#030912]">
                   "{userProfile.motivationalQuote}"
                 </div>
               </CardContent>
