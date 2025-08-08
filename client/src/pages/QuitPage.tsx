@@ -97,11 +97,11 @@ export default function QuitPage() {
   const [currentStreak, setCurrentStreak] = useState(0);
   const [totalPoints, setTotalPoints] = useState(0);
   const [dailyTasks, setDailyTasks] = useState<DailyTask[]>([
-    { id: '1', title: 'شرب 8 أكواب ماء', completed: false, points: 10 },
-    { id: '2', title: 'تمرين 30 دقيقة', completed: false, points: 20 },
-    { id: '3', title: 'تأمل 10 دقائق', completed: false, points: 15 },
-    { id: '4', title: 'قراءة كتاب لمدة 20 دقيقة', completed: false, points: 15 },
-    { id: '5', title: 'نوم 8 ساعات', completed: false, points: 25 }
+    { id: '1', title: 'شرب 8 أكواب ماء 💧', completed: false, points: 10 },
+    { id: '2', title: 'تمرين 30 دقيقة 🏃‍♂️', completed: false, points: 20 },
+    { id: '3', title: 'تأمل 10 دقائق 🧘‍♂️', completed: false, points: 15 },
+    { id: '4', title: 'قراءة كتاب لمدة 20 دقيقة 📚', completed: false, points: 15 },
+    { id: '5', title: 'نوم 8 ساعات 😴', completed: false, points: 25 }
   ]);
 
   const questionnaire = [
@@ -162,7 +162,7 @@ export default function QuitPage() {
       id: 'smoking',
       name: 'الإقلاع عن التدخين',
       icon: Cigarette,
-      color: 'emerald',
+      color: 'from-rose-400 to-pink-500',
       description: 'رحلة للتخلص من التدخين وتحسين صحة الرئتين والقلب',
       quitDate: '',
       dailyGoal: 'يوم واحد بدون تدخين',
@@ -174,7 +174,7 @@ export default function QuitPage() {
       id: 'gaming',
       name: 'تنظيم وقت الألعاب',
       icon: Gamepad2,
-      color: 'green',
+      color: 'from-indigo-400 to-purple-500',
       description: 'إدارة وقت الألعاب لحياة أكثر توازناً وإنتاجية',
       quitDate: '',
       dailyGoal: 'أقل من ساعتين ألعاب يومياً',
@@ -186,7 +186,7 @@ export default function QuitPage() {
       id: 'social_media',
       name: 'تقليل وسائل التواصل',
       icon: Smartphone,
-      color: 'teal',
+      color: 'from-cyan-400 to-teal-500',
       description: 'تقليل استخدام وسائل التواصل الاجتماعي لحياة أكثر هدوءاً',
       quitDate: '',
       dailyGoal: 'أقل من ساعة يومياً',
@@ -198,7 +198,7 @@ export default function QuitPage() {
       id: 'junk_food',
       name: 'تجنب الطعام المضر',
       icon: Pizza,
-      color: 'emerald',
+      color: 'from-emerald-400 to-green-500',
       description: 'التوقف عن تناول الطعام المصنع والوجبات السريعة',
       quitDate: '',
       dailyGoal: 'وجبات صحية فقط',
@@ -210,7 +210,7 @@ export default function QuitPage() {
       id: 'sugar',
       name: 'تقليل السكر',
       icon: Candy,
-      color: 'green',
+      color: 'from-amber-400 to-orange-500',
       description: 'تقليل استهلاك السكر المضاف والحلويات',
       quitDate: '',
       dailyGoal: 'عدم تناول حلويات',
@@ -222,7 +222,7 @@ export default function QuitPage() {
       id: 'bad_habit',
       name: 'الإقلاع عن العادة السرية',
       icon: Shield,
-      color: 'red',
+      color: 'from-blue-400 to-indigo-500',
       description: 'التخلص من العادة السرية وبناء شخصية قوية ونظيفة',
       quitDate: '',
       dailyGoal: 'يوم واحد بدون ممارسة العادة',
@@ -234,7 +234,7 @@ export default function QuitPage() {
       id: 'caffeine',
       name: 'تنظيم الكافيين',
       icon: Coffee,
-      color: 'teal',
+      color: 'from-violet-400 to-purple-500',
       description: 'تقليل استهلاك الكافيين لنوم أفضل وقلق أقل',
       quitDate: '',
       dailyGoal: 'كوب واحد فقط صباحاً',
