@@ -20,8 +20,10 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowLeft, Calculator, Target, TrendingUp, Activity, Search, Plus, Trash2, Utensils, RotateCcw } from "lucide-react";
+import { ArrowLeft, Calculator, Target, TrendingUp, Activity, Search, Plus, Trash2, Utensils, RotateCcw, User, Crown, Star, Dumbbell } from "lucide-react";
 import { useLocation } from "wouter";
+import { useAuthContext } from "@/context/AuthContext";
+import { getUserProfile } from "@/data/userProfiles";
 import { 
   arabicFoodDatabase, 
   getAllCategories, 
@@ -69,14 +71,71 @@ export default function EnhancedCalorieCalculator({
   initialGender = "male"
 }: CalorieCalculatorProps) {
   const [, setLocation] = useLocation();
+  const { username } = useAuthContext();
+  const userProfile = getUserProfile(username || "");
   
+  // Initialize user data based on profile or defaults
+  const getPersonalizedDefaults = () => {
+    if (!username || !userProfile) {
+      return {
+        weight: initialWeight,
+        height: initialHeight,
+        age: initialAge,
+        gender: initialGender,
+        activityLevel: "moderate" as ActivityLevel,
+        goal: "maintain" as Goal
+      };
+    }
+
+    switch (username) {
+      case "محمد السهلي":
+        return {
+          weight: 80,
+          height: 170,
+          age: 32,
+          gender: "male" as Gender,
+          activityLevel: "moderate" as ActivityLevel,
+          goal: "maintain" as Goal
+        };
+      case "يوسف درويش":
+        return {
+          weight: 75,
+          height: 175,
+          age: 28,
+          gender: "male" as Gender,
+          activityLevel: "active" as ActivityLevel,
+          goal: "gain" as Goal
+        };
+      case "خالد عمر":
+        return {
+          weight: 69.9,
+          height: 182,
+          age: 15,
+          gender: "male" as Gender,
+          activityLevel: "moderate" as ActivityLevel,
+          goal: "gain" as Goal
+        };
+      default:
+        return {
+          weight: initialWeight,
+          height: initialHeight,
+          age: initialAge,
+          gender: initialGender,
+          activityLevel: "moderate" as ActivityLevel,
+          goal: "maintain" as Goal
+        };
+    }
+  };
+
+  const personalizedDefaults = getPersonalizedDefaults();
+
   // User data state
-  const [weight, setWeight] = useState(initialWeight);
-  const [height, setHeight] = useState(initialHeight);
-  const [age, setAge] = useState(initialAge);
-  const [gender, setGender] = useState<Gender>(initialGender);
-  const [activityLevel, setActivityLevel] = useState<ActivityLevel>("moderate");
-  const [goal, setGoal] = useState<Goal>("maintain");
+  const [weight, setWeight] = useState(personalizedDefaults.weight);
+  const [height, setHeight] = useState(personalizedDefaults.height);
+  const [age, setAge] = useState(personalizedDefaults.age);
+  const [gender, setGender] = useState<Gender>(personalizedDefaults.gender);
+  const [activityLevel, setActivityLevel] = useState<ActivityLevel>(personalizedDefaults.activityLevel);
+  const [goal, setGoal] = useState<Goal>(personalizedDefaults.goal);
   
   // Food tracking state
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -239,7 +298,81 @@ export default function EnhancedCalorieCalculator({
     return "bg-orange-500";
   };
 
-  const categories = getAllCategories();
+  // Get personalized food recommendations based on user
+  const getPersonalizedFoodCategories = () => {
+    if (!username) return getAllCategories();
+    
+    switch (username) {
+      case "محمد السهلي":
+        // محمد يحتاج أطعمة صحية ومتوازنة للمهندس المشغول
+        return [
+          "المطبخ المصري",
+          "المطبخ الشامي", 
+          "مشروبات ساخنة وباردة",
+          "المطبخ السعودي والخليجي",
+          ...getAllCategories().filter(c => !["المطبخ المصري", "المطبخ الشامي", "مشروبات ساخنة وباردة", "المطبخ السعودي والخليجي"].includes(c))
+        ];
+      case "يوسف درويش":
+        // يوسف يحتاج أطعمة غنية بالبروتين لبناء العضلات
+        return [
+          "المطبخ الشامي",
+          "المطبخ السعودي والخليجي",
+          "المطبخ المصري",
+          "المطبخ التركي",
+          ...getAllCategories().filter(c => !["المطبخ الشامي", "المطبخ السعودي والخليجي", "المطبخ المصري", "المطبخ التركي"].includes(c))
+        ];
+      case "خالد عمر":
+        // خالد يحتاج أطعمة مغذية واقتصادية للنمو
+        return [
+          "المطبخ المصري",
+          "كريب مالح",
+          "فطير حادق",
+          "مشروبات ساخنة وباردة",
+          ...getAllCategories().filter(c => !["المطبخ المصري", "كريب مالح", "فطير حادق", "مشروبات ساخنة وباردة"].includes(c))
+        ];
+      default:
+        return getAllCategories();
+    }
+  };
+
+  // Get smart food suggestions based on current needs
+  const getSmartFoodSuggestions = () => {
+    if (!username) return [];
+    
+    const currentCaloriePercent = (dailyIntake.calories / dailyGoal.calories) * 100;
+    const currentProteinPercent = (dailyIntake.protein / dailyGoal.protein) * 100;
+    
+    const suggestions = [];
+    
+    // If calories are low, suggest calorie-dense foods
+    if (currentCaloriePercent < 70) {
+      suggestions.push({
+        reason: "تحتاج المزيد من السعرات",
+        foods: username === "خالد عمر" 
+          ? ["فول مدمس", "بيض بلدي مسلوق", "جبنة قريش"]
+          : username === "يوسف درويش"
+          ? ["كباب حلبي", "شاورما دجاج", "كبسة لحم"]
+          : ["فول مدمس", "عدس أصفر", "شيش طاووق"]
+      });
+    }
+    
+    // If protein is low, suggest protein-rich foods
+    if (currentProteinPercent < 70) {
+      suggestions.push({
+        reason: "تحتاج المزيد من البروتين",
+        foods: username === "خالد عمر"
+          ? ["بيض بلدي مسلوق", "جبنة قريش", "طعمية"]
+          : username === "يوسف درويش"
+          ? ["شيش طاووق", "كباب حلبي", "شاورما لحم"]
+          : ["شيش طاووق", "سمك مشوي", "كبدة"]
+      });
+    }
+    
+    return suggestions;
+  };
+
+  const categories = getPersonalizedFoodCategories();
+  const smartSuggestions = getSmartFoodSuggestions();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50 dark:from-gray-900 dark:via-emerald-900 dark:to-green-900">
@@ -253,6 +386,17 @@ export default function EnhancedCalorieCalculator({
             <p className="text-xl text-gray-600 dark:text-gray-300 mb-6">
               تتبع تغذيتك اليومية مع قاعدة بيانات شاملة للطعام العربي
             </p>
+            {username && userProfile && (
+              <div className="flex items-center justify-center gap-3 mb-4 p-3 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg border border-emerald-200 dark:border-emerald-700">
+                {username === "محمد السهلي" && <Crown className="h-6 w-6 text-emerald-600" />}
+                {username === "يوسف درويش" && <Star className="h-6 w-6 text-emerald-600" />}
+                {username === "خالد عمر" && <Dumbbell className="h-6 w-6 text-emerald-600" />}
+                <div className="text-center">
+                  <div className="font-bold text-emerald-800 dark:text-emerald-200">مخصص لـ {username}</div>
+                  <div className="text-sm text-emerald-600 dark:text-emerald-400">{userProfile.fitnessGoal}</div>
+                </div>
+              </div>
+            )}
           </div>
 
           <Tabs defaultValue="calculator" className="w-full">
@@ -273,6 +417,47 @@ export default function EnhancedCalorieCalculator({
 
             {/* Calculator Tab */}
             <TabsContent value="calculator" className="space-y-6">
+              {/* Smart Suggestions */}
+              {smartSuggestions.length > 0 && (
+                <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border-blue-200 dark:border-blue-700">
+                  <CardHeader>
+                    <CardTitle className="text-blue-700 dark:text-blue-300 text-lg flex items-center">
+                      🎯 اقتراحات ذكية لك
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    {smartSuggestions.map((suggestion, index) => (
+                      <div key={index} className="bg-white/80 dark:bg-gray-800/80 p-3 rounded-lg">
+                        <div className="font-medium text-blue-700 dark:text-blue-300 mb-2">
+                          {suggestion.reason}
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {suggestion.foods.map((food, foodIndex) => (
+                            <button
+                              key={foodIndex}
+                              onClick={() => {
+                                // Find the food in database and auto-select it
+                                const found = searchFoods(food);
+                                if (found.length > 0) {
+                                  selectFromSearch({
+                                    category: found[0].category,
+                                    food: found[0].food,
+                                    info: found[0].info
+                                  });
+                                }
+                              }}
+                              className="px-3 py-1 bg-blue-100 dark:bg-blue-800 text-blue-700 dark:text-blue-200 rounded-full text-sm hover:bg-blue-200 dark:hover:bg-blue-700 transition-colors"
+                            >
+                              {food}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </CardContent>
+                </Card>
+              )}
+              
               <div className="grid lg:grid-cols-2 gap-6">
                 {/* Food Selection */}
                 <Card className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm">
@@ -484,6 +669,77 @@ export default function EnhancedCalorieCalculator({
                         {dailyIntake.calories > dailyGoal.calories * 1.2 && "تحذير: تجاوزت الهدف اليومي"}
                       </div>
                     </div>
+
+                    {/* Budget-Friendly Recommendations */}
+                    {username && (
+                      <div className="mt-4 p-3 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-700">
+                        <div className="text-sm font-medium text-emerald-700 dark:text-emerald-300 mb-2">
+                          💡 أطعمة مناسبة لميزانيتك:
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {username === "خالد عمر" && 
+                            ["فول مدمس", "عدس أحمر", "بيض بلدي"].map(food => (
+                              <button 
+                                key={food} 
+                                onClick={() => {
+                                  const found = searchFoods(food);
+                                  if (found.length > 0) {
+                                    selectFromSearch({
+                                      category: found[0].category,
+                                      food: found[0].food,
+                                      info: found[0].info
+                                    });
+                                  }
+                                }}
+                                className="px-2 py-1 bg-emerald-100 dark:bg-emerald-800 text-emerald-700 dark:text-emerald-200 rounded text-xs hover:bg-emerald-200 dark:hover:bg-emerald-700 transition-colors cursor-pointer"
+                              >
+                                {food}
+                              </button>
+                            ))
+                          }
+                          {username === "محمد السهلي" && 
+                            ["شيش طاووق", "سلطة يونانية", "أرز بسمتي"].map(food => (
+                              <button 
+                                key={food} 
+                                onClick={() => {
+                                  const found = searchFoods(food);
+                                  if (found.length > 0) {
+                                    selectFromSearch({
+                                      category: found[0].category,
+                                      food: found[0].food,
+                                      info: found[0].info
+                                    });
+                                  }
+                                }}
+                                className="px-2 py-1 bg-emerald-100 dark:bg-emerald-800 text-emerald-700 dark:text-emerald-200 rounded text-xs hover:bg-emerald-200 dark:hover:bg-emerald-700 transition-colors cursor-pointer"
+                              >
+                                {food}
+                              </button>
+                            ))
+                          }
+                          {username === "يوسف درويش" && 
+                            ["كباب حلبي", "سلمون مشوي", "كبسة لحم"].map(food => (
+                              <button 
+                                key={food} 
+                                onClick={() => {
+                                  const found = searchFoods(food);
+                                  if (found.length > 0) {
+                                    selectFromSearch({
+                                      category: found[0].category,
+                                      food: found[0].food,
+                                      info: found[0].info
+                                    });
+                                  }
+                                }}
+                                className="px-2 py-1 bg-emerald-100 dark:bg-emerald-800 text-emerald-700 dark:text-emerald-200 rounded text-xs hover:bg-emerald-200 dark:hover:bg-emerald-700 transition-colors cursor-pointer"
+                              >
+                                {food}
+                              </button>
+                            ))
+                          }
+                        </div>
+                      </div>
+                    )}
                   </CardContent>
                 </Card>
               </div>
@@ -537,6 +793,11 @@ export default function EnhancedCalorieCalculator({
                 <CardHeader>
                   <CardTitle className="text-emerald-700 dark:text-emerald-300">
                     حساب احتياجاتك اليومية
+                    {username && (
+                      <div className="text-sm font-normal text-emerald-600 mt-1">
+                        البيانات مضبوطة تلقائياً حسب ملفك الشخصي
+                      </div>
+                    )}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
