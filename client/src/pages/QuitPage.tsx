@@ -23,7 +23,8 @@ import {
   Gamepad2,
   Smartphone,
   Pizza,
-  Candy
+  Candy,
+  ChevronRight
 } from "lucide-react";
 
 interface HabitData {
