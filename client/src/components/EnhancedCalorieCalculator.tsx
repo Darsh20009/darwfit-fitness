@@ -678,7 +678,7 @@ export default function EnhancedCalorieCalculator({
                         </div>
                         <div className="flex flex-wrap gap-2">
                           {username === "خالد عمر" && 
-                            ["فول مدمس", "عدس أحمر", "بيض بلدي"].map(food => (
+                            ["فول مدمس بالطحينة", "بيض مقلي (4 قطع)", "عدس أحمر", "شوفان بالموز", "دجاج مشوي", "أرز أبيض مسلوق"].map(food => (
                               <button 
                                 key={food} 
                                 onClick={() => {
@@ -698,7 +698,7 @@ export default function EnhancedCalorieCalculator({
                             ))
                           }
                           {username === "محمد السهلي" && 
-                            ["شيش طاووق", "سلطة يونانية", "أرز بسمتي"].map(food => (
+                            ["قهوة كولد برو", "بيض مقلي (4 قطع)", "توست أبيض (4 شرائح)", "مكمل البروتين", "دجاج مشوي", "أرز بسمتي", "سلطة يونانية"].map(food => (
                               <button 
                                 key={food} 
                                 onClick={() => {
@@ -718,7 +718,7 @@ export default function EnhancedCalorieCalculator({
                             ))
                           }
                           {username === "يوسف درويش" && 
-                            ["كباب حلبي", "سلمون مشوي", "كبسة لحم"].map(food => (
+                            ["إندومي بالبيض", "شاورما فراخ عادي", "كباب مشوي", "برغر دجاج", "أرز بالخضار", "مكرونة بالجبنة"].map(food => (
                               <button 
                                 key={food} 
                                 onClick={() => {
