@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useLocation } from "wouter";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuthContext } from "@/context/AuthContext";
 import { 
   Dumbbell, 
   Heart, 
@@ -25,7 +25,9 @@ export default function WelcomePage() {
   const [currentFeature, setCurrentFeature] = useState(0);
   const [animationStep, setAnimationStep] = useState(0);
   const [, setLocation] = useLocation();
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isLoggedIn } = useAuthContext();
+  const isAuthenticated = isLoggedIn;
+  const isLoading = false;
 
   const features = [
     {
