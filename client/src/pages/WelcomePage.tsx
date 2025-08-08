@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useLocation } from "wouter";
+import { useAuth } from "@/hooks/useAuth";
 import { 
   Dumbbell, 
   Heart, 
@@ -24,6 +25,7 @@ export default function WelcomePage() {
   const [currentFeature, setCurrentFeature] = useState(0);
   const [animationStep, setAnimationStep] = useState(0);
   const [, setLocation] = useLocation();
+  const { isAuthenticated, isLoading } = useAuth();
 
   const features = [
     {
@@ -234,31 +236,42 @@ export default function WelcomePage() {
           </div>
 
           {/* Member Login Section */}
-          <div className="mb-16">
-            <Card className="bg-white/5 backdrop-blur-lg border border-white/20 shadow-2xl max-w-md mx-auto">
-              <CardContent className="p-8 text-center">
-                <div className="mb-6">
-                  <div className="bg-gradient-to-r from-emerald-500 to-emerald-600 p-4 rounded-full inline-block mb-4">
-                    <Users className="h-12 w-12 text-white" />
+          {!isLoading && (
+            <div className="mb-16">
+              <Card className="bg-white/5 backdrop-blur-lg border border-white/20 shadow-2xl max-w-md mx-auto">
+                <CardContent className="p-8 text-center">
+                  <div className="mb-6">
+                    <div className="bg-gradient-to-r from-emerald-500 to-emerald-600 p-4 rounded-full inline-block mb-4">
+                      {isAuthenticated ? <CheckCircle className="h-12 w-12 text-white" /> : <Users className="h-12 w-12 text-white" />}
+                    </div>
+                    {isAuthenticated ? (
+                      <>
+                        <h3 className="text-2xl font-bold text-white mb-2">مرحباً بعودتك! 👋</h3>
+                        <p className="text-gray-300">انتقل إلى حسابك لمتابعة رحلتك الصحية</p>
+                      </>
+                    ) : (
+                      <>
+                        <h3 className="text-2xl font-bold text-white mb-2">عضو مدفوع؟</h3>
+                        <p className="text-gray-300">سجل دخولك للوصول لخطتك المخصصة</p>
+                      </>
+                    )}
                   </div>
-                  <h3 className="text-2xl font-bold text-white mb-2">عضو مدفوع؟</h3>
-                  <p className="text-gray-300">سجل دخولك للوصول لخطتك المخصصة</p>
-                </div>
-                
-                <Button 
-                  onClick={() => setLocation("/login")}
-                  className="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 text-lg transform hover:scale-105 shadow-lg"
-                >
-                  <CheckCircle className="h-5 w-5 ml-2" />
-                  تسجيل دخول الأعضاء
-                </Button>
-                
-                <p className="text-gray-400 text-sm mt-4">
-                  لديك رقم اشتراك؟ استخدمه لتسجيل الدخول
-                </p>
-              </CardContent>
-            </Card>
-          </div>
+                  
+                  <Button 
+                    onClick={() => setLocation(isAuthenticated ? "/dashboard" : "/login")}
+                    className="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 text-lg transform hover:scale-105 shadow-lg"
+                  >
+                    <CheckCircle className="h-5 w-5 ml-2" />
+                    {isAuthenticated ? "اذهب إلى حسابك" : "تسجيل دخول الأعضاء"}
+                  </Button>
+                  
+                  <p className="text-gray-400 text-sm mt-4">
+                    {isAuthenticated ? "تابع خطة التغذية والتمارين الخاصة بك" : "لديك رقم اشتراك؟ استخدمه لتسجيل الدخول"}
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+          )}
         </div>
 
         {/* Stats Section */}
