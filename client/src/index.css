@@ -879,3 +879,471 @@
 }
 
 /*The background gradients and performance optimizations are enhanced and dark theme adjusted*/
+
+/* Custom workout animations for Yousef's program - ⭐ CREATIVE EXERCISES ⭐ */
+@keyframes bicycleRide {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  25% { transform: translateY(-8px) rotate(8deg); }
+  50% { transform: translateY(-15px) rotate(0deg); }
+  75% { transform: translateY(-8px) rotate(-8deg); }
+}
+
+@keyframes pushUpMotion {
+  0%, 100% { transform: scaleY(1) translateY(0px); }
+  50% { transform: scaleY(0.7) translateY(5px); }
+}
+
+@keyframes pullUpMotion {
+  0%, 100% { transform: translateY(5px); }
+  50% { transform: translateY(-8px) scaleY(1.1); }
+}
+
+@keyframes crunchMotion {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  25% { transform: rotate(15deg) scale(1.15); }
+  50% { transform: rotate(0deg) scale(1.3); }
+  75% { transform: rotate(-15deg) scale(1.15); }
+}
+
+@keyframes squatMotion {
+  0%, 100% { transform: translateY(0px) scaleY(1); }
+  50% { transform: translateY(12px) scaleY(0.8); }
+}
+
+@keyframes runningMotion {
+  0%, 100% { transform: translateX(0px) rotate(0deg); }
+  25% { transform: translateX(4px) rotate(8deg); }
+  50% { transform: translateX(0px) rotate(0deg); }
+  75% { transform: translateX(-4px) rotate(-8deg); }
+}
+
+@keyframes plankHold {
+  0%, 100% { transform: scaleX(1) rotateZ(0deg); }
+  50% { transform: scaleX(1.1) rotateZ(2deg); }
+}
+
+@keyframes burpeeMotion {
+  0% { transform: translateY(0px) scale(1); }
+  25% { transform: translateY(-15px) scale(1.2); }
+  50% { transform: translateY(0px) scale(0.8); }
+  75% { transform: translateY(-8px) scale(1.1); }
+  100% { transform: translateY(0px) scale(1); }
+}
+
+@keyframes mountainClimber {
+  0%, 100% { transform: translateX(0px) rotate(0deg); }
+  25% { transform: translateX(5px) rotate(8deg); }
+  50% { transform: translateX(0px) rotate(0deg); }
+  75% { transform: translateX(-5px) rotate(-8deg); }
+}
+
+@keyframes strengthGlow {
+  0%, 100% { 
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.6); 
+    transform: scale(1);
+  }
+  50% { 
+    box-shadow: 0 0 30px rgba(59, 130, 246, 1), 0 0 50px rgba(147, 51, 234, 0.8); 
+    transform: scale(1.1);
+  }
+}
+
+@keyframes heartBeat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
+@keyframes workoutPulse {
+  0%, 100% { 
+    transform: scale(1) rotate(0deg);
+    filter: hue-rotate(0deg);
+  }
+  50% { 
+    transform: scale(1.15) rotate(5deg);
+    filter: hue-rotate(180deg);
+  }
+}
+
+/* 🔥 YOUSEF'S CUSTOM ANIMATION CLASSES 🔥 */
+.animate-bicycle {
+  animation: bicycleRide 2.5s ease-in-out infinite;
+}
+
+.animate-pushup {
+  animation: pushUpMotion 1.8s ease-in-out infinite;
+}
+
+.animate-pullup {
+  animation: pullUpMotion 2.2s ease-in-out infinite;
+}
+
+.animate-crunch {
+  animation: crunchMotion 2.5s ease-in-out infinite;
+}
+
+.animate-squat {
+  animation: squatMotion 2s ease-in-out infinite;
+}
+
+.animate-running {
+  animation: runningMotion 1s ease-in-out infinite;
+}
+
+.animate-plank {
+  animation: plankHold 3.5s ease-in-out infinite;
+}
+
+.animate-burpee {
+  animation: burpeeMotion 3s ease-in-out infinite;
+}
+
+.animate-mountain-climber {
+  animation: mountainClimber 0.8s ease-in-out infinite;
+}
+
+.animate-heartbeat {
+  animation: heartBeat 1.5s ease-in-out infinite;
+}
+
+.animate-strength-glow {
+  animation: strengthGlow 2.5s ease-in-out infinite;
+}
+
+.animate-workout-pulse {
+  animation: workoutPulse 2s ease-in-out infinite;
+}
+
+/* 💪 Enhanced Hover Effects for Workout Cards 💪 */
+.workout-card-hover {
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border-radius: 16px;
+}
+
+.workout-card-hover:hover {
+  transform: translateY(-8px) scale(1.02) rotateX(5deg);
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.2),
+    0 0 30px rgba(59, 130, 246, 0.3),
+    0 0 60px rgba(147, 51, 234, 0.2);
+  border-color: rgba(59, 130, 246, 0.5);
+}
+
+/* 🌟 Gradient Text Effect for Exercise Names 🌟 */
+.gradient-text {
+  background: linear-gradient(45deg, #3b82f6, #8b5cf6, #ef4444, #f59e0b, #10b981);
+  background-size: 400% 400%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientShift 4s ease infinite;
+  font-weight: bold;
+}
+
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  25% { background-position: 100% 0%; }
+  50% { background-position: 100% 100%; }
+  75% { background-position: 0% 100%; }
+}
+
+/* 🎉 Completion Celebration Animation 🎉 */
+@keyframes celebrationBurst {
+  0% { 
+    transform: scale(1) rotate(0deg); 
+    opacity: 1;
+    filter: hue-rotate(0deg);
+  }
+  25% {
+    transform: scale(1.3) rotate(90deg);
+    opacity: 0.9;
+    filter: hue-rotate(90deg);
+  }
+  50% { 
+    transform: scale(1.5) rotate(180deg); 
+    opacity: 0.8;
+    filter: hue-rotate(180deg);
+  }
+  75% {
+    transform: scale(1.3) rotate(270deg);
+    opacity: 0.9;
+    filter: hue-rotate(270deg);
+  }
+  100% { 
+    transform: scale(1) rotate(360deg); 
+    opacity: 1;
+    filter: hue-rotate(360deg);
+  }
+}
+
+.celebrate-completion {
+  animation: celebrationBurst 1.5s ease-in-out;
+}
+
+/* 🔥 Fire Effect for Intense Exercises 🔥 */
+@keyframes fireEffect {
+  0%, 100% {
+    text-shadow: 
+      0 0 5px #ff6b35,
+      0 0 10px #ff6b35,
+      0 0 15px #ff6b35,
+      0 0 20px #ff8500,
+      0 0 35px #ff8500,
+      0 0 40px #ff8500;
+  }
+  50% {
+    text-shadow: 
+      0 0 2px #ff6b35,
+      0 0 5px #ff6b35,
+      0 0 8px #ff6b35,
+      0 0 12px #ff8500,
+      0 0 18px #ff8500,
+      0 0 25px #ff8500;
+  }
+}
+
+.fire-text {
+  animation: fireEffect 2s ease-in-out infinite;
+  color: #ff6b35;
+}
+
+/* ⚡ Lightning Effect for Power Exercises ⚡ */
+@keyframes lightningBolt {
+  0%, 100% { 
+    transform: translateX(0px) scaleX(1);
+    filter: brightness(1);
+  }
+  10% { 
+    transform: translateX(2px) scaleX(1.1);
+    filter: brightness(1.5);
+  }
+  20% { 
+    transform: translateX(-2px) scaleX(0.9);
+    filter: brightness(1.2);
+  }
+  30% { 
+    transform: translateX(3px) scaleX(1.15);
+    filter: brightness(1.8);
+  }
+  40%, 60% { 
+    transform: translateX(0px) scaleX(1);
+    filter: brightness(1);
+  }
+}
+
+.lightning-effect {
+  animation: lightningBolt 3s ease-in-out infinite;
+}
+
+/* 🌊 Wave Effect for Cardio Exercises 🌊 */
+@keyframes waveMotion {
+  0%, 100% { 
+    transform: translateY(0px) rotate(0deg);
+    border-radius: 16px;
+  }
+  25% { 
+    transform: translateY(-3px) rotate(1deg);
+    border-radius: 18px 14px 16px 20px;
+  }
+  50% { 
+    transform: translateY(-6px) rotate(0deg);
+    border-radius: 20px 12px 18px 14px;
+  }
+  75% { 
+    transform: translateY(-3px) rotate(-1deg);
+    border-radius: 14px 20px 12px 18px;
+  }
+}
+
+.wave-motion {
+  animation: waveMotion 4s ease-in-out infinite;
+}
+
+/* 💎 Diamond Sparkle for Premium Exercises 💎 */
+@keyframes diamondSparkle {
+  0%, 100% {
+    box-shadow: 
+      0 0 10px rgba(147, 51, 234, 0.4),
+      inset 0 0 10px rgba(255, 255, 255, 0.1);
+    transform: scale(1) rotate(0deg);
+  }
+  25% {
+    box-shadow: 
+      0 0 20px rgba(147, 51, 234, 0.6),
+      0 0 30px rgba(168, 85, 247, 0.4),
+      inset 0 0 15px rgba(255, 255, 255, 0.2);
+    transform: scale(1.05) rotate(5deg);
+  }
+  50% {
+    box-shadow: 
+      0 0 30px rgba(147, 51, 234, 0.8),
+      0 0 50px rgba(168, 85, 247, 0.6),
+      0 0 70px rgba(192, 132, 252, 0.4),
+      inset 0 0 20px rgba(255, 255, 255, 0.3);
+    transform: scale(1.1) rotate(0deg);
+  }
+  75% {
+    box-shadow: 
+      0 0 20px rgba(147, 51, 234, 0.6),
+      0 0 30px rgba(168, 85, 247, 0.4),
+      inset 0 0 15px rgba(255, 255, 255, 0.2);
+    transform: scale(1.05) rotate(-5deg);
+  }
+}
+
+.diamond-sparkle {
+  animation: diamondSparkle 3s ease-in-out infinite;
+}
+
+/* 🎯 Target Focus for Precision Exercises 🎯 */
+@keyframes targetFocus {
+  0%, 100% {
+    border: 2px solid rgba(239, 68, 68, 0.3);
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+  }
+  50% {
+    border: 2px solid rgba(239, 68, 68, 0.8);
+    box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+  }
+}
+
+.target-focus {
+  animation: targetFocus 2s ease-in-out infinite;
+}
+
+/* 🚀 Rocket Boost for High-Intensity Exercises 🚀 */
+@keyframes rocketBoost {
+  0% {
+    transform: translateY(0px) scale(1);
+    filter: hue-rotate(0deg);
+  }
+  20% {
+    transform: translateY(-5px) scale(1.1);
+    filter: hue-rotate(72deg);
+  }
+  40% {
+    transform: translateY(-10px) scale(1.2);
+    filter: hue-rotate(144deg);
+  }
+  60% {
+    transform: translateY(-8px) scale(1.15);
+    filter: hue-rotate(216deg);
+  }
+  80% {
+    transform: translateY(-3px) scale(1.05);
+    filter: hue-rotate(288deg);
+  }
+  100% {
+    transform: translateY(0px) scale(1);
+    filter: hue-rotate(360deg);
+  }
+}
+
+.rocket-boost {
+  animation: rocketBoost 2.5s ease-in-out infinite;
+}
+
+/* 🌟 Exercise Completion Star Effect 🌟 */
+@keyframes starBurst {
+  0% {
+    transform: scale(0) rotate(0deg);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.5) rotate(180deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(360deg);
+    opacity: 1;
+  }
+}
+
+.star-burst {
+  animation: starBurst 0.8s ease-out;
+}
+
+/* 💪 Muscle Flex Animation 💪 */
+@keyframes muscleFlex {
+  0%, 100% {
+    transform: scaleX(1) scaleY(1);
+  }
+  25% {
+    transform: scaleX(1.1) scaleY(0.9);
+  }
+  50% {
+    transform: scaleX(1.2) scaleY(0.8);
+  }
+  75% {
+    transform: scaleX(1.1) scaleY(0.9);
+  }
+}
+
+.muscle-flex {
+  animation: muscleFlex 1.5s ease-in-out infinite;
+}
+
+/* 🏆 Victory Dance for Completed Exercises 🏆 */
+@keyframes victoryDance {
+  0%, 100% {
+    transform: translateX(0px) rotate(0deg) scale(1);
+  }
+  10% {
+    transform: translateX(-5px) rotate(-5deg) scale(1.05);
+  }
+  20% {
+    transform: translateX(5px) rotate(5deg) scale(1.1);
+  }
+  30% {
+    transform: translateX(-3px) rotate(-3deg) scale(1.05);
+  }
+  40% {
+    transform: translateX(3px) rotate(3deg) scale(1.1);
+  }
+  50% {
+    transform: translateX(0px) rotate(0deg) scale(1.15);
+  }
+  60% {
+    transform: translateX(-2px) rotate(-2deg) scale(1.1);
+  }
+  70% {
+    transform: translateX(2px) rotate(2deg) scale(1.05);
+  }
+  80% {
+    transform: translateX(-1px) rotate(-1deg) scale(1.02);
+  }
+  90% {
+    transform: translateX(1px) rotate(1deg) scale(1.01);
+  }
+}
+
+.victory-dance {
+  animation: victoryDance 2s ease-in-out;
+}
+
+/* 🎪 Circus Spin for Fun Exercises 🎪 */
+@keyframes circusSpin {
+  0% {
+    transform: rotate(0deg) scale(1);
+    border-radius: 16px;
+  }
+  25% {
+    transform: rotate(90deg) scale(1.1);
+    border-radius: 50% 16px 50% 16px;
+  }
+  50% {
+    transform: rotate(180deg) scale(1.2);
+    border-radius: 50%;
+  }
+  75% {
+    transform: rotate(270deg) scale(1.1);
+    border-radius: 16px 50% 16px 50%;
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+    border-radius: 16px;
+  }
+}
+
+.circus-spin {
+  animation: circusSpin 4s ease-in-out infinite;
+}

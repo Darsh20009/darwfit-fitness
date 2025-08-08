@@ -25,6 +25,7 @@ import {
   ChefHat
 } from "lucide-react";
 import PersonalizedNutritionSystem from "@/components/PersonalizedNutritionSystem";
+import YousefWorkoutComponent from "@/components/YousefWorkoutComponent";
 
 export default function DashboardPage() {
   const { username, subscriptionId, subscriptionEndDate } = useAuth();
@@ -215,16 +216,22 @@ export default function DashboardPage() {
         {/* Tab Content */}
         {activeTab === 'today' && (
           <>
-            <DailyPlan 
-              date={selectedDate}
-              formattedDate={formatFullDateToArabic(selectedDate)}
-              workoutType={getWorkoutTypeByDate(selectedDate)}
-              dayIndex={dayIndex}
-            />
-            <WeeklyCalendar 
-              selectedDate={selectedDate}
-              onSelectDate={setSelectedDate}
-            />
+            {username === 'يوسف درويش' ? (
+              <YousefWorkoutComponent />
+            ) : (
+              <>
+                <DailyPlan 
+                  date={selectedDate}
+                  formattedDate={formatFullDateToArabic(selectedDate)}
+                  workoutType={getWorkoutTypeByDate(selectedDate)}
+                  dayIndex={dayIndex}
+                />
+                <WeeklyCalendar 
+                  selectedDate={selectedDate}
+                  onSelectDate={setSelectedDate}
+                />
+              </>
+            )}
           </>
         )}
 
