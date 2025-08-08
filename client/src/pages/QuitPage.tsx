@@ -199,18 +199,83 @@ export default function QuitPage() {
       <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50 dark:from-gray-900 dark:via-emerald-900 dark:to-green-900">
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-6xl mx-auto">
-            {/* Header */}
-            <div className="text-center mb-8">
-              <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-emerald-600 via-green-600 to-teal-600 bg-clip-text text-transparent mb-4">
-                🌟 صفحة الإقلاع
-              </h1>
-              <p className="text-xl text-gray-600 dark:text-gray-300 mb-6">
-                ابدأ رحلتك نحو حياة أفضل وأكثر صحة
-              </p>
-              <div className="flex justify-center space-x-4 mb-6">
-                <Badge className="px-4 py-2 bg-emerald-100 text-emerald-700 border-emerald-300">🎯 أهداف واضحة</Badge>
-                <Badge className="px-4 py-2 bg-green-100 text-green-700 border-green-300">📊 تتبع التقدم</Badge>
-                <Badge className="px-4 py-2 bg-teal-100 text-teal-700 border-teal-300">🏆 مكافآت يومية</Badge>
+            {/* Header المطور والإبداعي */}
+            <div className="text-center mb-8 relative">
+              {/* تأثيرات الخلفية المذهلة */}
+              <div className="absolute inset-0 bg-gradient-to-r from-red-400/20 via-orange-400/20 to-yellow-400/20 rounded-3xl animate-pulse"></div>
+              <div className="absolute -inset-2 bg-gradient-to-r from-red-500/10 via-orange-500/10 to-yellow-500/10 rounded-3xl animate-ping"></div>
+              
+              <div className="relative z-10 py-12 px-6">
+                {/* العنوان المذهل */}
+                <div className="flex justify-center items-center mb-6">
+                  <div className="relative">
+                    <Flame className="h-20 w-20 text-red-500 ml-6 animate-bounce drop-shadow-2xl" />
+                    <div className="absolute inset-0 bg-red-400 rounded-full animate-ping opacity-75"></div>
+                  </div>
+                  
+                  <div className="relative">
+                    <h1 className="text-6xl md:text-9xl font-black bg-gradient-to-r from-red-600 via-orange-600 via-yellow-600 to-red-600 bg-clip-text text-transparent drop-shadow-2xl animate-pulse">
+                      🔥 صفحة الإقلاع 🔥
+                    </h1>
+                    <div className="absolute -inset-6 bg-gradient-to-r from-red-400/30 to-orange-400/30 blur-2xl -z-10 animate-pulse"></div>
+                  </div>
+                  
+                  <div className="relative">
+                    <Shield className="h-20 w-20 text-orange-500 mr-6 animate-bounce drop-shadow-2xl" style={{animationDelay: '0.5s'}} />
+                    <div className="absolute inset-0 bg-orange-400 rounded-full animate-ping opacity-75" style={{animationDelay: '0.5s'}}></div>
+                  </div>
+                </div>
+                
+                {/* النص التحفيزي */}
+                <div className="space-y-6">
+                  <p className="text-3xl md:text-4xl font-black text-gray-800 dark:text-gray-100 mb-6 leading-relaxed">
+                    ⚡ حول ضعفك إلى قوة خارقة! ⚡
+                  </p>
+                  
+                  <p className="text-2xl md:text-3xl text-gray-700 dark:text-gray-300 mb-6">
+                    🎯 <span className="text-4xl font-black text-red-600 animate-pulse">30</span> يوماً لتغيير حياتك للأبد
+                  </p>
+                  
+                  {/* إحصائيات التحفيز */}
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto">
+                    <div className="bg-gradient-to-br from-red-100 to-pink-200 dark:from-red-900/30 dark:to-pink-900/30 rounded-2xl p-6 transform hover:scale-110 transition-all duration-300 hover:rotate-2 shadow-xl">
+                      <div className="text-4xl mb-3 animate-bounce">🎯</div>
+                      <div className="text-2xl font-black text-red-700 dark:text-red-300">100%</div>
+                      <div className="text-lg font-bold text-red-600 dark:text-red-400">نجاح مضمون</div>
+                    </div>
+                    
+                    <div className="bg-gradient-to-br from-orange-100 to-yellow-200 dark:from-orange-900/30 dark:to-yellow-900/30 rounded-2xl p-6 transform hover:scale-110 transition-all duration-300 hover:-rotate-2 shadow-xl" style={{animationDelay: '0.2s'}}>
+                      <div className="text-4xl mb-3 animate-bounce">💪</div>
+                      <div className="text-2xl font-black text-orange-700 dark:text-orange-300">7×</div>
+                      <div className="text-lg font-bold text-orange-600 dark:text-orange-400">قوة أكبر</div>
+                    </div>
+                    
+                    <div className="bg-gradient-to-br from-green-100 to-emerald-200 dark:from-green-900/30 dark:to-emerald-900/30 rounded-2xl p-6 transform hover:scale-110 transition-all duration-300 hover:rotate-2 shadow-xl" style={{animationDelay: '0.4s'}}>
+                      <div className="text-4xl mb-3 animate-bounce">⚡</div>
+                      <div className="text-2xl font-black text-green-700 dark:text-green-300">3×</div>
+                      <div className="text-lg font-bold text-green-600 dark:text-green-400">طاقة أعلى</div>
+                    </div>
+                    
+                    <div className="bg-gradient-to-br from-purple-100 to-blue-200 dark:from-purple-900/30 dark:to-blue-900/30 rounded-2xl p-6 transform hover:scale-110 transition-all duration-300 hover:-rotate-2 shadow-xl" style={{animationDelay: '0.6s'}}>
+                      <div className="text-4xl mb-3 animate-bounce">🧠</div>
+                      <div className="text-2xl font-black text-purple-700 dark:text-purple-300">5×</div>
+                      <div className="text-lg font-bold text-purple-600 dark:text-purple-400">تركيز أقوى</div>
+                    </div>
+                  </div>
+                  
+                  {/* رسائل تحفيزية متحركة */}
+                  <div className="space-y-4 max-w-3xl mx-auto">
+                    <div className="bg-gradient-to-r from-red-500 to-orange-500 text-white rounded-2xl p-6 shadow-2xl transform hover:scale-105 transition-all duration-300">
+                      <div className="text-2xl font-black mb-2 animate-pulse">🔥 أنت أقوى من عاداتك السيئة! 🔥</div>
+                      <div className="text-lg">كل يوم تقاوم فيه، تصبح أقوى وأكثر ثقة بنفسك</div>
+                    </div>
+                    
+                    <div className="bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-2xl p-6 shadow-2xl transform hover:scale-105 transition-all duration-300">
+                      <div className="text-2xl font-black mb-2 animate-pulse">💎 حولت ألمك إلى قوة! 💎</div>
+                      <div className="text-lg">النجاح يبدأ من قرار واحد، والاستمرار يحققه</div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 

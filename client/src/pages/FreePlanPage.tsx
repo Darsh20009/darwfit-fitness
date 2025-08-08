@@ -420,22 +420,74 @@ export default function FreePlanPage() {
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-purple-50 dark:from-gray-900 dark:via-green-900 dark:to-blue-900">
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
-          {/* Header */}
-          <div className="text-center mb-8">
-            <div className="flex justify-center items-center mb-4">
-              <Gift className="h-10 w-10 text-yellow-500 ml-3 animate-bounce" />
-              <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-green-600 via-blue-600 to-purple-600 bg-clip-text text-transparent">
-                🆓 خطتك المجانية 🆓
-              </h1>
-              <Gift className="h-10 w-10 text-yellow-500 mr-3 animate-bounce" style={{animationDelay: '0.5s'}} />
-            </div>
-            <p className="text-xl md:text-2xl text-gray-700 dark:text-gray-300 mb-4">
-              احصل على خطة غذائية وتدريبية مخصصة لك مجاناً لمدة 15 يوماً
-            </p>
-            <div className="flex justify-center space-x-4 mb-6">
-              <Badge className="px-4 py-2 bg-green-100 text-green-700 border-green-300">✅ مجاني 100%</Badge>
-              <Badge className="px-4 py-2 bg-blue-100 text-blue-700 border-blue-300">🤖 بالذكاء الاصطناعي</Badge>
-              <Badge className="px-4 py-2 bg-purple-100 text-purple-700 border-purple-300">⏰ 15 يوم</Badge>
+          {/* Header الإبداعي المطور */}
+          <div className="text-center mb-8 relative">
+            {/* تأثيرات الخلفية */}
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-400/20 via-pink-400/20 to-red-400/20 rounded-3xl animate-pulse"></div>
+            <div className="absolute -inset-1 bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-red-500/10 rounded-3xl animate-ping"></div>
+            
+            <div className="relative z-10 py-12 px-6">
+              <div className="flex justify-center items-center mb-6">
+                <div className="relative">
+                  <Gift className="h-16 w-16 text-yellow-500 ml-6 animate-bounce drop-shadow-lg" />
+                  <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full animate-ping"></div>
+                </div>
+                
+                <div className="relative">
+                  <h1 className="text-5xl md:text-8xl font-black bg-gradient-to-r from-purple-600 via-pink-600 via-red-600 to-orange-600 bg-clip-text text-transparent drop-shadow-2xl">
+                    ✨ صمم حياتك ✨
+                  </h1>
+                  <div className="absolute -inset-4 bg-gradient-to-r from-purple-400/30 to-pink-400/30 blur-xl animate-pulse -z-10"></div>
+                </div>
+                
+                <div className="relative">
+                  <Target className="h-16 w-16 text-red-500 mr-6 animate-bounce drop-shadow-lg" style={{animationDelay: '0.3s'}} />
+                  <div className="absolute -top-2 -left-2 w-6 h-6 bg-gradient-to-r from-red-400 to-pink-400 rounded-full animate-ping" style={{animationDelay: '0.3s'}}></div>
+                </div>
+              </div>
+              
+              <div className="space-y-4">
+                <p className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-gray-100 mb-6 leading-relaxed">
+                  🚀 تخيل نفسك بعد 30 يوماً مع جسم أحلامك! 🚀
+                </p>
+                
+                <p className="text-xl md:text-2xl text-gray-700 dark:text-gray-300 mb-6">
+                  أكثر من <span className="text-4xl font-black text-purple-600 animate-pulse">100,000+</span> خطة شخصية متاحة مجاناً
+                </p>
+                
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+                  <div className="bg-gradient-to-br from-green-100 to-emerald-200 dark:from-green-900/30 dark:to-emerald-900/30 rounded-2xl p-4 transform hover:scale-105 transition-all duration-300 animate-bounce" style={{animationDelay: '0s'}}>
+                    <div className="text-3xl mb-2">🎯</div>
+                    <div className="text-lg font-bold text-green-700 dark:text-green-300">مجاني 100%</div>
+                  </div>
+                  
+                  <div className="bg-gradient-to-br from-blue-100 to-cyan-200 dark:from-blue-900/30 dark:to-cyan-900/30 rounded-2xl p-4 transform hover:scale-105 transition-all duration-300 animate-bounce" style={{animationDelay: '0.2s'}}>
+                    <div className="text-3xl mb-2">🤖</div>
+                    <div className="text-lg font-bold text-blue-700 dark:text-blue-300">ذكاء اصطناعي</div>
+                  </div>
+                  
+                  <div className="bg-gradient-to-br from-purple-100 to-pink-200 dark:from-purple-900/30 dark:to-pink-900/30 rounded-2xl p-4 transform hover:scale-105 transition-all duration-300 animate-bounce" style={{animationDelay: '0.4s'}}>
+                    <div className="text-3xl mb-2">⚡</div>
+                    <div className="text-lg font-bold text-purple-700 dark:text-purple-300">خطة فورية</div>
+                  </div>
+                  
+                  <div className="bg-gradient-to-br from-orange-100 to-red-200 dark:from-orange-900/30 dark:to-red-900/30 rounded-2xl p-4 transform hover:scale-105 transition-all duration-300 animate-bounce" style={{animationDelay: '0.6s'}}>
+                    <div className="text-3xl mb-2">🏆</div>
+                    <div className="text-lg font-bold text-orange-700 dark:text-orange-300">نتائج مضمونة</div>
+                  </div>
+                </div>
+              </div>
+              
+              {/* شريط التقدم التحفيزي */}
+              <div className="mt-8 max-w-2xl mx-auto">
+                <div className="bg-white/80 dark:bg-gray-800/80 rounded-2xl p-6 backdrop-blur-sm border-2 border-purple-200 dark:border-purple-700">
+                  <div className="text-lg font-bold text-purple-700 dark:text-purple-300 mb-4">🔥 ابدأ رحلة التحول الآن! 🔥</div>
+                  <div className="bg-gray-200 dark:bg-gray-700 rounded-full h-4 overflow-hidden">
+                    <div className="bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 h-full animate-pulse" style={{width: '100%'}}></div>
+                  </div>
+                  <div className="text-sm text-center mt-2 text-gray-600 dark:text-gray-400">مستعد للتحدي؟ لنبدأ!</div>
+                </div>
+              </div>
             </div>
           </div>
 
