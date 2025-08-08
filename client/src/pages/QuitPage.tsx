@@ -70,6 +70,17 @@ interface GeneratedPlan {
   duration: number; // بالأيام
 }
 
+interface TaskProgress {
+  [day: number]: { [taskId: string]: boolean };
+}
+
+interface DayStatus {
+  date: string;
+  completed: boolean;
+  tasksCompleted: number;
+  totalTasks: number;
+}
+
 export default function QuitPage() {
   const [, setLocation] = useLocation();
   const [selectedHabit, setSelectedHabit] = useState<string | null>(null);
@@ -77,6 +88,10 @@ export default function QuitPage() {
   const [questionnaireData, setQuestionnaireData] = useState<QuestionnaireData | null>(null);
   const [generatedPlan, setGeneratedPlan] = useState<GeneratedPlan | null>(null);
   const [currentStep, setCurrentStep] = useState(0);
+  const [showTracker, setShowTracker] = useState(false);
+  const [currentTrackingDay, setCurrentTrackingDay] = useState(1);
+  const [taskProgress, setTaskProgress] = useState<TaskProgress>({});
+  const [thirtyDayProgress, setThirtyDayProgress] = useState<DayStatus[]>([]);
   const [quitDays, setQuitDays] = useState(0);
   const [currentStreak, setCurrentStreak] = useState(0);
   const [totalPoints, setTotalPoints] = useState(0);
@@ -322,6 +337,233 @@ export default function QuitPage() {
     };
   };
 
+  const initializeThirtyDayTracker = (plan: GeneratedPlan) => {
+    const days: DayStatus[] = [];
+    const startDate = new Date(plan.createdDate);
+    
+    for (let i = 0; i < 30; i++) {
+      const currentDate = new Date(startDate);
+      currentDate.setDate(startDate.getDate() + i);
+      
+      days.push({
+        date: currentDate.toISOString().split('T')[0],
+        completed: false,
+        tasksCompleted: 0,
+        totalTasks: plan.dailyTasks.length
+      });
+    }
+    
+    setThirtyDayProgress(days);
+    setCurrentTrackingDay(1);
+    setTaskProgress({});
+    setShowTracker(true);
+  };
+
+  const toggleTaskCompletion = (day: number, taskIndex: number) => {
+    setTaskProgress(prev => ({
+      ...prev,
+      [day]: {
+        ...prev[day],
+        [taskIndex]: !prev[day]?.[taskIndex]
+      }
+    }));
+
+    // تحديث حالة اليوم
+    setThirtyDayProgress(prev => prev.map((dayStatus, index) => {
+      if (index + 1 === day) {
+        const dayTasks = taskProgress[day] || {};
+        const completedCount = Object.values({...dayTasks, [taskIndex]: !dayTasks[taskIndex]}).filter(Boolean).length;
+        return {
+          ...dayStatus,
+          tasksCompleted: completedCount,
+          completed: completedCount === generatedPlan?.dailyTasks.length
+        };
+      }
+      return dayStatus;
+    }));
+  };
+
+  const generateHTMLPlanWithTracker = (plan: GeneratedPlan): string => {
+    return `<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>خطة الإقلاع 30 يوم - ${plan.userData.name}</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Arial', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; color: #333; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); overflow: hidden; }
+        .header { background: linear-gradient(135deg, #ff6b6b, #feca57); padding: 40px; text-align: center; color: white; }
+        .title { font-size: 2.5em; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        .timer { background: #2c3e50; color: white; padding: 30px; text-align: center; font-size: 1.5em; }
+        .days-counter { font-size: 3em; font-weight: bold; margin: 10px 0; color: #f39c12; }
+        .content { padding: 40px; }
+        .section { margin-bottom: 30px; padding: 25px; border-radius: 15px; border-left: 5px solid #3498db; }
+        .section h3 { color: #2c3e50; margin-bottom: 15px; font-size: 1.5em; }
+        .section.daily { border-left-color: #e74c3c; background: #fdf2f2; }
+        .section.tracker { border-left-color: #27ae60; background: #eafaf1; }
+        .day-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin: 20px 0; }
+        .day-card { background: white; border-radius: 10px; padding: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); text-align: center; }
+        .day-card.completed { background: #27ae60; color: white; }
+        .day-card.current { border: 3px solid #f39c12; }
+        .tasks-list { margin: 20px 0; }
+        .task-item { padding: 10px; margin: 5px 0; background: #f8f9fa; border-radius: 5px; cursor: pointer; user-select: none; }
+        .task-item.completed { background: #27ae60; color: white; }
+        ul { list-style: none; }
+        li { padding: 10px 0; border-bottom: 1px solid #ecf0f1; position: relative; padding-right: 30px; }
+        li:before { content: '✓'; position: absolute; right: 0; color: #27ae60; font-weight: bold; font-size: 1.2em; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+        .pulse { animation: pulse 2s infinite; }
+        .progress-bar { background: #e0e0e0; height: 20px; border-radius: 10px; overflow: hidden; margin: 10px 0; }
+        .progress-fill { background: linear-gradient(90deg, #27ae60, #2ecc71); height: 100%; transition: width 0.5s ease; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">🔥 خطة الإقلاع 30 يوم</h1>
+            <p class="subtitle">مرحباً ${plan.userData.name}، رحلتك نحو التحرر تبدأ الآن!</p>
+        </div>
+        <div class="timer">
+            <div>⏰ عداد الوقت منذ البداية</div>
+            <div class="days-counter pulse" id="daysCounter">0</div>
+            <div>يوم من النظافة والقوة</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="overallProgress" style="width: 0%"></div>
+            </div>
+        </div>
+        <div class="content">
+            <div class="section tracker">
+                <h3>📅 التتبع لمدة 30 يوم</h3>
+                <div class="day-grid" id="dayGrid">
+                    <!-- سيتم ملؤها بالجافاسكريبت -->
+                </div>
+            </div>
+            
+            <div class="section daily" id="currentDaySection">
+                <h3>🎯 مهام اليوم الحالي: <span id="currentDayNumber">1</span></h3>
+                <div class="tasks-list" id="tasksList">
+                    ${plan.dailyTasks.map((task, index) => `
+                        <div class="task-item" data-task="${index}" onclick="toggleTask(${index})">
+                            ${task}
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+            
+            <div class="section daily">
+                <h3>🎯 جميع المهام اليومية</h3>
+                <ul>${plan.dailyTasks.map(task => `<li>${task}</li>`).join('')}</ul>
+            </div>
+        </div>
+    </div>
+    <script>
+        const createdDate = new Date('${plan.createdDate}');
+        const totalDays = 30;
+        const dailyTasks = ${JSON.stringify(plan.dailyTasks)};
+        let currentDay = 1;
+        let dayProgress = {};
+        
+        // تحميل التقدم من localStorage
+        const savedProgress = localStorage.getItem('quitPlanProgress_${plan.id}');
+        if (savedProgress) {
+            dayProgress = JSON.parse(savedProgress);
+        }
+        
+        function saveProgress() {
+            localStorage.setItem('quitPlanProgress_${plan.id}', JSON.stringify(dayProgress));
+        }
+        
+        function updateCounter() {
+            const now = new Date();
+            const diffTime = Math.abs(now - createdDate);
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            document.getElementById('daysCounter').textContent = diffDays;
+            
+            // تحديث اليوم الحالي
+            currentDay = Math.min(diffDays + 1, totalDays);
+            document.getElementById('currentDayNumber').textContent = currentDay;
+            
+            // تحديث شريط التقدم العام
+            const completedDays = Object.keys(dayProgress).filter(day => {
+                const tasks = dayProgress[day];
+                return Object.keys(tasks).length === dailyTasks.length && Object.values(tasks).every(Boolean);
+            }).length;
+            const overallProgress = (completedDays / totalDays) * 100;
+            document.getElementById('overallProgress').style.width = overallProgress + '%';
+        }
+        
+        function createDayGrid() {
+            const dayGrid = document.getElementById('dayGrid');
+            dayGrid.innerHTML = '';
+            
+            for (let day = 1; day <= totalDays; day++) {
+                const dayCard = document.createElement('div');
+                dayCard.className = 'day-card';
+                if (day === currentDay) dayCard.classList.add('current');
+                
+                const dayTasks = dayProgress[day] || {};
+                const completedTasks = Object.values(dayTasks).filter(Boolean).length;
+                const isCompleted = completedTasks === dailyTasks.length;
+                
+                if (isCompleted) dayCard.classList.add('completed');
+                
+                dayCard.innerHTML = \`
+                    <div style="font-size: 1.5em; font-weight: bold;">اليوم \${day}</div>
+                    <div>\${completedTasks}/\${dailyTasks.length}</div>
+                    <div style="margin-top: 10px;">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: \${(completedTasks / dailyTasks.length) * 100}%"></div>
+                        </div>
+                    </div>
+                \`;
+                
+                dayCard.onclick = () => switchToDay(day);
+                dayGrid.appendChild(dayCard);
+            }
+        }
+        
+        function switchToDay(day) {
+            currentDay = day;
+            document.getElementById('currentDayNumber').textContent = day;
+            updateTasksList();
+            createDayGrid();
+        }
+        
+        function updateTasksList() {
+            const tasksList = document.getElementById('tasksList');
+            const dayTasks = dayProgress[currentDay] || {};
+            
+            tasksList.innerHTML = dailyTasks.map((task, index) => \`
+                <div class="task-item \${dayTasks[index] ? 'completed' : ''}" data-task="\${index}" onclick="toggleTask(\${index})">
+                    \${task}
+                </div>
+            \`).join('');
+        }
+        
+        function toggleTask(taskIndex) {
+            if (!dayProgress[currentDay]) {
+                dayProgress[currentDay] = {};
+            }
+            
+            dayProgress[currentDay][taskIndex] = !dayProgress[currentDay][taskIndex];
+            saveProgress();
+            updateTasksList();
+            createDayGrid();
+            updateCounter();
+        }
+        
+        // تهيئة الصفحة
+        updateCounter();
+        createDayGrid();
+        updateTasksList();
+        setInterval(updateCounter, 1000);
+    </script>
+</body>
+</html>`;
+  };
+
   const generateHTMLPlan = (plan: GeneratedPlan): string => {
     return `<!DOCTYPE html>
 <html lang="ar" dir="rtl">
@@ -378,19 +620,6 @@ export default function QuitPage() {
     </script>
 </body>
 </html>`;
-  };
-
-  const downloadHTMLPlan = (plan: GeneratedPlan) => {
-    const htmlContent = generateHTMLPlan(plan);
-    const blob = new Blob([htmlContent], { type: 'text/html; charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `خطة_الإقلاع_${plan.userData.name}_${new Date().toISOString().split('T')[0]}.html`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
   };
 
   const completeTask = (taskId: string) => {
@@ -607,17 +836,57 @@ export default function QuitPage() {
 
             {/* أزرار الإجراءات */}
             <div className="text-center mb-8 space-y-4">
-              <button
-                onClick={() => downloadHTMLPlan(generatedPlan)}
-                className="px-8 py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-2xl font-bold text-xl hover:scale-105 transition-transform shadow-2xl mr-4"
-              >
-                📥 تحميل الخطة HTML مع العداد
-              </button>
+              <div className="flex flex-wrap justify-center gap-4">
+                <button
+                  onClick={() => {
+                  const htmlContent = generateHTMLPlan(generatedPlan);
+                  const blob = new Blob([htmlContent], { type: 'text/html; charset=utf-8' });
+                  const url = URL.createObjectURL(blob);
+                  const link = document.createElement('a');
+                  link.href = url;
+                  link.download = `خطة_الإقلاع_${generatedPlan.userData.name}_${new Date().toISOString().split('T')[0]}.html`;
+                  document.body.appendChild(link);
+                  link.click();
+                  document.body.removeChild(link);
+                  URL.revokeObjectURL(url);
+                }}
+                  className="px-8 py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-2xl font-bold text-xl hover:scale-105 transition-transform shadow-2xl"
+                >
+                  📥 تحميل الخطة HTML مع العداد
+                </button>
+                
+                <button
+                  onClick={() => initializeThirtyDayTracker(generatedPlan)}
+                  className="px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-2xl font-bold text-xl hover:scale-105 transition-transform shadow-2xl"
+                >
+                  📋 بدء التتبع 30 يوم
+                </button>
+                
+                <button
+                  onClick={() => {
+                    const htmlContent = generateHTMLPlanWithTracker(generatedPlan);
+                    const blob = new Blob([htmlContent], { type: 'text/html; charset=utf-8' });
+                    const url = URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = `متتبع_30_يوم_${generatedPlan.userData.name}_${new Date().toISOString().split('T')[0]}.html`;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(url);
+                  }}
+                  className="px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-2xl font-bold text-xl hover:scale-105 transition-transform shadow-2xl"
+                >
+                  📅 تحميل متتبع 30 يوم HTML
+                </button>
+              </div>
+              
               <button
                 onClick={() => {
                   setGeneratedPlan(null);
                   setSelectedHabit(null);
                   setShowQuestionnaire(false);
+                  setShowTracker(false);
                 }}
                 className="px-8 py-4 bg-gradient-to-r from-gray-600 to-gray-700 text-white rounded-2xl font-bold text-xl hover:scale-105 transition-transform shadow-2xl"
               >
@@ -1079,4 +1348,160 @@ export default function QuitPage() {
       </div>
     </div>
   );
+
+  // واجهة التتبع لمدة 30 يوم
+  if (showTracker && generatedPlan) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900">
+        <div className="container mx-auto px-4 py-8">
+          <div className="max-w-7xl mx-auto">
+            {/* رأس الصفحة */}
+            <div className="text-center mb-8 relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/20 via-purple-500/20 to-pink-500/20 rounded-3xl animate-pulse"></div>
+              <div className="relative z-10 py-12">
+                <h1 className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-pink-400 to-indigo-400 mb-4 animate-pulse">
+                  📅 متتبع 30 يوم للإقلاع
+                </h1>
+                <p className="text-2xl text-white/80 font-semibold">
+                  {generatedPlan.userData.name}، تتبع تقدمك يوماً بيوم
+                </p>
+              </div>
+            </div>
+
+            {/* إحصائيات التقدم */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+              <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-6 text-center border border-white/20">
+                <div className="text-4xl mb-3">📅</div>
+                <div className="text-3xl font-bold text-white mb-2">{currentTrackingDay}</div>
+                <div className="text-white/80">اليوم الحالي</div>
+              </div>
+              
+              <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-6 text-center border border-white/20">
+                <div className="text-4xl mb-3">✅</div>
+                <div className="text-3xl font-bold text-green-400 mb-2">
+                  {thirtyDayProgress.filter(day => day.completed).length}
+                </div>
+                <div className="text-white/80">أيام مكتملة</div>
+              </div>
+              
+              <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-6 text-center border border-white/20">
+                <div className="text-4xl mb-3">🎯</div>
+                <div className="text-3xl font-bold text-blue-400 mb-2">
+                  {Math.round((thirtyDayProgress.filter(day => day.completed).length / 30) * 100)}%
+                </div>
+                <div className="text-white/80">نسبة الإنجاز</div>
+              </div>
+              
+              <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-6 text-center border border-white/20">
+                <div className="text-4xl mb-3">🔥</div>
+                <div className="text-3xl font-bold text-orange-400 mb-2">
+                  {30 - currentTrackingDay + 1}
+                </div>
+                <div className="text-white/80">أيام متبقية</div>
+              </div>
+            </div>
+
+            {/* شبكة الأيام الثلاثين */}
+            <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-8 mb-8 border border-white/20">
+              <h3 className="text-3xl font-bold text-white mb-6 text-center">📊 خريطة الـ 30 يوم</h3>
+              <div className="grid grid-cols-5 md:grid-cols-10 gap-3">
+                {Array.from({ length: 30 }, (_, index) => {
+                  const dayNumber = index + 1;
+                  const dayStatus = thirtyDayProgress[index];
+                  const isCompleted = dayStatus?.completed;
+                  const isCurrent = dayNumber === currentTrackingDay;
+                  
+                  return (
+                    <button
+                      key={dayNumber}
+                      onClick={() => setCurrentTrackingDay(dayNumber)}
+                      className={`relative aspect-square rounded-xl font-bold text-sm transition-all duration-300 hover:scale-110 ${
+                        isCompleted 
+                          ? 'bg-green-500 text-white shadow-lg transform scale-105' 
+                          : isCurrent
+                          ? 'bg-yellow-500 text-black shadow-lg animate-pulse'
+                          : 'bg-white/20 text-white/80 hover:bg-white/30'
+                      }`}
+                    >
+                      <div className="flex flex-col items-center justify-center h-full">
+                        <span>{dayNumber}</span>
+                        {isCompleted && <span className="text-xs mt-1">✅</span>}
+                      </div>
+                      {dayStatus && (
+                        <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2">
+                          <div className="text-xs bg-black/50 text-white px-2 py-1 rounded">
+                            {dayStatus.tasksCompleted}/{dayStatus.totalTasks}
+                          </div>
+                        </div>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* مهام اليوم الحالي */}
+            <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-8 border border-white/20">
+              <h3 className="text-3xl font-bold text-white mb-6 text-center">
+                🎯 مهام اليوم {currentTrackingDay}
+              </h3>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {generatedPlan.dailyTasks.map((task, index) => {
+                  const isCompleted = taskProgress[currentTrackingDay]?.[index] || false;
+                  
+                  return (
+                    <div
+                      key={index}
+                      onClick={() => toggleTaskCompletion(currentTrackingDay, index)}
+                      className={`p-4 rounded-xl cursor-pointer transition-all duration-300 hover:scale-105 ${
+                        isCompleted
+                          ? 'bg-green-500 text-white shadow-lg'
+                          : 'bg-white/20 text-white hover:bg-white/30'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className="font-medium">{task}</span>
+                        <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
+                          isCompleted ? 'bg-white text-green-500' : 'border-white'
+                        }`}>
+                          {isCompleted && '✓'}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* أزرار التحكم */}
+              <div className="flex flex-wrap justify-center gap-4 mt-8">
+                <button
+                  onClick={() => setCurrentTrackingDay(Math.max(1, currentTrackingDay - 1))}
+                  disabled={currentTrackingDay === 1}
+                  className="px-6 py-3 bg-blue-500 text-white rounded-xl font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-600 transition-colors"
+                >
+                  ← اليوم السابق
+                </button>
+                
+                <button
+                  onClick={() => setCurrentTrackingDay(Math.min(30, currentTrackingDay + 1))}
+                  disabled={currentTrackingDay === 30}
+                  className="px-6 py-3 bg-purple-500 text-white rounded-xl font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:bg-purple-600 transition-colors"
+                >
+                  اليوم التالي →
+                </button>
+                
+                <button
+                  onClick={() => setShowTracker(false)}
+                  className="px-6 py-3 bg-gray-600 text-white rounded-xl font-semibold hover:bg-gray-700 transition-colors"
+                >
+                  🔙 العودة للخطة
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 }
