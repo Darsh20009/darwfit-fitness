@@ -21,8 +21,10 @@ import {
   Dumbbell,
   Crown,
   Shield,
-  Zap
+  Zap,
+  ChefHat
 } from "lucide-react";
+import PersonalizedNutritionSystem from "@/components/PersonalizedNutritionSystem";
 
 export default function DashboardPage() {
   const { username, subscriptionId, subscriptionEndDate } = useAuth();
@@ -166,6 +168,17 @@ export default function DashboardPage() {
           </Card>
 
           <Card 
+            className="cursor-pointer hover:shadow-lg transition-all duration-300 border-2 border-emerald-200 bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-900/20 dark:to-emerald-800/20"
+            onClick={() => setActiveTab('nutrition')}
+          >
+            <CardContent className="p-4 text-center">
+              <ChefHat className="h-8 w-8 text-emerald-600 mx-auto mb-2" />
+              <div className="text-lg font-bold text-emerald-800 dark:text-emerald-300">التغذية الذكية</div>
+              <p className="text-xs text-emerald-600 dark:text-emerald-400">نظامك الغذائي</p>
+            </CardContent>
+          </Card>
+
+          <Card 
             className="cursor-pointer hover:shadow-lg transition-all duration-300 border-2 border-amber-200 bg-gradient-to-br from-amber-50 to-amber-100 dark:from-amber-900/20 dark:to-amber-800/20"
             onClick={() => setActiveTab('tips')}
           >
@@ -281,10 +294,17 @@ export default function DashboardPage() {
           </Card>
         )}
 
+        {activeTab === 'nutrition' && (
+          <PersonalizedNutritionSystem 
+            onBack={() => setActiveTab('today')}
+          />
+        )}
+
         {activeTab === 'details' && (
           <DetailedPlan 
-            formattedDate={formatFullDateToArabic(selectedDate)}
+            type="meal"
             dayIndex={dayIndex}
+            onBack={() => setActiveTab('today')}
           />
         )}
       </div>
