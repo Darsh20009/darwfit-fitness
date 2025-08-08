@@ -895,7 +895,13 @@ export default function AzkarPage() {
                                             ? `bg-${category.color}-500 text-white` 
                                             : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-emerald-100 dark:hover:bg-emerald-900'
                                         }`}
-                                        onClick={() => zekr.repetitions > 1 && openCounter(zekr.id, zekr.repetitions, category.color, zekr.text)}
+                                        onClick={() => {
+                                          if (zekr.repetitions > 1) {
+                                            openCounter(zekr.id, zekr.repetitions, category.color, zekr.text);
+                                          } else {
+                                            incrementCount(zekr.id);
+                                          }
+                                        }}
                                         title={zekr.repetitions > 1 ? "اضغط لفتح العداد" : ""}
                                       >
                                         {currentCount}/{zekr.repetitions}

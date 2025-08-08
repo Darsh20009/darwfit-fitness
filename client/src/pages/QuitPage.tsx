@@ -46,9 +46,37 @@ interface DailyTask {
   points: number;
 }
 
+interface QuestionnaireData {
+  name: string;
+  age: number;
+  habit: string;
+  severity: string;
+  duration: string;
+  triggers: string[];
+  motivation: string;
+  support: string[];
+  previousAttempts: string;
+  goals: string[];
+}
+
+interface GeneratedPlan {
+  id: string;
+  userData: QuestionnaireData;
+  dailyTasks: string[];
+  weeklyGoals: string[];
+  tips: string[];
+  motivationalMessages: string[];
+  createdDate: string;
+  duration: number; // بالأيام
+}
+
 export default function QuitPage() {
   const [, setLocation] = useLocation();
   const [selectedHabit, setSelectedHabit] = useState<string | null>(null);
+  const [showQuestionnaire, setShowQuestionnaire] = useState(false);
+  const [questionnaireData, setQuestionnaireData] = useState<QuestionnaireData | null>(null);
+  const [generatedPlan, setGeneratedPlan] = useState<GeneratedPlan | null>(null);
+  const [currentStep, setCurrentStep] = useState(0);
   const [quitDays, setQuitDays] = useState(0);
   const [currentStreak, setCurrentStreak] = useState(0);
   const [totalPoints, setTotalPoints] = useState(0);
@@ -59,6 +87,59 @@ export default function QuitPage() {
     { id: '4', title: 'قراءة كتاب لمدة 20 دقيقة', completed: false, points: 15 },
     { id: '5', title: 'نوم 8 ساعات', completed: false, points: 25 }
   ]);
+
+  const questionnaire = [
+    {
+      question: "ما اسمك؟",
+      type: "text",
+      key: "name" as keyof QuestionnaireData
+    },
+    {
+      question: "كم عمرك؟",
+      type: "number",
+      key: "age" as keyof QuestionnaireData
+    },
+    {
+      question: "ما شدة تأثير هذه العادة على حياتك؟",
+      type: "select",
+      key: "severity" as keyof QuestionnaireData,
+      options: ["خفيف", "متوسط", "شديد", "مدمر"]
+    },
+    {
+      question: "منذ متى وأنت تمارس هذه العادة؟",
+      type: "select",
+      key: "duration" as keyof QuestionnaireData,
+      options: ["أقل من سنة", "1-3 سنوات", "3-5 سنوات", "أكثر من 5 سنوات"]
+    },
+    {
+      question: "ما هي أهم المحفزات التي تدفعك لهذه العادة؟ (اختر عدة خيارات)",
+      type: "multiple",
+      key: "triggers" as keyof QuestionnaireData,
+      options: ["الملل", "التوتر", "الوحدة", "الإنترنت", "السهر", "الفراغ", "المشاكل"]
+    },
+    {
+      question: "ما هو دافعك الأقوى للإقلاع؟",
+      type: "textarea",
+      key: "motivation" as keyof QuestionnaireData
+    },
+    {
+      question: "من يمكنه مساعدتك في هذه الرحلة؟",
+      type: "multiple",
+      key: "support" as keyof QuestionnaireData,
+      options: ["الأصدقاء", "الأهل", "المختص النفسي", "المجتمع الديني", "مجموعات الدعم", "أفضل الاعتماد على نفسي"]
+    },
+    {
+      question: "هل حاولت الإقلاع من قبل؟ ما الذي حدث؟",
+      type: "textarea",
+      key: "previousAttempts" as keyof QuestionnaireData
+    },
+    {
+      question: "ما هي أهدافك بعد الإقلاع؟ (اختر عدة خيارات)",
+      type: "multiple",
+      key: "goals" as keyof QuestionnaireData,
+      options: ["ثقة أكبر بالنفس", "علاقات أفضل", "طاقة أعلى", "صحة جسدية أفضل", "راحة نفسية", "إرضاء الله", "تحقيق الأحلام"]
+    }
+  ];
 
   const habitsData: HabitData[] = [
     {
@@ -122,6 +203,18 @@ export default function QuitPage() {
       tips: ['اقرأ الملصقات', 'استبدل بالفواكه', 'اشرب شاي أخضر', 'تناول بروتين أكثر']
     },
     {
+      id: 'bad_habit',
+      name: 'الإقلاع عن العادة السرية',
+      icon: Shield,
+      color: 'red',
+      description: 'التخلص من العادة السرية وبناء شخصية قوية ونظيفة',
+      quitDate: '',
+      dailyGoal: 'يوم واحد بدون ممارسة العادة',
+      weeklyGoal: '7 أيام متتالية من النظافة',
+      benefits: ['طاقة أكبر', 'ثقة بالنفس', 'تحسن المزاج', 'علاقات أفضل', 'نوم هادئ'],
+      tips: ['مارس الرياضة', 'اقرأ القرآن', 'احتل وقتك بالمفيد', 'تجنب المحفزات', 'ادع الله باستمرار']
+    },
+    {
       id: 'caffeine',
       name: 'تنظيم الكافيين',
       icon: Coffee,
@@ -160,10 +253,144 @@ export default function QuitPage() {
   };
 
   const selectHabit = (habitId: string) => {
-    setSelectedHabit(habitId);
-    setQuitDays(1);
-    setCurrentStreak(1);
-    saveData();
+    const selectedHabitData = habitsData.find(h => h.id === habitId);
+    if (selectedHabitData) {
+      setSelectedHabit(habitId);
+      setShowQuestionnaire(true);
+      setQuestionnaireData({
+        name: '',
+        age: 25,
+        habit: selectedHabitData.name,
+        severity: '',
+        duration: '',
+        triggers: [],
+        motivation: '',
+        support: [],
+        previousAttempts: '',
+        goals: []
+      });
+      setCurrentStep(0);
+    }
+  };
+
+  const generatePersonalizedPlan = (data: QuestionnaireData): GeneratedPlan => {
+    const baseId = Date.now().toString();
+    const dailyTasks = [
+      'قراءة 10 دقائق من القرآن الكريم',
+      'ممارسة الرياضة لمدة 30 دقيقة',
+      'التأمل والاسترخاء لمدة 15 دقيقة',
+      'شرب 8 أكواب من الماء',
+      'كتابة 3 أشياء إيجابية حدثت اليوم',
+      'تجنب المحفزات المحددة',
+      'النوم مبكراً (قبل الساعة 11 مساءً)',
+      'قضاء وقت مع الأصدقاء أو العائلة'
+    ];
+
+    const weeklyGoals = [
+      'تحديد أهداف أسبوعية واضحة',
+      'مراجعة التقدم المحرز',
+      'إضافة نشاط جديد ممتع',
+      'تقييم نقاط القوة والضعف'
+    ];
+
+    const tips = [
+      'تذكر دائماً دافعك للإقلاع',
+      'استبدل العادة السيئة بعادة إيجابية',
+      'احتفل بالإنجازات الصغيرة',
+      'لا تيأس من المحاولات المتكررة',
+      'اطلب المساعدة عند الحاجة',
+      'ركز على يوم واحد في كل مرة'
+    ];
+
+    const motivationalMessages = [
+      `${data.name}، أنت أقوى مما تتخيل!`,
+      'كل يوم تقاوم فيه هو انتصار جديد',
+      'رحلتك نحو التغيير ملهمة للآخرين',
+      'الصبر والإصرار سيحققان النجاح',
+      'أنت تستحق حياة أفضل وأكثر نظافة'
+    ];
+
+    return {
+      id: `quit_plan_${baseId}`,
+      userData: data,
+      dailyTasks,
+      weeklyGoals,
+      tips,
+      motivationalMessages,
+      createdDate: new Date().toISOString(),
+      duration: 90
+    };
+  };
+
+  const generateHTMLPlan = (plan: GeneratedPlan): string => {
+    return `<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>خطة الإقلاع - ${plan.userData.name}</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Arial', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; background: white; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); overflow: hidden; }
+        .header { background: linear-gradient(135deg, #ff6b6b, #feca57); padding: 40px; text-align: center; color: white; }
+        .title { font-size: 2.5em; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        .timer { background: #2c3e50; color: white; padding: 30px; text-align: center; font-size: 1.5em; }
+        .days-counter { font-size: 3em; font-weight: bold; margin: 10px 0; color: #f39c12; }
+        .content { padding: 40px; }
+        .section { margin-bottom: 30px; padding: 25px; border-radius: 15px; border-left: 5px solid #3498db; }
+        .section h3 { color: #2c3e50; margin-bottom: 15px; font-size: 1.5em; }
+        .section.daily { border-left-color: #e74c3c; background: #fdf2f2; }
+        ul { list-style: none; }
+        li { padding: 10px 0; border-bottom: 1px solid #ecf0f1; position: relative; padding-right: 30px; }
+        li:before { content: '✓'; position: absolute; right: 0; color: #27ae60; font-weight: bold; font-size: 1.2em; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+        .pulse { animation: pulse 2s infinite; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">🔥 خطة الإقلاع الشخصية</h1>
+            <p class="subtitle">مرحباً ${plan.userData.name}، رحلتك نحو التحرر تبدأ الآن!</p>
+        </div>
+        <div class="timer">
+            <div>⏰ عداد الوقت منذ البداية</div>
+            <div class="days-counter pulse" id="daysCounter">0</div>
+            <div>يوم من النظافة والقوة</div>
+        </div>
+        <div class="content">
+            <div class="section daily">
+                <h3>🎯 مهامك اليومية</h3>
+                <ul>${plan.dailyTasks.map(task => `<li>${task}</li>`).join('')}</ul>
+            </div>
+        </div>
+    </div>
+    <script>
+        const createdDate = new Date('${plan.createdDate}');
+        function updateCounter() {
+            const now = new Date();
+            const diffTime = Math.abs(now - createdDate);
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            document.getElementById('daysCounter').textContent = diffDays;
+        }
+        updateCounter(); setInterval(updateCounter, 1000);
+    </script>
+</body>
+</html>`;
+  };
+
+  const downloadHTMLPlan = (plan: GeneratedPlan) => {
+    const htmlContent = generateHTMLPlan(plan);
+    const blob = new Blob([htmlContent], { type: 'text/html; charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `خطة_الإقلاع_${plan.userData.name}_${new Date().toISOString().split('T')[0]}.html`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
 
   const completeTask = (taskId: string) => {
@@ -190,9 +417,259 @@ export default function QuitPage() {
     saveData();
   };
 
+  const handleQuestionnaireAnswer = (key: keyof QuestionnaireData, value: any) => {
+    if (questionnaireData) {
+      setQuestionnaireData({
+        ...questionnaireData,
+        [key]: value
+      });
+    }
+  };
+
+  const completeQuestionnaire = () => {
+    if (questionnaireData) {
+      const plan = generatePersonalizedPlan(questionnaireData);
+      setGeneratedPlan(plan);
+      setShowQuestionnaire(false);
+    }
+  };
+
   const selectedHabitData = selectedHabit ? habitsData.find(h => h.id === selectedHabit) : null;
   const completedTasks = dailyTasks.filter(task => task.completed).length;
   const progressPercentage = (completedTasks / dailyTasks.length) * 100;
+
+  // واجهة الأسئلة التفاعلية
+  if (showQuestionnaire && questionnaireData) {
+    const currentQuestion = questionnaire[currentStep];
+    
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
+        <div className="container mx-auto px-4 py-8">
+          <div className="max-w-4xl mx-auto">
+            {/* رأس الصفحة الإبداعي */}
+            <div className="text-center mb-8 relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-600/20 via-pink-500/20 to-red-500/20 rounded-3xl animate-pulse"></div>
+              <div className="relative z-10 py-12">
+                <h1 className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-600 mb-4 animate-pulse">
+                  🔥 رحلة التحرر الشخصية 🔥
+                </h1>
+                <p className="text-2xl text-white/80 font-semibold">
+                  أجب على الأسئلة لإنشاء خطة مخصصة لك
+                </p>
+              </div>
+            </div>
+
+            {/* شريط التقدم */}
+            <div className="mb-8">
+              <div className="bg-gray-800 rounded-full h-4 overflow-hidden shadow-lg">
+                <div 
+                  className="h-full bg-gradient-to-r from-green-400 to-blue-500 transition-all duration-500 ease-out"
+                  style={{ width: `${((currentStep + 1) / questionnaire.length) * 100}%` }}
+                ></div>
+              </div>
+              <div className="text-center text-white/80 mt-2">
+                السؤال {currentStep + 1} من {questionnaire.length}
+              </div>
+            </div>
+
+            {/* السؤال الحالي */}
+            <div className="bg-white/95 backdrop-blur-lg rounded-3xl p-8 shadow-2xl border border-white/20">
+              <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">
+                {currentQuestion.question}
+              </h2>
+
+              {/* حقول الإجابة */}
+              <div className="space-y-4">
+                {currentQuestion.type === 'text' && (
+                  <input
+                    type="text"
+                    value={questionnaireData[currentQuestion.key] as string || ''}
+                    onChange={(e) => handleQuestionnaireAnswer(currentQuestion.key, e.target.value)}
+                    className="w-full p-4 rounded-xl border-2 border-purple-200 focus:border-purple-500 focus:ring-4 focus:ring-purple-200 text-lg"
+                    placeholder="اكتب إجابتك هنا..."
+                  />
+                )}
+
+                {currentQuestion.type === 'number' && (
+                  <input
+                    type="number"
+                    value={questionnaireData[currentQuestion.key] as number || ''}
+                    onChange={(e) => handleQuestionnaireAnswer(currentQuestion.key, parseInt(e.target.value) || 0)}
+                    className="w-full p-4 rounded-xl border-2 border-purple-200 focus:border-purple-500 focus:ring-4 focus:ring-purple-200 text-lg"
+                    placeholder="اكتب عمرك..."
+                  />
+                )}
+
+                {currentQuestion.type === 'select' && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {currentQuestion.options?.map((option) => (
+                      <button
+                        key={option}
+                        onClick={() => handleQuestionnaireAnswer(currentQuestion.key, option)}
+                        className={`p-4 rounded-xl border-2 transition-all duration-300 text-lg font-semibold ${
+                          questionnaireData[currentQuestion.key] === option
+                            ? 'border-purple-500 bg-purple-500 text-white transform scale-105'
+                            : 'border-purple-200 bg-white text-purple-700 hover:border-purple-400 hover:bg-purple-50'
+                        }`}
+                      >
+                        {option}
+                      </button>
+                    ))}
+                  </div>
+                )}
+
+                {currentQuestion.type === 'multiple' && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {currentQuestion.options?.map((option) => (
+                      <button
+                        key={option}
+                        onClick={() => {
+                          const currentValues = (questionnaireData[currentQuestion.key] as string[]) || [];
+                          const isSelected = currentValues.includes(option);
+                          const newValues = isSelected 
+                            ? currentValues.filter(v => v !== option)
+                            : [...currentValues, option];
+                          handleQuestionnaireAnswer(currentQuestion.key, newValues);
+                        }}
+                        className={`p-4 rounded-xl border-2 transition-all duration-300 text-lg font-semibold ${
+                          ((questionnaireData[currentQuestion.key] as string[]) || []).includes(option)
+                            ? 'border-purple-500 bg-purple-500 text-white transform scale-105'
+                            : 'border-purple-200 bg-white text-purple-700 hover:border-purple-400 hover:bg-purple-50'
+                        }`}
+                      >
+                        {option} {((questionnaireData[currentQuestion.key] as string[]) || []).includes(option) && '✓'}
+                      </button>
+                    ))}
+                  </div>
+                )}
+
+                {currentQuestion.type === 'textarea' && (
+                  <textarea
+                    value={questionnaireData[currentQuestion.key] as string || ''}
+                    onChange={(e) => handleQuestionnaireAnswer(currentQuestion.key, e.target.value)}
+                    className="w-full p-4 rounded-xl border-2 border-purple-200 focus:border-purple-500 focus:ring-4 focus:ring-purple-200 text-lg h-32"
+                    placeholder="اكتب إجابتك التفصيلية هنا..."
+                  />
+                )}
+              </div>
+
+              {/* أزرار التنقل */}
+              <div className="flex justify-between mt-8">
+                <button
+                  onClick={() => setCurrentStep(Math.max(0, currentStep - 1))}
+                  disabled={currentStep === 0}
+                  className="px-6 py-3 bg-gray-500 text-white rounded-xl font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-600 transition-colors"
+                >
+                  السؤال السابق
+                </button>
+
+                {currentStep === questionnaire.length - 1 ? (
+                  <button
+                    onClick={completeQuestionnaire}
+                    className="px-8 py-3 bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-xl font-semibold hover:scale-105 transition-transform shadow-lg"
+                  >
+                    🎯 إنشاء خطتي الشخصية
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => setCurrentStep(Math.min(questionnaire.length - 1, currentStep + 1))}
+                    className="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl font-semibold hover:scale-105 transition-transform"
+                  >
+                    السؤال التالي
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // عرض الخطة المولدة
+  if (generatedPlan) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-green-900 via-teal-900 to-blue-900">
+        <div className="container mx-auto px-4 py-8">
+          <div className="max-w-6xl mx-auto">
+            {/* رأس الصفحة */}
+            <div className="text-center mb-8 relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-green-500/20 via-teal-500/20 to-blue-500/20 rounded-3xl animate-pulse"></div>
+              <div className="relative z-10 py-12">
+                <h1 className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-green-400 to-blue-400 mb-4 animate-pulse">
+                  🎉 خطتك الشخصية جاهزة! 🎉
+                </h1>
+                <p className="text-2xl text-white/80 font-semibold">
+                  مرحباً {generatedPlan.userData.name}، رحلتك نحو التحرر تبدأ الآن
+                </p>
+              </div>
+            </div>
+
+            {/* أزرار الإجراءات */}
+            <div className="text-center mb-8 space-y-4">
+              <button
+                onClick={() => downloadHTMLPlan(generatedPlan)}
+                className="px-8 py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-2xl font-bold text-xl hover:scale-105 transition-transform shadow-2xl mr-4"
+              >
+                📥 تحميل الخطة HTML مع العداد
+              </button>
+              <button
+                onClick={() => {
+                  setGeneratedPlan(null);
+                  setSelectedHabit(null);
+                  setShowQuestionnaire(false);
+                }}
+                className="px-8 py-4 bg-gradient-to-r from-gray-600 to-gray-700 text-white rounded-2xl font-bold text-xl hover:scale-105 transition-transform shadow-2xl"
+              >
+                🔄 إنشاء خطة جديدة
+              </button>
+            </div>
+
+            {/* عرض تفاصيل الخطة */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              {/* المهام اليومية */}
+              <div className="bg-white/95 backdrop-blur-lg rounded-3xl p-8 shadow-2xl">
+                <h3 className="text-3xl font-bold text-red-600 mb-6 text-center">🎯 مهامك اليومية</h3>
+                <ul className="space-y-3">
+                  {generatedPlan.dailyTasks.map((task, index) => (
+                    <li key={index} className="flex items-center p-3 bg-red-50 rounded-xl">
+                      <span className="text-red-500 font-bold ml-3">✓</span>
+                      <span className="text-gray-800 font-medium">{task}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* النصائح */}
+              <div className="bg-white/95 backdrop-blur-lg rounded-3xl p-8 shadow-2xl">
+                <h3 className="text-3xl font-bold text-green-600 mb-6 text-center">💡 نصائح مهمة</h3>
+                <ul className="space-y-3">
+                  {generatedPlan.tips.map((tip, index) => (
+                    <li key={index} className="flex items-center p-3 bg-green-50 rounded-xl">
+                      <span className="text-green-500 font-bold ml-3">💡</span>
+                      <span className="text-gray-800 font-medium">{tip}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* الرسائل التحفيزية */}
+              <div className="bg-white/95 backdrop-blur-lg rounded-3xl p-8 shadow-2xl lg:col-span-2">
+                <h3 className="text-3xl font-bold text-purple-600 mb-6 text-center">💪 رسائل تحفيزية لك</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {generatedPlan.motivationalMessages.map((message, index) => (
+                    <div key={index} className="p-4 bg-purple-50 rounded-xl text-center">
+                      <span className="text-purple-800 font-bold text-lg">{message}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (!selectedHabit) {
     return (
