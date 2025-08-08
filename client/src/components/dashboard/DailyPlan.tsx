@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { getMealSummary } from "../../data/mealPlans";
 import { getWorkoutSummary } from "../../data/workoutPlans";
 import { getKhaledOmarMealPlanByMonth } from "../../data/khaledNewMealPlan";
+import { generateKhaledBudgetPlan } from "../../data/khaledBudgetMealPlans";
 import { getUserProfile } from "../../data/userProfiles";
 import { useAuthContext } from "../../context/AuthContext";
 import { Badge } from "@/components/ui/badge";
@@ -34,46 +35,80 @@ export default function DailyPlan({ date, formattedDate, workoutType, dayIndex }
   let mealSummary, workoutSummary;
 
   if (isKhaled) {
-    // For Khaled Omar, get current month and use his muscle-building meal plans
-    const currentMonth = new Date().getMonth() + 1; // 1-12
-    const khaledMealPlan = getKhaledOmarMealPlanByMonth(currentMonth);
+    // For Khaled Omar, use the new budget meal plan system (daily variation)
+    const currentDay = Math.floor((Date.now() - new Date('2025-01-01').getTime()) / (1000 * 60 * 60 * 24)) + 1;
     
-    // Check if khaledMealPlan exists and has the required structure
-    if (!khaledMealPlan) {
-      console.warn("خطة خالد عمر غير متوفرة، استخدام الخطة الافتراضية");
-      mealSummary = getMealSummary();
-      workoutSummary = isRestDay ? [] : getWorkoutSummary(dayIndex);
-    } else {
-
-    // Convert Khaled's meal plan to match the expected format with null checks
-    mealSummary = [
-      { 
-        meal: khaledMealPlan.breakfast?.title || "الإفطار", 
-        description: khaledMealPlan.breakfast?.items?.join(", ") || "وجبة إفطار صحية" 
-      },
-      { 
-        meal: khaledMealPlan.morningSnack?.title || "وجبة خفيفة صباحية", 
-        description: khaledMealPlan.morningSnack?.items?.join(", ") || "وجبة خفيفة صباحية" 
-      },
-      { 
-        meal: khaledMealPlan.lunch?.title || "الغداء", 
-        description: khaledMealPlan.lunch?.items?.join(", ") || "وجبة غداء متوازنة" 
-      },
-      { 
-        meal: khaledMealPlan.afternoonSnack?.title || "وجبة خفيفة بعد الظهر", 
-        description: khaledMealPlan.afternoonSnack?.items?.join(", ") || "وجبة خفيفة مسائية" 
-      },
-      { 
-        meal: khaledMealPlan.dinner?.title || "العشاء", 
-        description: khaledMealPlan.dinner?.items?.join(", ") || "وجبة عشاء خفيفة" 
-      },
-      { 
-        meal: khaledMealPlan.beforeSleep?.title || "وجبة قبل النوم", 
-        description: khaledMealPlan.beforeSleep?.items?.join(", ") || "وجبة خفيفة قبل النوم" 
+    // Try to use the new budget meal plan system
+    const khaledBudgetPlan = generateKhaledBudgetPlan(currentDay);
+    
+    // Check if budget plan exists
+    if (!khaledBudgetPlan) {
+      // Fallback to old system
+      const currentMonth = new Date().getMonth() + 1; // 1-12
+      const khaledMealPlan = getKhaledOmarMealPlanByMonth(currentMonth);
+      
+      if (!khaledMealPlan) {
+        console.warn("خطة خالد عمر غير متوفرة، استخدام الخطة الافتراضية");
+        mealSummary = getMealSummary();
+        workoutSummary = isRestDay ? [] : getWorkoutSummary(dayIndex);
+      } else {
+        // Convert old meal plan to match the expected format
+        mealSummary = [
+          { 
+            meal: khaledMealPlan.breakfast?.title || "الإفطار", 
+            description: khaledMealPlan.breakfast?.items?.join(", ") || "وجبة إفطار صحية" 
+          },
+          { 
+            meal: khaledMealPlan.morningSnack?.title || "وجبة خفيفة صباحية", 
+            description: khaledMealPlan.morningSnack?.items?.join(", ") || "وجبة خفيفة صباحية" 
+          },
+          { 
+            meal: khaledMealPlan.lunch?.title || "الغداء", 
+            description: khaledMealPlan.lunch?.items?.join(", ") || "وجبة غداء متوازنة" 
+          },
+          { 
+            meal: khaledMealPlan.afternoonSnack?.title || "وجبة خفيفة بعد الظهر", 
+            description: khaledMealPlan.afternoonSnack?.items?.join(", ") || "وجبة خفيفة مسائية" 
+          },
+          { 
+            meal: khaledMealPlan.dinner?.title || "العشاء", 
+            description: khaledMealPlan.dinner?.items?.join(", ") || "وجبة عشاء خفيفة" 
+          },
+          { 
+            meal: khaledMealPlan.beforeSleep?.title || "وجبة قبل النوم", 
+            description: khaledMealPlan.beforeSleep?.items?.join(", ") || "وجبة خفيفة قبل النوم" 
+          }
+        ];
+        workoutSummary = isRestDay ? [] : getWorkoutSummary(dayIndex);
       }
-    ];
-
-    // Use the same workouts as other users
+    } else {
+      // Use the new budget meal plan system
+      mealSummary = [
+        { 
+          meal: khaledBudgetPlan.breakfast.name,
+          description: `${khaledBudgetPlan.breakfast.ingredients.join(", ")} | ${khaledBudgetPlan.breakfast.cost} | ${khaledBudgetPlan.breakfast.prepTime}`
+        },
+        { 
+          meal: khaledBudgetPlan.morningSnack.name,
+          description: `${khaledBudgetPlan.morningSnack.ingredients.join(", ")} | ${khaledBudgetPlan.morningSnack.cost} | ${khaledBudgetPlan.morningSnack.prepTime}`
+        },
+        { 
+          meal: khaledBudgetPlan.lunch.name,
+          description: `${khaledBudgetPlan.lunch.ingredients.join(", ")} | ${khaledBudgetPlan.lunch.cost} | ${khaledBudgetPlan.lunch.prepTime}`
+        },
+        { 
+          meal: khaledBudgetPlan.afternoonSnack.name,
+          description: `${khaledBudgetPlan.afternoonSnack.ingredients.join(", ")} | ${khaledBudgetPlan.afternoonSnack.cost} | ${khaledBudgetPlan.afternoonSnack.prepTime}`
+        },
+        { 
+          meal: khaledBudgetPlan.dinner.name,
+          description: `${khaledBudgetPlan.dinner.ingredients.join(", ")} | ${khaledBudgetPlan.dinner.cost} | ${khaledBudgetPlan.dinner.prepTime}`
+        },
+        { 
+          meal: khaledBudgetPlan.beforeSleep.name,
+          description: `${khaledBudgetPlan.beforeSleep.ingredients.join(", ")} | ${khaledBudgetPlan.beforeSleep.cost} | ${khaledBudgetPlan.beforeSleep.prepTime}`
+        }
+      ];
       workoutSummary = isRestDay ? [] : getWorkoutSummary(dayIndex);
     }
   } else {
