@@ -658,96 +658,48 @@ export default function AzkarPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50 dark:from-gray-900 dark:via-emerald-900 dark:to-green-900">
-      {/* العداد الملون الإبداعي التفاعلي */}
+      {/* العداد الملون البسيط */}
       {counterMode && (
         <div 
           className={`fixed inset-0 z-50 bg-gradient-to-br from-${counterMode.color}-100 via-${counterMode.color}-200 to-${counterMode.color}-300 dark:from-${counterMode.color}-900 dark:via-${counterMode.color}-800 dark:to-${counterMode.color}-700 flex items-center justify-center cursor-pointer transition-all duration-500 backdrop-blur-sm`}
           onClick={handleCounterClick}
         >
-          <div className="text-center animate-pulse hover:scale-105 transition-transform duration-300 relative">
-            {/* تأثيرات بصرية إبداعية */}
-            <div className={`absolute -inset-10 bg-gradient-to-r from-${counterMode.color}-400 to-${counterMode.color}-600 rounded-full opacity-20 animate-ping`}></div>
-            <div className={`absolute -inset-6 bg-gradient-to-r from-${counterMode.color}-300 to-${counterMode.color}-500 rounded-full opacity-30 animate-pulse`}></div>
-            
-            {/* النص مع تأثيرات جميلة */}
-            <div className={`relative text-2xl md:text-4xl font-bold text-${counterMode.color}-800 dark:text-${counterMode.color}-100 mb-8 max-w-4xl px-6 leading-relaxed shadow-lg`}>
+          <div className="text-center animate-pulse hover:scale-105 transition-transform duration-300">
+            {/* النص */}
+            <div className={`text-2xl md:text-4xl font-bold text-${counterMode.color}-800 dark:text-${counterMode.color}-100 mb-8 max-w-4xl px-6 leading-relaxed`}>
               {counterMode.text}
-              <div className={`text-lg text-${counterMode.color}-600 dark:text-${counterMode.color}-300 mt-4`}>
-                🌟 اضغط في أي مكان للتسبيح والذكر 🌟
-              </div>
             </div>
             
-            {/* العداد الكبير مع تأثيرات */}
-            <div className={`relative text-8xl md:text-9xl font-black text-${counterMode.color}-600 dark:text-${counterMode.color}-300 mb-6 drop-shadow-2xl`}>
-              <div className="absolute inset-0 animate-ping text-8xl md:text-9xl font-black opacity-20">
-                {(zekrProgress[counterMode.zekrId] || 0)}/{counterMode.target}
-              </div>
-              <div className="relative">
-                {(zekrProgress[counterMode.zekrId] || 0)}/{counterMode.target}
-              </div>
+            {/* العداد الكبير */}
+            <div className={`text-8xl md:text-9xl font-black text-${counterMode.color}-600 dark:text-${counterMode.color}-300 mb-6 drop-shadow-2xl`}>
+              {(zekrProgress[counterMode.zekrId] || 0)}/{counterMode.target}
             </div>
             
-            {/* رسالة التشجيع مع حالات مختلفة */}
+            {/* رسالة التشجيع */}
             <div className={`text-xl md:text-2xl text-${counterMode.color}-700 dark:text-${counterMode.color}-200 mb-4 font-semibold`}>
-              {(zekrProgress[counterMode.zekrId] || 0) === 0 ? 
-                "🚀 ابدأ رحلتك الروحانية!" : 
-                (zekrProgress[counterMode.zekrId] || 0) >= counterMode.target ? 
-                "🎉 مبروك! أكملت الذكر بنجاح! 🎉" :
-                `💪 ممتاز! باقي ${counterMode.target - (zekrProgress[counterMode.zekrId] || 0)} مرات`
-              }
+              اضغط في أي مكان للتسبيح
             </div>
             
-            {/* شريط التقدم مع تأثيرات متقدمة */}
-            <div className="max-w-md mx-auto relative mb-6">
-              <div className="bg-white/30 rounded-full h-6 overflow-hidden shadow-lg border-2 border-white/20">
-                <div 
-                  className={`h-full bg-gradient-to-r from-${counterMode.color}-400 to-${counterMode.color}-600 transition-all duration-700 ease-out rounded-full relative overflow-hidden`}
-                  style={{ 
-                    width: `${Math.max(5, ((zekrProgress[counterMode.zekrId] || 0) / counterMode.target) * 100)}%` 
-                  }}
-                >
-                  {/* تأثير لمعان متحرك */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12 animate-pulse"></div>
-                </div>
-              </div>
-              <div className={`text-sm text-${counterMode.color}-700 dark:text-${counterMode.color}-200 mt-2 font-semibold`}>
-                {Math.round(((zekrProgress[counterMode.zekrId] || 0) / counterMode.target) * 100)}% مكتمل
-              </div>
-            </div>
-            
-            {/* أزرار التحكم */}
-            <div className="flex gap-4 justify-center">
-              <button 
-                onClick={(e) => {
-                  e.stopPropagation();
-                  closeCounter();
+            {/* شريط التقدم */}
+            <div className="max-w-md mx-auto bg-white/30 rounded-full h-4 overflow-hidden shadow-lg">
+              <div 
+                className={`h-full bg-${counterMode.color}-500 transition-all duration-500 ease-out rounded-full`}
+                style={{ 
+                  width: `${((zekrProgress[counterMode.zekrId] || 0) / counterMode.target) * 100}%` 
                 }}
-                className={`px-6 py-3 bg-${counterMode.color}-500 hover:bg-${counterMode.color}-600 text-white rounded-full font-semibold transition-all duration-300 hover:scale-110 shadow-lg`}
-              >
-                🏠 إغلاق العداد
-              </button>
-              
-              {/* زر إعادة التعيين */}
-              <button 
-                onClick={(e) => {
-                  e.stopPropagation();
-                  resetCount(counterMode.zekrId);
-                }}
-                className={`px-6 py-3 bg-gray-500 hover:bg-gray-600 text-white rounded-full font-semibold transition-all duration-300 hover:scale-110 shadow-lg`}
-              >
-                🔄 إعادة البداية
-              </button>
+              ></div>
             </div>
             
-            {/* تعليمات للعملاء */}
-            <div className={`mt-6 p-4 bg-white/20 rounded-xl text-${counterMode.color}-800 dark:text-${counterMode.color}-100`}>
-              <div className="text-lg font-semibold mb-2">💡 كيفية استخدام العداد:</div>
-              <div className="text-sm space-y-1">
-                <p>🖱️ اضغط في أي مكان في الشاشة للعد</p>
-                <p>📊 تابع تقدمك من الشريط والرقم الكبير</p>
-                <p>🎯 سيتم الإغلاق تلقائياً عند الانتهاء</p>
-              </div>
-            </div>
+            {/* زر الإغلاق */}
+            <button 
+              onClick={(e) => {
+                e.stopPropagation();
+                closeCounter();
+              }}
+              className={`mt-8 px-6 py-3 bg-${counterMode.color}-500 hover:bg-${counterMode.color}-600 text-white rounded-full font-semibold transition-all duration-300 hover:scale-110 shadow-lg`}
+            >
+              إغلاق العداد
+            </button>
           </div>
         </div>
       )}
@@ -936,43 +888,19 @@ export default function AzkarPage() {
                                         <Minus className="h-4 w-4" />
                                       </Button>
 
-                                      {/* العداد الإبداعي - يفتح صفحة ملونة عند الضغط */}
+                                      {/* العداد البسيط - يفتح صفحة ملونة عند الضغط */}
                                       <div 
-                                        className={`relative px-4 py-2 rounded-lg font-bold text-lg min-w-[80px] text-center cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-lg ${
+                                        className={`px-4 py-2 rounded-lg font-bold text-lg min-w-[80px] text-center cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-lg ${
                                           isCompleted 
-                                            ? `bg-${category.color}-500 text-white animate-bounce` 
-                                            : zekr.repetitions > 1 
-                                            ? 'bg-gradient-to-r from-emerald-100 to-green-100 dark:from-emerald-900 dark:to-green-900 text-emerald-700 dark:text-emerald-300 hover:from-emerald-200 hover:to-green-200 border-2 border-emerald-300 hover:border-emerald-400 shadow-emerald-200 hover:shadow-emerald-300' 
-                                            : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+                                            ? `bg-${category.color}-500 text-white` 
+                                            : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-emerald-100 dark:hover:bg-emerald-900'
                                         }`}
                                         onClick={() => zekr.repetitions > 1 && openCounter(zekr.id, zekr.repetitions, category.color, zekr.text)}
-                                        title={zekr.repetitions > 1 ? "🎯 اضغط لفتح العداد التفاعلي" : ""}
+                                        title={zekr.repetitions > 1 ? "اضغط لفتح العداد" : ""}
                                       >
                                         {currentCount}/{zekr.repetitions}
                                         {zekr.repetitions > 1 && (
-                                          <div className="text-xs text-emerald-600 dark:text-emerald-400 mt-1 animate-pulse">
-                                            🎯 العداد التفاعلي
-                                          </div>
-                                        )}
-                                        
-                                        {/* مؤشر التقدم الدائري للأذكار متعددة التكرار */}
-                                        {zekr.repetitions > 1 && (
-                                          <div className="absolute -top-1 -right-1 w-6 h-6">
-                                            <svg className="w-6 h-6 transform -rotate-90" viewBox="0 0 24 24">
-                                              <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" fill="none" className="text-emerald-200 dark:text-emerald-700" />
-                                              <circle 
-                                                cx="12" 
-                                                cy="12" 
-                                                r="10" 
-                                                stroke="currentColor" 
-                                                strokeWidth="2" 
-                                                fill="none" 
-                                                strokeDasharray={`${2 * Math.PI * 10}`}
-                                                strokeDashoffset={`${2 * Math.PI * 10 * (1 - (currentCount / zekr.repetitions))}`}
-                                                className="text-emerald-500 transition-all duration-300"
-                                              />
-                                            </svg>
-                                          </div>
+                                          <div className="text-xs text-emerald-600 dark:text-emerald-400 mt-1">العداد</div>
                                         )}
                                       </div>
 
