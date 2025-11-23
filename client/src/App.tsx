@@ -14,6 +14,9 @@ import AzkarPage from "@/pages/AzkarPage";
 import CaloriesPage from "@/pages/CaloriesPage";
 import NutritionPlanPage from "@/pages/NutritionPlanPage";
 import ExercisePlanPage from "@/pages/ExercisePlanPage";
+import ProgressPage from "@/pages/ProgressPage";
+import ProfilePage from "@/pages/ProfilePage";
+import AICoachPage from "@/pages/AICoachPage";
 
 function Router() {
   return (
@@ -26,6 +29,9 @@ function Router() {
       <Route path="/calories" component={CaloriesPage} />
       <Route path="/nutrition-plan" component={NutritionPlanPage} />
       <Route path="/exercise-plan" component={ExercisePlanPage} />
+      <Route path="/progress" component={ProgressPage} />
+      <Route path="/profile" component={ProfilePage} />
+      <Route path="/ai-coach" component={AICoachPage} />
       <Route component={NotFound} />
     </Switch>
   );
