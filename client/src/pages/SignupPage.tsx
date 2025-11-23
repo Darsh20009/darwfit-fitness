@@ -65,11 +65,16 @@ export default function SignupPage() {
       });
 
       if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem("auth", JSON.stringify(data));
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        
         toast({
           title: "نجاح",
-          description: "تم إنشاء الحساب بنجاح، يرجى تسجيل الدخول",
+          description: "تم إنشاء الحساب بنجاح",
         });
-        setLocation("/login");
+        setLocation("/dashboard");
       } else {
         const error = await response.json();
         toast({
@@ -79,6 +84,7 @@ export default function SignupPage() {
         });
       }
     } catch (error) {
+      console.error(error);
       toast({
         title: "خطأ",
         description: "حدث خطأ أثناء إنشاء الحساب",

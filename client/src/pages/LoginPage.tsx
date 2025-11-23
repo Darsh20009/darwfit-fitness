@@ -35,9 +35,9 @@ export default function LoginPage() {
 
       if (response.ok) {
         const data = await response.json();
-        // Store user data
         localStorage.setItem("auth", JSON.stringify(data));
         localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
         
         toast({
           title: "نجاح",
@@ -53,6 +53,7 @@ export default function LoginPage() {
         });
       }
     } catch (error) {
+      console.error(error);
       toast({
         title: "خطأ",
         description: "حدث خطأ أثناء تسجيل الدخول",
@@ -62,7 +63,7 @@ export default function LoginPage() {
       setLoading(false);
     }
   };
-  
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-black to-slate-900 dark:from-black dark:to-slate-950">
       <Card className="w-full max-w-md mx-4 p-8 bg-white dark:bg-slate-900">
