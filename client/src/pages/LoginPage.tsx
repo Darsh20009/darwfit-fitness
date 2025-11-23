@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useLocation } from "wouter";
+import { useLanguage } from "@/context/LanguageContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
@@ -13,6 +14,7 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [, setLocation] = useLocation();
   const { toast } = useToast();
+  const { t } = useLanguage();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -73,13 +75,13 @@ export default function LoginPage() {
         </div>
 
         <h2 className="text-2xl font-bold text-center mb-6 text-foreground">
-          تسجيل الدخول
+          {t.auth.login}
         </h2>
 
         <form onSubmit={handleLogin} className="space-y-4">
           <div>
             <label className="block text-sm font-medium mb-2 text-foreground">
-              البريد الإلكتروني
+              {t.auth.email}
             </label>
             <Input
               type="email"
@@ -92,7 +94,7 @@ export default function LoginPage() {
 
           <div>
             <label className="block text-sm font-medium mb-2 text-foreground">
-              كلمة المرور
+              {t.auth.password}
             </label>
             <div className="relative">
               <Input
@@ -118,7 +120,7 @@ export default function LoginPage() {
             className="w-full bg-green-600 hover:bg-green-700 text-white"
             data-testid="button-login"
           >
-            {loading ? "جاري التحميل..." : "تسجيل الدخول"}
+            {loading ? t.common.loading : t.auth.login}
           </Button>
         </form>
 
