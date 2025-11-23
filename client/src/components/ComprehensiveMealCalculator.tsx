@@ -1,9 +1,10 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { Search, Plus, Trash2, Activity, Flame, TrendingUp } from "lucide-react";
+import { Search, Trash2, Activity, Flame, TrendingUp } from "lucide-react";
+import { mealDatabase } from "@/data/mealDatabase";
 
 interface MealEntry {
   id: string;
@@ -15,131 +16,6 @@ interface MealEntry {
   serving: string;
   quantity: number;
 }
-
-// قاعدة بيانات شاملة جداً من الوجبات والأطعمة
-const mealDatabase: Record<string, { calories: number; protein: number; carbs: number; fat: number; serving: string }> = {
-  // الخبز والحبوب
-  "خبز أسمر": { calories: 265, protein: 9, carbs: 48, fat: 3, serving: "100g" },
-  "خبز أبيض": { calories: 265, protein: 8, carbs: 49, fat: 3, serving: "100g" },
-  "خبز برجر": { calories: 290, protein: 8, carbs: 51, fat: 4.5, serving: "واحدة" },
-  "خبز توست": { calories: 100, protein: 3, carbs: 18, fat: 1, serving: "شريحة" },
-  "أرز أبيض": { calories: 206, protein: 4.3, carbs: 45, fat: 0.3, serving: "100g" },
-  "أرز بني": { calories: 215, protein: 5, carbs: 45, fat: 1.8, serving: "100g" },
-  "معكرونة": { calories: 131, protein: 5, carbs: 25, fat: 1.1, serving: "100g" },
-  "معكرونة بالدجاج": { calories: 280, protein: 25, carbs: 30, fat: 6, serving: "100g" },
-  "كسكس": { calories: 150, protein: 5, carbs: 32, fat: 0.3, serving: "100g" },
-  "ذرة": { calories: 86, protein: 3.2, carbs: 19, fat: 1.2, serving: "100g" },
-  
-  // الدواجن
-  "دجاج مشوي": { calories: 165, protein: 31, carbs: 0, fat: 3.6, serving: "100g" },
-  "دجاج مقلي": { calories: 320, protein: 28, carbs: 0, fat: 24, serving: "100g" },
-  "صدر دجاج": { calories: 165, protein: 31, carbs: 0, fat: 3.6, serving: "100g" },
-  "فخذ دجاج": { calories: 209, protein: 26, carbs: 0, fat: 11, serving: "100g" },
-  "كنتاكي": { calories: 305, protein: 23, carbs: 10, fat: 17, serving: "قطعة" },
-  "برجر دجاج": { calories: 290, protein: 18, carbs: 25, fat: 12, serving: "واحدة" },
-  
-  // اللحوم
-  "لحم بقر": { calories: 250, protein: 26, carbs: 0, fat: 17, serving: "100g" },
-  "لحم مفروم": { calories: 217, protein: 23, carbs: 0, fat: 13, serving: "100g" },
-  "لحم ضأن": { calories: 294, protein: 25, carbs: 0, fat: 21, serving: "100g" },
-  "كبدة": { calories: 135, protein: 26, carbs: 4, fat: 3, serving: "100g" },
-  "لحم مسحب": { calories: 160, protein: 28, carbs: 0, fat: 5, serving: "100g" },
-  "شاورما لحم": { calories: 360, protein: 25, carbs: 15, fat: 22, serving: "100g" },
-  
-  // السمك والمأكولات البحرية
-  "سمك": { calories: 82, protein: 18, carbs: 0, fat: 0.8, serving: "100g" },
-  "سلمون": { calories: 208, protein: 20, carbs: 0, fat: 13, serving: "100g" },
-  "تونة": { calories: 132, protein: 29, carbs: 0, fat: 1.3, serving: "100g" },
-  "جمبري": { calories: 99, protein: 24, carbs: 0, fat: 0.3, serving: "100g" },
-  "سمك مقلي": { calories: 280, protein: 25, carbs: 12, fat: 15, serving: "100g" },
-  
-  // البيض والألبان
-  "بيضة مسلوقة": { calories: 155, protein: 13, carbs: 1.1, fat: 11, serving: "وحدة" },
-  "بيضة مقلية": { calories: 185, protein: 13, carbs: 1, fat: 15, serving: "وحدة" },
-  "بياض بيضة": { calories: 17, protein: 3.6, carbs: 0.7, fat: 0, serving: "وحدة" },
-  "زبادي عادي": { calories: 59, protein: 10, carbs: 3.3, fat: 0.4, serving: "100g" },
-  "زبادي بالفواكه": { calories: 120, protein: 8, carbs: 18, fat: 2, serving: "100g" },
-  "حليب كامل": { calories: 61, protein: 3.2, carbs: 4.8, fat: 3.3, serving: "100ml" },
-  "حليب منزوع الدسم": { calories: 34, protein: 3.4, carbs: 4.8, fat: 0.1, serving: "100ml" },
-  "جبن": { calories: 402, protein: 25, carbs: 1.3, fat: 33, serving: "100g" },
-  "جبن أبيض": { calories: 280, protein: 25, carbs: 3, fat: 16, serving: "100g" },
-  "قشدة": { calories: 340, protein: 2, carbs: 2.7, fat: 35, serving: "100ml" },
-  "حليب مكثف": { calories: 330, protein: 8, carbs: 56, fat: 10, serving: "100ml" },
-  
-  // الخضار الطازة
-  "جزر": { calories: 41, protein: 0.9, carbs: 10, fat: 0.2, serving: "100g" },
-  "بروكلي": { calories: 34, protein: 2.8, carbs: 7, fat: 0.4, serving: "100g" },
-  "قرنبيط": { calories: 25, protein: 1.9, carbs: 5, fat: 0.3, serving: "100g" },
-  "سبانخ": { calories: 23, protein: 2.9, carbs: 3.6, fat: 0.4, serving: "100g" },
-  "طماطم": { calories: 18, protein: 0.9, carbs: 3.9, fat: 0.2, serving: "100g" },
-  "خيار": { calories: 16, protein: 0.7, carbs: 3.6, fat: 0.1, serving: "100g" },
-  "بصل": { calories: 40, protein: 1.1, carbs: 9, fat: 0.1, serving: "100g" },
-  "ثوم": { calories: 149, protein: 6.4, carbs: 33, fat: 0.5, serving: "100g" },
-  "ملفوف": { calories: 25, protein: 1.3, carbs: 5.8, fat: 0.1, serving: "100g" },
-  "خس": { calories: 15, protein: 1.2, carbs: 2.9, fat: 0.3, serving: "100g" },
-  "بطاطس": { calories: 77, protein: 1.7, carbs: 17, fat: 0.1, serving: "100g" },
-  "بطاطس حلوة": { calories: 86, protein: 1.6, carbs: 20, fat: 0.1, serving: "100g" },
-  "باذنجان": { calories: 25, protein: 1, carbs: 5.9, fat: 0.2, serving: "100g" },
-  "فلفل أحمر": { calories: 31, protein: 1, carbs: 6, fat: 0.3, serving: "100g" },
-  
-  // الفواكه
-  "تفاح": { calories: 52, protein: 0.3, carbs: 14, fat: 0.2, serving: "100g" },
-  "موز": { calories: 89, protein: 1.1, carbs: 23, fat: 0.3, serving: "100g" },
-  "برتقال": { calories: 47, protein: 0.9, carbs: 12, fat: 0.3, serving: "100g" },
-  "عنب": { calories: 67, protein: 0.7, carbs: 17, fat: 0.6, serving: "100g" },
-  "مانجو": { calories: 60, protein: 0.8, carbs: 15, fat: 0.3, serving: "100g" },
-  "إجاص": { calories: 57, protein: 0.4, carbs: 15, fat: 0.1, serving: "100g" },
-  "شمام": { calories: 34, protein: 0.8, carbs: 8, fat: 0.2, serving: "100g" },
-  "فراولة": { calories: 32, protein: 0.7, carbs: 7.7, fat: 0.3, serving: "100g" },
-  "تمر": { calories: 282, protein: 2.5, carbs: 75, fat: 0.3, serving: "100g" },
-  "رطب": { calories: 227, protein: 1.8, carbs: 62, fat: 0.3, serving: "100g" },
-  "جوافة": { calories: 68, protein: 2.6, carbs: 14, fat: 0.6, serving: "100g" },
-  "رمان": { calories: 83, protein: 1.7, carbs: 19, fat: 0.3, serving: "100g" },
-  
-  // المكسرات والبذور
-  "اللوز": { calories: 579, protein: 21, carbs: 22, fat: 50, serving: "100g" },
-  "فول سوداني": { calories: 567, protein: 26, carbs: 16, fat: 49, serving: "100g" },
-  "جوز": { calories: 654, protein: 15, carbs: 13, fat: 65, serving: "100g" },
-  "تمر هندي": { calories: 239, protein: 2.8, carbs: 62, fat: 0.6, serving: "100g" },
-  "بذور عباد الشمس": { calories: 584, protein: 21, carbs: 20, fat: 51, serving: "100g" },
-  "حمص": { calories: 164, protein: 8.9, carbs: 27, fat: 2.6, serving: "100g" },
-  
-  // الزيوت والدهون والصلصات
-  "زيت زيتون": { calories: 884, protein: 0, carbs: 0, fat: 100, serving: "100ml" },
-  "زيت نباتي": { calories: 884, protein: 0, carbs: 0, fat: 100, serving: "100ml" },
-  "زبدة": { calories: 717, protein: 0.9, carbs: 0.1, fat: 81, serving: "100g" },
-  "مايونيز": { calories: 680, protein: 1, carbs: 0.7, fat: 75, serving: "100ml" },
-  "كاتشاب": { calories: 99, protein: 1.7, carbs: 26, fat: 0.3, serving: "100g" },
-  "خردل": { calories: 66, protein: 3.6, carbs: 4.1, fat: 3.3, serving: "100g" },
-  
-  // الوجبات الجاهزة
-  "برجر": { calories: 540, protein: 30, carbs: 41, fat: 28, serving: "واحدة" },
-  "بيتزا": { calories: 285, protein: 12, carbs: 36, fat: 10, serving: "شريحة" },
-  "كبسة": { calories: 450, protein: 28, carbs: 45, fat: 15, serving: "وجبة" },
-  "مندي": { calories: 480, protein: 32, carbs: 48, fat: 16, serving: "وجبة" },
-  "شاورما": { calories: 360, protein: 25, carbs: 15, fat: 22, serving: "100g" },
-  "فلافل": { calories: 330, protein: 13, carbs: 28, fat: 18, serving: "100g" },
-  "فلاتة": { calories: 290, protein: 10, carbs: 35, fat: 12, serving: "واحدة" },
-  "ساندويتش": { calories: 350, protein: 15, carbs: 40, fat: 14, serving: "واحد" },
-  
-  // الحلويات والمشروبات
-  "حلويات": { calories: 350, protein: 2, carbs: 80, fat: 3, serving: "100g" },
-  "شوكولاتة": { calories: 535, protein: 8, carbs: 57, fat: 30, serving: "100g" },
-  "بسكويت": { calories: 437, protein: 6, carbs: 67, fat: 17, serving: "100g" },
-  "عسل": { calories: 304, protein: 0.3, carbs: 82, fat: 0, serving: "100g" },
-  "سكر": { calories: 387, protein: 0, carbs: 100, fat: 0, serving: "100g" },
-  "القهوة بدون سكر": { calories: 2, protein: 0.1, carbs: 0, fat: 0.1, serving: "كوب" },
-  "شاي": { calories: 2, protein: 0.3, carbs: 0, fat: 0, serving: "كوب" },
-  "عصير برتقال": { calories: 45, protein: 0.7, carbs: 11, fat: 0.2, serving: "100ml" },
-  "حليب بالشوكولاتة": { calories: 150, protein: 8, carbs: 24, fat: 2.5, serving: "200ml" },
-  "مشروب غازي": { calories: 42, protein: 0, carbs: 11, fat: 0, serving: "100ml" },
-  "قهوة بالحليب": { calories: 75, protein: 3, carbs: 5, fat: 3, serving: "كوب" },
-  
-  // وجبات خاصة
-  "فطور كامل": { calories: 550, protein: 20, carbs: 60, fat: 18, serving: "وجبة" },
-  "غداء كامل": { calories: 750, protein: 35, carbs: 80, fat: 25, serving: "وجبة" },
-  "عشاء خفيف": { calories: 450, protein: 20, carbs: 50, fat: 15, serving: "وجبة" },
-};
 
 export default function ComprehensiveMealCalculator() {
   const [mealInput, setMealInput] = useState("");
@@ -295,9 +171,6 @@ export default function ComprehensiveMealCalculator() {
                     className="flex-1 py-2 dark:bg-gray-800 dark:border-gray-700"
                     data-testid="input-quantity"
                   />
-                  <span className="py-2 px-4 bg-gray-100 dark:bg-gray-800 rounded-lg text-gray-600 dark:text-gray-400 font-semibold">
-                    {suggestions.length > 0 && mealDatabase[suggestions[0]] ? mealDatabase[Object.keys(mealDatabase).find(m => m.includes(mealInput)) || ""][0]?.serving || "" : ""}
-                  </span>
                 </div>
               </div>
             )}
@@ -308,7 +181,7 @@ export default function ComprehensiveMealCalculator() {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           <Card className="p-6 text-center bg-gradient-to-br from-orange-100 to-orange-50 dark:from-orange-900/30 dark:to-orange-800/20 border-orange-200 dark:border-orange-800/50 shadow-lg">
             <div className="text-3xl font-black text-orange-600 dark:text-orange-400">{totals.calories}</div>
-            <div className="text-xs font-bold text-gray-700 dark:text-gray-300 mt-2">السعرات الحرارية</div>
+            <div className="text-xs font-bold text-gray-700 dark:text-gray-300 mt-2">السعرات</div>
           </Card>
           <Card className="p-6 text-center bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/30 dark:to-blue-800/20 border-blue-200 dark:border-blue-800/50 shadow-lg">
             <div className="text-3xl font-black text-blue-600 dark:text-blue-400">{totals.protein}g</div>
