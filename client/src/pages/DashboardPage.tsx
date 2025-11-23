@@ -5,6 +5,9 @@ import DailyPlan from "../components/dashboard/DailyPlan";
 import WeeklyCalendar from "../components/dashboard/WeeklyCalendar";
 import DetailedPlan from "../components/dashboard/DetailedPlan";
 import CreativeUserProfile from "../components/CreativeUserProfile";
+import RemindersWidget from "../components/dashboard/RemindersWidget";
+import HabitTracker from "../components/dashboard/HabitTracker";
+import StatisticsSummary from "../components/dashboard/StatisticsSummary";
 import { getDay } from "date-fns";
 import { formatFullDateToArabic, getWorkoutTypeByDate, calculateRemainingDays } from "../lib/dates";
 import { Badge } from "@/components/ui/badge";
@@ -201,6 +204,21 @@ export default function DashboardPage() {
             <p className="text-xs text-gray-500">+45%</p>
           </CardContent>
         </Card>
+      </div>
+
+      {/* Reminders, Statistics and Habits Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 my-8">
+        <div className="lg:col-span-2">
+          <RemindersWidget />
+        </div>
+        <div>
+          <HabitTracker />
+        </div>
+      </div>
+
+      {/* Statistics Summary */}
+      <div className="mb-8">
+        <StatisticsSummary />
       </div>
 
       {/* Main Content with Tabs */}
