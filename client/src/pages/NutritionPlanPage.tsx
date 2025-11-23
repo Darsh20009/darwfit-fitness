@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { useLanguage } from "@/context/LanguageContext";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ArrowRight, Apple, Zap, Activity, Target } from "lucide-react";
 
 export default function NutritionPlanPage() {
+  const { t, language } = useLanguage();
   const [goal, setGoal] = useState("");
   const [dailyCalories, setDailyCalories] = useState(2000);
   const [plan, setPlan] = useState<any>(null);
@@ -62,20 +64,20 @@ export default function NutritionPlanPage() {
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 dark:from-gray-900 dark:to-gray-800 p-4 md:p-8">
       <div className="max-w-4xl mx-auto">
         <div className="mb-12">
-          <h1 className="text-4xl md:text-5xl font-black text-gray-900 dark:text-white mb-4 flex items-center gap-3">
-            <Apple className="w-10 h-10 text-green-600" />
-            خطة التغذية الشخصية
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 dark:text-white mb-4 flex items-center gap-3">
+            <Apple className="w-8 sm:w-10 h-8 sm:h-10 text-green-600" />
+            {t.nutrition.title}
           </h1>
-          <p className="text-gray-600 dark:text-gray-300 text-lg">
-            حمل خطة تغذية مخصصة تناسب أهدافك الصحية
+          <p className="text-gray-600 dark:text-gray-300 text-base sm:text-lg">
+            {t.nutrition.subtitle}
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-4 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
           {[
-            { id: "weight-loss", label: "فقدان الوزن", icon: "📉" },
-            { id: "muscle-gain", label: "بناء العضلات", icon: "💪" },
-            { id: "balanced", label: "خطة متوازنة", icon: "⚖️" }
+            { id: "weight-loss", label: t.nutrition.weightLoss, icon: "📉" },
+            { id: "muscle-gain", label: t.nutrition.muscleGain, icon: "💪" },
+            { id: "balanced", label: t.nutrition.balanced, icon: "⚖️" }
           ].map(opt => (
             <button
               key={opt.id}
@@ -93,10 +95,10 @@ export default function NutritionPlanPage() {
         </div>
 
         {goal && (
-          <Card className="p-8 mb-8 dark:bg-gray-800 dark:border-gray-700">
+          <Card className="p-4 sm:p-8 mb-8 dark:bg-gray-800 dark:border-gray-700">
             <div className="mb-6">
               <label className="block text-sm font-bold mb-3 text-gray-900 dark:text-white">
-                السعرات الحرارية اليومية المستهدفة
+                {t.nutrition.dailyCalories}
               </label>
               <Input
                 type="number"

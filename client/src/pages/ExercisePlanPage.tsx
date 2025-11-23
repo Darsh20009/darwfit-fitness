@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { useLanguage } from "@/context/LanguageContext";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Dumbbell, Clock, Heart, Flame, AlertCircle } from "lucide-react";
 
 export default function ExercisePlanPage() {
+  const { t, language } = useLanguage();
   const [level, setLevel] = useState("");
   const [plan, setPlan] = useState<any>(null);
 
@@ -101,7 +103,7 @@ export default function ExercisePlanPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-900 dark:to-gray-800 p-4 md:p-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-900 dark:to-gray-800 p-4 sm:p-6 md:p-8">
       <div className="max-w-5xl mx-auto">
         <div className="mb-12">
           <h1 className="text-4xl md:text-5xl font-black text-gray-900 dark:text-white mb-4 flex items-center gap-3">
