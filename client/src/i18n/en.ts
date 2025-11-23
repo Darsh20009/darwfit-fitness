@@ -39,6 +39,13 @@ export const en: Translation = {
       free: "100% Free",
       freeLabel: "No Hidden Subscriptions",
     },
+    howItWorks: "How It Works",
+    step1: "Enter Your Data",
+    step1Desc: "Tell us your weight, height, and goals",
+    step2: "Get Your Plan",
+    step2Desc: "A personalized plan built for your body",
+    step3: "Start Transforming",
+    step3Desc: "Track your progress and see results daily",
   },
   auth: {
     login: "Log In",
