@@ -17,6 +17,7 @@ import NutritionPlanPage from "@/pages/NutritionPlanPage";
 import ExercisePlanPage from "@/pages/ExercisePlanPage";
 import ProgressPage from "@/pages/ProgressPage";
 import ProfilePage from "@/pages/ProfilePage";
+import SettingsPage from "@/pages/SettingsPage";
 import AICoachPage from "@/pages/AICoachPage";
 
 function Router() {
@@ -32,6 +33,7 @@ function Router() {
       <Route path="/exercise-plan" component={ExercisePlanPage} />
       <Route path="/progress" component={ProgressPage} />
       <Route path="/profile" component={ProfilePage} />
+      <Route path="/settings" component={SettingsPage} />
       <Route path="/ai-coach" component={AICoachPage} />
       <Route component={NotFound} />
     </Switch>
