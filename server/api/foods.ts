@@ -12,11 +12,17 @@ router.get('/', optionalAuth, async (req: AuthRequest, res) => {
     const foodsCollection = getFoodsCollection();
     const { search, category, region, limit = '50', skip = '0' } = req.query;
     
-    const query: any = {};
+    let query: any = {};
     
-    // Text search
+    // Search using regex (fallback for text index limitations)
+    const searchConditions = [];
     if (search) {
-      query.$text = { $search: search as string };
+      const searchRegex = new RegExp(search as string, 'i');
+      searchConditions.push(
+        { name: searchRegex },
+        { nameEn: searchRegex },
+        { description: searchRegex }
+      );
     }
     
     // Category filter
@@ -30,13 +36,26 @@ router.get('/', optionalAuth, async (req: AuthRequest, res) => {
     }
     
     // Include system foods and user's custom foods
+    const ownershipConditions = [];
     if (req.userId) {
-      query.$or = [
+      ownershipConditions.push(
         { isCustom: false },
         { userId: req.userId }
-      ];
+      );
     } else {
       query.isCustom = false;
+    }
+    
+    // Combine search and ownership conditions
+    if (searchConditions.length > 0 && ownershipConditions.length > 0) {
+      query.$and = [
+        { $or: searchConditions },
+        { $or: ownershipConditions }
+      ];
+    } else if (searchConditions.length > 0) {
+      query.$or = searchConditions;
+    } else if (ownershipConditions.length > 0 && req.userId) {
+      query.$or = ownershipConditions;
     }
     
     const foods = await foodsCollection

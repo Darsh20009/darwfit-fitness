@@ -1,4 +1,5 @@
 import express, { type Request, Response, NextFunction } from "express";
+import { createServer } from "http";
 import { setupVite, serveStatic, log } from "./vite";
 import { connectToDatabase, closeDatabase } from "./db/mongo";
 
@@ -78,7 +79,7 @@ app.use((req, res, next) => {
   });
 
   // Create HTTP server
-  const server = require('http').createServer(app);
+  const server = createServer(app);
 
   // Setup Vite for development or serve static files for production
   if (app.get("env") === "development") {

@@ -29,8 +29,10 @@ export async function connectToDatabase(): Promise<Db> {
     
     console.log(`✅ Connected to MongoDB database: ${DB_NAME}`);
     
-    // Create indexes for better performance
-    await createIndexes();
+    // Create indexes for better performance (non-blocking)
+    createIndexes().catch(err => {
+      console.log('⚠️ Indexes creation skipped (may require additional permissions)');
+    });
     
     return db;
   } catch (error) {

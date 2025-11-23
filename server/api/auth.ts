@@ -15,8 +15,11 @@ router.post('/register', async (req, res) => {
     const usersCollection = getUsersCollection();
     const profilesCollection = getUserProfilesCollection();
     
-    // Check if user already exists
-    const existingUser = await usersCollection.findOne({ email: validatedData.email });
+    // Normalize email to lowercase to prevent duplicates
+    const normalizedEmail = validatedData.email.toLowerCase().trim();
+    
+    // Check if user already exists (manual check due to index limitations)
+    const existingUser = await usersCollection.findOne({ email: normalizedEmail });
     if (existingUser) {
       return res.status(400).json({ error: 'البريد الإلكتروني مستخدم بالفعل' });
     }
@@ -26,7 +29,7 @@ router.post('/register', async (req, res) => {
     
     // Create user
     const userResult = await usersCollection.insertOne({
-      email: validatedData.email,
+      email: normalizedEmail,
       password: hashedPassword,
       name: validatedData.name,
       createdAt: new Date(),
@@ -118,8 +121,9 @@ router.post('/login', async (req, res) => {
     
     const usersCollection = getUsersCollection();
     
-    // Find user
-    const user = await usersCollection.findOne({ email: validatedData.email });
+    // Normalize email and find user
+    const normalizedEmail = validatedData.email.toLowerCase().trim();
+    const user = await usersCollection.findOne({ email: normalizedEmail });
     if (!user) {
       return res.status(401).json({ error: 'البريد الإلكتروني أو كلمة المرور غير صحيحة' });
     }

@@ -14,6 +14,10 @@ build = ["npm", "run", "build"]
 localPort = 5000
 externalPort = 80
 
+[[ports]]
+localPort = 34373
+externalPort = 3000
+
 [workflows]
 runButton = "Project"
 
@@ -38,3 +42,9 @@ waitForPort = 5000
 [agent]
 integrations = ["javascript_log_in_with_replit==1.0.0", "javascript_database==1.0.0"]
 expertMode = true
+
+[userenv]
+
+[userenv.shared]
+MONGODB_URI = "mongodb://darwfit_opengolden:cb8e60dc8af03f25da5eaf2dded8fe26a84f07c7@y44gzm.h.filess.io:27018/darwfit_opengolden"
+JWT_SECRET = "Darwfit2025_Super$ecure_JWT_K3y!@#$%^&*_OpengoldenFitness_Platform"
