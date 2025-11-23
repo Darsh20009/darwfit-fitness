@@ -260,7 +260,6 @@ export const mealDatabase: Record<string, { calories: number; protein: number; c
   "دجاج مشوي": { calories: 165, protein: 31, carbs: 0, fat: 3.6, serving: "100g" },
   "لحم بقر": { calories: 250, protein: 26, carbs: 0, fat: 17, serving: "100g" },
   "لحم ضأن": { calories: 294, protein: 25, carbs: 0, fat: 21, serving: "100g" },
-  "لحم خنزير": { calories: 242, protein: 27, carbs: 0, fat: 14, serving: "100g" },
   
   // ============ الألبان والبيض ============
   "بيضة مسلوقة": { calories: 155, protein: 13, carbs: 1.1, fat: 11, serving: "وحدة" },
