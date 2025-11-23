@@ -1,362 +1,417 @@
-import { pgTable, text, serial, integer, boolean, real, timestamp, json } from "drizzle-orm/pg-core";
-import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
-import { relations } from "drizzle-orm";
+import { ObjectId } from "mongodb";
 
-export const users = pgTable("users", {
-  id: serial("id").primaryKey(),
-  username: text("username").notNull().unique(),
-  password: text("password").notNull(),
+// ==================== User & Authentication Schemas ====================
+
+export const userSchema = z.object({
+  _id: z.instanceof(ObjectId).optional(),
+  email: z.string().email(),
+  password: z.string().min(6),
+  name: z.string().min(2),
+  createdAt: z.date().default(() => new Date()),
+  updatedAt: z.date().default(() => new Date()),
 });
 
-export const insertUserSchema = createInsertSchema(users).pick({
-  username: true,
-  password: true,
-});
-
-export type InsertUser = z.infer<typeof insertUserSchema>;
-export type User = typeof users.$inferSelect;
-
-// Master Nutrition Database - 100,000+ foods
-export const foods = pgTable("foods", {
-  id: serial("id").primaryKey(),
-  name: text("name").notNull(),
-  nameEn: text("name_en"),
-  category: text("category").notNull(),
-  subCategory: text("sub_category"),
-  region: text("region").notNull(), // Egyptian, Saudi, Lebanese, Turkish, etc.
-  calories: real("calories").notNull(),
-  protein: real("protein").notNull(),
-  carbs: real("carbs").notNull(),
-  fat: real("fat").notNull(),
-  fiber: real("fiber").default(0),
-  sugar: real("sugar").default(0),
-  sodium: real("sodium").default(0),
-  cost: real("cost").notNull(), // Price per 100g in SAR
-  availability: text("availability").notNull(), // common, rare, seasonal
-  preparationTime: integer("preparation_time").default(0), // minutes
-  shelfLife: integer("shelf_life").default(1), // days
-  culturalSignificance: text("cultural_significance"),
-  healthBenefits: text("health_benefits").array(),
-  allergens: text("allergens").array(),
-  servingSize: real("serving_size").default(100), // grams
-  tags: text("tags").array(), // halal, vegan, keto, etc.
-});
-
-// Master Exercise Database - 10,000+ exercises
-export const exercises = pgTable("exercises", {
-  id: serial("id").primaryKey(),
-  name: text("name").notNull(),
-  nameEn: text("name_en"),
-  category: text("category").notNull(), // strength, cardio, flexibility
-  targetMuscles: text("target_muscles").array(),
-  equipment: text("equipment").array(),
-  difficulty: text("difficulty").notNull(), // beginner, intermediate, advanced
-  caloriesBurn: real("calories_burn").notNull(), // per minute
-  description: text("description"),
-  instructions: text("instructions").array(),
-  videoUrl: text("video_url"),
-  imageUrl: text("image_url"),
-  duration: integer("duration").default(0), // minutes
-  sets: integer("sets").default(3),
-  reps: text("reps").default("8-12"),
-  restTime: integer("rest_time").default(60), // seconds
-  location: text("location").notNull(), // home, gym, outdoor
-  tags: text("tags").array(),
-});
-
-// Comprehensive User Profiles with 50+ attributes
-export const userProfiles = pgTable("user_profiles", {
-  id: serial("id").primaryKey(),
-  name: text("name").notNull(),
-  age: integer("age").notNull(),
-  gender: text("gender").notNull(),
-  height: real("height").notNull(), // cm
-  weight: real("weight").notNull(), // kg
-  bodyFat: real("body_fat"), // percentage
-  muscleMass: real("muscle_mass"), // kg
+export const userProfileSchema = z.object({
+  _id: z.instanceof(ObjectId).optional(),
+  userId: z.instanceof(ObjectId),
+  
+  // Basic Info
+  age: z.number().min(15).max(80),
+  gender: z.enum(["male", "female"]),
+  height: z.number().min(100).max(250), // cm
+  weight: z.number().min(30).max(300), // kg
+  bodyFat: z.number().min(0).max(100).optional(), // percentage
   
   // Goals and Preferences
-  primaryGoal: text("primary_goal").notNull(),
-  secondaryGoals: text("secondary_goals").array(),
-  timeFrame: integer("time_frame").notNull(), // days
+  primaryGoal: z.enum([
+    "lose_weight",
+    "gain_weight",
+    "build_muscle",
+    "maintain",
+    "improve_fitness",
+    "increase_strength"
+  ]),
+  targetWeight: z.number().optional(),
+  timeFrame: z.number().default(90), // days
   
   // Lifestyle
-  occupation: text("occupation"),
-  activityLevel: text("activity_level").notNull(),
-  sleepHours: real("sleep_hours").default(8),
-  stressLevel: text("stress_level"),
-  lifestyle: text("lifestyle"), // student, working, retired
+  occupation: z.string().optional(),
+  activityLevel: z.enum(["sedentary", "light", "moderate", "active", "very_active"]),
+  sleepHours: z.number().min(4).max(12).default(8),
+  stressLevel: z.enum(["low", "moderate", "high"]).optional(),
   
   // Financial
-  budget: real("budget").notNull(), // daily food budget
-  socialClass: text("social_class").notNull(),
-  region: text("region").notNull(),
+  budget: z.number().min(0), // daily food budget in SAR
+  region: z.string().default("saudi"),
   
   // Exercise Preferences
-  exerciseType: text("exercise_type").notNull(),
-  dailyExerciseTime: integer("daily_exercise_time").notNull(), // minutes
-  exerciseFrequency: integer("exercise_frequency").default(5), // days per week
-  preferredTime: text("preferred_time"), // morning, afternoon, evening
-  experienceLevel: text("experience_level").notNull(),
-  injuries: text("injuries").array(),
-  limitations: text("limitations").array(),
+  experienceLevel: z.enum(["beginner", "intermediate", "advanced"]),
+  workoutPreference: z.enum(["home", "gym", "outdoor", "mixed"]),
+  dailyExerciseTime: z.number().min(15).max(180), // minutes
+  exerciseFrequency: z.number().min(1).max(7).default(5), // days per week
+  preferredTime: z.enum(["morning", "afternoon", "evening"]).optional(),
+  injuries: z.array(z.string()).default([]),
   
   // Nutrition Preferences
-  dietType: text("diet_type"), // mediterranean, keto, vegan, etc.
-  mealFrequency: integer("meal_frequency").default(3),
-  cookingSkill: text("cooking_skill"),
-  cookingTime: integer("cooking_time").default(30), // minutes per meal
-  preferredFoods: text("preferred_foods").array(),
-  dislikedFoods: text("disliked_foods").array(),
-  allergies: text("allergies").array(),
-  intolerances: text("intolerances").array(),
+  dietType: z.enum(["normal", "keto", "low_carb", "high_protein", "vegetarian"]).optional(),
+  mealFrequency: z.number().min(2).max(6).default(3),
+  cookingSkill: z.enum(["beginner", "intermediate", "advanced"]).default("beginner"),
+  cookingTime: z.number().min(10).max(120).default(30), // minutes per meal
+  preferredFoods: z.array(z.string()).default([]),
+  dislikedFoods: z.array(z.string()).default([]),
+  allergies: z.array(z.string()).default([]),
   
-  // Health Metrics
-  bmr: real("bmr"), // calculated
-  tdee: real("tdee"), // calculated
-  targetCalories: real("target_calories"),
-  targetProtein: real("target_protein"),
-  targetCarbs: real("target_carbs"),
-  targetFat: real("target_fat"),
-  
-  // Supplements
-  currentSupplements: text("current_supplements").array(),
-  supplementBudget: real("supplement_budget").default(0),
+  // Calculated Metrics
+  bmr: z.number().optional(), // Basal Metabolic Rate
+  tdee: z.number().optional(), // Total Daily Energy Expenditure
+  targetCalories: z.number().optional(),
+  targetProtein: z.number().optional(),
+  targetCarbs: z.number().optional(),
+  targetFat: z.number().optional(),
   
   // Cultural and Religious
-  culture: text("culture"),
-  religion: text("religion"),
-  fasting: boolean("fasting").default(false),
-  ramadan: boolean("ramadan").default(false),
+  culture: z.string().default("arabic"),
+  religion: z.string().default("islam"),
+  ramadanMode: z.boolean().default(false),
   
-  // Tracking Preferences
-  trackingLevel: text("tracking_level").default("moderate"), // minimal, moderate, detailed
-  notificationPreference: text("notification_preference").default("daily"),
-  
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow(),
+  createdAt: z.date().default(() => new Date()),
+  updatedAt: z.date().default(() => new Date()),
 });
 
-// AI-Generated Plans Database - 100,000+ unique plans
-export const healthPlans = pgTable("health_plans", {
-  id: serial("id").primaryKey(),
-  planCode: text("plan_code").notNull().unique(),
-  planName: text("plan_name").notNull(),
-  planType: text("plan_type").notNull(), // nutrition, exercise, combined
+export type User = z.infer<typeof userSchema>;
+export type UserProfile = z.infer<typeof userProfileSchema>;
+
+// ==================== Food Database Schemas ====================
+
+export const foodSchema = z.object({
+  _id: z.instanceof(ObjectId).optional(),
+  name: z.string(),
+  nameEn: z.string().optional(),
+  category: z.string(),
+  region: z.string(), // egyptian, saudi, lebanese, turkish, etc.
   
-  // Target Demographics
-  targetAge: text("target_age"), // 15-25, 26-35, etc.
-  targetGender: text("target_gender"),
-  targetGoal: text("target_goal").notNull(),
-  targetBudget: text("target_budget"), // low, medium, high
-  targetExperience: text("target_experience"),
-  targetRegion: text("target_region"),
+  // Nutritional Info (per 100g)
+  calories: z.number(),
+  protein: z.number(),
+  carbs: z.number(),
+  fat: z.number(),
+  fiber: z.number().default(0),
+  sugar: z.number().default(0),
   
-  // Plan Metadata
-  duration: integer("duration").notNull(), // days
-  difficulty: text("difficulty").notNull(),
-  estimatedCost: real("estimated_cost"),
-  calorieRange: text("calorie_range"),
+  // Additional Info
+  cost: z.number(), // SAR per 100g
+  availability: z.enum(["common", "rare", "seasonal"]).default("common"),
+  preparationTime: z.number().default(0), // minutes
+  servingSize: z.number().default(100), // grams
+  tags: z.array(z.string()).default([]), // halal, vegan, keto, etc.
   
-  // Plan Content
-  nutritionPlan: json("nutrition_plan"), // 180 days of meals
-  exercisePlan: json("exercise_plan"), // 180 days of workouts
-  supplementPlan: json("supplement_plan"),
+  // User-added foods
+  isCustom: z.boolean().default(false),
+  userId: z.instanceof(ObjectId).optional(), // if custom food
   
-  // Plan Stats
-  successRate: real("success_rate").default(0),
-  userRating: real("user_rating").default(0),
-  timesUsed: integer("times_used").default(0),
-  
-  // AI Generation Metadata
-  aiModel: text("ai_model").default("darwfit-ai-v1"),
-  generationDate: timestamp("generation_date").defaultNow(),
-  lastUpdated: timestamp("last_updated").defaultNow(),
-  
-  // Cultural Adaptations
-  culturalTags: text("cultural_tags").array(),
-  religiousCompatible: boolean("religious_compatible").default(true),
-  ramadanAdapted: boolean("ramadan_adapted").default(false),
+  createdAt: z.date().default(() => new Date()),
 });
 
-// User Plan Assignments and Progress
-export const userPlans = pgTable("user_plans", {
-  id: serial("id").primaryKey(),
-  userProfileId: integer("user_profile_id").notNull(),
-  healthPlanId: integer("health_plan_id").notNull(),
-  startDate: timestamp("start_date").defaultNow(),
-  currentDay: integer("current_day").default(1),
-  completedDays: integer("completed_days").default(0),
-  completedMeals: integer("completed_meals").default(0),
-  completedExercises: integer("completed_exercises").default(0),
+export type Food = z.infer<typeof foodSchema>;
+
+// ==================== Exercise Database Schemas ====================
+
+export const exerciseSchema = z.object({
+  _id: z.instanceof(ObjectId).optional(),
+  name: z.string(),
+  nameEn: z.string().optional(),
+  category: z.enum(["strength", "cardio", "flexibility", "sports"]),
+  targetMuscles: z.array(z.string()).default([]),
+  equipment: z.array(z.string()).default([]),
+  difficulty: z.enum(["beginner", "intermediate", "advanced"]),
   
-  // Progress Tracking
-  progressData: json("progress_data"), // daily completion status
-  modifications: json("modifications"), // user customizations
-  feedback: json("feedback"), // user feedback and ratings
+  // Exercise Details
+  caloriesBurnPerMin: z.number(), // calories burned per minute
+  description: z.string().optional(),
+  instructions: z.array(z.string()).default([]),
+  videoUrl: z.string().optional(),
+  imageUrl: z.string().optional(),
   
-  // Success Metrics
-  weightChange: real("weight_change").default(0),
-  bodyFatChange: real("body_fat_change").default(0),
-  strengthGains: json("strength_gains"),
+  // Default Parameters
+  defaultSets: z.number().default(3),
+  defaultReps: z.string().default("8-12"),
+  defaultRestTime: z.number().default(60), // seconds
   
-  status: text("status").default("active"), // active, paused, completed, discontinued
-  completionRate: real("completion_rate").default(0),
+  // Location
+  location: z.enum(["home", "gym", "outdoor", "anywhere"]),
+  tags: z.array(z.string()).default([]),
   
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow(),
+  // User-added exercises
+  isCustom: z.boolean().default(false),
+  userId: z.instanceof(ObjectId).optional(),
+  
+  createdAt: z.date().default(() => new Date()),
 });
 
-// Daily Meal Plans
-export const mealPlans = pgTable("meal_plans", {
-  id: serial("id").primaryKey(),
-  healthPlanId: integer("health_plan_id").notNull(),
-  dayNumber: integer("day_number").notNull(),
-  mealType: text("meal_type").notNull(), // breakfast, lunch, dinner, snack1, snack2
-  
-  // Meal Composition
-  foodIds: integer("food_ids").array(),
-  quantities: real("quantities").array(), // grams
-  totalCalories: real("total_calories").notNull(),
-  totalProtein: real("total_protein").notNull(),
-  totalCarbs: real("total_carbs").notNull(),
-  totalFat: real("total_fat").notNull(),
-  totalCost: real("total_cost").notNull(),
-  
-  // Meal Metadata
-  preparationTime: integer("preparation_time").default(0),
-  cookingInstructions: text("cooking_instructions").array(),
-  alternatives: json("alternatives"), // alternative food options
-  
-  // Cultural and Dietary
-  mealCulture: text("meal_culture"),
-  dietaryTags: text("dietary_tags").array(),
+export type Exercise = z.infer<typeof exerciseSchema>;
+
+// ==================== Meal Plan Schemas ====================
+
+export const mealItemSchema = z.object({
+  foodId: z.instanceof(ObjectId),
+  foodName: z.string(),
+  quantity: z.number(), // grams
+  calories: z.number(),
+  protein: z.number(),
+  carbs: z.number(),
+  fat: z.number(),
 });
 
-// Daily Exercise Plans
-export const exercisePlans = pgTable("exercise_plans", {
-  id: serial("id").primaryKey(),
-  healthPlanId: integer("health_plan_id").notNull(),
-  dayNumber: integer("day_number").notNull(),
-  workoutType: text("workout_type").notNull(), // strength, cardio, flexibility, rest
+export const dailyMealPlanSchema = z.object({
+  breakfast: z.array(mealItemSchema).default([]),
+  lunch: z.array(mealItemSchema).default([]),
+  dinner: z.array(mealItemSchema).default([]),
+  snacks: z.array(mealItemSchema).default([]),
   
-  // Workout Composition
-  exerciseIds: integer("exercise_ids").array(),
-  sets: integer("sets").array(),
-  reps: text("reps").array(),
-  weights: real("weights").array(), // kg
-  restTimes: integer("rest_times").array(), // seconds
-  
-  // Workout Metadata
-  totalDuration: integer("total_duration").notNull(), // minutes
-  estimatedCalories: real("estimated_calories").notNull(),
-  difficulty: text("difficulty").notNull(),
-  equipment: text("equipment").array(),
-  location: text("location").notNull(),
-  
-  // Progression
-  progressionWeek: integer("progression_week").default(1),
-  intensityLevel: real("intensity_level").default(1.0),
-});
-
-// Advanced Food Database with Cultural Variations
-export const culturalFoods = pgTable("cultural_foods", {
-  id: serial("id").primaryKey(),
-  baseFoodId: integer("base_food_id").notNull(),
-  culture: text("culture").notNull(),
-  region: text("region").notNull(),
-  localName: text("local_name").notNull(),
-  preparationStyle: text("preparation_style"),
-  seasonality: text("seasonality").array(),
-  occasions: text("occasions").array(),
-  popularity: real("popularity").default(0.5), // 0-1 scale
-  availability: text("availability"), // street, market, restaurant, home
-});
-
-// Relations
-export const userProfilesRelations = relations(userProfiles, ({ many }) => ({
-  userPlans: many(userPlans),
-}));
-
-export const healthPlansRelations = relations(healthPlans, ({ many }) => ({
-  userPlans: many(userPlans),
-  mealPlans: many(mealPlans),
-  exercisePlans: many(exercisePlans),
-}));
-
-export const userPlansRelations = relations(userPlans, ({ one }) => ({
-  userProfile: one(userProfiles, {
-    fields: [userPlans.userProfileId],
-    references: [userProfiles.id],
+  totals: z.object({
+    calories: z.number().default(0),
+    protein: z.number().default(0),
+    carbs: z.number().default(0),
+    fat: z.number().default(0),
+    cost: z.number().default(0),
   }),
-  healthPlan: one(healthPlans, {
-    fields: [userPlans.healthPlanId],
-    references: [healthPlans.id],
-  }),
-}));
+});
 
-// Schema Types
-export const insertUserProfileSchema = createInsertSchema(userProfiles);
-export const insertHealthPlanSchema = createInsertSchema(healthPlans);
-export const insertFoodSchema = createInsertSchema(foods);
-export const insertExerciseSchema = createInsertSchema(exercises);
+export const userMealPlanSchema = z.object({
+  _id: z.instanceof(ObjectId).optional(),
+  userId: z.instanceof(ObjectId),
+  name: z.string(),
+  startDate: z.date(),
+  duration: z.number().default(30), // days
+  
+  // Daily plans (indexed by day number)
+  dailyPlans: z.record(z.number(), dailyMealPlanSchema),
+  
+  // Plan metadata
+  isTemplate: z.boolean().default(false),
+  isActive: z.boolean().default(true),
+  
+  createdAt: z.date().default(() => new Date()),
+  updatedAt: z.date().default(() => new Date()),
+});
 
-export type InsertUserProfile = z.infer<typeof insertUserProfileSchema>;
-export type UserProfile = typeof userProfiles.$inferSelect;
-export type HealthPlan = typeof healthPlans.$inferSelect;
-export type Food = typeof foods.$inferSelect;
-export type Exercise = typeof exercises.$inferSelect;
-export type UserPlan = typeof userPlans.$inferSelect;
-export type MealPlan = typeof mealPlans.$inferSelect;
-export type ExercisePlan = typeof exercisePlans.$inferSelect;
+export type MealItem = z.infer<typeof mealItemSchema>;
+export type DailyMealPlan = z.infer<typeof dailyMealPlanSchema>;
+export type UserMealPlan = z.infer<typeof userMealPlanSchema>;
 
-// Subscription data schema
-export const subscriptionSchema = z.object({
-  name: z.string().min(2, { message: "الاسم يجب أن يكون أكثر من حرفين" }),
-  age: z.string().or(z.number()).pipe(z.coerce.number().min(15).max(80)),
+// ==================== Workout Plan Schemas ====================
+
+export const workoutExerciseSchema = z.object({
+  exerciseId: z.instanceof(ObjectId),
+  exerciseName: z.string(),
+  sets: z.number(),
+  reps: z.string(), // "8-12" or "45 seconds"
+  weight: z.number().optional(), // kg
+  restTime: z.number().default(60), // seconds
+  notes: z.string().optional(),
+});
+
+export const dailyWorkoutPlanSchema = z.object({
+  dayName: z.string(), // "Day 1: Chest & Triceps"
+  exercises: z.array(workoutExerciseSchema).default([]),
+  totalDuration: z.number().default(0), // minutes
+  estimatedCalories: z.number().default(0),
+  isRestDay: z.boolean().default(false),
+});
+
+export const userWorkoutPlanSchema = z.object({
+  _id: z.instanceof(ObjectId).optional(),
+  userId: z.instanceof(ObjectId),
+  name: z.string(),
+  startDate: z.date(),
+  duration: z.number().default(30), // days
+  
+  // Weekly structure (can repeat)
+  weeklySchedule: z.array(dailyWorkoutPlanSchema),
+  
+  // Plan metadata
+  isTemplate: z.boolean().default(false),
+  isActive: z.boolean().default(true),
+  difficulty: z.enum(["beginner", "intermediate", "advanced"]),
+  
+  createdAt: z.date().default(() => new Date()),
+  updatedAt: z.date().default(() => new Date()),
+});
+
+export type WorkoutExercise = z.infer<typeof workoutExerciseSchema>;
+export type DailyWorkoutPlan = z.infer<typeof dailyWorkoutPlanSchema>;
+export type UserWorkoutPlan = z.infer<typeof userWorkoutPlanSchema>;
+
+// ==================== Progress Tracking Schemas ====================
+
+export const dailyProgressSchema = z.object({
+  _id: z.instanceof(ObjectId).optional(),
+  userId: z.instanceof(ObjectId),
+  date: z.date(),
+  
+  // Weight & Body Metrics
+  weight: z.number().optional(),
+  bodyFat: z.number().optional(),
+  
+  // Nutrition Tracking
+  mealsCompleted: z.array(z.string()).default([]), // ["breakfast", "lunch", "dinner"]
+  totalCalories: z.number().default(0),
+  totalProtein: z.number().default(0),
+  totalCarbs: z.number().default(0),
+  totalFat: z.number().default(0),
+  waterIntake: z.number().default(0), // liters
+  
+  // Exercise Tracking
+  workoutCompleted: z.boolean().default(false),
+  workoutDuration: z.number().default(0), // minutes
+  caloriesBurned: z.number().default(0),
+  exercisesCompleted: z.array(z.string()).default([]),
+  
+  // Notes & Mood
+  notes: z.string().optional(),
+  mood: z.enum(["great", "good", "okay", "bad", "terrible"]).optional(),
+  energy: z.number().min(1).max(10).optional(),
+  
+  createdAt: z.date().default(() => new Date()),
+});
+
+export type DailyProgress = z.infer<typeof dailyProgressSchema>;
+
+// ==================== Azkar Schemas ====================
+
+export const azkarSchema = z.object({
+  _id: z.instanceof(ObjectId).optional(),
+  category: z.enum([
+    "morning",
+    "evening",
+    "sleep",
+    "waking",
+    "eating",
+    "daily",
+    "special"
+  ]),
+  title: z.string(),
+  arabicText: z.string(),
+  transliteration: z.string().optional(),
+  translation: z.string().optional(),
+  repetitions: z.number().default(1),
+  reference: z.string().optional(), // Quran/Hadith reference
+  
+  // Audio Support
+  audioUrl: z.string().optional(),
+  audioDuration: z.number().optional(), // seconds
+  
+  // Display Order
+  order: z.number().default(0),
+  
+  createdAt: z.date().default(() => new Date()),
+});
+
+export const userAzkarProgressSchema = z.object({
+  _id: z.instanceof(ObjectId).optional(),
+  userId: z.instanceof(ObjectId),
+  date: z.date(),
+  
+  // Track completed azkar by category
+  completed: z.record(z.string(), z.object({
+    azkarId: z.instanceof(ObjectId),
+    completedReps: z.number().default(0),
+    completedAt: z.date().optional(),
+  })),
+  
+  // Streak tracking
+  streak: z.number().default(0),
+  
+  createdAt: z.date().default(() => new Date()),
+  updatedAt: z.date().default(() => new Date()),
+});
+
+export type Azkar = z.infer<typeof azkarSchema>;
+export type UserAzkarProgress = z.infer<typeof userAzkarProgressSchema>;
+
+// ==================== Authentication & API Schemas ====================
+
+export const loginSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(6),
+});
+
+export const registerSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(6),
+  name: z.string().min(2),
+  age: z.number().min(15).max(80),
   gender: z.enum(["male", "female"]),
-  weight: z.string().or(z.number()).pipe(z.coerce.number().min(30).max(200)),
-  height: z.string().or(z.number()).pipe(z.coerce.number().min(100).max(220)),
-  phone: z.string().min(8, { message: "رقم الجوال يجب أن يكون صحيحاً" }),
-  goal: z.enum(["lose_weight", "gain_muscle", "maintain", "improve_fitness"]),
-  food_details: z.string().min(5, { message: "يرجى إدخال تفاصيل الأكل" }),
-  exercise_details: z.string().min(5, { message: "يرجى إدخال تفاصيل التمرين" }),
-  // BMI related fields
-  has_done_bmi: z.enum(["yes", "no"]),
-  previous_bmi_result: z.string().optional(),
-  bmi_feedback: z.string().optional(),
-  // Subscription type
-  subscription_type: z.enum(["1month", "3months", "6months", "12months"]),
+  height: z.number().min(100).max(250),
+  weight: z.number().min(30).max(300),
+  primaryGoal: z.enum([
+    "lose_weight",
+    "gain_weight",
+    "build_muscle",
+    "maintain",
+    "improve_fitness"
+  ]),
+  activityLevel: z.enum(["sedentary", "light", "moderate", "active", "very_active"]),
+  budget: z.number().min(0),
 });
 
-export type SubscriptionData = z.infer<typeof subscriptionSchema>;
+export type LoginData = z.infer<typeof loginSchema>;
+export type RegisterData = z.infer<typeof registerSchema>;
 
-// Free Plan Schema
-export const freePlanSchema = z.object({
-  fullName: z.string().min(2, "الاسم مطلوب"),
-  age: z.number().min(15, "العمر يجب أن يكون 15 سنة على الأقل").max(80, "العمر يجب أن يكون أقل من 80 سنة"),
-  gender: z.enum(["male", "female"], {
-    required_error: "الجنس مطلوب"
-  }),
-  height: z.number().min(120, "الطول يجب أن يكون 120 سم على الأقل").max(250, "الطول يجب أن يكون أقل من 250 سم"),
-  weight: z.number().min(30, "الوزن يجب أن يكون 30 كيلو على الأقل").max(300, "الوزن يجب أن يكون أقل من 300 كيلو"),
-  goal: z.enum(["lose_weight", "gain_weight", "build_muscle", "maintain", "improve_fitness"], {
-    required_error: "الهدف مطلوب"
-  }),
-  activityLevel: z.enum(["sedentary", "light", "moderate", "active", "very_active"], {
-    required_error: "مستوى النشاط مطلوب"
-  }),
-  experienceLevel: z.enum(["beginner", "intermediate", "advanced"], {
-    required_error: "مستوى الخبرة مطلوب"
-  }),
-  workoutPreference: z.enum(["home", "gym", "outdoor", "mixed"], {
-    required_error: "مكان التمرين مطلوب"
-  }),
-  dietaryRestrictions: z.array(z.string()).default([]),
-  timeAvailable: z.enum(["30min", "45min", "60min", "90min"], {
-    required_error: "الوقت المتاح مطلوب"
-  }),
-});
+// ==================== Utility Functions ====================
 
-export type FreePlanData = z.infer<typeof freePlanSchema>;
+export function calculateBMR(weight: number, height: number, age: number, gender: string): number {
+  // Mifflin-St Jeor Equation
+  if (gender === "male") {
+    return (10 * weight) + (6.25 * height) - (5 * age) + 5;
+  } else {
+    return (10 * weight) + (6.25 * height) - (5 * age) - 161;
+  }
+}
+
+export function calculateTDEE(bmr: number, activityLevel: string): number {
+  const multipliers = {
+    sedentary: 1.2,
+    light: 1.375,
+    moderate: 1.55,
+    active: 1.725,
+    very_active: 1.9
+  };
+  return bmr * (multipliers[activityLevel as keyof typeof multipliers] || 1.2);
+}
+
+export function calculateTargetCalories(tdee: number, goal: string): number {
+  switch (goal) {
+    case "lose_weight":
+      return tdee - 500; // 500 calorie deficit
+    case "gain_weight":
+    case "build_muscle":
+      return tdee + 300; // 300 calorie surplus
+    case "maintain":
+    default:
+      return tdee;
+  }
+}
+
+export function calculateMacros(targetCalories: number, goal: string) {
+  let proteinPercent = 0.30;
+  let carbsPercent = 0.40;
+  let fatPercent = 0.30;
+  
+  if (goal === "build_muscle") {
+    proteinPercent = 0.35;
+    carbsPercent = 0.40;
+    fatPercent = 0.25;
+  } else if (goal === "lose_weight") {
+    proteinPercent = 0.35;
+    carbsPercent = 0.30;
+    fatPercent = 0.35;
+  }
+  
+  return {
+    protein: (targetCalories * proteinPercent) / 4, // 4 calories per gram
+    carbs: (targetCalories * carbsPercent) / 4,
+    fat: (targetCalories * fatPercent) / 9, // 9 calories per gram
+  };
+}
