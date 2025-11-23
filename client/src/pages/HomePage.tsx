@@ -50,16 +50,13 @@ export default function HomePage() {
           {/* Header */}
           <header className="sticky top-0 z-50 border-b border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl">
             <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-              <div className="flex items-center gap-2 md:gap-3">
-                <div className="p-2.5 bg-gradient-to-br from-green-400 to-green-600 dark:from-green-500 dark:to-green-700 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-                  <Leaf className="w-7 h-7 md:w-8 md:h-8 text-white" />
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 flex items-center justify-center bg-gradient-to-br from-green-400 to-green-600 dark:from-green-500 dark:to-green-700 rounded-xl shadow-lg">
+                  <Leaf className="w-7 h-7 text-white" />
                 </div>
-                <div className="flex flex-col">
-                  <h1 className="text-xl md:text-2xl font-black bg-gradient-to-r from-green-600 to-green-700 dark:from-green-400 dark:to-green-500 bg-clip-text text-transparent leading-tight">
-                    Darwfit
-                  </h1>
-                  <p className="text-xs text-gray-600 dark:text-gray-400 hidden sm:block">منصة اللياقة</p>
-                </div>
+                <h1 className="text-2xl md:text-3xl font-black bg-gradient-to-r from-green-600 to-green-700 dark:from-green-400 dark:to-green-500 bg-clip-text text-transparent">
+                  Darwfit
+                </h1>
               </div>
               <div className="flex items-center gap-4">
                 <ThemeToggle />
