@@ -1,0 +1,132 @@
+==> Cloning from https://github.com/Darsh20009/darwfit-fitness
+==> Checking out commit 23387aa63b7974c3f55d4fbd1400af0d1d8451df in branch main
+==> Using Node.js version 22.16.0 (default)
+==> Docs on specifying a Node.js version: https://render.com/docs/node-version
+==> Running build command 'npm install; npm run build'...
+added 545 packages, and audited 546 packages in 8s
+68 packages are looking for funding
+  run `npm fund` for details
+14 vulnerabilities (3 low, 8 moderate, 2 high, 1 critical)
+To address issues that do not require attention, run:
+  npm audit fix
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+Run `npm audit` for details.
+> rest-express@1.0.0 build
+> vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist
+vite v5.4.14 building for production...
+transforming...
+✓ 2583 modules transformed.
+rendering chunks...
+[plugin:vite:reporter] [plugin vite:reporter] 
+(!) /opt/render/project/src/client/src/data/mealPlans.ts is dynamically imported by /opt/render/project/src/client/src/components/dashboard/DailyPlan.tsx, /opt/render/project/src/client/src/components/dashboard/DailyPlan.tsx but also statically imported by /opt/render/project/src/client/src/components/dashboard/DailyPlan.tsx, /opt/render/project/src/client/src/components/dashboard/DetailedPlan.tsx, dynamic import will not move module into another chunk.
+computing gzip size...
+../dist/public/index.html                          3.52 kB │ gzip:   1.30 kB
+../dist/public/assets/index-B-Y1ySjW.css         173.07 kB │ gzip:  23.32 kB
+../dist/public/assets/downloadUtils-BV4irals.js   30.84 kB │ gzip:   5.75 kB
+../dist/public/assets/index-CkzZ3JbX.js          694.93 kB │ gzip: 201.77 kB
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 5.63s
+  dist/index.js  52.3kb
+⚡ Done in 5ms
+==> Uploading build...
+==> Uploaded in 6.2s. Compression took 3.2s
+==> Build successful 🎉
+==> Deploying...
+==> Running 'npm run start'
+> rest-express@1.0.0 start
+> NODE_ENV=production node dist/index.js
+❌ MongoDB connection error: MongoServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at Topology.selectServer (/opt/render/project/src/node_modules/mongodb/lib/sdam/topology.js:346:38)
+    at async Topology._connect (/opt/render/project/src/node_modules/mongodb/lib/sdam/topology.js:219:28)
+    at async Topology.connect (/opt/render/project/src/node_modules/mongodb/lib/sdam/topology.js:171:13)
+    at async topologyConnect (/opt/render/project/src/node_modules/mongodb/lib/mongo_client.js:258:17)
+    at async MongoClient._connect (/opt/render/project/src/node_modules/mongodb/lib/mongo_client.js:271:13)
+    at async MongoClient.connect (/opt/render/project/src/node_modules/mongodb/lib/mongo_client.js:196:13)
+    at async connectToDatabase (file:///opt/render/project/src/dist/index.js:119:5)
+    at async file:///opt/render/project/src/dist/index.js:1347:5 {
+  errorLabelSet: Set(0) {},
+  reason: TopologyDescription {
+    type: 'Unknown',
+    servers: Map(1) { 'localhost:27017' => [ServerDescription] },
+    stale: false,
+    compatible: true,
+    heartbeatFrequencyMS: 10000,
+    localThresholdMS: 15,
+    setName: null,
+    maxElectionId: null,
+    maxSetVersion: null,
+    commonWireVersion: 0,
+    logicalSessionTimeoutMinutes: null
+  },
+  code: undefined,
+  [cause]: MongoNetworkError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+      at Socket.<anonymous> (/opt/render/project/src/node_modules/mongodb/lib/cmap/connect.js:286:44)
+      at Object.onceWrapper (node:events:633:26)
+      at Socket.emit (node:events:518:28)
+      at emitErrorNT (node:internal/streams/destroy:170:8)
+      at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+      at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    errorLabelSet: Set(1) { 'ResetPool' },
+    beforeHandshake: false,
+    [cause]: AggregateError [ECONNREFUSED]: 
+        at internalConnectMultiple (node:net:1139:18)
+        at afterConnectMultiple (node:net:1714:7) {
+      code: 'ECONNREFUSED',
+      [errors]: [Array]
+    }
+  }
+}
+9:17:16 PM [connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017] ❌ MongoDB connection failed:
+==> No open ports detected, continuing to scan...
+==> Docs on specifying a port: https://render.com/docs/web-services#port-binding
+==> Exited with status 1
+==> Common ways to troubleshoot your deploy: https://render.com/docs/troubleshooting-deploys
+==> Running 'npm run start'
+> rest-express@1.0.0 start
+> NODE_ENV=production node dist/index.js
+❌ MongoDB connection error: MongoServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at Topology.selectServer (/opt/render/project/src/node_modules/mongodb/lib/sdam/topology.js:346:38)
+    at async Topology._connect (/opt/render/project/src/node_modules/mongodb/lib/sdam/topology.js:219:28)
+    at async Topology.connect (/opt/render/project/src/node_modules/mongodb/lib/sdam/topology.js:171:13)
+    at async topologyConnect (/opt/render/project/src/node_modules/mongodb/lib/mongo_client.js:258:17)
+    at async MongoClient._connect (/opt/render/project/src/node_modules/mongodb/lib/mongo_client.js:271:13)
+    at async MongoClient.connect (/opt/render/project/src/node_modules/mongodb/lib/mongo_client.js:196:13)
+    at async connectToDatabase (file:///opt/render/project/src/dist/index.js:119:5)
+    at async file:///opt/render/project/src/dist/index.js:1347:5 {
+  errorLabelSet: Set(0) {},
+  reason: TopologyDescription {
+    type: 'Unknown',
+    servers: Map(1) { 'localhost:27017' => [ServerDescription] },
+    stale: false,
+    compatible: true,
+    heartbeatFrequencyMS: 10000,
+    localThresholdMS: 15,
+    setName: null,
+    maxElectionId: null,
+    maxSetVersion: null,
+    commonWireVersion: 0,
+    logicalSessionTimeoutMinutes: null
+  },
+  code: undefined,
+  [cause]: MongoNetworkError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+      at Socket.<anonymous> (/opt/render/project/src/node_modules/mongodb/lib/cmap/connect.js:286:44)
+      at Object.onceWrapper (node:events:633:26)
+      at Socket.emit (node:events:518:28)
+      at emitErrorNT (node:internal/streams/destroy:170:8)
+      at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+      at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    errorLabelSet: Set(1) { 'ResetPool' },
+    beforeHandshake: false,
+    [cause]: AggregateError [ECONNREFUSED]: 
+        at internalConnectMultiple (node:net:1139:18)
+        at afterConnectMultiple (node:net:1714:7) {
+      code: 'ECONNREFUSED',
+      [errors]: [Array]
+    }
+  }
+}
+9:17:57 PM [connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017] ❌ MongoDB connection failed:

@@ -23,7 +23,11 @@ export async function connectToDatabase(): Promise<Db> {
   }
 
   try {
-    client = new MongoClient(MONGODB_URI);
+    console.log(`📍 Attempting to connect to MongoDB: ${MONGODB_URI}`);
+    client = new MongoClient(MONGODB_URI, {
+      serverSelectionTimeoutMS: 5000,
+      connectTimeoutMS: 5000,
+    });
     await client.connect();
     db = client.db(DB_NAME);
     
@@ -37,6 +41,19 @@ export async function connectToDatabase(): Promise<Db> {
     return db;
   } catch (error) {
     console.error('❌ MongoDB connection error:', error);
+    
+    // If in production and MongoDB is not available, provide graceful warning
+    if (process.env.NODE_ENV === 'production') {
+      console.log('⚠️ MongoDB is not available in production.');
+      console.log('📌 To fix this, set MONGODB_URI environment variable on your hosting platform.');
+      console.log('💡 Recommended: Use MongoDB Atlas (free tier) - https://mongodb.com/cloud/atlas');
+      console.log('📝 Steps:');
+      console.log('   1. Create account on MongoDB Atlas');
+      console.log('   2. Create a cluster (free tier available)');
+      console.log('   3. Get connection string');
+      console.log('   4. Add MONGODB_URI to your production environment variables');
+    }
+    
     throw error;
   }
 }
