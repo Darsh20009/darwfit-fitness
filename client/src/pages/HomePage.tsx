@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Leaf, Activity, Apple, Heart, TrendingUp, Shield, Star, Check, Zap, Sparkles } from "lucide-react";
 import ThemeToggle from "@/components/ThemeToggle";
+import { SEOHead } from "@/components/SEOHead";
 
 const testimonials = [
   {
@@ -32,7 +33,12 @@ export default function HomePage() {
   const [, setLocation] = useLocation();
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gradient-to-b dark:from-slate-950 dark:via-slate-900 dark:to-black overflow-hidden">
+    <>
+      <SEOHead 
+        title="Darwfit - منصة اللياقة الذكية | حاسبة سعرات وتمارين مخصصة"
+        description="Darwfit - منصة عربية شاملة للياقة والتغذية. حاسبة وجبات ذكية بـ 10,000+ طعام، تمارين مخصصة، خطط تغذية، وأذكار إسلامية. مجاني 100% بدون اشتراكات."
+      />
+      <div className="min-h-screen bg-white dark:bg-gradient-to-b dark:from-slate-950 dark:via-slate-900 dark:to-black overflow-hidden">
       {/* Animated Background Elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-green-400 dark:bg-green-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 dark:opacity-10 animate-pulse"></div>
