@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
+import { useLanguage } from "@/context/LanguageContext";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -37,6 +38,7 @@ interface ZekrProgress {
 }
 
 export default function AzkarPage() {
+  const { t } = useLanguage();
   const [, setLocation] = useLocation();
   const [zekrProgress, setZekrProgress] = useState<ZekrProgress>({});
   const [showScrollTop, setShowScrollTop] = useState(false);

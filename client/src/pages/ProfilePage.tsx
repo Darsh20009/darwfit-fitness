@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { useLanguage } from "@/context/LanguageContext";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { User, Mail, Phone, MapPin, Edit2, Save, Camera } from "lucide-react";
 
 export default function ProfilePage() {
+  const { t } = useLanguage();
   const [isEditing, setIsEditing] = useState(false);
   const [profile, setProfile] = useState({
     name: "أحمد السعيد",
@@ -25,12 +27,12 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-50 to-green-50 dark:from-gray-900 dark:to-gray-800 p-4 md:p-8">
+    <div className="min-h-screen bg-gradient-to-br from-teal-50 to-green-50 dark:from-gray-900 dark:to-gray-800 p-4 sm:p-6 md:p-8">
       <div className="max-w-3xl mx-auto">
         {/* Header with Avatar */}
-        <Card className="p-8 mb-8 text-center dark:bg-gray-800 dark:border-gray-700 bg-gradient-to-br from-teal-100 to-green-50">
+        <Card className="p-4 sm:p-8 mb-8 text-center dark:bg-gray-800 dark:border-gray-700 bg-gradient-to-br from-teal-100 to-green-50">
           <div className="relative mb-6">
-            <div className="w-24 h-24 bg-gradient-to-br from-teal-500 to-green-500 rounded-full mx-auto flex items-center justify-center text-5xl text-white">
+            <div className="w-20 sm:w-24 h-20 sm:h-24 bg-gradient-to-br from-teal-500 to-green-500 rounded-full mx-auto flex items-center justify-center text-3xl sm:text-5xl text-white">
               👨‍💼
             </div>
             {isEditing && (
@@ -39,19 +41,19 @@ export default function ProfilePage() {
               </button>
             )}
           </div>
-          <h1 className="text-3xl font-black text-gray-900 dark:text-white mb-2">{profile.name}</h1>
-          <p className="text-gray-600 dark:text-gray-400 flex items-center justify-center gap-2">
+          <h1 className="text-2xl sm:text-3xl font-black text-gray-900 dark:text-white mb-2">{profile.name}</h1>
+          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 flex items-center justify-center gap-2">
             <MapPin className="w-4 h-4" />
             {profile.location}
           </p>
         </Card>
 
         {/* Contact Info */}
-        <Card className="p-8 mb-8 dark:bg-gray-800 dark:border-gray-700">
+        <Card className="p-4 sm:p-8 mb-8 dark:bg-gray-800 dark:border-gray-700">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-              <User className="w-6 h-6 text-teal-600" />
-              معلومات التواصل
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+              <User className="w-5 sm:w-6 h-5 sm:h-6 text-teal-600" />
+              {t.profile.contactInfo}
             </h2>
             <button
               onClick={() => setIsEditing(!isEditing)}
