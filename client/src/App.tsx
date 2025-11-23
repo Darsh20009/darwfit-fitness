@@ -12,6 +12,8 @@ import SignupPage from "@/pages/SignupPage";
 import DashboardPage from "@/pages/DashboardPage";
 import AzkarPage from "@/pages/AzkarPage";
 import CaloriesPage from "@/pages/CaloriesPage";
+import NutritionPlanPage from "@/pages/NutritionPlanPage";
+import ExercisePlanPage from "@/pages/ExercisePlanPage";
 
 function Router() {
   return (
@@ -22,6 +24,8 @@ function Router() {
       <Route path="/dashboard" component={DashboardPage} />
       <Route path="/azkar" component={AzkarPage} />
       <Route path="/calories" component={CaloriesPage} />
+      <Route path="/nutrition-plan" component={NutritionPlanPage} />
+      <Route path="/exercise-plan" component={ExercisePlanPage} />
       <Route component={NotFound} />
     </Switch>
   );
