@@ -1,14 +1,21 @@
-
 {
-  "name": "Darwfit - برنامج اللياقة والتغذية",
+  "name": "Darwfit - منصة اللياقة الذكية",
   "short_name": "Darwfit",
-  "description": "برنامج شامل للياقة البدنية والتغذية الصحية",
+  "description": "منصة عربية شاملة للياقة البدنية والتغذية الصحية مع حاسبة وجبات ذكية وتمارين مخصصة",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#667eea",
-  "orientation": "portrait-primary",
+  "theme_color": "#22c55e",
+  "orientation": "portrait",
+  "lang": "ar",
+  "dir": "rtl",
   "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
     {
       "src": "/generated-icon.png",
       "sizes": "192x192",
@@ -23,6 +30,5 @@
     }
   ],
   "categories": ["health", "fitness", "lifestyle"],
-  "lang": "ar",
-  "dir": "rtl"
+  "screenshots": []
 }

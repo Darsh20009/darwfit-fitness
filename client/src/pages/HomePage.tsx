@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Leaf, Activity, Apple, Heart, TrendingUp, Shield, Star, Check, Zap, Sparkles } from "lucide-react";
 import ThemeToggle from "@/components/ThemeToggle";
+import { LanguageToggle } from "@/components/LanguageToggle";
+import { useLanguage } from "@/context/LanguageContext";
 import { SEOHead } from "@/components/SEOHead";
 
 const testimonials = [
@@ -31,6 +33,7 @@ const testimonials = [
 
 export default function HomePage() {
   const [, setLocation] = useLocation();
+  const { t } = useLanguage();
 
   return (
     <>
@@ -58,14 +61,15 @@ export default function HomePage() {
                   Darwfit
                 </h1>
               </div>
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2 md:gap-4">
+                <LanguageToggle />
                 <ThemeToggle />
                 <Button
                   onClick={() => setLocation("/signup")}
                   className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white shadow-lg shadow-green-600/50 dark:shadow-green-600/30"
                   data-testid="button-signup-header"
                 >
-                  ابدأ مجاناً
+                  {t.home.startYourJourney}
                 </Button>
               </div>
             </div>
