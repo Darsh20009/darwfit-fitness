@@ -1,9 +1,5 @@
-import SmartCalorieCalculator from "@/components/SmartCalorieCalculator";
+import ComprehensiveMealCalculator from "@/components/ComprehensiveMealCalculator";
 
 export default function CaloriesPage() {
-  return (
-    <div className="min-h-screen bg-white dark:bg-slate-950 py-8">
-      <SmartCalorieCalculator />
-    </div>
-  );
+  return <ComprehensiveMealCalculator />;
 }
