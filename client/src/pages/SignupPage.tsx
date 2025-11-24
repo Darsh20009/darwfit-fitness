@@ -37,11 +37,11 @@ export default function SignupPage() {
   const [maxWeight, setMaxWeight] = useState("20");
 
   const exerciseOptions = [
-    { id: "cardio", label: "تمارين القلب والجري" },
-    { id: "weights", label: "رفع الأثقال" },
-    { id: "yoga", label: "اليوغا والمرونة" },
-    { id: "sports", label: "الرياضات الجماعية" },
-    { id: "home", label: "تمارين في البيت" },
+    { id: "cardio", label: t.auth.cardioExercise },
+    { id: "weights", label: t.auth.weightsExercise },
+    { id: "yoga", label: t.auth.yogaExercise },
+    { id: "sports", label: t.auth.sportsExercise },
+    { id: "home", label: t.auth.homeExercise },
   ];
 
   const toggleExercise = (id: string) => {
@@ -55,8 +55,8 @@ export default function SignupPage() {
   const handleSignup = async () => {
     if (!name || !email || !password || !confirmPassword) {
       toast({
-        title: "خطأ",
-        description: "يرجى ملء جميع الحقول",
+        title: t.common.error,
+        description: t.auth.fillAllFields,
         variant: "destructive",
       });
       return;
@@ -64,8 +64,8 @@ export default function SignupPage() {
 
     if (password !== confirmPassword) {
       toast({
-        title: "خطأ",
-        description: "كلمات المرور غير متطابقة",
+        title: t.common.error,
+        description: t.auth.passwordMismatch,
         variant: "destructive",
       });
       return;
@@ -73,8 +73,8 @@ export default function SignupPage() {
 
     if (password.length < 6) {
       toast({
-        title: "خطأ",
-        description: "كلمة المرور يجب أن تكون 6 أحرف على الأقل",
+        title: t.common.error,
+        description: t.auth.passwordMinLength,
         variant: "destructive",
       });
       return;
@@ -82,8 +82,8 @@ export default function SignupPage() {
 
     if (preferredExercises.length === 0) {
       toast({
-        title: "خطأ",
-        description: "اختر تمارين واحدة على الأقل",
+        title: t.common.error,
+        description: t.auth.chooseExerciseError,
         variant: "destructive",
       });
       return;
@@ -123,8 +123,8 @@ export default function SignupPage() {
         }));
 
         toast({
-          title: "نجاح",
-          description: "تم إنشاء حسابك بنجاح! سيتم نقلك للوحة التحكم",
+          title: t.common.success,
+          description: t.auth.signupSuccess,
         });
         
         setTimeout(() => {
@@ -133,16 +133,16 @@ export default function SignupPage() {
       } else {
         const error = await response.json();
         toast({
-          title: "خطأ",
-          description: error.error || "فشل إنشاء الحساب",
+          title: t.common.error,
+          description: error.error || t.auth.signupError,
           variant: "destructive",
         });
       }
     } catch (error) {
       console.error(error);
       toast({
-        title: "خطأ",
-        description: "حدث خطأ أثناء إنشاء الحساب",
+        title: t.common.error,
+        description: t.auth.signupError,
         variant: "destructive",
       });
     } finally {
@@ -160,10 +160,10 @@ export default function SignupPage() {
             <h1 className="text-3xl font-bold text-green-600">Darwfit</h1>
           </div>
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-            إنشاء حساب جديد
+            {t.auth.signup}
           </h2>
           <p className="text-gray-600 dark:text-gray-400">
-            خطة 3 خطوات لإنشاء خطتك المخصصة
+            {t.auth.signupSteps}
           </p>
         </div>
 
@@ -196,58 +196,58 @@ export default function SignupPage() {
             <div className="space-y-6">
               <div>
                 <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">
-                  معلومات أساسية
+                  {t.auth.basicInfo}
                 </h3>
               </div>
 
               <div>
                 <label className="block text-sm font-medium mb-2 text-gray-900 dark:text-white">
-                  الاسم الكامل
+                  {t.auth.fullName}
                 </label>
                 <Input
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="أحمد محمد"
+                  placeholder={t.auth.namePlaceholder}
                   data-testid="input-name"
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium mb-2 text-gray-900 dark:text-white">
-                  البريد الإلكتروني
+                  {t.auth.email}
                 </label>
                 <Input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="you@example.com"
+                  placeholder={t.auth.emailPlaceholder}
                   data-testid="input-email"
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium mb-2 text-gray-900 dark:text-white">
-                  كلمة المرور
+                  {t.auth.password}
                 </label>
                 <Input
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
+                  placeholder={t.auth.passwordPlaceholder}
                   data-testid="input-password"
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium mb-2 text-gray-900 dark:text-white">
-                  تأكيد كلمة المرور
+                  {t.auth.confirmPassword}
                 </label>
                 <Input
                   type="password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  placeholder="••••••••"
+                  placeholder={t.auth.passwordPlaceholder}
                   data-testid="input-confirm-password"
                 />
               </div>
@@ -257,7 +257,7 @@ export default function SignupPage() {
                 className="w-full bg-green-600 hover:bg-green-700 text-white flex items-center justify-between"
                 data-testid="button-next-goals"
               >
-                التالي
+                {t.common.next}
                 <ChevronRight className="w-4 h-4" />
               </Button>
             </div>
@@ -268,14 +268,14 @@ export default function SignupPage() {
             <div className="space-y-6">
               <div>
                 <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">
-                  أهدافك ومعلومات صحتك
+                  {t.auth.goalsHealth}
                 </h3>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium mb-2 text-gray-900 dark:text-white">
-                    العمر
+                    {t.auth.age}
                   </label>
                   <Input
                     type="number"
@@ -288,7 +288,7 @@ export default function SignupPage() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-2 text-gray-900 dark:text-white">
-                    النوع
+                    {t.auth.gender}
                   </label>
                   <select
                     value={gender}
@@ -296,22 +296,22 @@ export default function SignupPage() {
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                     data-testid="select-gender"
                   >
-                    <option value="male">ذكر</option>
-                    <option value="female">أنثى</option>
+                    <option value="male">{t.auth.male}</option>
+                    <option value="female">{t.auth.female}</option>
                   </select>
                 </div>
               </div>
 
               <div>
                 <label className="block text-sm font-medium mb-3 text-gray-900 dark:text-white">
-                  ما هدفك الرئيسي؟
+                  {t.auth.primaryGoal}
                 </label>
                 <div className="space-y-2">
                   {[
-                    { id: "lose-weight", label: "فقدان الوزن" },
-                    { id: "gain-muscle", label: "بناء العضلات" },
-                    { id: "maintain", label: "الحفاظ على الوزن" },
-                    { id: "improve-fitness", label: "تحسين اللياقة البدنية" },
+                    { id: "lose-weight", label: t.auth.loseWeight },
+                    { id: "gain-muscle", label: t.auth.gainMuscle },
+                    { id: "maintain", label: t.auth.maintainWeight },
+                    { id: "improve-fitness", label: t.auth.improveFitness },
                   ].map((opt) => (
                     <button
                       key={opt.id}
@@ -337,14 +337,14 @@ export default function SignupPage() {
                   data-testid="button-back-basic"
                 >
                   <ArrowLeft className="w-4 h-4 ml-2" />
-                  رجوع
+                  {t.common.back}
                 </Button>
                 <Button
                   onClick={() => setStep("details")}
                   className="bg-green-600 hover:bg-green-700 text-white"
                   data-testid="button-next-details"
                 >
-                  التالي
+                  {t.common.next}
                   <ChevronRight className="w-4 h-4 ml-2" />
                 </Button>
               </div>
@@ -356,14 +356,14 @@ export default function SignupPage() {
             <div className="space-y-6">
               <div>
                 <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">
-                  تفاصيل اللياقة البدنية
+                  {t.auth.fitnessDetails}
                 </h3>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium mb-2 text-gray-900 dark:text-white">
-                    الطول (سم)
+                    {t.auth.height}
                   </label>
                   <Input
                     type="number"
@@ -374,7 +374,7 @@ export default function SignupPage() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-2 text-gray-900 dark:text-white">
-                    الوزن الحالي (كجم)
+                    {t.auth.currentWeight}
                   </label>
                   <Input
                     type="number"
@@ -388,7 +388,7 @@ export default function SignupPage() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium mb-2 text-gray-900 dark:text-white">
-                    الوزن المستهدف (كجم)
+                    {t.auth.targetWeight}
                   </label>
                   <Input
                     type="number"
@@ -399,7 +399,7 @@ export default function SignupPage() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-2 text-gray-900 dark:text-white">
-                    أقصى وزن تشيله (كجم)
+                    {t.auth.maxWeight}
                   </label>
                   <Input
                     type="number"
@@ -412,7 +412,7 @@ export default function SignupPage() {
 
               <div>
                 <label className="block text-sm font-medium mb-2 text-gray-900 dark:text-white">
-                  مستوى النشاط
+                  {t.auth.activityLevel}
                 </label>
                 <select
                   value={activityLevel}
@@ -420,17 +420,17 @@ export default function SignupPage() {
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                   data-testid="select-activity"
                 >
-                  <option value="sedentary">قليل جداً (مكتبي)</option>
-                  <option value="light">خفيف (1-3 أيام)</option>
-                  <option value="moderate">متوسط (3-5 أيام)</option>
-                  <option value="active">مرتفع (5-6 أيام)</option>
-                  <option value="very-active">جداً مرتفع (يومي)</option>
+                  <option value="sedentary">{t.auth.sedentaryActivity}</option>
+                  <option value="light">{t.auth.lightActivity}</option>
+                  <option value="moderate">{t.auth.moderateActivity}</option>
+                  <option value="active">{t.auth.activeActivity}</option>
+                  <option value="very-active">{t.auth.veryActiveActivity}</option>
                 </select>
               </div>
 
               <div>
                 <label className="block text-sm font-medium mb-3 text-gray-900 dark:text-white">
-                  التمارين المفضلة (اختر واحد على الأقل)
+                  {t.auth.preferredExercises}
                 </label>
                 <div className="space-y-2">
                   {exerciseOptions.map((exercise) => (
@@ -459,7 +459,7 @@ export default function SignupPage() {
                   data-testid="button-back-goals"
                 >
                   <ArrowLeft className="w-4 h-4 ml-2" />
-                  رجوع
+                  {t.common.back}
                 </Button>
                 <Button
                   onClick={handleSignup}
@@ -467,7 +467,7 @@ export default function SignupPage() {
                   className="bg-green-600 hover:bg-green-700 text-white"
                   data-testid="button-create-account"
                 >
-                  {loading ? "جاري الإنشاء..." : "إنشاء الحساب"}
+                  {loading ? t.auth.creating : t.auth.createAccount}
                 </Button>
               </div>
             </div>
@@ -476,13 +476,13 @@ export default function SignupPage() {
           {/* Login Link */}
           <div className="mt-6 text-center border-t border-gray-200 dark:border-gray-700 pt-6">
             <p className="text-gray-600 dark:text-gray-400">
-              لديك حساب بالفعل؟{" "}
+              {t.auth.alreadyHaveAccount}{" "}
               <button
                 onClick={() => setLocation("/login")}
                 className="text-green-600 hover:text-green-700 font-semibold"
                 data-testid="link-login"
               >
-                تسجيل الدخول
+                {t.auth.login}
               </button>
             </p>
           </div>

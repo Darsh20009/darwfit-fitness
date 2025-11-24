@@ -48,13 +48,13 @@ export function authenticateToken(req: AuthRequest, res: Response, next: NextFun
   const token = authHeader && authHeader.split(' ')[1]; // Bearer TOKEN
 
   if (!token) {
-    return res.status(401).json({ error: 'لم يتم توفير رمز المصادقة' });
+    return res.status(401).json({ error: 'No authentication token provided' });
   }
 
   const payload = verifyToken(token);
   
-  if (!payload) {
-    return res.status(403).json({ error: 'رمز المصادقة غير صالح أو منتهي الصلاحية' });
+  if (!payload || !payload.userId) {
+    return res.status(403).json({ error: 'Invalid or expired authentication token' });
   }
 
   req.userId = new ObjectId(payload.userId);
@@ -69,7 +69,7 @@ export function optionalAuth(req: AuthRequest, res: Response, next: NextFunction
 
   if (token) {
     const payload = verifyToken(token);
-    if (payload) {
+    if (payload && payload.userId) {
       req.userId = new ObjectId(payload.userId);
       req.userEmail = payload.email;
     }

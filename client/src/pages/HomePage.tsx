@@ -121,6 +121,16 @@ export default function HomePage() {
                   <span className="hidden sm:inline">{t.home.tryMealCalculator}</span>
                   <span className="sm:hidden">{language === "ar" ? "حاسبة" : "Calculator"}</span>
                 </Button>
+                <Button
+                  onClick={() => setLocation("/azkar")}
+                  variant="outline"
+                  className="border-2 border-orange-600 dark:border-orange-400 text-orange-600 dark:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-900/20 text-base sm:text-lg py-5 sm:py-6 md:py-7 px-6 sm:px-8 md:px-10 rounded-xl sm:rounded-2xl font-bold flex items-center justify-center gap-2 w-full sm:w-auto hover:scale-105 transition-all duration-300"
+                  data-testid="button-azkar"
+                >
+                  <Shield className="w-5 h-5 sm:w-6 sm:h-6" />
+                  <span className="hidden sm:inline">{language === "ar" ? "الأذكار الإسلامية" : "Islamic Azkar"}</span>
+                  <span className="sm:hidden">{language === "ar" ? "أذكار" : "Azkar"}</span>
+                </Button>
               </div>
 
               {/* Stats */}
@@ -272,15 +282,19 @@ export default function HomePage() {
                   </p>
                 </Card>
 
-                <Card className="p-6 sm:p-8 hover:shadow-2xl hover:scale-105 transition-all duration-300 dark:bg-gray-800/50 dark:border-gray-700/50 border-gray-200 backdrop-blur group">
+                <Card 
+                  className="p-6 sm:p-8 hover:shadow-2xl hover:scale-105 transition-all duration-300 dark:bg-gray-800/50 dark:border-gray-700/50 border-gray-200 backdrop-blur group cursor-pointer"
+                  onClick={() => setLocation("/azkar")}
+                  data-testid="card-azkar"
+                >
                   <div className="p-3 sm:p-4 bg-gradient-to-br from-orange-100 to-orange-50 dark:from-orange-900/30 dark:to-orange-800/20 rounded-xl sm:rounded-2xl w-fit mb-4 sm:mb-6 group-hover:scale-110 transition-transform duration-300">
                     <Shield className="w-6 h-6 sm:w-8 sm:h-8 text-orange-600 dark:text-orange-400" />
                   </div>
                   <h4 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-2 sm:mb-3">
-                    {language === "ar" ? "آمان وأذكار" : "Islamic Azkar"}
+                    {language === "ar" ? "أذكار إسلامية" : "Islamic Azkar"}
                   </h4>
                   <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
-                    {language === "ar" ? "أذكار إسلامية يومية وحماية كاملة لبيانات المستخدمين" : "Daily Islamic reminders with complete data protection"}
+                    {language === "ar" ? "أذكار الصباح والمساء، النوم والاستيقاظ، والأدعية اليومية" : "Morning and evening remembrance, sleep and wake prayers, and daily supplications"}
                   </p>
                 </Card>
               </div>

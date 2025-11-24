@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { ObjectId } from 'mongodb';
 import { hashPassword, comparePassword, generateToken } from '../auth';
 import { loginSchema, registerSchema } from '../../shared/schema';
 
@@ -16,35 +17,44 @@ router.post('/register', async (req, res) => {
     
     // Check if user already exists
     if (users[normalizedEmail]) {
-      return res.status(400).json({ error: 'البريد الإلكتروني مستخدم بالفعل' });
+      return res.status(400).json({ error: 'Email already in use' });
     }
     
     // Hash password
     const hashedPassword = await hashPassword(validatedData.password);
     
+    // Generate unique MongoDB-compatible userId
+    const userId = new ObjectId();
+    
     // Create user in memory
     users[normalizedEmail] = {
+      userId: userId.toString(),
       email: normalizedEmail,
       password: hashedPassword,
       name: validatedData.name,
       createdAt: new Date(),
     };
     
-    // Generate token
-    const token = generateToken({ email: normalizedEmail, name: validatedData.name });
+    // Generate token with userId
+    const token = generateToken({ 
+      userId: userId.toString(),
+      email: normalizedEmail, 
+      name: validatedData.name 
+    });
     
     return res.status(201).json({
       success: true,
-      message: 'تم إنشاء الحساب بنجاح',
+      message: 'Account created successfully',
       token,
       user: {
+        userId: userId.toString(),
         email: normalizedEmail,
         name: validatedData.name,
       },
     });
   } catch (error: any) {
     console.error('Registration error:', error);
-    return res.status(500).json({ error: 'حدث خطأ أثناء إنشاء الحساب' });
+    return res.status(500).json({ error: 'Error creating account' });
   }
 });
 
@@ -58,29 +68,34 @@ router.post('/login', async (req, res) => {
     // Find user
     const user = users[normalizedEmail];
     if (!user) {
-      return res.status(401).json({ error: 'بيانات دخول غير صحيحة' });
+      return res.status(401).json({ error: 'Invalid credentials' });
     }
     
     // Compare password
     const passwordMatch = await comparePassword(validatedData.password, user.password);
     if (!passwordMatch) {
-      return res.status(401).json({ error: 'بيانات دخول غير صحيحة' });
+      return res.status(401).json({ error: 'Invalid credentials' });
     }
     
-    // Generate token
-    const token = generateToken({ email: normalizedEmail, name: user.name });
+    // Generate token with userId
+    const token = generateToken({ 
+      userId: user.userId,
+      email: normalizedEmail, 
+      name: user.name 
+    });
     
     return res.json({
       success: true,
       token,
       user: {
+        userId: user.userId,
         email: normalizedEmail,
         name: user.name,
       },
     });
   } catch (error: any) {
     console.error('Login error:', error);
-    return res.status(500).json({ error: 'حدث خطأ أثناء تسجيل الدخول' });
+    return res.status(500).json({ error: 'Error during login' });
   }
 });
 
@@ -89,14 +104,14 @@ router.get('/me', (req, res) => {
   try {
     const token = req.headers.authorization?.split(' ')[1];
     if (!token) {
-      return res.status(401).json({ error: 'غير مصرح' });
+      return res.status(401).json({ error: 'Unauthorized' });
     }
     
     // In a real app, you'd verify the token here
     // For now, just return a success
     return res.json({ success: true });
   } catch (error) {
-    return res.status(500).json({ error: 'خطأ في التحقق' });
+    return res.status(500).json({ error: 'Verification error' });
   }
 });
 

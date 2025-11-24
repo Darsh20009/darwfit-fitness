@@ -20,8 +20,8 @@ export default function LoginPage() {
     e.preventDefault();
     if (!email || !password) {
       toast({
-        title: "خطأ",
-        description: "يرجى ملء جميع الحقول",
+        title: t.common.error,
+        description: t.auth.fillAllFields,
         variant: "destructive",
       });
       return;
@@ -42,23 +42,23 @@ export default function LoginPage() {
         localStorage.setItem("user", JSON.stringify(data.user));
         
         toast({
-          title: "نجاح",
-          description: "تم تسجيل الدخول بنجاح",
+          title: t.common.success,
+          description: t.auth.loginSuccess,
         });
         setLocation("/dashboard");
       } else {
         const error = await response.json();
         toast({
-          title: "خطأ",
-          description: error.error || "بيانات دخول غير صحيحة",
+          title: t.common.error,
+          description: error.error || t.auth.loginError,
           variant: "destructive",
         });
       }
     } catch (error) {
       console.error(error);
       toast({
-        title: "خطأ",
-        description: "حدث خطأ أثناء تسجيل الدخول",
+        title: t.common.error,
+        description: t.auth.loginError,
         variant: "destructive",
       });
     } finally {
@@ -87,7 +87,7 @@ export default function LoginPage() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="your@email.com"
+              placeholder={t.auth.emailPlaceholder}
               data-testid="input-email"
             />
           </div>
@@ -101,7 +101,7 @@ export default function LoginPage() {
                 type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
+                placeholder={t.auth.passwordPlaceholder}
                 data-testid="input-password"
               />
               <button
@@ -126,13 +126,13 @@ export default function LoginPage() {
 
         <div className="mt-6 space-y-3 text-center">
           <p className="text-muted-foreground text-sm">
-            ليس لديك حساب؟{" "}
+            {t.auth.dontHaveAccount}{" "}
             <button
               onClick={() => setLocation("/signup")}
               className="text-green-600 hover:text-green-700 font-semibold"
               data-testid="link-signup"
             >
-              إنشاء حساب
+              {t.auth.signup}
             </button>
           </p>
           
@@ -142,7 +142,7 @@ export default function LoginPage() {
             data-testid="button-back"
           >
             <ArrowLeft className="w-4 h-4" />
-            العودة للرئيسية
+            {t.common.back}
           </button>
         </div>
       </Card>
